@@ -35,3 +35,6 @@ playwright-report/
 apps/web/public/storybook/
 apps/web/public/llms.txt
 apps/web/public/llms-full.txt
+
+# Local Claude Code permissions
+.claude/settings.local.json
