@@ -192,7 +192,10 @@ export function discoverModules(root = "."): { id: string; metaPath: string; fil
     if (!existsSync(join(root, dir))) continue;
     for (const entry of readdirSync(join(root, dir), { withFileTypes: true })) {
       if (entry.isDirectory() && existsSync(join(root, dir, entry.name, "meta.json"))) {
-        const files = readdirSync(join(root, dir, entry.name))
+        const files = readdirSync(join(root, dir, entry.name), {
+          recursive: true,
+          encoding: "utf8",
+        })
           .filter(isSourceFile)
           .sort()
           .map((file) => join(dir, entry.name, file));

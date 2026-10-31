@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileBadgeIcon, FilePlusIcon, PercentIcon } from "lucide-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { IconTile } from "@/core/icon-tile/icon-tile";
+import { FmaI18nProvider } from "@/lib/i18n/index";
 import {
   Carousel,
   CarouselAutoplayToggle,
@@ -178,5 +179,25 @@ export const Autoplay: Story = {
     await waitFor(() => expect(carousel).not.toHaveAttribute("data-rotating"));
     await userEvent.click(dot(3));
     await waitFor(() => expect(dot(3)).toHaveAttribute("aria-current", "true"));
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { carousel: { labels: { next: "Próximo slide" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("button", { name: "Próximo slide" })).toBeInTheDocument();
+    // What the pack leaves out stays in English.
+    await expect(canvas.getByRole("button", { name: "Previous slide" })).toBeInTheDocument();
   },
 };

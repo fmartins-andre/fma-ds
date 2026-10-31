@@ -37,7 +37,7 @@ export default defineConfig({
           // Date libs (input-masks, date-fns-compat) have tests that assume a
           // fixed zone; pin it so results don't depend on the machine's TZ.
           env: { TZ: "UTC" },
-          include: ["tests/**/*.test.ts"],
+          include: ["tests/**/*.test.{ts,tsx}"],
         },
       },
     ],

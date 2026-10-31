@@ -5,31 +5,19 @@ import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-reac
 import { ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/core/button/button";
+import {
+  type CarouselConfig,
+  type CarouselLabels,
+  type NamespaceOverrides,
+  useFmaMessages,
+} from "@/lib/i18n/index";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
 type CarouselOptions = UseCarouselParameters[0];
 type CarouselPlugin = UseCarouselParameters[1];
 
-type CarouselLabels = {
-  previous: string;
-  next: string;
-  pause: string;
-  /** Starts the rotation (also when reduced motion started it paused). */
-  start: string;
-  /** A dot's label, given the slide number (1-based) and the total. */
-  goToSlide: (slide: number, total: number) => string;
-};
-
-type CarouselI18n = { labels?: Partial<CarouselLabels> };
-
-const defaultCarouselLabels: CarouselLabels = {
-  previous: "Previous slide",
-  next: "Next slide",
-  pause: "Pause slides",
-  start: "Play slides",
-  goToSlide: (slide, total) => `Go to slide ${slide} of ${total}`,
-};
+type CarouselI18n = NamespaceOverrides<CarouselConfig>;
 
 type CarouselProps = {
   opts?: CarouselOptions;
@@ -94,7 +82,7 @@ function Carousel({
   onBlur,
   ...props
 }: React.ComponentProps<"div"> & CarouselProps) {
-  const labels = { ...defaultCarouselLabels, ...i18n?.labels };
+  const { labels } = useFmaMessages("carousel", i18n);
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
