@@ -14,6 +14,7 @@ import {
   LLMS_TXT_URL,
   REGISTRIES_SNIPPET,
   REGISTRY_INDEX_URL,
+  REPO_URL,
   STORYBOOK_URL,
   THEME_COUNT,
 } from "../../../site/registry";
@@ -62,8 +63,11 @@ function DocsIntroduction() {
 
       <H2 id="installation">Installation</H2>
       <P>
-        Start from a project set up for shadcn/ui (Tailwind v4, a <C>components.json</C>). Then
-        register the <C>@fma-ds</C> namespace:
+        Start from a project set up for shadcn/ui (Tailwind v4, a <C>components.json</C>; see{" "}
+        <a href="/docs/compatibility" className="font-medium underline underline-offset-4">
+          compatibility
+        </a>
+        ). Then register the <C>@fma-ds</C> namespace:
       </P>
       <CodeBlock className="mt-4" code={REGISTRIES_SNIPPET} language="json">
         <CodeBlockHeader>
@@ -115,14 +119,22 @@ function DocsIntroduction() {
         follow React Aria rather than Radix: <C>isDisabled</C> instead of <C>disabled</C>,{" "}
         <C>onPress</C> instead of <C>onClick</C>, and no <C>asChild</C> (use <C>LinkButton</C> for a
         link that looks like a button). Wrap your app in React Aria's <C>RouterProvider</C> so links
-        navigate client-side.
+        navigate client-side (see{" "}
+        <a href="/docs/routing" className="font-medium underline underline-offset-4">
+          routing
+        </a>
+        ).
       </P>
 
       <H2 id="themes">Themes</H2>
       <P>
         Every color, radius, font and shadow is a CSS variable. Pick one of the curated themes,
         tweak it in the theme editor and export it as CSS, or install it straight from the registry
-        with <C>@fma-ds/theme-&lt;name&gt;</C>.
+        with <C>@fma-ds/theme-&lt;name&gt;</C>. Every theme has a light and a dark palette (see{" "}
+        <a href="/docs/dark-mode" className="font-medium underline underline-offset-4">
+          dark mode
+        </a>
+        ).
       </P>
       <div className="mt-4">
         <LinkButton href="/themes" variant="outline">
@@ -140,6 +152,19 @@ function DocsIntroduction() {
           Open Storybook
         </LinkButton>
       </div>
+
+      <H2 id="license">License</H2>
+      <P>
+        MIT. You can use the code in open source and in proprietary projects. Third-party items keep
+        their own license, listed in{" "}
+        <a
+          href={`${REPO_URL}/blob/main/THIRD_PARTY_NOTICES.md`}
+          className="font-medium underline underline-offset-4"
+        >
+          the notices
+        </a>{" "}
+        and in each item's origin.
+      </P>
     </article>
   );
 }

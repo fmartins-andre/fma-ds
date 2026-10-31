@@ -35,6 +35,8 @@ packages/ds/        → @fma-ds/ds: os componentes
   tests/                              testes unit (vitest) + gates estruturais
   registry.json                       GERADO — não editar à mão
 apps/web/           → TanStack Start; serve public/r/<nome>.json (GERADO — não editar à mão)
+  src/guides/                         guias do /docs em markdown (index.ts lista); site e llms.txt
+                                      leem o mesmo texto; {{dep}} vira a versão do package.json
   src/theme-editor/                   editor de temas em /themes (estilo tweakcn); importa a UI
                                       de packages/ds via alias @/* (tsconfig paths)
   src/site/, src/routes/_site/        site de docs (estilo shadcn): home, /docs, /components/<nome>,

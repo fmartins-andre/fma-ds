@@ -122,6 +122,24 @@ test("a block page previews the block in an iframe", async ({ page }) => {
   await expect(frame.getByText("Acme Inc").first()).toBeVisible();
 });
 
+test("a guide renders from its markdown and reaches llms.txt", async ({ page, request }) => {
+  await open(page, "/docs/compatibility");
+  const main = page.getByRole("main");
+  await expect(main.getByRole("heading", { name: "Compatibility", level: 1 })).toBeVisible();
+  await expect(main.getByRole("cell", { name: "react-aria-components" })).toBeVisible();
+  await expect(main).not.toContainText("{{");
+  await main.getByRole("link", { name: "installation steps" }).click();
+  await expect(page).toHaveURL(/\/docs$/);
+
+  const llms = await (await request.get("/llms.txt")).text();
+  expect(llms).toContain("/docs/compatibility");
+  expect(await (await request.get("/llms-full.txt")).text()).toContain("## Guides");
+});
+
+test("an unknown guide is not found", async ({ request }) => {
+  expect((await request.get("/docs/nope")).status()).toBe(404);
+});
+
 test("search finds a component", async ({ page }) => {
   await open(page, "/docs");
   await page.getByRole("button", { name: /Search docs/ }).click();

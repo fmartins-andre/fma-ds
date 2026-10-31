@@ -232,9 +232,12 @@ export function SiteFooter() {
           <a href="https://ui.shadcn.com/docs/registry" className="underline underline-offset-4">
             shadcn registry
           </a>{" "}
-          format.
+          format. MIT licensed.
         </p>
         <div className="flex gap-4">
+          <a href={`${REPO_URL}/blob/main/LICENSE`} className="underline underline-offset-4">
+            License
+          </a>
           <a href="/llms.txt" className="underline underline-offset-4">
             llms.txt
           </a>

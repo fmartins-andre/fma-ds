@@ -12,10 +12,12 @@ import {
   CommandList,
 } from "@/core/command/command";
 import { Kbd, KbdGroup } from "@/core/kbd/kbd";
+import { GUIDES } from "../guides";
 import { BLOCKS, COMPONENTS } from "./registry";
 
 const PAGES = [
   { id: "/docs", title: "Introduction" },
+  ...GUIDES.map((guide) => ({ id: `/docs/${guide.slug}`, title: guide.title })),
   { id: "/components", title: "Components" },
   { id: "/blocks", title: "Blocks" },
   { id: "/themes", title: "Theme editor" },
