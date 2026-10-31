@@ -232,7 +232,7 @@ export const CustomPlan: Story = {
           <PlanResource
             icon={<UsersIcon />}
             title="Cadastro Certo"
-            description="Consulta e atualização cadastral dos clientes na Receita."
+            description="Consulta e atualização cadastral dos clientes."
             label="Clientes"
             formatValue={(value) => `${value} clientes`}
             minValue={0}

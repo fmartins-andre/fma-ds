@@ -123,7 +123,7 @@ const FILES = [
   "https://example.com/data.csv?v=2",
   "assets/",
   "README",
-  "contratos/empresa.cer",
+  "docs/empresa.cer",
   ".env.local",
   "Dockerfile",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

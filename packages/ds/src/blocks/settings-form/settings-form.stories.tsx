@@ -50,7 +50,7 @@ type Company = {
 
 const SAVED_COMPANY: Company = {
   legalName: "Silva & Souza Arquitetura Ltda.",
-  tradeName: "Silva Contábil",
+  tradeName: "Silva Estúdio",
   cnpj: "12345678000195",
   email: "contato@silvaestudio.com.br",
   phone: "11987654321",
@@ -175,7 +175,7 @@ export const Default: Story = {
     await userEvent.type(tradeName, " ME");
     await expect(canvas.getByRole("status")).toHaveTextContent("Há alterações não salvas");
     await userEvent.click(discard);
-    await expect(tradeName).toHaveValue("Silva Contábil");
+    await expect(tradeName).toHaveValue("Silva Estúdio");
     await expect(save).toBeDisabled();
 
     await userEvent.click(canvas.getByRole("switch", { name: "Lembretes de vencimento" }));

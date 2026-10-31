@@ -178,7 +178,7 @@ export const WithIcons: Story = {
         title: "Relatório gerado",
         message: "A mensalidade de outubro de João Silva está pronta para pagamento.",
         date: new Date("2026-10-18T11:30:00Z"),
-        href: "/das",
+        href: "/relatorios",
         icon: (
           <IconTile size="sm" variant="soft">
             <ReceiptIcon />
