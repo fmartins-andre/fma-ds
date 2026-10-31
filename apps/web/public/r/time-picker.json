@@ -34,7 +34,8 @@
       "picker",
       "popover",
       "react-aria"
-    ]
+    ],
+    "contentHash": "79c8a802fbb2"
   },
   "categories": [
     "forms"

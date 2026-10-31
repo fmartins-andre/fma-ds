@@ -27,7 +27,8 @@
       "wizard",
       "tabs",
       "react-aria"
-    ]
+    ],
+    "contentHash": "32ceb5334598"
   },
   "categories": [
     "navigation"

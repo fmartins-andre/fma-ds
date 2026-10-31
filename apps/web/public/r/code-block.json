@@ -32,7 +32,8 @@
       "syntax-highlighting",
       "shiki",
       "ai"
-    ]
+    ],
+    "contentHash": "38255a4d8d09"
   },
   "categories": [
     "data-display"

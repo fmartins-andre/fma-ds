@@ -117,7 +117,8 @@
       "scheduler",
       "events",
       "recurrence"
-    ]
+    ],
+    "contentHash": "2067b0243b9b"
   },
   "categories": [
     "blocks"

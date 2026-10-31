@@ -77,7 +77,8 @@
       "date",
       "time-zone",
       "date-fns"
-    ]
+    ],
+    "contentHash": "1d2fce1731f8"
   },
   "categories": [
     "date"

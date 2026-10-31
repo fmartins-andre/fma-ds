@@ -31,7 +31,8 @@
       "dashboard",
       "totals",
       "filters"
-    ]
+    ],
+    "contentHash": "69acf80190a0"
   },
   "categories": [
     "blocks"

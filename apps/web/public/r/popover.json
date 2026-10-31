@@ -24,7 +24,8 @@
       "overlay",
       "floating",
       "react-aria"
-    ]
+    ],
+    "contentHash": "a551050591e6"
   },
   "categories": [
     "overlay"

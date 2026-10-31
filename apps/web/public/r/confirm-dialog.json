@@ -30,7 +30,8 @@
       "dialog",
       "confirm",
       "alert"
-    ]
+    ],
+    "contentHash": "cb346e883317"
   },
   "categories": [
     "overlay"

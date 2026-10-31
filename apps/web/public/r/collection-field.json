@@ -32,7 +32,8 @@
       "field-array",
       "list",
       "repeater"
-    ]
+    ],
+    "contentHash": "485d5b54137a"
   },
   "categories": [
     "blocks"

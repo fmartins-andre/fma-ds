@@ -23,7 +23,8 @@
       "react-aria",
       "disclosure",
       "toggle"
-    ]
+    ],
+    "contentHash": "6c2ef4e31910"
   },
   "categories": [
     "disclosure"

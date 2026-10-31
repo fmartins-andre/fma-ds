@@ -25,7 +25,8 @@
       "@base-ui/react",
       "overlay",
       "modal"
-    ]
+    ],
+    "contentHash": "3e2556163a9d"
   },
   "categories": [
     "overlay"

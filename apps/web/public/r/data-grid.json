@@ -40,7 +40,8 @@
       "grid",
       "tanstack",
       "react-aria"
-    ]
+    ],
+    "contentHash": "1fe5772f3aab"
   },
   "categories": [
     "data-display"

@@ -28,7 +28,8 @@
       "menu",
       "context-menu",
       "nova"
-    ]
+    ],
+    "contentHash": "0b769e753bfb"
   },
   "categories": [
     "overlay"

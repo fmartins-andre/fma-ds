@@ -28,7 +28,8 @@
       "react-aria",
       "modal",
       "overlay"
-    ]
+    ],
+    "contentHash": "bc7c3204eb2f"
   },
   "categories": [
     "overlay"

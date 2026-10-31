@@ -6,6 +6,7 @@
 //
 // Run via `pnpm generate:registry` (packages/ds) or `pnpm build` at the repo root.
 
+import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { ComponentMeta, Registry, RegistryItem } from "@fma-ds/registry";
@@ -269,6 +270,16 @@ function siteUrlOrExit() {
   }
 }
 
+// Items have no version numbers: the hash changes exactly when the published
+// content does, and comparing two of them needs no bookkeeping. Paths are relative
+// to packages/ds; a theme has no files, so its variables stand for its content.
+export function contentHash(item: RegistryItem) {
+  const content = item.files?.length
+    ? item.files.map((file) => readFileSync(file.path, "utf8")).join("\n")
+    : JSON.stringify([item.cssVars, item.css]);
+  return createHash("sha256").update(content).digest("hex").slice(0, 12);
+}
+
 export function main() {
   const siteUrl = siteUrlOrExit();
   console.log("Discovering components...");
@@ -301,6 +312,7 @@ export function main() {
   items.push(...themes);
 
   items.sort((a, b) => a.name.localeCompare(b.name));
+  for (const item of items) item.meta = { ...item.meta, contentHash: contentHash(item) };
 
   const registry: Registry = {
     name: "@fma-ds",

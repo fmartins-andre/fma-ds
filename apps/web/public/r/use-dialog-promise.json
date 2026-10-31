@@ -22,7 +22,8 @@
       "dialog",
       "promise",
       "overlay"
-    ]
+    ],
+    "contentHash": "c0a98d264636"
   },
   "categories": [
     "utils"

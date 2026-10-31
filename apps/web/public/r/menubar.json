@@ -30,7 +30,8 @@
       "menubar",
       "toolbar",
       "react-aria"
-    ]
+    ],
+    "contentHash": "f80f96b72a64"
   },
   "categories": [
     "navigation"

@@ -30,7 +30,8 @@
       "search",
       "command-palette",
       "overlay"
-    ]
+    ],
+    "contentHash": "98fd814bfa4f"
   },
   "categories": [
     "overlay"
