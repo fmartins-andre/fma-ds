@@ -28,8 +28,8 @@ export interface FmaI18nStore {
   setLocale(locale: string): Promise<void>;
 }
 
-// The only module state: packs are immutable, so sharing them across server
-// requests is safe. Everything per-user lives in a store.
+// Packs are immutable, so sharing them across server requests is safe.
+// Everything per-user lives in a store.
 const loading = new WeakMap<FmaLoader, Promise<FmaMessagesPack>>();
 const loaded = new WeakMap<FmaLoader, FmaMessagesPack>();
 

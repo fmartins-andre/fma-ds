@@ -281,8 +281,10 @@ import ptBR from "@/lib/fma-ds/i18n-pt-br/index";
   outro idioma. No SSR, o loader faz `loadFmaMessages(locales, params.lang)`. Um `locale` da rota que não está em
   `locales` passa pela negociação (`pt` → `pt-BR`); sem match, fallback e aviso em dev. Receita na
   doc com TanStack Router (`/$lang` + `beforeLoad`).
-- **SSR e isolamento**: o store é por instância do provider, e o único estado de módulo é o cache
-  das promessas dos loaders, que guarda dicionários imutáveis. Duas requisições simultâneas em
+- **SSR e isolamento**: o store é por instância do provider. O estado de módulo são caches de
+  dados imutáveis: os pacotes dos loaders, os formatadores de `Intl` e a memo de `resolveNamespace`,
+  chaveada por identidade em `WeakMap`, que por isso pode guardar `overrides` enquanto o objeto
+  viver. Duas requisições simultâneas em
   idiomas diferentes não se enxergam. Sem `AsyncLocalStorage` (exigiria `nodejs_compat` no Workers
   e é API de Node).
 - **Formatação dependente de locale** (decisão do planejamento): com o provider, o `locale` dele

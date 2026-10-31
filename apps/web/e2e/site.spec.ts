@@ -136,6 +136,11 @@ test("a guide renders from its markdown and reaches llms.txt", async ({ page, re
   expect(await (await request.get("/llms-full.txt")).text()).toContain("## Guides");
 });
 
+test("the i18n guide opens", async ({ page }) => {
+  await open(page, "/docs/i18n");
+  await expect(page.getByRole("heading", { level: 1, name: "Internationalization" })).toBeVisible();
+});
+
 test("an unknown guide is not found", async ({ request }) => {
   expect((await request.get("/docs/nope")).status()).toBe(404);
 });
