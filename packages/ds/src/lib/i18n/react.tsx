@@ -11,6 +11,7 @@ import type {
 import { resolveNamespace } from "./merge";
 import {
   createStore,
+  type FmaI18nStore,
   type FmaLocales,
   pendingFmaMessages,
   readFmaMessages,
@@ -40,6 +41,8 @@ export type FmaI18nProviderProps = Partial<StoreOptions> & {
   locale?: string;
   overrides?: FmaOverrides;
   onLocaleChange?: (locale: string) => void;
+  /** Shown while the first pack loads. */
+  fallback?: React.ReactNode;
 };
 
 /** Puts every registry item in one language. Optional: without it, items render English. */
@@ -49,6 +52,7 @@ export function FmaI18nProvider({
   locales = NO_LOCALES,
   overrides,
   onLocaleChange,
+  fallback,
   defaultLocale,
   fallbackLocale,
   initialLocale,
@@ -69,11 +73,6 @@ export function FmaI18nProvider({
     store.getSnapshot,
   );
 
-  for (const needed of [locale, store.fallbackLocale]) {
-    const pending = pendingFmaMessages(store.locales, needed);
-    if (pending) React.use(pending);
-  }
-
   // A layout effect, so a pack that is already loaded switches before paint.
   React.useLayoutEffect(() => {
     if (controlled !== undefined) void store.setLocale(controlled);
@@ -88,18 +87,48 @@ export function FmaI18nProvider({
     [store, isControlled, onLocaleChange],
   );
 
+  const controls = React.useMemo<FmaLocaleControls>(
+    () => ({ locale, locales: store.available, isPending, setLocale }),
+    [store, locale, isPending, setLocale],
+  );
+
+  // The boundary lets the store commit before a pack suspends: without it, React drops
+  // the store on the first mount and every attempt starts over, loading again.
+  return (
+    <React.Suspense fallback={fallback}>
+      <LoadedMessages store={store} controls={controls} overrides={overrides}>
+        {children}
+      </LoadedMessages>
+    </React.Suspense>
+  );
+}
+
+function LoadedMessages({
+  store,
+  controls,
+  overrides,
+  children,
+}: {
+  store: FmaI18nStore;
+  controls: FmaLocaleControls;
+  overrides?: FmaOverrides;
+  children: React.ReactNode;
+}) {
+  const { locale } = controls;
+  for (const needed of [locale, store.fallbackLocale]) {
+    const pending = pendingFmaMessages(store.locales, needed);
+    if (pending) React.use(pending);
+  }
+
   const value = React.useMemo<FmaI18nContextValue>(
     () => ({
-      locale,
-      locales: store.available,
-      isPending,
-      setLocale,
+      ...controls,
       active: readFmaMessages(store.locales, locale),
       // In English the items' own text is the language, so no fallback goes over it.
       fallback: locale === "en" ? undefined : readFmaMessages(store.locales, store.fallbackLocale),
       overrides,
     }),
-    [store, locale, isPending, setLocale, overrides],
+    [store, controls, locale, overrides],
   );
 
   return (

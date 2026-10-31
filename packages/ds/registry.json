@@ -2157,7 +2157,7 @@
       "name": "i18n",
       "type": "registry:lib",
       "title": "I18n",
-      "description": "Puts every registry item in one language with a single optional provider. Without it, items render their own English.\n\n- **`FmaI18nProvider`**: fixed language, the route's, another library's, or its own (`setLocale`, detection, packs loaded on demand). Switching keeps the old language until the new pack loads, so languages never mix.\n- **Precedence**: an item's `i18n` prop, then `overrides`, then the active language, then the fallback, then the item's English.\n- **`useFmaMessages`** reads a namespace; **`useFmaLocale`** gives a language selector what it needs.\n- **Server rendering**: `loadFmaMessages` and `parseAcceptLanguage` in a route loader. The store is per provider, so requests never share a language.",
+      "description": "Puts every registry item in one language with a single optional provider. Without it, items render their own English.\n\n- **`FmaI18nProvider`**: fixed language, the route's, another library's, or its own (`setLocale`, detection, packs loaded on demand). Switching keeps the old language until the new pack loads, so languages never mix. It's a Suspense boundary, with a `fallback` prop for the first load.\n- **Precedence**: an item's `i18n` prop, then `overrides`, then the active language, then the fallback, then the item's English.\n- **`useFmaMessages`** reads a namespace; **`useFmaLocale`** gives a language selector what it needs.\n- **Server rendering**: `loadFmaMessages` and `parseAcceptLanguage` in a route loader. The store is per provider, so requests never share a language.",
       "author": "@fma-ds/ds",
       "categories": [
         "utils"
@@ -2210,7 +2210,7 @@
           "i18n",
           "locale"
         ],
-        "contentHash": "82ad3d8bf45e"
+        "contentHash": "1ebfbd497c56"
       }
     },
     {
@@ -2245,7 +2245,7 @@
           "i18next",
           "locale"
         ],
-        "contentHash": "694f3ba8b4c1"
+        "contentHash": "c5f19b9260ae"
       }
     },
     {

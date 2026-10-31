@@ -209,7 +209,9 @@ import ptBR from "@/lib/fma-ds/i18n-pt-br/index";
   app.
 - Para SSR sem suspender: `loadFmaMessages(locales, pedido)` no loader da rota carrega o pacote
   (cache por loader) e devolve o locale negociado, que vai para `locale`/`initialLocale`. Sem isso,
-  o provider suspende (React `use`) até o pacote carregar.
+  o provider suspende (React `use`) até o pacote carregar, dentro de uma fronteira `Suspense` própria
+  (prop `fallback`): sem ela, o React descartaria o store na primeira montagem e um loader inline
+  carregaria sem parar. Por isso a fronteira também pega o que suspende nos filhos.
 
 ### Ponte com o i18next (`@fma-ds/i18n-i18next`)
 

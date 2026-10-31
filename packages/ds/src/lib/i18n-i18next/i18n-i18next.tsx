@@ -11,7 +11,10 @@ import {
   matchLocale,
 } from "@/lib/i18n/i18n";
 
-export type FmaI18nextProviderProps = Pick<FmaI18nProviderProps, "children" | "overrides"> & {
+export type FmaI18nextProviderProps = Pick<
+  FmaI18nProviderProps,
+  "children" | "overrides" | "fallback"
+> & {
   /** Keep it outside the component: the provider reads it once. */
   locales: FmaLocales;
   /** Defaults to the instance in the `I18nextProvider` above. */
@@ -36,6 +39,7 @@ export function FmaI18nextProvider({
   children,
   locales,
   overrides,
+  fallback,
   i18n: instance,
 }: FmaI18nextProviderProps) {
   const { i18n } = useTranslation(undefined, { i18n: instance });
@@ -61,6 +65,7 @@ export function FmaI18nextProvider({
       fallbackLocale={fallbackLocale(i18n, locales)}
       detect={false}
       overrides={overrides}
+      fallback={fallback}
       onLocaleChange={onLocaleChange}
     >
       {children}
