@@ -11,6 +11,7 @@ import { Link } from "react-aria-components";
 import { Badge } from "@/core/badge/badge";
 import { LinkButton } from "@/core/button/button";
 import { CodeBlock, CodeBlockCopyButton } from "@/core/code-block/code-block";
+import { plainSummaryOf } from "../../site/markdown";
 import {
   BLOCKS,
   COMPONENTS,
@@ -123,18 +124,23 @@ function Home() {
             </LinkButton>
           </div>
         </div>
-        <div className="mt-6 grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-6 grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
           {componentsByCategory().map((group) => (
             <div key={group.category}>
               <h3 className="text-sm font-medium">{group.title}</h3>
-              <ul className="mt-2 flex flex-col gap-1">
+              <ul className="mt-2 flex flex-col gap-2">
                 {group.items.map((item) => (
                   <li key={item.name}>
                     <Link
                       href={`/components/${item.name}`}
-                      className="text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:underline"
+                      className="group flex flex-col outline-none"
                     >
-                      {item.title}
+                      <span className="text-sm group-hover:underline group-focus-visible:underline">
+                        {item.title}
+                      </span>
+                      <span className="line-clamp-2 text-xs text-muted-foreground">
+                        {plainSummaryOf(item.description)}
+                      </span>
                     </Link>
                   </li>
                 ))}
