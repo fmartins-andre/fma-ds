@@ -50,7 +50,7 @@ const PLANS = [
   {
     id: "pro",
     name: "Pro",
-    description: "Para a empresa que emite todo dia.",
+    description: "Para a empresa que vende todo dia.",
     monthly: 129.9,
     annual: 109.9,
     isFeatured: true,
@@ -64,7 +64,7 @@ const PLANS = [
   {
     id: "premium",
     name: "Premium",
-    description: "Para escritórios com vários clientes.",
+    description: "Para empresas com vários clientes.",
     monthly: 249.9,
     annual: 209.9,
     features: [

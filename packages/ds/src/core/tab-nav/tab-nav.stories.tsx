@@ -118,9 +118,9 @@ export const Overflow: Story = {
         <BuildingIcon />
         Informações
       </TabNavItem>
-      <TabNavItem href="/clientes/42/inscricoes-estaduais">
+      <TabNavItem href="/clientes/42/enderecos">
         <LandmarkIcon />
-        Inscrições estaduais
+        Endereços
       </TabNavItem>
       <TabNavItem href="/clientes/42/modulos">
         <FileBoxIcon />

@@ -143,8 +143,8 @@ function getBrowserLocales(): string[];          // [] fora do browser
 declaration merging *dentro da lib*; nada de augmentation no app.
 
 - [ ] **Step 1: testes que falham**
-  - `plural("pt-BR", 0, { "=0": "Nenhuma", one: "1 nota", other: "# notas" })` → `"Nenhuma"`;
-    `plural("pt-BR", 1, …)` → `"1 nota"`; `plural("en", 2, { one: "a", other: "b" })` → `"b"`.
+  - `plural("pt-BR", 0, { "=0": "Nenhuma", one: "1 item", other: "# itens" })` → `"Nenhuma"`;
+    `plural("pt-BR", 1, …)` → `"1 item"`; `plural("en", 2, { one: "a", other: "b" })` → `"b"`.
     (`#` não é interpolado: o `other` vem pronto da função; o teste usa template string.)
   - `number("pt-BR", 1234.5)` → `"1.234,5"`; `currency("pt-BR", -50, "BRL")` → `"-R$ 50,00"`
     (compare com `Intl` direto para não depender do espaço especial); mesmo `Intl.*` reaproveitado
