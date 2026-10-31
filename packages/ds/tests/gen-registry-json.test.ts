@@ -108,7 +108,7 @@ describe("generated items", () => {
   it("installs hooks and libs into hooks/fma-ds and lib/fma-ds", () => {
     const hook = moduleItem("use-mask");
     expect(hook.files.map((file) => file.target)).toEqual(["hooks/fma-ds/use-mask.ts"]);
-    expect(hook.registryDependencies).toEqual([`${NAMESPACE}/input-masks`]);
+    expect(hook.registryDependencies).toEqual([`${NAMESPACE}/i18n`, `${NAMESPACE}/input-masks`]);
 
     const lib = moduleItem("input-masks");
     expect(lib.files.map((file) => file.target)).toContain("lib/fma-ds/input-masks/cpf-mask.ts");

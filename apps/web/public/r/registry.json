@@ -2412,6 +2412,11 @@
           "type": "registry:lib"
         },
         {
+          "path": "src/lib/input-masks/locale.ts",
+          "target": "lib/fma-ds/input-masks/locale.ts",
+          "type": "registry:lib"
+        },
+        {
           "path": "src/lib/input-masks/pattern-mask.ts",
           "target": "lib/fma-ds/input-masks/pattern-mask.ts",
           "type": "registry:lib"
@@ -2456,7 +2461,7 @@
           "input",
           "pt-BR"
         ],
-        "contentHash": "7f3e9e524aa5"
+        "contentHash": "b75bebd2debc"
       }
     },
     {
@@ -7900,6 +7905,7 @@
         }
       ],
       "registryDependencies": [
+        "@fma-ds/i18n",
         "@fma-ds/input-masks"
       ],
       "dependencies": [
@@ -7916,7 +7922,7 @@
           "mask",
           "pt-BR"
         ],
-        "contentHash": "25d968e24406"
+        "contentHash": "c72bc0067023"
       }
     },
     {

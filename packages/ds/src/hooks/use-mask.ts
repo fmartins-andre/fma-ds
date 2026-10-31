@@ -3,8 +3,26 @@
 import { useMaskito } from "@maskito/react";
 import * as React from "react";
 import { InputContext, useSlottedContext } from "react-aria-components";
-import { type MaskSpec, type ResolvedMask, resolveMask } from "@/lib/input-masks/presets";
+import { type DictionaryNamespace, useFmaLocale, useFmaMessages } from "@/lib/i18n/i18n";
+import {
+  type MaskedInputLabels,
+  type MaskSpec,
+  type ResolvedMask,
+  resolveMask,
+} from "@/lib/input-masks/presets";
 import type { StableMaskitoOptions } from "@/lib/input-masks/stable-mask";
+
+type MaskedInputConfig = { labels: MaskedInputLabels };
+
+declare global {
+  interface FmaNamespaces {
+    maskedInput: MaskedInputConfig;
+  }
+}
+
+const maskedInputEn: DictionaryNamespace<MaskedInputConfig> = {
+  labels: { day: "d", month: "m", year: "y", hour: "h", minute: "m" },
+};
 
 type UseMaskOptions = {
   /** A preset name, a parameterized preset (`{ type: "decimal", prefix: "R$ " }`) or custom options. */
@@ -17,7 +35,12 @@ type UseMaskOptions = {
   onValueChange?: (raw: string, masked: string) => void;
 };
 
-type MaskState = { masked: string; raw: string; external: string | undefined };
+type MaskState = {
+  masked: string;
+  raw: string;
+  external: string | undefined;
+  locale: string | undefined;
+};
 
 // Parameterized presets are compared by value, so an inline `{ type, ...params }`
 // object doesn't recreate the mask (and drop Maskito's state) on every render.
@@ -35,9 +58,15 @@ function maskKey(mask: MaskSpec | StableMaskitoOptions) {
  * without breaking Maskito's placeholder or caret.
  */
 function useMask({ mask, value, defaultValue, onValueChange }: UseMaskOptions) {
+  // Without a provider there's no locale, and masks stay Brazilian.
+  const locale = useFmaLocale()?.locale;
+  const { labels } = useFmaMessages("maskedInput", maskedInputEn);
   const key = maskKey(mask);
   // biome-ignore lint/correctness/useExhaustiveDependencies: `key` stands for `mask` by value
-  const resolved: ResolvedMask = React.useMemo(() => resolveMask(mask), [key]);
+  const resolved: ResolvedMask = React.useMemo(
+    () => resolveMask(mask, locale ? { locale, labels } : undefined),
+    [key, locale, labels],
+  );
 
   // Inside a TextField the value arrives through InputContext, not props.
   const contextValue = useSlottedContext(InputContext)?.value;
@@ -45,17 +74,22 @@ function useMask({ mask, value, defaultValue, onValueChange }: UseMaskOptions) {
 
   const [state, setState] = React.useState<MaskState>(() => {
     const masked = resolved.format(external ?? defaultValue ?? "");
-    return { masked, raw: resolved.unmask(masked), external };
+    return { masked, raw: resolved.unmask(masked), external, locale };
   });
 
   // Sync from an external value during render (not in an effect), so the
   // input never paints the stale text. Echoes of our own output are ignored.
   let current = state;
-  if (external !== state.external) {
-    current = { ...state, external };
-    if (external !== undefined && external !== state.masked && external !== state.raw) {
+  if (locale !== state.locale) {
+    // A new locale redraws the text from the raw value, which doesn't change.
+    current = { ...current, masked: resolved.format(state.raw), locale };
+    setState(current);
+  }
+  if (external !== current.external) {
+    current = { ...current, external };
+    if (external !== undefined && external !== current.masked && external !== current.raw) {
       const masked = resolved.format(external);
-      current = { masked, raw: resolved.unmask(masked), external };
+      current = { masked, raw: resolved.unmask(masked), external, locale };
     }
     setState(current);
   }

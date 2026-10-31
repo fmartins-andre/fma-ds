@@ -10,7 +10,10 @@ import {
 import { useMemo } from "react";
 import { makeStableMaskitoOptions, type StableMaskitoOptions } from "./stable-mask";
 
-export function dateTimeMaskRemover(value: string | null | undefined): string {
+export function dateTimeMaskRemover(
+  value: string | null | undefined,
+  options?: DateTimeMaskOptionsProps,
+): string {
   if (!value?.length) return "";
 
   const trimmed = value.trim();
@@ -20,7 +23,7 @@ export function dateTimeMaskRemover(value: string | null | undefined): string {
   const needsTimePad = !trimmed.includes(",");
   const normalized = needsTimePad ? `${trimmed}, 00:00` : trimmed;
 
-  const parsed = maskitoParseDateTime(normalized, defaultOptions);
+  const parsed = maskitoParseDateTime(normalized, { ...defaultOptions, ...options });
 
   if (!parsed) return "";
 
@@ -37,18 +40,16 @@ const defaultOptions: MaskitoDateTimeParams = {
   dateSeparator: "/",
 };
 
-const DATE_TIME_PLACEHOLDER = "__/__/____, __:__";
-
-const { plugins: dtPlaceholderPlugins, ...dtPlaceholderOptions } = maskitoWithPlaceholder(
-  DATE_TIME_PLACEHOLDER,
-  true,
-);
-
 export const createDateTimeMaskOptions: (options?: DateTimeMaskOptionsProps) => MaskitoOptions = (
   options,
 ) => {
   const validOptions = { ...defaultOptions, ...options };
   const generatedOptions = maskitoDateTime(validOptions);
+  const date = (validOptions.dateMode ?? "dd/mm/yyyy").replace(/[a-z]/gi, "_");
+  const { plugins: dtPlaceholderPlugins, ...dtPlaceholderOptions } = maskitoWithPlaceholder(
+    `${date.replaceAll("/", validOptions.dateSeparator ?? "/")}, __:__`,
+    true,
+  );
 
   return {
     ...generatedOptions,

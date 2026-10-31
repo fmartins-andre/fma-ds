@@ -3,6 +3,7 @@ import { act, type ChangeEvent, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { type UseMaskOptions, useMask } from "@/hooks/use-mask";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 
 // Tell React this environment supports act() (no @testing-library here).
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -100,5 +101,33 @@ describe("useMask", () => {
       autoComplete: "tel",
       placeholder: "(00) 00000-0000",
     });
+  });
+});
+
+describe("useMask under the i18n provider", () => {
+  const config = (locale: string) => ({ locale, locales: { "pt-BR": {} }, children: null });
+  const under = (locale: string, props: UseMaskOptions) =>
+    act(() =>
+      root.render(createElement(FmaI18nProvider, config(locale), createElement(Harness, props))),
+    );
+
+  it("redraws a decimal from its raw value when the locale changes", async () => {
+    const onValueChange = vi.fn();
+    const props = { mask: "decimal", defaultValue: "1234.5", onValueChange } as const;
+    under("pt-BR", props);
+    expect(result.maskedValue).toBe("1.234,50");
+    await act(async () => under("en", props));
+    expect(result.maskedValue).toBe("1,234.50");
+    expect(result.rawValue).toBe("1234.50");
+    expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it("redraws a date the same way", async () => {
+    const props = { mask: "date", defaultValue: "2026-10-29" } as const;
+    under("pt-BR", props);
+    expect(result.maskedValue).toBe("29/10/2026");
+    await act(async () => under("en", props));
+    expect(result.maskedValue).toBe("10/29/2026");
+    expect(result.rawValue).toBe("2026-10-29");
   });
 });
