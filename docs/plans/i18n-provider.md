@@ -1,5 +1,21 @@
 # Plano: provider de i18n e dicionário central
 
+> **Desenho revisado em 2026-10-31** (decisão do usuário). Onde este texto divergir, vale isto:
+>
+> - O inglês e os tipos ficam **no próprio componente**, não na lib. A lib não tem dicionário:
+>   `useFmaMessages("carousel", carouselEn, i18n)` recebe o inglês do item.
+> - `FmaNamespaces` é uma interface **global**, estendida com `declare global` no arquivo do item.
+>   `declare module` não serve: o CLI do shadcn não reescreve esse caminho.
+> - Traduções ficam em `<item>/<item>-i18n/<idioma>.ts`, só quando existirem. Não são instaladas com
+>   o componente: o item `i18n-<idioma>` as publica com `target` na pasta do componente, e o `index`
+>   dele as agrega. O componente nunca importa uma tradução; ela chega pelo provider.
+> - Arquivos de tradução usam `defineFmaNamespace("carousel", {...})`: tipado se o item está
+>   instalado, solto (`LooseMessages`) se não. Validado com o CLI real e `tsc --strict`.
+> - Consequências: instalar um item não traz textos de outros; adicionar um item não sobrescreve a
+>   lib; o pacote de idioma instala as traduções de todos os itens.
+> - Todas as fábricas de `functions` rodam, da camada mais fraca para a mais forte, então um pacote
+>   pode trazer só parte delas.
+
 Objetivo: configurar o idioma de todos os componentes do registro de uma vez, com pt-BR pronto, e
 deixar o idioma deles seguir o do app (seletor de idioma, rota, detecção). Os textos do próprio app
 ficam com o i18next (ou outra lib de i18n), e uma ponte sincroniza o idioma. Hoje cada item tem a

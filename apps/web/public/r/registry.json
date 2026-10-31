@@ -600,7 +600,7 @@
           "slider",
           "embla"
         ],
-        "contentHash": "866a0c54194b"
+        "contentHash": "b1af2570e993"
       }
     },
     {
@@ -2136,7 +2136,7 @@
       "name": "i18n",
       "type": "registry:lib",
       "title": "I18n",
-      "description": "Puts every registry item in one language with a single optional provider. Without it, items render their English text.\n\n- **`FmaI18nProvider`**: fixed language, the route's, another library's, or its own (`setLocale`, detection, packs loaded on demand). Switching keeps the old language until the new pack loads, so languages never mix.\n- **Precedence**: an item's `i18n` prop, then `overrides`, then the active language, then the fallback, then English.\n- **`useFmaMessages`** reads a namespace; **`useFmaLocale`** gives a language selector what it needs.\n- **Server rendering**: `loadFmaMessages` and `parseAcceptLanguage` in a route loader. The store is per provider, so requests never share a language.\n\nDon't edit this item: it holds the types and English of every item, so adding one overwrites it. Customize through `overrides`.",
+      "description": "Puts every registry item in one language with a single optional provider. Without it, items render their own English.\n\n- **`FmaI18nProvider`**: fixed language, the route's, another library's, or its own (`setLocale`, detection, packs loaded on demand). Switching keeps the old language until the new pack loads, so languages never mix.\n- **Precedence**: an item's `i18n` prop, then `overrides`, then the active language, then the fallback, then the item's English.\n- **`useFmaMessages`** reads a namespace; **`useFmaLocale`** gives a language selector what it needs.\n- **Server rendering**: `loadFmaMessages` and `parseAcceptLanguage` in a route loader. The store is per provider, so requests never share a language.",
       "author": "@fma-ds/ds",
       "categories": [
         "utils"
@@ -2155,16 +2155,6 @@
         {
           "path": "src/lib/i18n/merge.ts",
           "target": "lib/fma-ds/i18n/merge.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "src/lib/i18n/messages/carousel.ts",
-          "target": "lib/fma-ds/i18n/messages/carousel.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "src/lib/i18n/messages/en.ts",
-          "target": "lib/fma-ds/i18n/messages/en.ts",
           "type": "registry:lib"
         },
         {
@@ -2199,7 +2189,7 @@
           "i18n",
           "locale"
         ],
-        "contentHash": "254b0cd42b60"
+        "contentHash": "abcdd9e09662"
       }
     },
     {

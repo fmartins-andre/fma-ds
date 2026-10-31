@@ -36,6 +36,18 @@ describe("resolveNamespace", () => {
     expect(functions.title).toBe(title);
   });
 
+  it("lets a pack bring only some functions", () => {
+    type Two = { labels: { a: string }; functions: { one: () => string; two: () => string } };
+    const english = {
+      labels: { a: "a" },
+      functions: () => ({ one: () => "one", two: () => "two" }),
+    };
+    const pack = { functions: () => ({ one: () => "um" }) };
+    const { functions } = resolveNamespace<Two>([english, pack]);
+    expect(functions.one()).toBe("um");
+    expect(functions.two()).toBe("two");
+  });
+
   it("skips missing layers", () => {
     const { labels } = resolveNamespace<Config>([en, { labels: { next: "Weiter" } }, undefined]);
     expect(labels).toEqual({ today: "Today", next: "Weiter" });

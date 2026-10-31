@@ -3,7 +3,6 @@
 import * as React from "react";
 import { I18nProvider } from "react-aria-components";
 import { resolveNamespace } from "./merge";
-import { en } from "./messages/en";
 import {
   createStore,
   type FmaLocales,
@@ -11,16 +10,7 @@ import {
   readFmaMessages,
   type StoreOptions,
 } from "./store";
-import type {
-  DeepPartial,
-  DictionaryNamespace,
-  FmaMessages,
-  FmaMessagesPack,
-  FmaNamespaces,
-  FmaOverrides,
-  NamespaceConfig,
-  NamespaceOverrides,
-} from "./types";
+import type { FmaMessagesPack, FmaOverrides, NamespaceOverrides, PackNamespace } from "./types";
 
 type FmaLocaleControls = {
   locale: string;
@@ -46,11 +36,6 @@ export type FmaI18nProviderProps = Partial<StoreOptions> & {
   overrides?: FmaOverrides;
   onLocaleChange?: (locale: string) => void;
 };
-
-/** English is a pack like any other here, so the fallback can't show through it. */
-function readPack(locales: FmaLocales, locale: string) {
-  return readFmaMessages(locales, locale) ?? (locale === "en" ? en : undefined);
-}
 
 /** Puts every registry item in one language. Optional: without it, items render English. */
 export function FmaI18nProvider({
@@ -104,8 +89,9 @@ export function FmaI18nProvider({
       locales: store.available,
       isPending,
       setLocale,
-      active: readPack(store.locales, locale),
-      fallback: readPack(store.locales, store.fallbackLocale),
+      active: readFmaMessages(store.locales, locale),
+      // In English the items' own text is the language, so no fallback goes over it.
+      fallback: locale === "en" ? undefined : readFmaMessages(store.locales, store.fallbackLocale),
       overrides,
     }),
     [store, locale, isPending, setLocale, overrides],
@@ -118,18 +104,17 @@ export function FmaI18nProvider({
   );
 }
 
-/** A namespace's texts: the prop, over `overrides`, over the active language, over English. */
+/** A namespace's texts: the prop, over `overrides`, over the active language, over `english`. */
 export function useFmaMessages<K extends keyof FmaNamespaces>(
   namespace: K,
+  english: PackNamespace<FmaNamespaces[K]>,
   prop?: NamespaceOverrides<FmaNamespaces[K]>,
 ): FmaNamespaces[K] {
   const context = React.useContext(FmaI18nContext);
-  type Config = FmaNamespaces[K] & NamespaceConfig;
-  type Layer = DeepPartial<DictionaryNamespace<Config>>;
-  const english = en[namespace] as FmaMessages[K];
-  return resolveNamespace<Config>(
-    [english, context?.fallback?.[namespace], context?.active?.[namespace]] as Layer[],
-    [context?.overrides?.[namespace], prop] as NamespaceOverrides<Config>[],
+  type Layer = PackNamespace<FmaNamespaces[K]>;
+  return resolveNamespace<FmaNamespaces[K]>(
+    [english, context?.fallback?.[namespace] as Layer, context?.active?.[namespace] as Layer],
+    [context?.overrides?.[namespace] as NamespaceOverrides<FmaNamespaces[K]>, prop],
   );
 }
 

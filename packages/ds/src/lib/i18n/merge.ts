@@ -1,9 +1,4 @@
-import type {
-  DeepPartial,
-  DictionaryNamespace,
-  NamespaceConfig,
-  NamespaceOverrides,
-} from "./types";
+import type { NamespaceConfig, NamespaceOverrides, PackNamespace } from "./types";
 
 type Layer = Record<string, unknown> | undefined;
 type Factory = (sections: Record<string, object>) => object;
@@ -35,18 +30,19 @@ function merge(dictionaries: readonly Layer[], overrides: readonly Layer[]) {
       if (name !== "functions") sections[name] = { ...sections[name], ...(section as object) };
     }
   }
-  // The factory runs on the merged sections, so an override of a label reaches
-  // the functions built from it. Only the strongest dictionary's factory runs.
-  const strongest = [...dictionaries].reverse().find((layer) => layer?.functions);
-  const factory = strongest?.functions as Factory | undefined;
+  // Factories run on the merged sections, so an override of a label reaches the
+  // functions built from it. All of them run, weakest first: a pack may bring only
+  // some functions, and the rest fall through.
+  const factories = dictionaries.flatMap((layer) => (layer?.functions as Factory) ?? []);
   const plain = overrides.map((layer) => layer?.functions as object | undefined);
-  if (!factory && !plain.some(Boolean)) return sections;
-  return { ...sections, functions: Object.assign({}, factory?.(sections), ...plain) };
+  if (factories.length === 0 && !plain.some(Boolean)) return sections;
+  const built = factories.map((factory) => factory(sections));
+  return { ...sections, functions: Object.assign({}, ...built, ...plain) };
 }
 
 /** Layers go from weakest to strongest; `undefined` layers are skipped. */
 export function resolveNamespace<C extends NamespaceConfig>(
-  dictionaries: readonly (DeepPartial<DictionaryNamespace<C>> | undefined)[],
+  dictionaries: readonly (PackNamespace<C> | undefined)[],
   overrides: readonly (NamespaceOverrides<C> | undefined)[] = [],
 ): C {
   const node = memoNode([

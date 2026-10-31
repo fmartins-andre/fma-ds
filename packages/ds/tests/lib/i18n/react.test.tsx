@@ -16,24 +16,25 @@ import {
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
+const carouselEn = { labels: { next: "Next slide", previous: "Previous slide" } };
 const ptBR = { carousel: { labels: { next: "Próximo" } } } satisfies FmaMessagesPack;
 const locales = { "pt-BR": ptBR };
 
 let controls: ReturnType<typeof useFmaLocale>;
 
 function Probe() {
-  const { labels } = useFmaMessages("carousel");
+  const { labels } = useFmaMessages("carousel", carouselEn);
   controls = useFmaLocale();
   return <p>{labels.next}</p>;
 }
 
 function Prop() {
-  const { labels } = useFmaMessages("carousel", { labels: { next: "prop" } });
+  const { labels } = useFmaMessages("carousel", carouselEn, { labels: { next: "prop" } });
   return <p>{labels.next}</p>;
 }
 
 function Previous() {
-  return <p>{useFmaMessages("carousel").labels.previous}</p>;
+  return <p>{useFmaMessages("carousel", carouselEn).labels.previous}</p>;
 }
 
 function AriaLocale() {
@@ -43,7 +44,7 @@ function AriaLocale() {
 let seen: string[] = [];
 
 function Recorder() {
-  const { labels } = useFmaMessages("carousel");
+  const { labels } = useFmaMessages("carousel", carouselEn);
   const state = useFmaLocale();
   seen.push(`${state?.locale} ${state?.isPending} ${labels.next}`);
   return null;

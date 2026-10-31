@@ -1,9 +1,3 @@
-export type DeepPartial<T> = T extends (...args: never[]) => unknown
-  ? T
-  : T extends object
-    ? { [K in keyof T]?: DeepPartial<T[K]> }
-    : T;
-
 /** A namespace as components consume it: sections like `labels`, `formats`, `functions`. */
 export type NamespaceConfig = Record<string, object>;
 
@@ -15,23 +9,46 @@ export type DictionaryNamespace<C extends NamespaceConfig> = {
 /** What a component's `i18n` prop and the provider's `overrides` take. */
 export type NamespaceOverrides<C extends NamespaceConfig> = { [K in keyof C]?: Partial<C[K]> };
 
-/** One entry per registry item with text, added by each `messages/<namespace>.ts`. */
-// biome-ignore lint/suspicious/noEmptyInterface: filled by declaration merging
-export interface FmaNamespaces {}
+declare global {
+  /** One entry per installed item with text, added by the item's own file. */
+  interface FmaNamespaces {}
+}
 
-export type FmaMessages = {
-  [K in keyof FmaNamespaces]: DictionaryNamespace<FmaNamespaces[K]>;
+/** A namespace in a language pack: anything left out falls back, functions included. */
+export type PackNamespace<C extends NamespaceConfig> = {
+  [K in keyof C]?: K extends "functions"
+    ? (sections: Omit<C, "functions">) => Partial<C[K]>
+    : Partial<C[K]>;
 };
 
-/** A language pack. Namespaces may be missing: they fall back, so an old pack still works. */
+/** What an item that isn't installed looks like to a pack: it has no types to offer. */
+export type LooseMessages = {
+  [key: string]:
+    | string
+    | readonly string[]
+    // biome-ignore lint/suspicious/noExplicitAny: an item that isn't installed has no types to offer
+    | ((...args: any[]) => unknown)
+    | LooseMessages
+    | undefined;
+};
+
+/** A language pack. It brings every item's texts, whichever are installed. */
 export type FmaMessagesPack = {
-  [K in keyof FmaNamespaces]?: DeepPartial<FmaMessages[K]>;
-};
+  [K in keyof FmaNamespaces]?: PackNamespace<FmaNamespaces[K]>;
+} & { [namespace: string]: LooseMessages | undefined };
 
 export type FmaOverrides = {
   [K in keyof FmaNamespaces]?: NamespaceOverrides<FmaNamespaces[K]>;
 };
 
-export function defineFmaMessages<const T extends FmaMessagesPack>(messages: T): T {
+/** A namespace of a language pack: checked when the item is installed, loose when it isn't. */
+export type FmaNamespaceMessages<K extends string> = K extends keyof FmaNamespaces
+  ? PackNamespace<FmaNamespaces[K]>
+  : LooseMessages;
+
+export function defineFmaNamespace<K extends string>(
+  _namespace: K,
+  messages: FmaNamespaceMessages<K>,
+) {
   return messages;
 }
