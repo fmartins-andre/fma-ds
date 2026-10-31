@@ -22,6 +22,7 @@
   "meta": {
     "status": "stable",
     "source": "original",
+    "license": "MIT",
     "origin": "API of shadcn/ui's Menubar, rebuilt on react-aria Toolbar and the registry's DropdownMenu",
     "tags": [
       "navigation",

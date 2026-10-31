@@ -20,6 +20,7 @@
   "meta": {
     "status": "stable",
     "source": "customized",
+    "license": "MIT",
     "tags": [
       "navigation",
       "disclosure",

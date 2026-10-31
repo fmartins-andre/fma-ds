@@ -27,6 +27,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "disclosure",
           "collapsible",
@@ -57,6 +58,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "feedback",
           "callout"
@@ -89,6 +91,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "overlay",
           "modal",
@@ -145,6 +148,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "origin": "shadcn/ui block sidebar-07, rebuilt on the registry's react-aria Sidebar, Collapsible and DropdownMenu",
         "tags": [
           "block",
@@ -176,6 +180,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "media",
           "layout"
@@ -208,6 +213,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "chat",
           "file-upload"
@@ -242,6 +248,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "auth",
@@ -273,6 +280,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "data-display",
           "user",
@@ -303,6 +311,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "data-display",
           "status",
@@ -330,6 +339,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "color",
           "brand",
@@ -362,6 +372,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "navigation",
           "react-aria"
@@ -391,6 +402,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "chat",
           "message"
@@ -421,6 +433,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). No asChild — use LinkButton for a link styled as a button, and isDisabled instead of disabled.",
         "tags": [
           "form",
@@ -456,6 +469,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "buttons",
           "layout"
@@ -496,6 +510,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "form",
           "date",
@@ -525,6 +540,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova",
         "tags": [
           "layout",
@@ -560,6 +576,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "data-display",
           "carousel",
@@ -591,6 +608,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "data-display",
           "charts",
@@ -626,6 +644,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). Pair with an external Label via id/htmlFor — Checkbox's own children slot is for a custom indicator override, not label text.",
         "tags": [
           "form",
@@ -663,6 +682,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/code-block, MIT); buttons rebuilt on react-aria Button",
         "tags": [
           "data-display",
@@ -695,6 +715,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/code-block, MIT)",
         "tags": [
           "code",
@@ -727,6 +748,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "react-aria",
           "disclosure",
@@ -763,6 +785,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "form",
@@ -794,6 +817,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "color",
           "contrast",
@@ -836,6 +860,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "color",
           "composable",
@@ -874,6 +899,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "form",
           "react-aria",
@@ -910,6 +936,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "react-aria",
           "search",
@@ -946,6 +973,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "overlay",
           "dialog",
@@ -979,6 +1007,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). The trigger region must call usePress() — wrap a plain element in react-aria-components' Pressable if it doesn't already.",
         "tags": [
           "react-aria",
@@ -1015,6 +1044,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "buttons",
           "clipboard",
@@ -1047,6 +1077,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "react-credit-cards-2 (https://github.com/felquis/react-credit-cards-2, MIT), ported to Tailwind",
         "tags": [
           "payment",
@@ -1078,6 +1109,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "forms",
           "validation",
@@ -1122,6 +1154,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/data-grid, MIT); rendering rebuilt on react-aria Table",
         "tags": [
           "data-display",
@@ -1157,6 +1190,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "date",
           "validation"
@@ -1193,6 +1227,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "form",
           "date",
@@ -1267,6 +1302,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "date",
           "time-zone",
@@ -1296,6 +1332,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "date",
           "granularity"
@@ -1335,6 +1372,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "form",
           "date",
@@ -1365,6 +1403,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "data-display",
           "list",
@@ -1400,6 +1439,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "react-aria",
           "modal",
@@ -1429,6 +1469,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "layout",
           "i18n",
@@ -1459,6 +1500,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova. Built on @base-ui/react/drawer (stable 1.x), not react-aria-components — upstream hasn't ported this component to the aria base yet; vendored unchanged.",
         "tags": [
           "@base-ui/react",
@@ -1492,6 +1534,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "react-aria",
           "menu",
@@ -1532,6 +1575,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/emoji-picker, MIT); rebuilt on react-aria Popover, Dialog, Button, Tabs and Menu",
         "tags": [
           "forms",
@@ -1565,6 +1609,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "feedback",
           "empty-state",
@@ -1602,6 +1647,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "error",
@@ -1713,6 +1759,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/event-calendar, MIT); overlays rebuilt on the registry's react-aria components",
         "tags": [
           "block",
@@ -1751,6 +1798,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "promo",
@@ -1792,6 +1840,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "forms",
@@ -1823,6 +1872,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/file-type, MIT)",
         "tags": [
           "data-display",
@@ -1864,6 +1914,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "form",
           "file",
@@ -1906,6 +1957,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "filters",
@@ -1944,6 +1996,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "form",
@@ -1981,6 +2034,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "overlay",
           "popover",
@@ -2013,6 +2067,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "overlay",
@@ -2043,6 +2098,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/icon-stack, MIT)",
         "tags": [
           "feedback",
@@ -2075,6 +2131,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/icon-tile, MIT)",
         "tags": [
           "data-display",
@@ -2106,6 +2163,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "forms",
@@ -2143,6 +2201,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "forms",
@@ -2249,6 +2308,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "forms",
           "mask",
@@ -2281,6 +2341,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova. Built on the input-otp library, not react-aria-components.",
         "tags": [
           "forms",
@@ -2312,6 +2373,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "date",
           "interval"
@@ -2345,6 +2407,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "layout",
@@ -2376,6 +2439,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "data-display",
@@ -2407,6 +2471,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "forms",
@@ -2439,6 +2504,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "feedback",
           "loading",
@@ -2470,6 +2536,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova",
         "tags": [
           "chat",
@@ -2501,6 +2568,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "forms",
           "input",
@@ -2535,6 +2603,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "origin": "API of shadcn/ui's Menubar, rebuilt on react-aria Toolbar and the registry's DropdownMenu",
         "tags": [
           "navigation",
@@ -2567,6 +2636,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova",
         "tags": [
           "chat",
@@ -2601,6 +2671,7 @@
       "meta": {
         "status": "experimental",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova. Built on @shadcn/react/message-scroller, not react-aria-components — upstream hasn't ported this one to the aria base yet.",
         "tags": [
           "chat",
@@ -2632,6 +2703,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "form",
           "select",
@@ -2664,6 +2736,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "origin": "API of shadcn/ui's NavigationMenu, rebuilt on react-aria Button, Popover, Dialog and Link",
         "tags": [
           "navigation",
@@ -2705,6 +2778,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "notifications",
@@ -2745,6 +2819,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "checkout",
@@ -2780,6 +2855,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "header",
@@ -2815,6 +2891,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "navigation",
           "links",
@@ -2855,6 +2932,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "dashboard",
@@ -2890,6 +2968,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "form",
           "input",
@@ -2921,6 +3000,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "form",
           "password",
@@ -2963,6 +3043,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "payment",
@@ -3002,6 +3083,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "checkout",
@@ -3035,6 +3117,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "overlay",
           "floating",
@@ -3072,6 +3155,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "checkout",
@@ -3104,6 +3188,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "feedback",
           "loading",
@@ -3138,6 +3223,7 @@
       "meta": {
         "status": "experimental",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "chat",
           "form",
@@ -3171,6 +3257,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "form",
@@ -3202,6 +3289,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "layout",
           "panels",
@@ -3231,6 +3319,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "layout",
           "scroll"
@@ -3264,6 +3353,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "form",
           "select",
@@ -3294,6 +3384,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "layout",
           "divider",
@@ -3328,6 +3419,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "form",
@@ -3364,6 +3456,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "overlay",
@@ -3407,6 +3500,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "navigation",
           "layout",
@@ -3436,6 +3530,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "feedback",
           "loading"
@@ -3468,6 +3563,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
           "forms",
@@ -3500,6 +3596,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "feedback",
           "toast"
@@ -3530,6 +3627,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "data-display",
           "drag-and-drop",
@@ -3562,6 +3660,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "feedback",
           "loading"
@@ -3596,6 +3695,7 @@
       "meta": {
         "status": "experimental",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "block",
           "stats",
@@ -3628,6 +3728,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/stepper, MIT); rebuilt on react-aria Tabs",
         "tags": [
           "navigation",
@@ -3661,6 +3762,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). Pair with an external Label via id/htmlFor — its own children slot is for a custom thumb, not label text.",
         "tags": [
           "forms",
@@ -3693,6 +3795,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "navigation",
           "tabs",
@@ -3724,6 +3827,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "data-display",
           "table",
@@ -3755,6 +3859,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "navigation",
           "disclosure",
@@ -3785,6 +3890,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "forms",
           "input",
@@ -3933,6 +4039,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/amber-minimal.json",
         "tags": [
           "amber",
@@ -4063,6 +4170,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/caffeine.json",
         "tags": [
           "brown",
@@ -4206,6 +4314,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/catppuccin.json",
         "tags": [
           "violet",
@@ -4336,6 +4445,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/claude.json",
         "tags": [
           "orange",
@@ -4485,6 +4595,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/clean-slate.json",
         "tags": [
           "indigo",
@@ -4626,6 +4737,7 @@
       },
       "meta": {
         "source": "original",
+        "license": "MIT",
         "tags": [
           "blue",
           "green",
@@ -4769,6 +4881,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/cosmic-night.json",
         "tags": [
           "violet",
@@ -4899,6 +5012,7 @@
       },
       "meta": {
         "source": "original",
+        "license": "MIT",
         "tags": [
           "neutral",
           "sans"
@@ -5044,6 +5158,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/elegant-luxury.json",
         "tags": [
           "red",
@@ -5207,6 +5322,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/graphite.json",
         "tags": [
           "gray",
@@ -5348,6 +5464,7 @@
       },
       "meta": {
         "source": "original",
+        "license": "MIT",
         "tags": [
           "indigo",
           "violet",
@@ -5496,6 +5613,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/kodama-grove.json",
         "tags": [
           "green",
@@ -5649,6 +5767,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/modern-minimal.json",
         "tags": [
           "blue",
@@ -5788,6 +5907,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/mono.json",
         "tags": [
           "gray",
@@ -5941,6 +6061,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/nature.json",
         "tags": [
           "green",
@@ -6076,6 +6197,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/northern-lights.json",
         "tags": [
           "green",
@@ -6225,6 +6347,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/ocean-breeze.json",
         "tags": [
           "green",
@@ -6366,6 +6489,7 @@
       },
       "meta": {
         "source": "original",
+        "license": "MIT",
         "tags": [
           "purple",
           "pink",
@@ -6507,6 +6631,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/soft-pop.json",
         "tags": [
           "indigo",
@@ -6647,6 +6772,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/starry-night.json",
         "tags": [
           "blue",
@@ -6795,6 +6921,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/supabase.json",
         "tags": [
           "green",
@@ -6960,6 +7087,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/vintage-paper.json",
         "tags": [
           "brown",
@@ -7128,6 +7256,7 @@
       },
       "meta": {
         "source": "third-party",
+        "license": "Apache-2.0",
         "origin": "https://tweakcn.com/r/themes/violet-bloom.json",
         "tags": [
           "violet",
@@ -7184,6 +7313,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/time-picker, MIT); rebuilt on react-aria Popover, Dialog and Button",
         "tags": [
           "forms",
@@ -7216,6 +7346,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/docs/components/base/timeline, MIT)",
         "tags": [
           "data-display",
@@ -7249,6 +7380,7 @@
       "meta": {
         "status": "stable",
         "source": "customized",
+        "license": "MIT",
         "tags": [
           "buttons",
           "toggle",
@@ -7283,6 +7415,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "buttons",
           "toggle",
@@ -7313,6 +7446,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). TooltipTrigger wraps [trigger, Tooltip] and opens with no delay by default (delay=0).",
         "tags": [
           "overlay",
@@ -7347,6 +7481,7 @@
       "meta": {
         "status": "experimental",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "chat",
           "ai",
@@ -7375,6 +7510,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "types",
           "guards"
@@ -7401,6 +7537,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "types",
           "typescript"
@@ -7433,6 +7570,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "date",
           "hook",
@@ -7460,6 +7598,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "hook",
           "dialog",
@@ -7488,6 +7627,7 @@
       "meta": {
         "status": "stable",
         "source": "third-party",
+        "license": "MIT",
         "origin": "reui.io (https://reui.io/r/use-file-upload.json, MIT)",
         "tags": [
           "hook",
@@ -7523,6 +7663,7 @@
       "meta": {
         "status": "stable",
         "source": "original",
+        "license": "MIT",
         "tags": [
           "hook",
           "forms",
@@ -7551,6 +7692,7 @@
       "meta": {
         "status": "stable",
         "source": "shadcn",
+        "license": "MIT",
         "tags": [
           "hook",
           "responsive"

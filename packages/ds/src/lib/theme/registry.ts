@@ -69,6 +69,8 @@ export function themeRegistryItem(theme: Theme): RegistryItem {
     ...(Object.keys(css).length > 0 && { css }),
     meta: {
       source: theme.source,
+      // Third-party themes are adapted from tweakcn; see src/themes/THIRD_PARTY_NOTICES.md.
+      license: theme.source === "third-party" ? "Apache-2.0" : "MIT",
       ...(theme.origin && { origin: theme.origin }),
       tags: theme.tags,
       // The recipe the shadow-* scale was derived from, so importing this

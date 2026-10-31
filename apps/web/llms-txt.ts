@@ -71,7 +71,7 @@ Then add items by name: \`${SHADCN_ADD} @fma-ds/button\`. Dependencies between i
 
 The APIs follow React Aria, not Radix: \`isDisabled\` instead of \`disabled\`, \`onPress\` instead of \`onClick\`, and no \`asChild\` (use \`LinkButton\` for a link that looks like a button). Wrap the app in React Aria's \`RouterProvider\` for client-side links (see the Routing guide).
 
-License: MIT. Third-party items keep their own license (${REPO}/blob/main/THIRD_PARTY_NOTICES.md).
+License: MIT, except for themes adapted from tweakcn (Apache-2.0). Each registry item states its own in meta.license; upstream notices are in ${REPO}/blob/main/THIRD_PARTY_NOTICES.md.
 `;
 }
 

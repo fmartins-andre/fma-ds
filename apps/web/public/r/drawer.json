@@ -19,6 +19,7 @@
   "meta": {
     "status": "stable",
     "source": "shadcn",
+    "license": "MIT",
     "origin": "shadcn/ui, style: aria-nova. Built on @base-ui/react/drawer (stable 1.x), not react-aria-components — upstream hasn't ported this component to the aria base yet; vendored unchanged.",
     "tags": [
       "@base-ui/react",

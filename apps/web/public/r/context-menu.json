@@ -21,6 +21,7 @@
   "meta": {
     "status": "stable",
     "source": "customized",
+    "license": "MIT",
     "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). The trigger region must call usePress() — wrap a plain element in react-aria-components' Pressable if it doesn't already.",
     "tags": [
       "react-aria",

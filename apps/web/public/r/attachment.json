@@ -22,6 +22,7 @@
   "meta": {
     "status": "stable",
     "source": "shadcn",
+    "license": "MIT",
     "tags": [
       "chat",
       "file-upload"

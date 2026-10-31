@@ -29,6 +29,7 @@
   "meta": {
     "status": "stable",
     "source": "third-party",
+    "license": "MIT",
     "origin": "reui.io (https://reui.io/docs/components/base/emoji-picker, MIT); rebuilt on react-aria Popover, Dialog, Button, Tabs and Menu",
     "tags": [
       "forms",

@@ -21,6 +21,7 @@
   "meta": {
     "status": "stable",
     "source": "original",
+    "license": "MIT",
     "origin": "API of shadcn/ui's NavigationMenu, rebuilt on react-aria Button, Popover, Dialog and Link",
     "tags": [
       "navigation",
