@@ -165,7 +165,7 @@
       "description": "Constrains content (typically an image or video) to a fixed width/height ratio, so it scales without distortion or layout shift.",
       "author": "@fma-ds/ds",
       "categories": [
-        "media"
+        "layout"
       ],
       "files": [
         {
@@ -416,7 +416,7 @@
       "description": "Displays a button, or a component that looks like one, with a set of visual variants and sizes. Also exports LinkButton (react-aria-components' Link, same variants) for link-as-button use cases.",
       "author": "@fma-ds/ds",
       "categories": [
-        "forms"
+        "buttons"
       ],
       "files": [
         {

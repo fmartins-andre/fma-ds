@@ -6,6 +6,10 @@ fma-ds is a personal registry, developed in the open. Issues are welcome, and ne
 2. Check that no existing item covers it. Prefer a variant or a prop over a new component.
 3. Wait for agreement before opening a pull request, unless it's a small fix.
 
+## Scope of the blocks
+
+Blocks come from what real apps needed, mostly SaaS screens such as sign-in, pricing, billing and settings. They are not a general application kit, so a block enters when an app needs it, not to complete the catalog. Components stay general.
+
 ## What a new item needs
 
 - A folder in `packages/ds/src/core/<name>/` with the component, `meta.json` and a story.

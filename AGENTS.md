@@ -143,6 +143,8 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    - `source`: `"shadcn"` (vendorizado como está), `"customized"` (oficial alterado — mude
      pra isso ao editar um componente `shadcn`), `"original"` (nosso) ou `"third-party"`
      (exige `origin` com a URL/ref; confira a licença antes de republicar).
+   - `category` é uma lista fechada (`tests/item-categories.test.ts`); categoria nova entra lá e
+     em `CATEGORY_TITLES` (`apps/web/src/site/registry.ts`).
    - `description` é a **única** fonte da descrição: a story lê via
      `parameters.docs.description.component: meta.description`. Não duplique o texto.
 4. **Dependências são detectadas automaticamente** pelos imports (`detectNpmDependencies` /
@@ -192,6 +194,9 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    interação — os estilos `*-nova` do shadcn fazem isso; corrija ao vendorizar. Exigido em
    componentes `customized`/`original` e blocos por `tests/interaction-tokens.test.ts`
    (exceções no `ALLOWED`, com motivo). Detalhes no `CONTRIBUTING.md`.
+
+12. **Sem requisições de rede em código publicado**: `fetch`, WebSocket e URLs fixas exigem exceção
+   declarada em `tests/external-requests.test.ts` e no guia `offline.md`.
 
 ## Estilo de código
 

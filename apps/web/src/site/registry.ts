@@ -31,7 +31,6 @@ const CATEGORY_TITLES: Record<string, string> = {
   feedback: "Feedback",
   forms: "Forms",
   layout: "Layout",
-  media: "Media",
   navigation: "Navigation",
   overlay: "Overlay",
 };
