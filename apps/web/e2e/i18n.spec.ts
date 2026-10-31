@@ -45,6 +45,39 @@ test.describe("Portuguese browser", () => {
   });
 });
 
+test.describe("Portuguese content", () => {
+  test.use({ locale: "pt-BR" });
+
+  test("guides, the introduction and page titles follow the language", async ({ page }) => {
+    await open(page, "/docs/routing");
+    await expect(page.getByRole("heading", { level: 1, name: "Roteamento" })).toBeVisible();
+    await expect(page).toHaveTitle("Roteamento · fma-ds");
+
+    await open(page, "/docs");
+    await expect(page.getByRole("heading", { name: "Feito sobre React Aria" })).toBeVisible();
+
+    await page.getByRole("button", { name: /Idioma/ }).click();
+    await page.getByRole("option", { name: "English" }).click();
+    await expect(page.getByRole("heading", { name: "Built on React Aria" })).toBeVisible();
+    await expect(page).toHaveTitle("Introduction · fma-ds");
+  });
+
+  test("item pages show translated descriptions", async ({ page }) => {
+    await open(page, "/components/badge");
+    const main = page.getByRole("main");
+    await expect(main.getByText("Um rótulo pequeno para status").first()).toBeVisible();
+    await expect(main.getByText("Status neutro: inativo")).toBeVisible();
+    await expect(page).toHaveTitle("Badge · fma-ds");
+  });
+
+  test("the theme editor's demos are in Portuguese", async ({ page }) => {
+    await open(page, "/themes");
+    await expect(page.getByText("Crie uma conta")).toBeVisible();
+    await page.getByRole("tab", { name: "Tipografia" }).last().click();
+    await expect(page.getByRole("heading", { name: "Sem serifa" })).toBeVisible();
+  });
+});
+
 test("placeholders in translated markup stay as text", async ({ page }) => {
   await open(page, "/blocks");
   await expect(page.getByRole("main").getByText("components/fma-ds/<block>/")).toBeVisible();

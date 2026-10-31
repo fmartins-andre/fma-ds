@@ -1,18 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "react-aria-components";
 import { Trans, useTranslation } from "react-i18next";
+import { siteText } from "../../../i18n/head";
+import { useItemDescription } from "../../../i18n/items";
 import { plainSummaryOf } from "../../../site/markdown";
 import { COMPONENTS } from "../../../site/registry";
 import { useComponentsByCategory } from "../../../site/use-categories";
 
 export const Route = createFileRoute("/_site/_docs/components/")({
-  head: () => ({ meta: [{ title: "Components · fma-ds" }] }),
+  head: ({ matches }) => ({
+    meta: [{ title: `${siteText(matches)(($) => $.nav.components)} · fma-ds` }],
+  }),
   component: ComponentsIndex,
 });
 
 function ComponentsIndex() {
   const { t } = useTranslation();
   const groups = useComponentsByCategory();
+  const description = useItemDescription();
   return (
     <div className="pb-12">
       <h1 className="font-heading text-3xl font-semibold tracking-tight">
@@ -47,7 +52,7 @@ function ComponentsIndex() {
                 >
                   <span className="font-medium">{item.title}</span>
                   <span className="line-clamp-2 text-sm text-muted-foreground">
-                    {plainSummaryOf(item.description)}
+                    {plainSummaryOf(description(item))}
                   </span>
                 </Link>
               </li>

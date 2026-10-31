@@ -7,6 +7,7 @@ import { I18nextProvider, useTranslation } from "react-i18next";
 import { loadFmaMessages, negotiateLocale, parseAcceptLanguage } from "@/lib/i18n/i18n";
 import { FmaI18nextProvider } from "@/lib/i18n-i18next/i18n-i18next";
 import { APP_LOCALES, createI18n, fmaLocales, LOCALE_COOKIE } from "../i18n";
+import { siteText } from "../i18n/head";
 import { MODE_SCRIPT } from "../site/mode";
 import { THEME_SCRIPT } from "../site/theme-script";
 import "../styles.css";
@@ -26,14 +27,14 @@ export const Route = createRootRoute({
   },
   // The language changes in the browser; this only reads the first request's.
   staleTime: Number.POSITIVE_INFINITY,
-  head: () => ({
+  head: ({ loaderData }) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "fma-ds" },
       {
         name: "description",
-        content: "Accessible react-aria components, blocks and themes for the shadcn CLI.",
+        content: siteText([{ loaderData }])(($) => $.brand.description),
       },
     ],
   }),

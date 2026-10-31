@@ -12,6 +12,7 @@ import {
   TriangleAlert,
   Underline,
 } from "lucide-react";
+import { Trans, useTranslation } from "react-i18next";
 import {
   Accordion,
   AccordionContent,
@@ -142,14 +143,14 @@ type BadgeVariant = keyof typeof badgeVariantsConfig.variant;
 const BADGE_VARIANTS = Object.keys(badgeVariantsConfig.variant) as BadgeVariant[];
 
 const BADGE_GROUPS = [
-  { label: "Light", suffix: "-light" },
-  { label: "Outline", suffix: "-outline" },
-  { label: "Dot", suffix: "-dot" },
+  { label: "light", suffix: "-light" },
+  { label: "outline", suffix: "-outline" },
+  { label: "dot", suffix: "-dot" },
 ] as const;
 
 const BADGE_ROWS = [
   {
-    label: "Solid",
+    label: "solid" as const,
     variants: BADGE_VARIANTS.filter((variant) =>
       BADGE_GROUPS.every(({ suffix }) => !variant.endsWith(suffix)),
     ),
@@ -161,31 +162,32 @@ const BADGE_ROWS = [
 ];
 
 function AccountCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>Enter your email below to create your account.</CardDescription>
+        <CardTitle>{t(($) => $.account.title)}</CardTitle>
+        <CardDescription>{t(($) => $.account.description)}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <Field>
-          <FieldLabel htmlFor="showcase-email">Email</FieldLabel>
+          <FieldLabel htmlFor="showcase-email">{t(($) => $.account.email)}</FieldLabel>
           <Input id="showcase-email" type="email" placeholder="you@example.com" />
         </Field>
         <Field>
-          <FieldLabel htmlFor="showcase-password">Password</FieldLabel>
+          <FieldLabel htmlFor="showcase-password">{t(($) => $.account.password)}</FieldLabel>
           <Input id="showcase-password" type="password" defaultValue="hunter2" />
-          <FieldDescription>At least 8 characters.</FieldDescription>
+          <FieldDescription>{t(($) => $.account.passwordHint)}</FieldDescription>
         </Field>
         <div className="flex items-center gap-2">
           <Checkbox id="showcase-remember" defaultSelected />
-          <Label htmlFor="showcase-remember">Remember me</Label>
+          <Label htmlFor="showcase-remember">{t(($) => $.account.remember)}</Label>
         </div>
       </CardContent>
       <CardFooter className="flex gap-2">
-        <Button className="flex-1">Create account</Button>
+        <Button className="flex-1">{t(($) => $.account.create)}</Button>
         <Button variant="outline" className="flex-1">
-          Sign in
+          {t(($) => $.account.signIn)}
         </Button>
       </CardFooter>
     </Card>
@@ -193,35 +195,42 @@ function AccountCard() {
 }
 
 function SettingsCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Notifications</CardTitle>
-        <CardDescription>Choose what we tell you about.</CardDescription>
+        <CardTitle>{t(($) => $.settings.title)}</CardTitle>
+        <CardDescription>{t(($) => $.settings.description)}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        {["Product updates", "Security alerts", "Weekly digest"].map((label, index) => (
+        {[
+          t(($) => $.settings.updates),
+          t(($) => $.settings.security),
+          t(($) => $.settings.digest),
+        ].map((label, index) => (
           <div key={label} className="flex items-center justify-between gap-2">
             <span className="text-sm">{label}</span>
             <Switch aria-label={label} defaultSelected={index < 2} />
           </div>
         ))}
         <Separator />
-        <RadioGroup aria-label="Frequency" defaultValue="daily" className="flex gap-4">
-          {["instant", "daily", "weekly"].map((value) => (
+        <RadioGroup
+          aria-label={t(($) => $.settings.frequency)}
+          defaultValue="daily"
+          className="flex gap-4"
+        >
+          {(["instant", "daily", "weekly"] as const).map((value) => (
             <div key={value} className="flex items-center gap-2">
               <RadioGroupItem value={value} id={`showcase-${value}`} />
-              <Label htmlFor={`showcase-${value}`} className="capitalize">
-                {value}
-              </Label>
+              <Label htmlFor={`showcase-${value}`}>{t(($) => $.settings[value])}</Label>
             </div>
           ))}
         </RadioGroup>
         <div className="flex flex-col gap-2">
-          <Label>Volume</Label>
-          <Slider aria-label="Volume" defaultValue={60} />
+          <Label>{t(($) => $.settings.volume)}</Label>
+          <Slider aria-label={t(($) => $.settings.volume)} defaultValue={60} />
         </div>
-        <Select aria-label="Language" defaultSelectedKey="pt">
+        <Select aria-label={t(($) => $.settings.language)} defaultSelectedKey="pt">
           <SelectTrigger className="w-full">
             <SelectValue />
           </SelectTrigger>
@@ -237,18 +246,19 @@ function SettingsCard() {
 }
 
 function PaymentsCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent payments</CardTitle>
+        <CardTitle>{t(($) => $.payments.title)}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table aria-label="Recent payments">
+        <Table aria-label={t(($) => $.payments.title)}>
           <TableHeader>
-            <TableHead isRowHeader>Order</TableHead>
-            <TableHead>Customer</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead isRowHeader>{t(($) => $.payments.order)}</TableHead>
+            <TableHead>{t(($) => $.payments.customer)}</TableHead>
+            <TableHead>{t(($) => $.payments.status)}</TableHead>
+            <TableHead className="text-right">{t(($) => $.payments.amount)}</TableHead>
           </TableHeader>
           <TableBody>
             {PAYMENTS.map((payment) => (
@@ -256,7 +266,9 @@ function PaymentsCard() {
                 <TableCell className="font-mono text-xs">{payment.id}</TableCell>
                 <TableCell>{payment.customer}</TableCell>
                 <TableCell>
-                  <Badge variant={STATUS_BADGE[payment.status]}>{payment.status}</Badge>
+                  <Badge variant={STATUS_BADGE[payment.status]}>
+                    {t(($) => $.payments[payment.status])}
+                  </Badge>
                 </TableCell>
                 <TableCell className="text-right">{payment.amount}</TableCell>
               </TableRow>
@@ -269,64 +281,66 @@ function PaymentsCard() {
 }
 
 function AlertsStack() {
+  const { t } = useTranslation("showcase");
   return (
     <div className="flex flex-col gap-3">
       <Alert>
         <Bell />
-        <AlertTitle>New sign-in</AlertTitle>
-        <AlertDescription>We noticed a sign-in from a new device.</AlertDescription>
+        <AlertTitle>{t(($) => $.alerts.signInTitle)}</AlertTitle>
+        <AlertDescription>{t(($) => $.alerts.signInText)}</AlertDescription>
       </Alert>
       <Alert variant="info">
         <Info />
-        <AlertTitle>Heads up</AlertTitle>
-        <AlertDescription>A new version is available.</AlertDescription>
+        <AlertTitle>{t(($) => $.alerts.infoTitle)}</AlertTitle>
+        <AlertDescription>{t(($) => $.alerts.infoText)}</AlertDescription>
       </Alert>
       <Alert variant="success">
         <CircleCheck />
-        <AlertTitle>Saved</AlertTitle>
-        <AlertDescription>Your changes are live.</AlertDescription>
+        <AlertTitle>{t(($) => $.alerts.savedTitle)}</AlertTitle>
+        <AlertDescription>{t(($) => $.alerts.savedText)}</AlertDescription>
       </Alert>
       <Alert variant="warning">
         <TriangleAlert />
-        <AlertTitle>Storage almost full</AlertTitle>
-        <AlertDescription>You've used 92% of your quota.</AlertDescription>
+        <AlertTitle>{t(($) => $.alerts.storageTitle)}</AlertTitle>
+        <AlertDescription>{t(($) => $.alerts.storageText)}</AlertDescription>
       </Alert>
       <Alert variant="destructive">
         <CircleAlert />
-        <AlertTitle>Payment failed</AlertTitle>
-        <AlertDescription>Check your card details and try again.</AlertDescription>
+        <AlertTitle>{t(($) => $.alerts.paymentTitle)}</AlertTitle>
+        <AlertDescription>{t(($) => $.alerts.paymentText)}</AlertDescription>
       </Alert>
       <Alert variant="invert">
         <Sparkles />
-        <AlertTitle>Pro tip</AlertTitle>
-        <AlertDescription>Press ⌘K to open the command palette.</AlertDescription>
+        <AlertTitle>{t(($) => $.alerts.tipTitle)}</AlertTitle>
+        <AlertDescription>{t(($) => $.alerts.tipText)}</AlertDescription>
       </Alert>
       <Alert variant="brand">
         <Sparkles />
-        <AlertTitle>AI validation</AlertTitle>
-        <AlertDescription>Check the order details before you confirm it.</AlertDescription>
+        <AlertTitle>{t(($) => $.alerts.aiTitle)}</AlertTitle>
+        <AlertDescription>{t(($) => $.alerts.aiText)}</AlertDescription>
       </Alert>
     </div>
   );
 }
 
 function ControlsCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Buttons & overlays</CardTitle>
+        <CardTitle>{t(($) => $.controls.title)}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-wrap gap-2">
-          <Button>Default</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="destructive">Destructive</Button>
-          <Button variant="link">Link</Button>
+          <Button>{t(($) => $.controls.default)}</Button>
+          <Button variant="secondary">{t(($) => $.controls.secondary)}</Button>
+          <Button variant="outline">{t(($) => $.controls.outline)}</Button>
+          <Button variant="ghost">{t(($) => $.controls.ghost)}</Button>
+          <Button variant="destructive">{t(($) => $.controls.destructive)}</Button>
+          <Button variant="link">{t(($) => $.controls.link)}</Button>
         </div>
         <Progress value={64}>
-          <ProgressLabel>Uploading</ProgressLabel>
+          <ProgressLabel>{t(($) => $.controls.uploading)}</ProgressLabel>
           <ProgressValue />
         </Progress>
         <div className="flex items-center justify-between gap-2">
@@ -340,46 +354,46 @@ function ControlsCard() {
           <div className="flex gap-1.5">
             <TooltipTrigger>
               <Button variant="outline" size="sm">
-                Hover me
+                {t(($) => $.controls.hover)}
               </Button>
-              <Tooltip>Tooltips use the popover tokens</Tooltip>
+              <Tooltip>{t(($) => $.controls.tooltip)}</Tooltip>
             </TooltipTrigger>
             <DropdownMenuTrigger>
-              <Button variant="outline" size="icon-sm" aria-label="More">
+              <Button variant="outline" size="icon-sm" aria-label={t(($) => $.controls.more)}>
                 <MoreHorizontal />
               </Button>
               <DropdownMenu className="w-48">
-                <DropdownMenuLabel>Order</DropdownMenuLabel>
+                <DropdownMenuLabel>{t(($) => $.controls.order)}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem id="view">
-                  View
+                  {t(($) => $.controls.view)}
                   <DropdownMenuShortcut>⌘V</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem id="download">Download</DropdownMenuItem>
-                <DropdownMenuItem id="delete">Delete</DropdownMenuItem>
+                <DropdownMenuItem id="download">{t(($) => $.controls.download)}</DropdownMenuItem>
+                <DropdownMenuItem id="delete">{t(($) => $.controls.delete)}</DropdownMenuItem>
               </DropdownMenu>
             </DropdownMenuTrigger>
             <PopoverTrigger>
               <Button variant="outline" size="sm">
-                Popover
+                {t(($) => $.controls.popover)}
               </Button>
               <Popover>
                 <PopoverHeader>
-                  <PopoverTitle>Dimensions</PopoverTitle>
-                  <PopoverDescription>Set the dimensions for the layer.</PopoverDescription>
+                  <PopoverTitle>{t(($) => $.controls.dimensions)}</PopoverTitle>
+                  <PopoverDescription>{t(($) => $.controls.dimensionsText)}</PopoverDescription>
                 </PopoverHeader>
               </Popover>
             </PopoverTrigger>
             <DialogTrigger>
-              <Button size="sm">Open dialog</Button>
+              <Button size="sm">{t(($) => $.controls.openDialog)}</Button>
               <Dialog>
                 <DialogHeader>
-                  <DialogTitle>Delete order?</DialogTitle>
-                  <DialogDescription>This can't be undone.</DialogDescription>
+                  <DialogTitle>{t(($) => $.controls.deleteOrder)}</DialogTitle>
+                  <DialogDescription>{t(($) => $.controls.cannotUndo)}</DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                  <DialogClose>Cancel</DialogClose>
-                  <DialogClose variant="destructive">Delete</DialogClose>
+                  <DialogClose>{t(($) => $.controls.cancel)}</DialogClose>
+                  <DialogClose variant="destructive">{t(($) => $.controls.delete)}</DialogClose>
                 </DialogFooter>
               </Dialog>
             </DialogTrigger>
@@ -387,11 +401,11 @@ function ControlsCard() {
         </div>
         <div className="flex items-center justify-between gap-2">
           <p className="text-sm text-muted-foreground">
-            Press <Kbd>⌘</Kbd> <Kbd>Z</Kbd> to undo an edit.
+            <Trans t={t} i18nKey={($) => $.controls.press} components={{ kbd: <Kbd /> }} />
           </p>
           <Button variant="outline" size="sm" isDisabled>
             <Spinner />
-            Saving
+            {t(($) => $.controls.saving)}
           </Button>
         </div>
       </CardContent>
@@ -400,10 +414,11 @@ function ControlsCard() {
 }
 
 function ChartCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Chart colors</CardTitle>
+        <CardTitle>{t(($) => $.chart.title)}</CardTitle>
         <CardDescription>--chart-1 … --chart-5</CardDescription>
       </CardHeader>
       <CardContent>
@@ -422,10 +437,11 @@ function ChartCard() {
 }
 
 function SurfacesCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Shadows & radius</CardTitle>
+        <CardTitle>{t(($) => $.surfaces.title)}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="grid grid-cols-4 gap-3">
@@ -452,16 +468,17 @@ function SurfacesCard() {
 }
 
 function BadgesCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Badges</CardTitle>
-        <CardDescription>Every variant, then the sizes and the pill radius.</CardDescription>
+        <CardTitle>{t(($) => $.badges.title)}</CardTitle>
+        <CardDescription>{t(($) => $.badges.description)}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         {BADGE_ROWS.map(({ label, variants }) => (
           <div key={label} className="flex flex-col gap-1.5">
-            <span className="text-xs text-muted-foreground">{label}</span>
+            <span className="text-xs text-muted-foreground">{t(($) => $.badges[label])}</span>
             <div className="flex flex-wrap gap-1.5">
               {variants.map((variant) => (
                 <Badge key={variant} variant={variant}>
@@ -472,7 +489,7 @@ function BadgesCard() {
           </div>
         ))}
         <div className="flex flex-col gap-1.5">
-          <span className="text-xs text-muted-foreground">Sizes & radius</span>
+          <span className="text-xs text-muted-foreground">{t(($) => $.badges.sizes)}</span>
           <div className="flex flex-wrap items-center gap-1.5">
             {(
               Object.keys(badgeVariantsConfig.size) as (keyof typeof badgeVariantsConfig.size)[]
@@ -496,38 +513,37 @@ function BadgesCard() {
 }
 
 function BrandCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Brand</CardTitle>
-        <CardDescription>
-          The second identity color. Same as primary in most themes.
-        </CardDescription>
+        <CardTitle>{t(($) => $.brand.title)}</CardTitle>
+        <CardDescription>{t(($) => $.brand.description)}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className={cn("flex items-center justify-between gap-3 rounded-lg p-4", brandSurface)}>
           <div className="flex flex-col gap-1">
-            <span className="font-medium">Create your first order</span>
-            <span className="text-sm opacity-80">A brand surface: banners, promos.</span>
+            <span className="font-medium">{t(($) => $.brand.firstOrder)}</span>
+            <span className="text-sm opacity-80">{t(($) => $.brand.surface)}</span>
           </div>
           <Button variant="outline" size="sm" className="text-foreground">
-            Start
+            {t(($) => $.brand.start)}
           </Button>
         </div>
         <div className={cn("h-2 rounded-full", brandGradient)} />
         <div className={cn("flex flex-col gap-1 rounded-lg p-4", brandGradientBorder)}>
-          <span className="text-sm font-medium">Gradient border</span>
-          <span className="text-sm text-muted-foreground">For promos and AI features.</span>
+          <span className="text-sm font-medium">{t(($) => $.brand.border)}</span>
+          <span className="text-sm text-muted-foreground">{t(($) => $.brand.borderText)}</span>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <Button className={brandGlow}>Glowing CTA</Button>
+          <Button className={brandGlow}>{t(($) => $.brand.glow)}</Button>
           <div className={cn("rounded-md", brandSpinningBorder)}>
             <div className="flex items-center gap-2 rounded-[calc(var(--radius-md)-1px)] bg-card px-3 py-1.5 text-sm">
               <Spinner />
-              AI is checking…
+              {t(($) => $.brand.checking)}
             </div>
           </div>
-          <Badge variant="brand-light">New</Badge>
+          <Badge variant="brand-light">{t(($) => $.brand.new)}</Badge>
         </div>
       </CardContent>
     </Card>
@@ -535,53 +551,57 @@ function BrandCard() {
 }
 
 function NavigationCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">Home</BreadcrumbLink>
+              <BreadcrumbLink href="#">{t(($) => $.navigation.home)}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">Orders</BreadcrumbLink>
+              <BreadcrumbLink href="#">{t(($) => $.navigation.orders)}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
               <BreadcrumbPage>INV-002</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <CardTitle>Navigation & toggles</CardTitle>
+        <CardTitle>{t(($) => $.navigation.title)}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <Tabs defaultSelectedKey="overview">
           <TabsList variant="line">
-            <TabsTrigger id="overview">Overview</TabsTrigger>
-            <TabsTrigger id="activity">Activity</TabsTrigger>
-            <TabsTrigger id="settings">Settings</TabsTrigger>
+            <TabsTrigger id="overview">{t(($) => $.navigation.overview)}</TabsTrigger>
+            <TabsTrigger id="activity">{t(($) => $.navigation.activity)}</TabsTrigger>
+            <TabsTrigger id="settings">{t(($) => $.navigation.settings)}</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex flex-wrap gap-4">
-          <ToggleGroup aria-label="Text formatting" defaultSelectedKeys={["bold"]}>
-            <ToggleGroupItem id="bold" aria-label="Toggle bold">
+          <ToggleGroup
+            aria-label={t(($) => $.navigation.formatting)}
+            defaultSelectedKeys={["bold"]}
+          >
+            <ToggleGroupItem id="bold" aria-label={t(($) => $.navigation.bold)}>
               <Bold />
             </ToggleGroupItem>
-            <ToggleGroupItem id="italic" aria-label="Toggle italic">
+            <ToggleGroupItem id="italic" aria-label={t(($) => $.navigation.italic)}>
               <Italic />
             </ToggleGroupItem>
-            <ToggleGroupItem id="underline" aria-label="Toggle underline">
+            <ToggleGroupItem id="underline" aria-label={t(($) => $.navigation.underline)}>
               <Underline />
             </ToggleGroupItem>
           </ToggleGroup>
           <ToggleGroup
-            aria-label="Period"
+            aria-label={t(($) => $.navigation.period)}
             variant="outline"
             selectionMode="single"
             defaultSelectedKeys={["week"]}
           >
-            <ToggleGroupItem id="day">Day</ToggleGroupItem>
-            <ToggleGroupItem id="week">Week</ToggleGroupItem>
-            <ToggleGroupItem id="month">Month</ToggleGroupItem>
+            <ToggleGroupItem id="day">{t(($) => $.navigation.day)}</ToggleGroupItem>
+            <ToggleGroupItem id="week">{t(($) => $.navigation.week)}</ToggleGroupItem>
+            <ToggleGroupItem id="month">{t(($) => $.navigation.month)}</ToggleGroupItem>
           </ToggleGroup>
         </div>
         <Pagination>
@@ -614,25 +634,28 @@ function NavigationCard() {
 }
 
 function CommandCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Command className="h-auto border shadow-md">
-      <CommandInput placeholder="Type a command or search..." />
-      <CommandList renderEmptyState={() => <CommandEmpty>No results found.</CommandEmpty>}>
-        <CommandGroup heading="Suggestions">
-          <CommandItem id="calendar">Calendar</CommandItem>
-          <CommandItem id="search-emoji">Search Emoji</CommandItem>
+      <CommandInput placeholder={t(($) => $.command.placeholder)} />
+      <CommandList
+        renderEmptyState={() => <CommandEmpty>{t(($) => $.command.empty)}</CommandEmpty>}
+      >
+        <CommandGroup heading={t(($) => $.command.suggestions)}>
+          <CommandItem id="calendar">{t(($) => $.command.calendar)}</CommandItem>
+          <CommandItem id="search-emoji">{t(($) => $.command.emoji)}</CommandItem>
           <CommandItem id="calculator" isDisabled>
-            Calculator
+            {t(($) => $.command.calculator)}
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
-        <CommandGroup heading="Settings">
+        <CommandGroup heading={t(($) => $.command.settings)}>
           <CommandItem id="profile">
-            Profile
+            {t(($) => $.command.profile)}
             <CommandShortcut>⌘P</CommandShortcut>
           </CommandItem>
           <CommandItem id="billing">
-            Billing
+            {t(($) => $.command.billing)}
             <CommandShortcut>⌘B</CommandShortcut>
           </CommandItem>
         </CommandGroup>
@@ -642,14 +665,15 @@ function CommandCard() {
 }
 
 function FormExtrasCard() {
+  const { t } = useTranslation("showcase");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Verify and leave a note</CardTitle>
+        <CardTitle>{t(($) => $.form.title)}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <Field>
-          <FieldLabel>One-time code</FieldLabel>
+          <FieldLabel>{t(($) => $.form.code)}</FieldLabel>
           <InputOTP maxLength={6}>
             <InputOTPGroup>
               <InputOTPSlot index={0} />
@@ -665,17 +689,17 @@ function FormExtrasCard() {
           </InputOTP>
         </Field>
         <Field>
-          <FieldLabel htmlFor="showcase-note">Note</FieldLabel>
-          <Textarea id="showcase-note" placeholder="Anything we should know?" />
+          <FieldLabel htmlFor="showcase-note">{t(($) => $.form.note)}</FieldLabel>
+          <Textarea id="showcase-note" placeholder={t(($) => $.form.notePlaceholder)} />
         </Field>
         <Accordion defaultExpandedKeys={["refunds"]}>
           <AccordionItem id="refunds">
-            <AccordionTrigger>How do refunds work?</AccordionTrigger>
-            <AccordionContent>Refunds land on the original card within 5 days.</AccordionContent>
+            <AccordionTrigger>{t(($) => $.form.refunds)}</AccordionTrigger>
+            <AccordionContent>{t(($) => $.form.refundsText)}</AccordionContent>
           </AccordionItem>
           <AccordionItem id="cancel">
-            <AccordionTrigger>Can I cancel anytime?</AccordionTrigger>
-            <AccordionContent>Yes, from the billing settings.</AccordionContent>
+            <AccordionTrigger>{t(($) => $.form.cancel)}</AccordionTrigger>
+            <AccordionContent>{t(($) => $.form.cancelText)}</AccordionContent>
           </AccordionItem>
         </Accordion>
       </CardContent>
@@ -684,6 +708,7 @@ function FormExtrasCard() {
 }
 
 export function Showcase() {
+  const { t } = useTranslation("showcase");
   return (
     <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
       <div className="flex flex-col gap-4">
@@ -702,7 +727,7 @@ export function Showcase() {
       <div className="flex flex-col gap-4">
         <Card className="items-center">
           <CardContent>
-            <Calendar aria-label="Calendar" />
+            <Calendar aria-label={t(($) => $.tabs.calendar)} />
           </CardContent>
         </Card>
         <ControlsCard />
@@ -710,15 +735,15 @@ export function Showcase() {
         <SurfacesCard />
         <Tabs defaultSelectedKey="overview">
           <TabsList>
-            <TabsTrigger id="overview">Overview</TabsTrigger>
-            <TabsTrigger id="analytics">Analytics</TabsTrigger>
-            <TabsTrigger id="reports">Reports</TabsTrigger>
+            <TabsTrigger id="overview">{t(($) => $.tabs.overview)}</TabsTrigger>
+            <TabsTrigger id="analytics">{t(($) => $.tabs.analytics)}</TabsTrigger>
+            <TabsTrigger id="reports">{t(($) => $.tabs.reports)}</TabsTrigger>
           </TabsList>
           <TabsContent id="overview" className="text-muted-foreground">
-            Tabs use muted for the list and background for the selected tab.
+            {t(($) => $.tabs.note)}
           </TabsContent>
-          <TabsContent id="analytics">Analytics</TabsContent>
-          <TabsContent id="reports">Reports</TabsContent>
+          <TabsContent id="analytics">{t(($) => $.tabs.analytics)}</TabsContent>
+          <TabsContent id="reports">{t(($) => $.tabs.reports)}</TabsContent>
         </Tabs>
       </div>
     </div>

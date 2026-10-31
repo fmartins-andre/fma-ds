@@ -4,18 +4,23 @@ import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { LinkButton } from "@/core/button/button";
 import { Skeleton } from "@/core/skeleton/skeleton";
+import { siteText } from "../../../i18n/head";
+import { useItemDescription } from "../../../i18n/items";
 import { InlineMarkdown, summaryOf } from "../../../site/markdown";
 import { BLOCKS, type RegistryItem } from "../../../site/registry";
 import { loadStories } from "../../../site/stories";
 import { previewPath } from "../../../site/story-preview";
 
 export const Route = createFileRoute("/_site/_docs/blocks/")({
-  head: () => ({ meta: [{ title: "Blocks · fma-ds" }] }),
+  head: ({ matches }) => ({
+    meta: [{ title: `${siteText(matches)(($) => $.nav.blocks)} · fma-ds` }],
+  }),
   component: BlocksIndex,
 });
 
 function BlockCard({ item }: { item: RegistryItem }) {
   const { t } = useTranslation();
+  const description = useItemDescription();
   const [story, setStory] = useState<string | null>(null);
   useEffect(() => {
     void loadStories("blocks", item.name).then((stories) =>
@@ -33,7 +38,7 @@ function BlockCard({ item }: { item: RegistryItem }) {
             {item.title}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            <InlineMarkdown text={summaryOf(item.description)} />
+            <InlineMarkdown text={summaryOf(description(item))} />
           </p>
         </div>
         <LinkButton href={`/blocks/${item.name}`} variant="outline" size="sm">

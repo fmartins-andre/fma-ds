@@ -1,5 +1,8 @@
 export const site = {
-  brand: { tagline: "Accessible components for your shadcn project" },
+  brand: {
+    tagline: "Accessible components for your shadcn project",
+    description: "Accessible react-aria components, blocks and themes for the shadcn CLI.",
+  },
   header: {
     main: "Main",
     docs: "Docs",
@@ -38,6 +41,44 @@ export const site = {
     blocks: "Blocks",
     introduction: "Introduction",
     themeEditor: "Theme editor",
+    themes: "Themes",
+  },
+  guides: {
+    compatibility: "Compatibility",
+    "dark-mode": "Dark mode",
+    routing: "Routing",
+    offline: "Offline and privacy",
+    touch: "Touch",
+    i18n: "Internationalization",
+    updating: "Updating items",
+    contributing: "Contributing",
+  },
+  docs: {
+    lead: "A personal component registry in the shadcn/ui format: {{components}} components, {{blocks}} blocks and {{themes}} themes, built on react-aria-components.",
+    intro:
+      "This is not a package you install from npm. Like shadcn/ui, the code is copied into your project by the <c>shadcn</c> CLI, and from then on it is yours. Everything lands in <c>fma-ds</c> folders (<c>components/fma-ds/</c>, <c>hooks/fma-ds/</c>, <c>lib/fma-ds/</c>), so it never collides with the official shadcn components.",
+    installation: "Installation",
+    start:
+      "Start from a project set up for shadcn/ui (Tailwind v4, a <c>components.json</c>; see <compat>compatibility</compat>). Then register the <c>@fma-ds</c> namespace:",
+    add: "And add any component or block by name:",
+    deps: "Dependencies between items resolve through the same namespace, so adding a block pulls the components it is built from.",
+    index:
+      "The full index of the registry, with every component, block, lib, hook and theme, is at <index><c>{{url}}</c></index>. It is handy for browsing what is available, for tooling, and for <c>shadcn</c> commands that read a registry index, such as <c>shadcn search @fma-ds</c>.",
+    llms: "For AI agents and LLMs, the registry is also described in <llms><c>llms.txt</c></llms> (summary, setup and a link to every item) and <full><c>llms-full.txt</c></full> (the same, plus each item's install command, dependencies and a usage example), following the convention at <org>llmstxt.org</org>.",
+    aria: "Built on React Aria",
+    ariaText:
+      "Interaction, focus management and accessibility come from react-aria-components, so the APIs follow React Aria rather than Radix: <c>isDisabled</c> instead of <c>disabled</c>, <c>onPress</c> instead of <c>onClick</c>, and no <c>asChild</c> (use <c>LinkButton</c> for a link that looks like a button). Wrap your app in React Aria's <c>RouterProvider</c> so links navigate client-side (see <routing>routing</routing>).",
+    themes: "Themes",
+    themesText:
+      "Every color, radius, font and shadow is a CSS variable. Pick one of the curated themes, tweak it in the theme editor and export it as CSS, or install it straight from the registry with <c>@fma-ds/theme-{{name}}</c>. Every theme has a light and a dark palette (see <dark>dark mode</dark>).",
+    openEditor: "Open the theme editor",
+    storybook: "Storybook",
+    storybookText:
+      "Every component has stories with interaction tests; the examples on these pages are those same stories. Storybook also documents props and shows the accessibility checks.",
+    openStorybook: "Open Storybook",
+    license: "License",
+    licenseText:
+      "MIT, so you can use the code in open source and in proprietary projects. Themes adapted from tweakcn are Apache-2.0. Each item states its license on its page and in <code>meta.license</code>; upstream copyright is in <notices>the notices</notices>.",
   },
   categories: {
     buttons: "Buttons",

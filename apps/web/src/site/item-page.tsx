@@ -13,6 +13,7 @@ import {
 } from "@/core/code-block/code-block";
 import { Skeleton } from "@/core/skeleton/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/core/tabs/tabs";
+import { useItemDescription, useStoryDescription, useStoryName } from "../i18n/items";
 import { detailsOf, InlineMarkdown, Markdown, summaryOf } from "./markdown";
 import {
   type ItemKind,
@@ -269,6 +270,9 @@ function Toc({ entries }: { entries: TocEntry[] }) {
 export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem }) {
   const { t } = useTranslation();
   const category = useCategoryTitle();
+  const description = useItemDescription()(item);
+  const storyDescription = useStoryDescription();
+  const storyName = useStoryName();
   const loaded = useStories(kind, item.name);
   const stories = loaded?.stories?.stories ?? [];
   const [first, ...rest] = stories;
@@ -281,7 +285,7 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
     shown.add(key);
     return true;
   });
-  const details = detailsOf(item.description);
+  const details = detailsOf(description);
   const toc: TocEntry[] = [
     ...(details ? [{ title: t(($) => $.item.overview), id: "overview" }] : []),
     { title: t(($) => $.item.installation), id: "installation" },
@@ -291,7 +295,7 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
             title: t(($) => $.item.examples),
             id: "examples",
             children: examples.map((story) => ({
-              title: story.name,
+              title: storyName(story.name),
               id: exampleId(story.exportName),
             })),
           },
@@ -319,7 +323,7 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
         </nav>
         <h1 className="mt-3 font-heading text-3xl font-semibold tracking-tight">{item.title}</h1>
         <p className="mt-2 text-base text-pretty text-muted-foreground">
-          <InlineMarkdown text={summaryOf(item.description)} />
+          <InlineMarkdown text={summaryOf(description)} />
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-2">
           {item.categories?.[0] && kind === "components" && (
@@ -388,11 +392,11 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
                   id={exampleId(story.exportName)}
                   className="scroll-m-20 font-heading text-lg font-semibold tracking-tight"
                 >
-                  {story.name}
+                  {storyName(story.name)}
                 </h3>
                 {story.description && (
                   <Markdown
-                    text={story.description}
+                    text={storyDescription(story.description)}
                     className="mt-2 text-sm leading-6 text-muted-foreground"
                   />
                 )}

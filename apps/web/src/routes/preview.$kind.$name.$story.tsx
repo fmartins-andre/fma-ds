@@ -2,6 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { siteText } from "../i18n/head";
 import { useMode } from "../site/mode";
 import { getItem, type ItemKind } from "../site/registry";
 import { type DocStory, loadStories } from "../site/stories";
@@ -17,7 +18,9 @@ export const Route = createFileRoute("/preview/$kind/$name/$story")({
     }
     return { kind };
   },
-  head: () => ({ meta: [{ title: "Preview · fma-ds" }] }),
+  head: ({ matches }) => ({
+    meta: [{ title: `${siteText(matches)(($) => $.story.preview)} · fma-ds` }],
+  }),
   component: PreviewPage,
 });
 

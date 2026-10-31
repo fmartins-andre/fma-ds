@@ -15,6 +15,7 @@ import {
 import { Separator } from "@/core/separator/separator";
 import { Sheet, SheetHeader, SheetTitle, SheetTrigger } from "@/core/sheet/sheet";
 import { cn } from "@/lib/utils";
+import { useItemDescription } from "../i18n/items";
 import { DocsNav } from "./docs-nav";
 import { LocaleSelect } from "./locale-select";
 import { plainSummaryOf } from "./markdown";
@@ -85,6 +86,7 @@ function ComponentsMenu() {
 
 function BlocksMenu() {
   const { t } = useTranslation();
+  const description = useItemDescription();
   return (
     <NavigationMenuContent aria-label={t(($) => $.header.blocks)}>
       <ul className="grid w-96 gap-1">
@@ -94,7 +96,7 @@ function BlocksMenu() {
               <span className="flex flex-col gap-0.5">
                 <span className="font-medium">{item.title}</span>
                 <span className="line-clamp-2 text-muted-foreground">
-                  {plainSummaryOf(item.description)}
+                  {plainSummaryOf(description(item))}
                 </span>
               </span>
             </NavigationMenuLink>

@@ -20,7 +20,12 @@ const usePages = () => {
   const { t } = useTranslation();
   return [
     { id: "/docs", title: t(($) => $.nav.introduction) },
-    ...GUIDES.map((guide) => ({ id: `/docs/${guide.slug}`, title: guide.title })),
+    ...GUIDES.map((guide) => ({
+      id: `/docs/${guide.slug}`,
+      title: t(($) => $.guides[guide.slug as keyof typeof $.guides], {
+        defaultValue: guide.title,
+      }),
+    })),
     { id: "/components", title: t(($) => $.nav.components) },
     { id: "/blocks", title: t(($) => $.nav.blocks) },
     { id: "/themes", title: t(($) => $.nav.themeEditor) },

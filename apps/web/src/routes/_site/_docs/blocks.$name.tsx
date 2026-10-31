@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { itemMeta } from "../../../i18n/head";
 import { ItemPage } from "../../../site/item-page";
-import { plainSummaryOf } from "../../../site/markdown";
 import { getItem } from "../../../site/registry";
 
 export const Route = createFileRoute("/_site/_docs/blocks/$name")({
@@ -9,14 +9,7 @@ export const Route = createFileRoute("/_site/_docs/blocks/$name")({
     if (!item) throw notFound();
     return item;
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: `${loaderData.title} · fma-ds` },
-          { name: "description", content: plainSummaryOf(loaderData.description) },
-        ]
-      : [],
-  }),
+  head: ({ loaderData, matches }) => ({ meta: loaderData ? itemMeta(matches, loaderData) : [] }),
   component: BlockPage,
 });
 

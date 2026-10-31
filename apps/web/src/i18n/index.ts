@@ -4,6 +4,8 @@ import { site } from "../site/i18n/en";
 import { sitePtBR } from "../site/i18n/pt-BR";
 import { themeEditor } from "../theme-editor/i18n/en";
 import { themeEditorPtBR } from "../theme-editor/i18n/pt-BR";
+import { showcase } from "../theme-editor/i18n/showcase-en";
+import { showcasePtBR } from "../theme-editor/i18n/showcase-pt-BR";
 
 export const APP_LOCALES = ["en", "pt-BR"];
 export const LOCALE_COOKIE = "fma-ds-locale";
@@ -20,8 +22,8 @@ export function createI18n(lng: string) {
     supportedLngs: APP_LOCALES,
     defaultNS: "site",
     resources: {
-      en: { site, themeEditor },
-      "pt-BR": { site: sitePtBR, themeEditor: themeEditorPtBR },
+      en: { site, themeEditor, showcase },
+      "pt-BR": { site: sitePtBR, themeEditor: themeEditorPtBR, showcase: showcasePtBR },
     },
     // Resources are in the bundle, so the first render already has them.
     initAsync: false,

@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/table/table";
 import { COLOR_GROUPS, checkContrast, type Theme, type ThemeMode } from "@/lib/theme/index";
 import { ContrastBadge } from "./fields";
@@ -91,36 +91,35 @@ export function Palette({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
 }
 
 export function TypographySample({ theme }: { theme: Theme }) {
+  const { t } = useTranslation("showcase");
   return (
     <article className="flex max-w-2xl flex-col gap-4">
       <h1 className="font-heading text-4xl font-semibold tracking-tight">
-        The quick brown fox jumps over the lazy dog
+        {t(($) => $.typography.pangram)}
       </h1>
       <p className="text-lg text-muted-foreground">
-        A theme sets three families (<code className="font-mono">font-sans</code>,{" "}
-        <code className="font-mono">font-serif</code>, <code className="font-mono">font-mono</code>
-        ), the body letter spacing and the radius every component derives its corners from.
+        <Trans
+          t={t}
+          i18nKey={($) => $.typography.lead}
+          components={{ code: <code className="font-mono" /> }}
+        />
       </p>
-      <h2 className="font-heading text-2xl font-semibold">Sans-serif</h2>
-      <p className="leading-7">
-        Interfaces mostly speak in the sans family: labels, buttons, tables and body text. Good sans
-        faces stay legible at 12–14px and keep their rhythm in long paragraphs, which is why letter
-        spacing is a theme setting rather than something each component decides.
-      </p>
-      <h2 className="font-heading text-2xl font-semibold">Serif</h2>
+      <h2 className="font-heading text-2xl font-semibold">{t(($) => $.typography.sans)}</h2>
+      <p className="leading-7">{t(($) => $.typography.sansText)}</p>
+      <h2 className="font-heading text-2xl font-semibold">{t(($) => $.typography.serif)}</h2>
       <blockquote className="border-l-2 pl-4 font-serif text-lg italic">
-        “Typography is what language looks like.” — Ellen Lupton
+        {t(($) => $.typography.quote)}
       </blockquote>
-      <h2 className="font-heading text-2xl font-semibold">Monospace</h2>
+      <h2 className="font-heading text-2xl font-semibold">{t(($) => $.typography.mono)}</h2>
       <pre className="overflow-x-auto rounded-lg border bg-muted p-4 font-mono text-sm">
         {`${themeInstall(theme).command}\n\nconst ratio = contrastRatio(bg, fg); // 4.5:1`}
       </pre>
       <div className="flex flex-wrap gap-4 text-sm">
-        <span className="font-light">Light 300</span>
-        <span className="font-normal">Regular 400</span>
-        <span className="font-medium">Medium 500</span>
-        <span className="font-semibold">Semibold 600</span>
-        <span className="font-bold">Bold 700</span>
+        <span className="font-light">{t(($) => $.typography.light)}</span>
+        <span className="font-normal">{t(($) => $.typography.regular)}</span>
+        <span className="font-medium">{t(($) => $.typography.medium)}</span>
+        <span className="font-semibold">{t(($) => $.typography.semibold)}</span>
+        <span className="font-bold">{t(($) => $.typography.bold)}</span>
       </div>
     </article>
   );

@@ -3,12 +3,13 @@ import { ArrowUpRightIcon } from "lucide-react";
 import { Link } from "react-aria-components";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { DOCS_NAV, type NavLink, type NavTitle } from "./nav";
+import { DOCS_NAV, type NavLink } from "./nav";
 
 function NavItem({ link, onNavigate }: { link: NavLink; onNavigate?: () => void }) {
   const { t } = useTranslation();
   const { pathname } = useLocation();
-  const title = link.page ? t(($) => $.nav[link.page as NavTitle]) : link.title;
+  const { page, guide } = link;
+  const title = page ? t(($) => $.nav[page]) : guide ? t(($) => $.guides[guide]) : link.title;
   const className =
     "flex h-8 items-center gap-1 rounded-md px-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground data-[active=true]:bg-accent data-[active=true]:font-medium data-[active=true]:text-accent-foreground";
   if (link.external) {

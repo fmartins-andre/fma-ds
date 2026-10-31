@@ -39,7 +39,9 @@ apps/web/           → TanStack Start; serve public/r/<nome>.json (GERADO — n
                                       leem o mesmo texto; {{dep}} vira a versão do package.json
   src/i18n/                           i18next do site (instância por requisição, idiomas); os textos ficam em
                                       src/site/i18n/ e src/theme-editor/i18n/ (<idioma>.ts), com pt-BR checado
-                                      contra o inglês; texto novo de interface entra nos dois
+                                      contra o inglês; texto novo de interface entra nos dois. Conteúdo: guias em
+                                      src/guides/pt-BR/, descrições em src/site/i18n/items-pt-BR.json e
+                                      stories-pt-BR.json; tests/site-translations.test.ts impõe guias e itens
   src/theme-editor/                   editor de temas em /themes (estilo tweakcn); importa a UI
                                       de packages/ds via alias @/* (tsconfig paths)
   src/site/, src/routes/_site/        site de docs (estilo shadcn): home, /docs, /components/<nome>,

@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { Badge } from "@/core/badge/badge";
 import { LinkButton } from "@/core/button/button";
 import { CodeBlock, CodeBlockCopyButton } from "@/core/code-block/code-block";
+import { useItemDescription } from "../../i18n/items";
 import { plainSummaryOf } from "../../site/markdown";
 import {
   BLOCKS,
@@ -37,6 +38,7 @@ const FEATURES = [
 function Home() {
   const { t } = useTranslation();
   const groups = useComponentsByCategory();
+  const description = useItemDescription();
   return (
     <div className="mx-auto max-w-screen-2xl px-4 md:px-6">
       <section className="flex flex-col items-center gap-4 py-16 text-center md:py-24">
@@ -132,7 +134,7 @@ function Home() {
                         {item.title}
                       </span>
                       <span className="line-clamp-2 text-xs text-muted-foreground">
-                        {plainSummaryOf(item.description)}
+                        {plainSummaryOf(description(item))}
                       </span>
                     </Link>
                   </li>

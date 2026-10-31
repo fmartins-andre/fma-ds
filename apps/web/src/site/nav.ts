@@ -8,6 +8,7 @@ export interface NavLink {
   title: string;
   /** A page of the site, whose title has a translation. */
   page?: NavTitle;
+  guide?: keyof typeof site.guides;
   href: string;
   external?: boolean;
 }
@@ -38,7 +39,11 @@ export const DOCS_NAV: NavSection[] = [
   },
   {
     title: "guides",
-    links: GUIDES.map((guide) => ({ title: guide.title, href: `/docs/${guide.slug}` })),
+    links: GUIDES.map((guide) => ({
+      title: guide.title,
+      guide: guide.slug as NavLink["guide"],
+      href: `/docs/${guide.slug}`,
+    })),
   },
   {
     title: "components",

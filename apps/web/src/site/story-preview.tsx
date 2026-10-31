@@ -10,6 +10,7 @@ import {
 } from "@/core/code-block/code-block";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/core/tabs/tabs";
 import { cn } from "@/lib/utils";
+import { useStoryName } from "../i18n/items";
 import type { ItemKind } from "./registry";
 import { STORYBOOK_URL } from "./registry";
 import type { DocStory } from "./stories";
@@ -66,12 +67,13 @@ export function StoryPreview({
   className?: string;
 }) {
   const { t } = useTranslation();
+  const title = useStoryName()(story.name);
   const framed = kind === "blocks" || story.layout === "fullscreen";
   const { Component: Story } = story;
   return (
     <Tabs className={cn("gap-3", className)} defaultSelectedKey="preview">
       <div className="flex items-center justify-between gap-2">
-        <TabsList variant="line" aria-label={t(($) => $.story.example, { name: story.name })}>
+        <TabsList variant="line" aria-label={t(($) => $.story.example, { name: title })}>
           <TabsTrigger id="preview">{t(($) => $.story.preview)}</TabsTrigger>
           <TabsTrigger id="code">{t(($) => $.story.code)}</TabsTrigger>
         </TabsList>
@@ -88,7 +90,7 @@ export function StoryPreview({
       <TabsContent id="preview">
         {framed ? (
           <iframe
-            title={t(($) => $.lists.preview, { title: story.name })}
+            title={t(($) => $.lists.preview, { title: title })}
             src={previewPath(kind, name, story.exportName)}
             className="h-[640px] w-full rounded-xl border bg-background"
             loading="lazy"
