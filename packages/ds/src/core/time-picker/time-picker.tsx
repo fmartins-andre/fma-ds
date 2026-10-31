@@ -15,10 +15,12 @@ import {
   InputGroupInput,
 } from "@/core/input-group/input-group";
 import { Popover } from "@/core/popover/popover";
-
-/* -------------------------------------------------------------------------- */
-/*                                    Types                                   */
-/* -------------------------------------------------------------------------- */
+import {
+  type DictionaryNamespace,
+  type NamespaceOverrides,
+  resolveNamespace,
+  useFmaMessages,
+} from "@/lib/i18n/i18n";
 
 /** A time of day as plain numbers. `hour` runs from 0 to 23 whatever the hour cycle. */
 type TimePickerTime = { hour: number; minute: number; second: number };
@@ -28,14 +30,10 @@ type TimePickerGranularity = "hour" | "minute" | "second";
 
 type TimePickerHourCycle = 12 | 24;
 
-type TimePickerPeriod = "am" | "pm";
-
 /** Where AM/PM goes: after the time in English, before it in Chinese, Japanese and Korean. */
 type TimePickerPeriodPosition = "start" | "end";
 
 type TimePickerUnit = "hour" | "minute" | "second";
-
-type TimePickerColumnType = TimePickerUnit | "period";
 
 type TimePickerLabels = {
   /** Trigger text while there is no value. */
@@ -77,13 +75,13 @@ type TimePickerI18nConfig = {
   functions: TimePickerFunctions;
 };
 
-/** One level deeper than `Partial`, so a single label can be overridden. */
-type TimePickerI18nOverrides = {
-  labels?: Partial<TimePickerLabels>;
-  functions?: Partial<TimePickerFunctions>;
-};
+declare global {
+  interface FmaNamespaces {
+    timePicker: TimePickerI18nConfig;
+  }
+}
 
-const DEFAULT_TIME_PICKER_I18N: TimePickerI18nConfig = {
+const timePickerEn: DictionaryNamespace<TimePickerI18nConfig> = {
   labels: {
     placeholder: "Select time",
     hour: "Hour",
@@ -98,7 +96,7 @@ const DEFAULT_TIME_PICKER_I18N: TimePickerI18nConfig = {
     panelLabel: "Choose time",
     openPicker: "Open time picker",
   },
-  functions: {
+  functions: () => ({
     formatSegment: (value) => String(value).padStart(2, "0"),
     formatValue: (time, context) => {
       const { hourCycle, granularity, periodPosition, labels } = context;
@@ -111,21 +109,25 @@ const DEFAULT_TIME_PICKER_I18N: TimePickerI18nConfig = {
       const period = time.hour < 12 ? labels.am : labels.pm;
       return periodPosition === "start" ? `${period} ${text}` : `${text} ${period}`;
     },
-  },
+  }),
 };
+
+/* -------------------------------------------------------------------------- */
+/*                                    Types                                   */
+/* -------------------------------------------------------------------------- */
+
+type TimePickerPeriod = "am" | "pm";
+
+type TimePickerColumnType = TimePickerUnit | "period";
+
+/** One level deeper than `Partial`, so a single label can be overridden. */
+type TimePickerI18nOverrides = NamespaceOverrides<TimePickerI18nConfig>;
+
+const DEFAULT_TIME_PICKER_I18N = resolveNamespace<TimePickerI18nConfig>([timePickerEn]);
 
 /** Merges per section, so an override can carry one key without restating the rest. */
 function mergeTimePickerI18n(overrides?: TimePickerI18nOverrides): TimePickerI18nConfig {
-  if (!overrides?.labels && !overrides?.functions) {
-    return DEFAULT_TIME_PICKER_I18N;
-  }
-  return {
-    labels: { ...DEFAULT_TIME_PICKER_I18N.labels, ...overrides.labels },
-    functions: {
-      ...DEFAULT_TIME_PICKER_I18N.functions,
-      ...overrides.functions,
-    },
-  };
+  return resolveNamespace<TimePickerI18nConfig>([timePickerEn], [overrides]);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -637,7 +639,7 @@ function TimePicker({
   const resetRef = React.useRef(() => {});
 
   const time = fromTime(value !== undefined ? value : uncontrolled, granularity);
-  const i18n = React.useMemo(() => mergeTimePickerI18n(i18nProp), [i18nProp]);
+  const i18n = useFmaMessages("timePicker", timePickerEn, i18nProp);
   const min = minValue ? toSeconds(minValue) : null;
   const max = maxValue ? toSeconds(maxValue) : null;
   const grid = React.useMemo<TimeGrid>(

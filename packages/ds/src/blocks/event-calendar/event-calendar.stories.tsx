@@ -14,6 +14,7 @@ import {
 } from "@/core/select/select";
 import { Switch } from "@/core/switch/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/core/tabs/tabs";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import { EventCalendar } from "./event-calendar";
 import { EventCalendarContent } from "./event-calendar-content";
 import type { EventCalendarI18nOverrides } from "./event-calendar-i18n";
@@ -933,5 +934,31 @@ export const Settings: Story = {
     await userEvent.click(within(dialog).getByRole("button", { name: "Reset to defaults" }));
     await waitFor(() => expect(dayHeaders()).toBe(7));
     await expect(canvas.getByRole("button", { name: "Today" })).toBeInTheDocument();
+  },
+};
+
+/** An override of a label reaches the functions a pack builds from it. */
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{
+          "pt-BR": {
+            eventCalendar: {
+              labels: { today: "Hoje" },
+              functions: ({ labels }) => ({ formatTitle: () => labels.today }),
+            },
+          },
+        }}
+        overrides={{ eventCalendar: { labels: { today: "Agora" } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    await expect(slot(canvasElement, "event-calendar-title")?.textContent).toBe("Agora");
   },
 };

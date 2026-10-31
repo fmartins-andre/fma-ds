@@ -14,6 +14,25 @@ import {
   Modal as ModalPrimitive,
 } from "react-aria-components";
 import { Button } from "@/core/button/button";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type DialogConfig = {
+  labels: {
+    close: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    dialog: DialogConfig;
+  }
+}
+
+const dialogEn: DictionaryNamespace<DialogConfig> = {
+  labels: {
+    close: "Close",
+  },
+};
 
 function DialogTrigger({ ...props }: DialogTriggerPrimitiveProps) {
   return <DialogTriggerPrimitive data-slot="dialog-trigger" {...props} />;
@@ -71,6 +90,7 @@ function Dialog({
     children: React.ReactNode;
     showCloseButton?: boolean;
   }) {
+  const { labels } = useFmaMessages("dialog", dialogEn);
   return (
     <DialogOverlay isDismissable={isDismissable} {...props}>
       <ModalPrimitive
@@ -88,7 +108,7 @@ function Dialog({
           {showCloseButton && (
             <DialogClose variant="ghost" className="absolute top-2 right-2" size="icon-sm">
               <XIcon />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{labels.close}</span>
             </DialogClose>
           )}
         </DialogPrimitive>
@@ -111,6 +131,7 @@ function DialogFooter({
 }: React.ComponentProps<"div"> & {
   showCloseButton?: boolean;
 }) {
+  const { labels } = useFmaMessages("dialog", dialogEn);
   return (
     <div
       data-slot="dialog-footer"
@@ -121,7 +142,7 @@ function DialogFooter({
       {...props}
     >
       {children}
-      {showCloseButton && <DialogClose variant="outline">Close</DialogClose>}
+      {showCloseButton && <DialogClose variant="outline">{labels.close}</DialogClose>}
     </div>
   );
 }

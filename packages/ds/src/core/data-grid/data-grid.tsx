@@ -100,6 +100,111 @@ import {
 } from "@/core/select/select";
 import { Skeleton } from "@/core/skeleton/skeleton";
 import { Spinner } from "@/core/spinner/spinner";
+import {
+  type DictionaryNamespace,
+  type NamespaceOverrides,
+  resolveNamespace,
+  useFmaMessages,
+} from "@/lib/i18n/i18n";
+
+/** Every built-in string of the grid. Labels that interpolate are functions. */
+type DataGridI18nLabels = {
+  table: string;
+  loading: string;
+  fetchingMore: string;
+  allRowsLoaded: string;
+  empty: string;
+  sort: string;
+  sortAscending: string;
+  sortDescending: string;
+  pin: string;
+  pinColumnStart: string;
+  pinColumnEnd: string;
+  unpinColumn: (column: string) => string;
+  move: string;
+  moveColumnLeft: string;
+  moveColumnRight: string;
+  columns: string;
+  toggleColumns: string;
+  columnMenu: (column: string) => string;
+  resizeColumn: (column: string) => string;
+  expandRow: string;
+  collapseRow: string;
+  rowDetails: (row: string) => string;
+  pinRow: string;
+  unpinRow: string;
+  rowActions: (row?: string) => string;
+  noRowActions: string;
+  filter: string;
+  filterSearch: (title: string) => string;
+  filterNoResults: string;
+  filterClear: string;
+  filterSelected: (count: number) => string;
+  selectedRows: (count: number) => string;
+  selectedOnOtherPages: (count: number) => string;
+  clearSelection: string;
+  pagination: string;
+  rowsPerPage: string;
+  paginationInfo: (info: { from: number; to: number; count: number }) => string;
+  previousPage: string;
+  nextPage: string;
+  goToPage: (page: number) => string;
+  ellipsis: string;
+};
+
+type DataGridI18nConfig = { labels: DataGridI18nLabels };
+
+declare global {
+  interface FmaNamespaces {
+    dataGrid: DataGridI18nConfig;
+  }
+}
+
+const dataGridEn: DictionaryNamespace<DataGridI18nConfig> = {
+  labels: {
+    table: "Data grid",
+    loading: "Loading...",
+    fetchingMore: "Loading more...",
+    allRowsLoaded: "All records loaded",
+    empty: "No data available",
+    sort: "Sort",
+    sortAscending: "Ascending",
+    sortDescending: "Descending",
+    pin: "Pin",
+    pinColumnStart: "Pin to start",
+    pinColumnEnd: "Pin to end",
+    unpinColumn: (column) => `Unpin ${column} column`,
+    move: "Move",
+    moveColumnLeft: "Move left",
+    moveColumnRight: "Move right",
+    columns: "Columns",
+    toggleColumns: "Toggle columns",
+    columnMenu: (column) => `${column} column`,
+    resizeColumn: (column) => `Resize ${column}`,
+    expandRow: "Expand row",
+    collapseRow: "Collapse row",
+    rowDetails: (row) => `${row} details`,
+    pinRow: "Pin row",
+    unpinRow: "Unpin row",
+    rowActions: (row) => (row ? `Actions for ${row}` : "Row actions"),
+    noRowActions: "No actions available",
+    filter: "Filter",
+    filterSearch: (title) => `Search ${title}`,
+    filterNoResults: "No results found.",
+    filterClear: "Clear filters",
+    filterSelected: (count) => `${count} selected`,
+    selectedRows: (count) => `${count} selected`,
+    selectedOnOtherPages: (count) => `(${count} on other pages)`,
+    clearSelection: "Clear selection",
+    pagination: "Pagination",
+    rowsPerPage: "Rows per page",
+    paginationInfo: ({ from, to, count }) => `${from} - ${to} of ${count}`,
+    previousPage: "Go to previous page",
+    nextPage: "Go to next page",
+    goToPage: (page) => `Page ${page}`,
+    ellipsis: "...",
+  },
+};
 
 type DataGridColumnMeta = {
   /** Label for the header menu, visibility menu and filters. */
@@ -210,105 +315,14 @@ type DataGridLayout = {
   columnsVisibility?: boolean;
 };
 
-/** Every built-in string of the grid. Labels that interpolate are functions. */
-type DataGridI18nLabels = {
-  table: string;
-  loading: string;
-  fetchingMore: string;
-  allRowsLoaded: string;
-  empty: string;
-  sort: string;
-  sortAscending: string;
-  sortDescending: string;
-  pin: string;
-  pinColumnStart: string;
-  pinColumnEnd: string;
-  unpinColumn: (column: string) => string;
-  move: string;
-  moveColumnLeft: string;
-  moveColumnRight: string;
-  columns: string;
-  toggleColumns: string;
-  columnMenu: (column: string) => string;
-  resizeColumn: (column: string) => string;
-  expandRow: string;
-  collapseRow: string;
-  rowDetails: (row: string) => string;
-  pinRow: string;
-  unpinRow: string;
-  rowActions: (row?: string) => string;
-  noRowActions: string;
-  filter: string;
-  filterSearch: (title: string) => string;
-  filterNoResults: string;
-  filterClear: string;
-  filterSelected: (count: number) => string;
-  selectedRows: (count: number) => string;
-  selectedOnOtherPages: (count: number) => string;
-  clearSelection: string;
-  pagination: string;
-  rowsPerPage: string;
-  paginationInfo: (info: { from: number; to: number; count: number }) => string;
-  previousPage: string;
-  nextPage: string;
-  goToPage: (page: number) => string;
-  ellipsis: string;
-};
-
-type DataGridI18nConfig = { labels: DataGridI18nLabels };
+const defaultDataGridI18n = dataGridEn;
 
 /** Partial overrides, merged over the defaults per section. */
-type DataGridI18nOverrides = { labels?: Partial<DataGridI18nLabels> };
-
-const defaultDataGridI18n: DataGridI18nConfig = {
-  labels: {
-    table: "Data grid",
-    loading: "Loading...",
-    fetchingMore: "Loading more...",
-    allRowsLoaded: "All records loaded",
-    empty: "No data available",
-    sort: "Sort",
-    sortAscending: "Ascending",
-    sortDescending: "Descending",
-    pin: "Pin",
-    pinColumnStart: "Pin to start",
-    pinColumnEnd: "Pin to end",
-    unpinColumn: (column) => `Unpin ${column} column`,
-    move: "Move",
-    moveColumnLeft: "Move left",
-    moveColumnRight: "Move right",
-    columns: "Columns",
-    toggleColumns: "Toggle columns",
-    columnMenu: (column) => `${column} column`,
-    resizeColumn: (column) => `Resize ${column}`,
-    expandRow: "Expand row",
-    collapseRow: "Collapse row",
-    rowDetails: (row) => `${row} details`,
-    pinRow: "Pin row",
-    unpinRow: "Unpin row",
-    rowActions: (row) => (row ? `Actions for ${row}` : "Row actions"),
-    noRowActions: "No actions available",
-    filter: "Filter",
-    filterSearch: (title) => `Search ${title}`,
-    filterNoResults: "No results found.",
-    filterClear: "Clear filters",
-    filterSelected: (count) => `${count} selected`,
-    selectedRows: (count) => `${count} selected`,
-    selectedOnOtherPages: (count) => `(${count} on other pages)`,
-    clearSelection: "Clear selection",
-    pagination: "Pagination",
-    rowsPerPage: "Rows per page",
-    paginationInfo: ({ from, to, count }) => `${from} - ${to} of ${count}`,
-    previousPage: "Go to previous page",
-    nextPage: "Go to next page",
-    goToPage: (page) => `Page ${page}`,
-    ellipsis: "...",
-  },
-};
+type DataGridI18nOverrides = NamespaceOverrides<DataGridI18nConfig>;
 
 /** Merges overrides over the defaults; untouched keys keep their default. */
 function mergeDataGridI18n(overrides?: DataGridI18nOverrides): DataGridI18nConfig {
-  return { labels: { ...defaultDataGridI18n.labels, ...overrides?.labels } };
+  return resolveNamespace<DataGridI18nConfig>([dataGridEn], [overrides]);
 }
 
 /** Extra classes for parts of the table. */
@@ -379,7 +393,8 @@ function useDataGrid<TData extends RowData = RowData>() {
 
 /** The grid's labels; the defaults outside a `DataGrid`. */
 function useDataGridLabels(): DataGridI18nLabels {
-  return (React.useContext(DataGridContext)?.i18n ?? defaultDataGridI18n).labels;
+  const standalone = useFmaMessages("dataGrid", dataGridEn, dataGridEn);
+  return (React.useContext(DataGridContext)?.i18n ?? standalone).labels;
 }
 
 /** Provides the TanStack `table` to the grid parts (table, pagination, headers). */
@@ -391,6 +406,7 @@ function DataGrid<TData extends RowData>({
   i18n,
   ...props
 }: DataGridProps<TData>) {
+  const messages = useFmaMessages("dataGrid", dataGridEn, i18n);
   // Rebuilt every render on purpose: the table instance is stable while its
   // state changes, and the parts must re-render with it.
   const value: DataGridContextValue = {
@@ -398,7 +414,7 @@ function DataGrid<TData extends RowData>({
     ...(props as Omit<DataGridProps<RowData>, "table" | "children" | "i18n">),
     table: table as TanstackTable<DataGridFeatures, RowData>,
     layout: { rowBorder: true, headerBorder: true, width: "fixed", ...tableLayout },
-    i18n: mergeDataGridI18n(i18n),
+    i18n: messages,
   };
   return (
     <DataGridContext.Provider value={value}>
@@ -1962,7 +1978,7 @@ export {
   DataGridTableFootRow,
   DataGridTableFootRowCell,
   dataGridFeatures,
-  defaultDataGridI18n,
+  type defaultDataGridI18n,
   getColumnHeaderLabel,
   getDataGridTreeIndentStyle,
   mergeDataGridI18n,

@@ -21,6 +21,7 @@ import {
   PasswordRules,
   passwordRules,
 } from "@/core/password-rules/password-rules";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import { AuthCard, AuthLayout, AuthSubmit, ResendCode } from "./auth";
 import meta from "./meta.json";
 
@@ -690,5 +691,23 @@ export const ShouldResendAfterCooldown: Story = {
     await waitFor(() =>
       expect(canvas.getByRole("button", { name: "Resend code in 0:01" })).toBeDisabled(),
     );
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { auth: { resendCode: { resend: "Reenviar código" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  render: () => <ResendCode cooldown={0} onResend={() => {}} />,
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: "Reenviar código" })).toBeInTheDocument();
   },
 };

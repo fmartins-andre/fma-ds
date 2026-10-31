@@ -29,10 +29,7 @@ import { Label } from "@/core/label/label";
 import { MaskedInput } from "@/core/masked-input/masked-input";
 import { useDialogPromise } from "@/hooks/use-dialog-promise";
 import { getCreditCardIssuer, getCreditCardIssuerById } from "@/lib/credit-card-validation";
-
-/* -------------------------------------------------------------------------- */
-/*                                Saved card                                  */
-/* -------------------------------------------------------------------------- */
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type PaymentCardDetailsLabels = {
   issuer: string;
@@ -41,12 +38,54 @@ type PaymentCardDetailsLabels = {
   expiry: string;
 };
 
-const defaultPaymentCardDetailsLabels: PaymentCardDetailsLabels = {
-  issuer: "Card",
-  number: "Number",
-  holder: "Name on card",
-  expiry: "Expires",
+type PaymentCardRemoveLabels = {
+  remove: string;
+  confirmTitle: string;
+  confirmDescription: string;
+  confirm: string;
+  cancel: string;
+  pending: string;
+  error: string;
 };
+
+export type PaymentCardConfig = {
+  details: PaymentCardDetailsLabels;
+  remove: PaymentCardRemoveLabels;
+  fields: { cardNumber: string; expiryDate: string; securityCode: string };
+};
+
+declare global {
+  interface FmaNamespaces {
+    paymentCard: PaymentCardConfig;
+  }
+}
+
+const paymentCardEn: DictionaryNamespace<PaymentCardConfig> = {
+  fields: {
+    cardNumber: "Card number",
+    expiryDate: "Expiry date",
+    securityCode: "Security code",
+  },
+  details: {
+    issuer: "Card",
+    number: "Number",
+    holder: "Name on card",
+    expiry: "Expires",
+  },
+  remove: {
+    remove: "Remove card",
+    confirmTitle: "Remove this card?",
+    confirmDescription: "You'll need to add a card again to pay with one.",
+    confirm: "Remove card",
+    cancel: "Cancel",
+    pending: "Removing…",
+    error: "The card couldn't be removed. Please try again.",
+  },
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                Saved card                                  */
+/* -------------------------------------------------------------------------- */
 
 type PaymentCardDetailsProps = Omit<React.ComponentProps<"div">, "children"> & {
   /** The number as the gateway returns it, digits hidden with `*` or `x`. */
@@ -86,7 +125,9 @@ function PaymentCardDetails({
   className,
   ...props
 }: PaymentCardDetailsProps) {
-  const labels = { ...defaultPaymentCardDetailsLabels, ...i18n?.labels };
+  const { details: labels } = useFmaMessages("paymentCard", paymentCardEn, {
+    details: i18n?.labels,
+  });
   const info = issuer ? getCreditCardIssuerById(issuer) : getCreditCardIssuer(number);
   const lastDigits = /(\d{4})\D*$/.exec(number)?.[1];
 
@@ -139,26 +180,6 @@ function PaymentCardDetails({
   );
 }
 
-type PaymentCardRemoveLabels = {
-  remove: string;
-  confirmTitle: string;
-  confirmDescription: string;
-  confirm: string;
-  cancel: string;
-  pending: string;
-  error: string;
-};
-
-const defaultPaymentCardRemoveLabels: PaymentCardRemoveLabels = {
-  remove: "Remove card",
-  confirmTitle: "Remove this card?",
-  confirmDescription: "You'll need to add a card again to pay with one.",
-  confirm: "Remove card",
-  cancel: "Cancel",
-  pending: "Removing…",
-  error: "The card couldn't be removed. Please try again.",
-};
-
 type PaymentCardRemoveProps = Omit<
   React.ComponentProps<typeof Button>,
   "onPress" | "children" | "variant"
@@ -173,7 +194,9 @@ type PaymentCardRemoveProps = Omit<
 
 /** The destructive button that asks for confirmation, then runs `onRemove`. */
 function PaymentCardRemove({ onRemove, i18n, className, ...props }: PaymentCardRemoveProps) {
-  const labels = { ...defaultPaymentCardRemoveLabels, ...i18n?.labels };
+  const { remove: labels } = useFmaMessages("paymentCard", paymentCardEn, {
+    remove: i18n?.labels,
+  });
   const dialog = useDialogPromise();
 
   return (
@@ -375,10 +398,12 @@ function PaymentCardTextField({
  * text; `isValidCreditCardNumber` takes it as is.
  */
 function PaymentCardNumberField({
-  label = "Card number",
+  label: labelProp,
   placeholder,
   ...props
 }: PaymentCardFieldProps) {
+  const { fields } = useFmaMessages("paymentCard", paymentCardEn);
+  const label = labelProp ?? fields.cardNumber;
   const field = usePaymentCardField("number", "number", props);
   return (
     <PaymentCardTextField {...props} label={label} field={field}>
@@ -430,11 +455,13 @@ function PaymentCardNameField({
 
 /** The expiry as `MM/YY`; `isValidCreditCardExpiry` checks it hasn't passed. */
 function PaymentCardExpiryField({
-  label = "Expiry date",
+  label: labelProp,
   placeholder = "MM/YY",
   className,
   ...props
 }: PaymentCardFieldProps) {
+  const { fields } = useFmaMessages("paymentCard", paymentCardEn);
+  const label = labelProp ?? fields.expiryDate;
   const field = usePaymentCardField("expiry", "expiry", props);
   return (
     <PaymentCardTextField
@@ -457,11 +484,13 @@ function PaymentCardExpiryField({
  * typed in the same form prints (Amex 4, most 3; up to 4 while unknown).
  */
 function PaymentCardCodeField({
-  label = "Security code",
+  label: labelProp,
   placeholder,
   className,
   ...props
 }: PaymentCardFieldProps) {
+  const { fields } = useFmaMessages("paymentCard", paymentCardEn);
+  const label = labelProp ?? fields.securityCode;
   const context = React.useContext(PaymentCardFormContext);
   const size = getCreditCardIssuer(context?.values.number ?? "")?.code.size ?? 4;
   const field = usePaymentCardField("cvc", "cvc", props, (next) =>

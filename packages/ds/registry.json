@@ -246,7 +246,8 @@
         "@fma-ds/button",
         "@fma-ds/card",
         "@fma-ds/spinner",
-        "@fma-ds/brand"
+        "@fma-ds/brand",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0"
@@ -262,7 +263,7 @@
           "password",
           "otp"
         ],
-        "contentHash": "c1859f7520ac"
+        "contentHash": "e4457e598b21"
       }
     },
     {
@@ -374,6 +375,9 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
       "dependencies": [
         "cn@^0.5.0",
         "lucide-react@^1.61.0",
@@ -381,13 +385,13 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "navigation",
           "react-aria"
         ],
-        "contentHash": "f29a2d3cb2d3"
+        "contentHash": "19bf8b5a4072"
       }
     },
     {
@@ -511,6 +515,7 @@
         "@fma-ds/select",
         "@fma-ds/use-available-date-correction",
         "@fma-ds/date-granularity",
+        "@fma-ds/i18n",
         "@fma-ds/interval-helpers",
         "@fma-ds/types"
       ],
@@ -530,7 +535,7 @@
           "date",
           "react-aria"
         ],
-        "contentHash": "95e2dacf97d5"
+        "contentHash": "f22299528a96"
       }
     },
     {
@@ -693,7 +698,8 @@
       "registryDependencies": [
         "@fma-ds/button",
         "@fma-ds/copy-button",
-        "@fma-ds/code-block-highlight"
+        "@fma-ds/code-block-highlight",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -711,7 +717,7 @@
           "shiki",
           "ai"
         ],
-        "contentHash": "38255a4d8d09"
+        "contentHash": "6a272eca6a4f"
       }
     },
     {
@@ -799,7 +805,8 @@
         "@fma-ds/button",
         "@fma-ds/description-list",
         "@fma-ds/empty",
-        "@fma-ds/field"
+        "@fma-ds/field",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -816,7 +823,7 @@
           "list",
           "repeater"
         ],
-        "contentHash": "485d5b54137a"
+        "contentHash": "7fa658d86867"
       }
     },
     {
@@ -874,7 +881,8 @@
         "@fma-ds/input-group",
         "@fma-ds/popover",
         "@fma-ds/select",
-        "@fma-ds/color-contrast"
+        "@fma-ds/color-contrast",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -894,7 +902,7 @@
           "oklch",
           "react-aria"
         ],
-        "contentHash": "538c1f4f4734"
+        "contentHash": "460b9f842caa"
       }
     },
     {
@@ -915,7 +923,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/button",
-        "@fma-ds/input-group"
+        "@fma-ds/input-group",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -932,7 +941,7 @@
           "selection",
           "autocomplete"
         ],
-        "contentHash": "fbc6acc6716f"
+        "contentHash": "7a61cfae3064"
       }
     },
     {
@@ -953,7 +962,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/dialog",
-        "@fma-ds/input-group"
+        "@fma-ds/input-group",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -970,7 +980,7 @@
           "command-palette",
           "overlay"
         ],
-        "contentHash": "98fd814bfa4f"
+        "contentHash": "149c67fdebaa"
       }
     },
     {
@@ -992,7 +1002,8 @@
       "registryDependencies": [
         "@fma-ds/alert-dialog",
         "@fma-ds/button",
-        "@fma-ds/use-dialog-promise"
+        "@fma-ds/use-dialog-promise",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1008,7 +1019,7 @@
           "confirm",
           "alert"
         ],
-        "contentHash": "cb346e883317"
+        "contentHash": "22d100e24672"
       }
     },
     {
@@ -1065,7 +1076,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/button",
-        "@fma-ds/tooltip"
+        "@fma-ds/tooltip",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1080,7 +1092,7 @@
           "clipboard",
           "copy"
         ],
-        "contentHash": "ee9f7a219cca"
+        "contentHash": "998cdd087a52"
       }
     },
     {
@@ -1100,7 +1112,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/credit-card-validation"
+        "@fma-ds/credit-card-validation",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0"
@@ -1116,7 +1129,7 @@
           "data-display",
           "form"
         ],
-        "contentHash": "793d900d3ab2"
+        "contentHash": "f4b1066c7eeb"
       }
     },
     {
@@ -1176,7 +1189,8 @@
         "@fma-ds/popover",
         "@fma-ds/select",
         "@fma-ds/skeleton",
-        "@fma-ds/spinner"
+        "@fma-ds/spinner",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "@tanstack/react-table@^9.3.1",
@@ -1196,7 +1210,7 @@
           "tanstack",
           "react-aria"
         ],
-        "contentHash": "1fe5772f3aab"
+        "contentHash": "f3541eeaa711"
       }
     },
     {
@@ -1469,7 +1483,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1478,14 +1493,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "react-aria",
           "modal",
           "overlay"
         ],
-        "contentHash": "bc7c3204eb2f"
+        "contentHash": "e401c8a95f98"
       }
     },
     {
@@ -1609,7 +1624,8 @@
         "@fma-ds/input-group",
         "@fma-ds/popover",
         "@fma-ds/skeleton",
-        "@fma-ds/tabs"
+        "@fma-ds/tabs",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1628,7 +1644,7 @@
           "popover",
           "react-aria"
         ],
-        "contentHash": "401d10890e88"
+        "contentHash": "22367b1eeafd"
       }
     },
     {
@@ -1684,7 +1700,8 @@
         "@fma-ds/collapsible",
         "@fma-ds/copy-button",
         "@fma-ds/empty",
-        "@fma-ds/icon-stack"
+        "@fma-ds/icon-stack",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1703,7 +1720,7 @@
           "forbidden",
           "empty-state"
         ],
-        "contentHash": "00336537e030"
+        "contentHash": "fd70414b804d"
       }
     },
     {
@@ -1795,7 +1812,8 @@
         "@fma-ds/button",
         "@fma-ds/calendar",
         "@fma-ds/dropdown-menu",
-        "@fma-ds/date-fns-compat"
+        "@fma-ds/date-fns-compat",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1815,7 +1833,7 @@
           "events",
           "recurrence"
         ],
-        "contentHash": "2067b0243b9b"
+        "contentHash": "b06b565d4669"
       }
     },
     {
@@ -1955,7 +1973,8 @@
         "@fma-ds/file-type",
         "@fma-ds/icon-tile",
         "@fma-ds/progress",
-        "@fma-ds/use-file-upload"
+        "@fma-ds/use-file-upload",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1973,7 +1992,7 @@
           "dropzone",
           "react-aria"
         ],
-        "contentHash": "c41bcda28536"
+        "contentHash": "43cd3f22260c"
       }
     },
     {
@@ -1999,7 +2018,8 @@
         "@fma-ds/input-group",
         "@fma-ds/sheet",
         "@fma-ds/toggle-group",
-        "@fma-ds/tooltip"
+        "@fma-ds/tooltip",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -2017,7 +2037,7 @@
           "toolbar",
           "list"
         ],
-        "contentHash": "7b36ec2c4eb6"
+        "contentHash": "63551429b4a0"
       }
     },
     {
@@ -2039,7 +2059,8 @@
       "registryDependencies": [
         "@fma-ds/button",
         "@fma-ds/spinner",
-        "@fma-ds/stepper"
+        "@fma-ds/stepper",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -2057,7 +2078,7 @@
           "stepper",
           "steps"
         ],
-        "contentHash": "6ab43968d4da"
+        "contentHash": "e644dffca6c6"
       }
     },
     {
@@ -2622,6 +2643,9 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
       "dependencies": [
         "cn@^0.5.0",
         "lucide-react@^1.61.0",
@@ -2637,7 +2661,7 @@
           "overlay",
           "busy"
         ],
-        "contentHash": "51bfa514b089"
+        "contentHash": "849454a6b82e"
       }
     },
     {
@@ -2902,7 +2926,8 @@
         "@fma-ds/empty",
         "@fma-ds/glance",
         "@fma-ds/skeleton",
-        "@fma-ds/tooltip"
+        "@fma-ds/tooltip",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -2920,7 +2945,7 @@
           "popover",
           "list"
         ],
-        "contentHash": "4ba2b130b1df"
+        "contentHash": "11e43031ba67"
       }
     },
     {
@@ -2945,7 +2970,8 @@
         "@fma-ds/description-list",
         "@fma-ds/separator",
         "@fma-ds/sheet",
-        "@fma-ds/switch"
+        "@fma-ds/switch",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -2962,7 +2988,7 @@
           "order",
           "total"
         ],
-        "contentHash": "917b083c47a4"
+        "contentHash": "2dba788cb32c"
       }
     },
     {
@@ -2983,7 +3009,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/breadcrumb",
-        "@fma-ds/skeleton"
+        "@fma-ds/skeleton",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0"
@@ -2999,7 +3026,7 @@
           "breadcrumb",
           "navigation"
         ],
-        "contentHash": "b977a28df88b"
+        "contentHash": "be4b88d5d226"
       }
     },
     {
@@ -3019,7 +3046,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3027,14 +3055,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "navigation",
           "links",
           "react-aria"
         ],
-        "contentHash": "cfb64741af70"
+        "contentHash": "20613ebead2a"
       }
     },
     {
@@ -3060,7 +3088,8 @@
         "@fma-ds/field",
         "@fma-ds/icon-tile",
         "@fma-ds/skeleton",
-        "@fma-ds/spinner"
+        "@fma-ds/spinner",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3078,7 +3107,7 @@
           "chart",
           "status"
         ],
-        "contentHash": "293c6339cf41"
+        "contentHash": "e187de0cc507"
       }
     },
     {
@@ -3098,7 +3127,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/input-group"
+        "@fma-ds/input-group",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3114,7 +3144,7 @@
           "password",
           "react-aria"
         ],
-        "contentHash": "cec54111bd25"
+        "contentHash": "1b27bcc8ca5d"
       }
     },
     {
@@ -3174,7 +3204,8 @@
         "@fma-ds/label",
         "@fma-ds/masked-input",
         "@fma-ds/use-dialog-promise",
-        "@fma-ds/credit-card-validation"
+        "@fma-ds/credit-card-validation",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3192,7 +3223,7 @@
           "form",
           "billing"
         ],
-        "contentHash": "0ecb95fbae48"
+        "contentHash": "062bab047202"
       }
     },
     {
@@ -3217,7 +3248,8 @@
         "@fma-ds/icon-tile",
         "@fma-ds/skeleton",
         "@fma-ds/slider",
-        "@fma-ds/switch"
+        "@fma-ds/switch",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0"
@@ -3234,7 +3266,7 @@
           "slider",
           "quantity"
         ],
-        "contentHash": "ff4c976d1e45"
+        "contentHash": "5f8c5a54894d"
       }
     },
     {
@@ -3289,7 +3321,8 @@
         "@fma-ds/badge",
         "@fma-ds/radio-group",
         "@fma-ds/toggle-group",
-        "@fma-ds/brand"
+        "@fma-ds/brand",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3307,7 +3340,7 @@
           "pricing",
           "subscription"
         ],
-        "contentHash": "4cae110cc392"
+        "contentHash": "90d4596134b4"
       }
     },
     {
@@ -3359,7 +3392,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "@shadcn/react@^0.3.1",
@@ -3368,14 +3402,14 @@
       ],
       "meta": {
         "status": "experimental",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "chat",
           "form",
           "@shadcn/react"
         ],
-        "contentHash": "1c7f3ec3e00f"
+        "contentHash": "f49c29c776e8"
       }
     },
     {
@@ -3562,7 +3596,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/button",
-        "@fma-ds/spinner"
+        "@fma-ds/spinner",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3578,7 +3613,7 @@
           "settings",
           "fields"
         ],
-        "contentHash": "2d3831fee4d1"
+        "contentHash": "936779499cc9"
       }
     },
     {
@@ -3598,7 +3633,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -3617,7 +3653,7 @@
           "drawer",
           "react-aria"
         ],
-        "contentHash": "68c99528f19b"
+        "contentHash": "d9290b9351fc"
       }
     },
     {
@@ -3643,7 +3679,8 @@
         "@fma-ds/sheet",
         "@fma-ds/skeleton",
         "@fma-ds/tooltip",
-        "@fma-ds/use-mobile"
+        "@fma-ds/use-mobile",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -3653,14 +3690,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "navigation",
           "layout",
           "react-aria"
         ],
-        "contentHash": "a8982072190c"
+        "contentHash": "2096b4e5d539"
       }
     },
     {
@@ -3812,19 +3849,22 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
       "dependencies": [
         "cn@^0.5.0",
         "lucide-react@^1.61.0"
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "feedback",
           "loading"
         ],
-        "contentHash": "d8ff8cb260b4"
+        "contentHash": "470eda00c1cd"
       }
     },
     {
@@ -3845,7 +3885,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/icon-tile",
-        "@fma-ds/skeleton"
+        "@fma-ds/skeleton",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -3863,7 +3904,7 @@
           "totals",
           "filters"
         ],
-        "contentHash": "69acf80190a0"
+        "contentHash": "25781b631ef3"
       }
     },
     {
@@ -7492,7 +7533,8 @@
       "registryDependencies": [
         "@fma-ds/button",
         "@fma-ds/input-group",
-        "@fma-ds/popover"
+        "@fma-ds/popover",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "@internationalized/date@^3.12.4",
@@ -7512,7 +7554,7 @@
           "popover",
           "react-aria"
         ],
-        "contentHash": "79c8a802fbb2"
+        "contentHash": "d8c61238b157"
       }
     },
     {
@@ -7823,6 +7865,9 @@
           "type": "registry:hook"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
       "dependencies": [],
       "meta": {
         "status": "stable",
@@ -7835,7 +7880,7 @@
           "file",
           "upload"
         ],
-        "contentHash": "96b78ef16db8"
+        "contentHash": "6c10e86477d6"
       }
     },
     {

@@ -1,3 +1,5 @@
+"use client";
+
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
 import { XIcon } from "lucide-react";
@@ -13,6 +15,25 @@ import {
   type DialogTriggerProps as SheetTriggerPrimitiveProps,
 } from "react-aria-components";
 import { Button } from "@/core/button/button";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type SheetConfig = {
+  labels: {
+    close: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    sheet: SheetConfig;
+  }
+}
+
+const sheetEn: DictionaryNamespace<SheetConfig> = {
+  labels: {
+    close: "Close",
+  },
+};
 
 function SheetTrigger({ ...props }: SheetTriggerPrimitiveProps) {
   return <SheetTriggerPrimitive data-slot="sheet-trigger" {...props} />;
@@ -90,6 +111,7 @@ function Sheet({
     side?: "top" | "right" | "bottom" | "left";
     showCloseButton?: boolean;
   }) {
+  const { labels } = useFmaMessages("sheet", sheetEn);
   const isSidePanel = side === "left" || side === "right";
   return (
     <SheetOverlay {...props}>
@@ -111,7 +133,7 @@ function Sheet({
           {showCloseButton && (
             <SheetClose variant="ghost" className="absolute top-3 right-3" size="icon-sm">
               <XIcon />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{labels.close}</span>
             </SheetClose>
           )}
         </SheetPrimitive>

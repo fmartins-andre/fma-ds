@@ -2,7 +2,7 @@
   "name": "spinner",
   "category": "feedback",
   "status": "stable",
-  "source": "shadcn",
+  "source": "customized",
   "description": "A spinning loading indicator icon (role=\"status\"), sized via className — drop it inside a disabled button or empty state while something loads.",
   "tags": ["feedback", "loading"]
 }

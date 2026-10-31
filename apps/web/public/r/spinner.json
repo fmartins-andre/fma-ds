@@ -8,23 +8,26 @@
     "cn@^0.5.0",
     "lucide-react@^1.61.0"
   ],
+  "registryDependencies": [
+    "@fma-ds/i18n"
+  ],
   "files": [
     {
       "path": "src/core/spinner/spinner.tsx",
-      "content": "import { cn } from \"cn\";\nimport { Loader2Icon } from \"lucide-react\";\n\nfunction Spinner({ className, ...props }: React.ComponentProps<\"svg\">) {\n  return (\n    <Loader2Icon\n      data-slot=\"spinner\"\n      role=\"status\"\n      aria-label=\"Loading\"\n      className={cn(\"size-4 animate-spin\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Spinner };\n",
+      "content": "\"use client\";\n\nimport { cn } from \"cn\";\nimport { Loader2Icon } from \"lucide-react\";\nimport { type DictionaryNamespace, useFmaMessages } from \"@/lib/i18n/i18n\";\n\ntype SpinnerConfig = {\n  labels: {\n    loading: string;\n  };\n};\n\ndeclare global {\n  interface FmaNamespaces {\n    spinner: SpinnerConfig;\n  }\n}\n\nconst spinnerEn: DictionaryNamespace<SpinnerConfig> = {\n  labels: {\n    loading: \"Loading\",\n  },\n};\n\nfunction Spinner({ className, ...props }: React.ComponentProps<\"svg\">) {\n  const { labels } = useFmaMessages(\"spinner\", spinnerEn);\n  return (\n    <Loader2Icon\n      data-slot=\"spinner\"\n      role=\"status\"\n      aria-label={labels.loading}\n      className={cn(\"size-4 animate-spin\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Spinner };\n",
       "type": "registry:component",
       "target": "components/fma-ds/spinner.tsx"
     }
   ],
   "meta": {
     "status": "stable",
-    "source": "shadcn",
+    "source": "customized",
     "license": "MIT",
     "tags": [
       "feedback",
       "loading"
     ],
-    "contentHash": "d8ff8cb260b4"
+    "contentHash": "470eda00c1cd"
   },
   "categories": [
     "feedback"

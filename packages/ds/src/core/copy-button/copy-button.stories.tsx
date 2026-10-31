@@ -10,6 +10,7 @@ import {
 } from "@/core/dropdown-menu/dropdown-menu";
 import { Toaster } from "@/core/sonner/sonner";
 import { Spinner } from "@/core/spinner/spinner";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import { CopyButton, useCopyToClipboard } from "./copy-button";
 import meta from "./meta.json";
 
@@ -204,5 +205,29 @@ export const WithMenuItem: Story = {
     await expect(writeText).toHaveBeenCalledWith(TRACKING_CODE);
     await expect(await body.findByText("Código de rastreio copiado")).toBeInTheDocument();
     writeText.mockRestore();
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { copyButton: { labels: { copy: "Copiar" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  render: () => (
+    <>
+      <CopyButton value="um" />
+      <CopyButton value="dois" labels={{ copy: "Copiar código" }} />
+    </>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: "Copiar" })).toBeInTheDocument();
+    await expect(canvas.getByRole("button", { name: "Copiar código" })).toBeInTheDocument();
   },
 };

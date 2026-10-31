@@ -25,6 +25,7 @@ import {
 } from "@/core/sheet/sheet";
 import { ToggleGroup } from "@/core/toggle-group/toggle-group";
 import { Tooltip, TooltipTrigger } from "@/core/tooltip/tooltip";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type FilterToolbarLabels = {
   search: string;
@@ -42,26 +43,41 @@ type FilterToolbarLabels = {
   refresh: string;
 };
 
-type FilterToolbarI18n = { labels?: Partial<FilterToolbarLabels> };
+export type FilterToolbarConfig = { labels: FilterToolbarLabels };
 
-const defaultFilterToolbarLabels: FilterToolbarLabels = {
-  search: "Search",
-  searchPlaceholder: "Search…",
-  clearSearch: "Clear search",
-  quickFilters: "Quick filters",
-  filters: "Filters",
-  filtersTrigger: (active) => (active > 0 ? `Filters, ${active} active` : "Filters"),
-  filtersTitle: "Filter results",
-  apply: "Apply",
-  clear: "Clear",
-  activeFilters: "Active filters",
-  clearAll: "Clear filters",
-  refresh: "Refresh",
+declare global {
+  interface FmaNamespaces {
+    filterToolbar: FilterToolbarConfig;
+  }
+}
+
+const filterToolbarEn: DictionaryNamespace<FilterToolbarConfig> = {
+  labels: {
+    search: "Search",
+    searchPlaceholder: "Search…",
+    clearSearch: "Clear search",
+    quickFilters: "Quick filters",
+    filters: "Filters",
+    filtersTrigger: (active) => (active > 0 ? `Filters, ${active} active` : "Filters"),
+    filtersTitle: "Filter results",
+    apply: "Apply",
+    clear: "Clear",
+    activeFilters: "Active filters",
+    clearAll: "Clear filters",
+    refresh: "Refresh",
+  },
 };
 
-const FilterToolbarContext = React.createContext<FilterToolbarLabels>(defaultFilterToolbarLabels);
+type FilterToolbarI18n = { labels?: Partial<FilterToolbarLabels> };
 
-const useFilterToolbarLabels = () => React.useContext(FilterToolbarContext);
+const defaultFilterToolbarLabels = filterToolbarEn.labels;
+
+const FilterToolbarContext = React.createContext<FilterToolbarLabels | null>(null);
+
+function useFilterToolbarLabels() {
+  const { labels } = useFmaMessages("filterToolbar", filterToolbarEn, filterToolbarEn);
+  return React.useContext(FilterToolbarContext) ?? labels;
+}
 
 /**
  * Lays out the list controls: search, quick filters and actions on one row
@@ -73,11 +89,7 @@ function FilterToolbar({
   className,
   ...props
 }: React.ComponentProps<"div"> & { i18n?: FilterToolbarI18n }) {
-  const overrides = i18n?.labels;
-  const labels = React.useMemo(
-    () => ({ ...defaultFilterToolbarLabels, ...overrides }),
-    [overrides],
-  );
+  const { labels } = useFmaMessages("filterToolbar", filterToolbarEn, i18n);
   return (
     <FilterToolbarContext.Provider value={labels}>
       <div
@@ -413,7 +425,7 @@ function FilterRefresh({
 
 export type { FilterChip, FilterToolbarI18n, FilterToolbarLabels };
 export {
-  defaultFilterToolbarLabels,
+  type defaultFilterToolbarLabels,
   FilterChips,
   FilterQuickToggles,
   FilterRefresh,

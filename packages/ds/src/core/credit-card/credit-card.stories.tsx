@@ -5,6 +5,7 @@ import { Input } from "@/core/input/input";
 import { Label } from "@/core/label/label";
 import { MaskedInput } from "@/core/masked-input/masked-input";
 import { getCreditCardIssuer } from "@/lib/credit-card-validation";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import { CreditCard, type CreditCardField } from "./credit-card";
 import meta from "./meta.json";
 
@@ -216,5 +217,22 @@ export const LivePreview: Story = {
 
     await userEvent.tab();
     await expect(canvasElement.querySelector("[data-flipped]")).toBeNull();
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { creditCard: { labels: { card: () => "Cartão de crédito" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("img", { name: "Cartão de crédito" })).toBeInTheDocument();
   },
 };

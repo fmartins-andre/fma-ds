@@ -2,6 +2,7 @@ import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Card } from "@/core/card/card";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import {
   EmojiPicker,
   EmojiPickerCategories,
@@ -322,5 +323,23 @@ export const Disabled: Story = {
   args: { isDisabled: true },
   play: async ({ canvas }) => {
     await expect(canvas.getByRole("button")).toBeDisabled();
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  args: { defaultValue: null },
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { emojiPicker: { labels: { trigger: "Adicionar emoji" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: "Adicionar emoji" })).toBeInTheDocument();
   },
 };

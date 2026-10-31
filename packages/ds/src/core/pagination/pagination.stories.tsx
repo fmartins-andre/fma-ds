@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import meta from "./meta.json";
 import {
   Pagination,
@@ -62,5 +63,28 @@ export const Default: Story = {
     const canvas = within(canvasElement);
     const current = canvas.getByRole("link", { name: "2" });
     expect(current).toHaveAttribute("aria-current", "page");
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{
+          "pt-BR": {
+            pagination: { labels: { next: "Próxima", goToNext: "Ir para a próxima página" } },
+          },
+        }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  render: () => <PaginationNext href="#" />,
+  play: async ({ canvas }) => {
+    const link = canvas.getByRole("link", { name: "Ir para a próxima página" });
+    await expect(link).toHaveTextContent("Próxima");
   },
 };

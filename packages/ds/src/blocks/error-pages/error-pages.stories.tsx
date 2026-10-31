@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftIcon, HouseIcon, WrenchIcon } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Button, LinkButton } from "@/core/button/button";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import { ErrorPage, Forbidden, NotFound, UnexpectedError } from "./error-pages";
 import meta from "./meta.json";
 
@@ -135,4 +136,22 @@ export const Custom: Story = {
       }
     />
   ),
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { errorPages: { notFound: { title: "Página não encontrada" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  render: () => <NotFound />,
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Página não encontrada")).toBeInTheDocument();
+  },
 };

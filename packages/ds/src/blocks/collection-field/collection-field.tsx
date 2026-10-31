@@ -12,6 +12,7 @@ import {
 } from "@/core/description-list/description-list";
 import { Empty, EmptyDescription } from "@/core/empty/empty";
 import { FieldDescription, FieldError, FieldLegend, FieldSet } from "@/core/field/field";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type CollectionFieldLabels = {
   /** The remove button's accessible name ("Remove lot 2"). */
@@ -26,16 +27,26 @@ type CollectionFieldLabels = {
   empty: string;
 };
 
-type CollectionFieldI18n = { labels?: Partial<CollectionFieldLabels> };
+export type CollectionFieldConfig = { labels: CollectionFieldLabels };
 
-const defaultCollectionFieldLabels: CollectionFieldLabels = {
-  remove: (item) => `Remove ${item}`,
-  removeText: "Remove",
-  added: (item) => `${item} added`,
-  removed: (item) => `${item} removed`,
-  maxReached: (max) => `Up to ${max} items.`,
-  empty: "Nothing added yet.",
+declare global {
+  interface FmaNamespaces {
+    collectionField: CollectionFieldConfig;
+  }
+}
+
+const collectionFieldEn: DictionaryNamespace<CollectionFieldConfig> = {
+  labels: {
+    remove: (item) => `Remove ${item}`,
+    removeText: "Remove",
+    added: (item) => `${item} added`,
+    removed: (item) => `${item} removed`,
+    maxReached: (max) => `Up to ${max} items.`,
+    empty: "Nothing added yet.",
+  },
 };
+
+type CollectionFieldI18n = { labels?: Partial<CollectionFieldLabels> };
 
 type CollectionFieldContextValue = {
   labels: CollectionFieldLabels;
@@ -112,7 +123,7 @@ function CollectionField({
   children,
   ...props
 }: CollectionFieldProps) {
-  const labels = { ...defaultCollectionFieldLabels, ...i18n?.labels };
+  const { labels } = useFmaMessages("collectionField", collectionFieldEn, i18n);
   const listRef = React.useRef<HTMLDivElement>(null);
   const addRef = React.useRef<HTMLButtonElement>(null);
   const pending = React.useRef<{ type: "add" } | { type: "remove"; item: string } | null>(null);

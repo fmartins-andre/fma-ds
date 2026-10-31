@@ -200,6 +200,10 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
 12. **Sem requisições de rede em código publicado**: `fetch`, WebSocket e URLs fixas exigem exceção
    declarada em `tests/external-requests.test.ts` e no guia `offline.md`.
 
+13. **Textos de componente**: nada de inglês fixo. Declare o tipo e o inglês no próprio item, estenda
+   `FmaNamespaces` com `declare global` e leia com `useFmaMessages("<item>", <item>En, props.i18n)`;
+   o arquivo precisa de `"use client"`. `tests/i18n-coverage.test.ts` impõe.
+
 ## Estilo de código
 
 - Biome é lint + formatter (sem ESLint/Prettier): 2 espaços, aspas duplas, ponto-e-vírgula,

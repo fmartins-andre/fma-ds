@@ -1,6 +1,29 @@
 "use client";
 
 import * as React from "react";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type FileUploadMessages = {
+  fileInvalidType: (file: File, accept: string) => string;
+  fileTooLarge: (file: File, maxSize: number) => string;
+  tooManyFiles: (maxFiles: number) => string;
+};
+
+export type UseFileUploadConfig = { messages: FileUploadMessages };
+
+declare global {
+  interface FmaNamespaces {
+    useFileUpload: UseFileUploadConfig;
+  }
+}
+
+const useFileUploadEn: DictionaryNamespace<UseFileUploadConfig> = {
+  messages: {
+    fileInvalidType: (file) => `"${file.name}" isn't an accepted file type.`,
+    fileTooLarge: (file, maxSize) => `"${file.name}" is larger than ${formatBytes(maxSize)}.`,
+    tooManyFiles: (maxFiles) => `You can add up to ${maxFiles} files.`,
+  },
+};
 
 /** A file that is already stored somewhere (an existing attachment, a saved contract). */
 type FileMetadata = {
@@ -24,12 +47,6 @@ type FileUploadError = {
   message: string;
   /** The rejected file; absent on `too-many-files`, which rejects the whole batch. */
   file?: File;
-};
-
-type FileUploadMessages = {
-  fileInvalidType: (file: File, accept: string) => string;
-  fileTooLarge: (file: File, maxSize: number) => string;
-  tooManyFiles: (maxFiles: number) => string;
 };
 
 type UseFileUploadOptions = {
@@ -91,12 +108,6 @@ function matchesAccept(file: Pick<File, "name" | "type">, accept: string): boole
   });
 }
 
-const defaultMessages: FileUploadMessages = {
-  fileInvalidType: (file) => `"${file.name}" isn't an accepted file type.`,
-  fileTooLarge: (file, maxSize) => `"${file.name}" is larger than ${formatBytes(maxSize)}.`,
-  tooManyFiles: (maxFiles) => `You can add up to ${maxFiles} files.`,
-};
-
 let lastId = 0;
 const createId = () => `file-${Date.now().toString(36)}-${(lastId++).toString(36)}`;
 
@@ -124,6 +135,8 @@ function useFileUpload({
   isDisabled = false,
   messages: messageOverrides,
 }: UseFileUploadOptions = {}): FileUploadController {
+  const overrides = React.useMemo(() => ({ messages: messageOverrides }), [messageOverrides]);
+  const { messages } = useFmaMessages("useFileUpload", useFileUploadEn, overrides);
   const isControlled = value !== undefined;
   const [uncontrolled, setUncontrolled] = React.useState(defaultValue ?? []);
   const [errors, setErrors] = React.useState<FileUploadError[]>([]);
@@ -133,8 +146,8 @@ function useFileUpload({
   const filesRef = React.useRef(files);
   filesRef.current = files;
 
-  const callbacksRef = React.useRef({ onChange, onFilesAdded, onError, messageOverrides });
-  callbacksRef.current = { onChange, onFilesAdded, onError, messageOverrides };
+  const callbacksRef = React.useRef({ onChange, onFilesAdded, onError, messages });
+  callbacksRef.current = { onChange, onFilesAdded, onError, messages };
 
   const commit = React.useCallback(
     (next: FileUploadEntry[]) => {
@@ -151,8 +164,7 @@ function useFileUpload({
       const incoming = Array.from(list);
       if (incoming.length === 0) return;
 
-      const { onFilesAdded, onError, messageOverrides } = callbacksRef.current;
-      const messages = { ...defaultMessages, ...messageOverrides };
+      const { onFilesAdded, onError, messages } = callbacksRef.current;
       const current = filesRef.current;
       let rejected: FileUploadError[] = [];
       let accepted: FileUploadEntry[] = [];

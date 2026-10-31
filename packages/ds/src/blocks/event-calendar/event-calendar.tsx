@@ -1,6 +1,7 @@
 "use client";
 
 import type * as React from "react";
+import { useLocale } from "react-aria-components";
 
 /**
  * Headless-first event calendar with month, week, day, N-day, agenda, and
@@ -23,9 +24,11 @@ import {
   useSyncExternalStore,
 } from "react";
 import { addDays } from "@/lib/date-fns-compat/index";
+import { useFmaMessages } from "@/lib/i18n/i18n";
 import {
   type EventCalendarI18nConfig,
   type EventCalendarI18nOverrides,
+  eventCalendarEn,
   mergeEventCalendarI18n,
 } from "./event-calendar-i18n";
 import {
@@ -964,8 +967,11 @@ function createEventCalendarStore<TData>(
  * fully custom UI from instance.getState()/subscribe/api.
  */
 function useEventCalendarState<TData = unknown>(
-  options: UseEventCalendarStateOptions<TData> = {},
+  props: UseEventCalendarStateOptions<TData> = {},
 ): EventCalendarInstance<TData> {
+  const { locale } = useLocale();
+  const i18n = useFmaMessages("eventCalendar", eventCalendarEn, props.i18n);
+  const options = { ...props, locale: props.locale ?? locale, i18n };
   const [store] = useState(() => createEventCalendarStore<TData>(options));
   const changed = store.setOptions(options);
   const changedRef = useRef(false);

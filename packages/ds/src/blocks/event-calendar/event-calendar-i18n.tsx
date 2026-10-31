@@ -2,9 +2,14 @@
 // Description: Default UI texts, date-format strings, and formatter functions for the event calendar, fully overridable per key.
 
 import { format, isSameMonth, isSameYear, subMilliseconds } from "@/lib/date-fns-compat/index";
+import {
+  type DictionaryNamespace,
+  type NamespaceOverrides,
+  resolveNamespace,
+} from "@/lib/i18n/i18n";
 import type { CalendarView, EventCalendarDateRange } from "./event-calendar-types";
 
-interface EventCalendarI18nConfig {
+type EventCalendarI18nConfig = {
   labels: {
     today: string;
     previous: string;
@@ -103,6 +108,12 @@ interface EventCalendarI18nConfig {
     /** Chip aria-label composition. */
     formatEventAriaLabel?: (title: string, timeLabel: string, continues: boolean) => string;
   };
+};
+
+declare global {
+  interface FmaNamespaces {
+    eventCalendar: EventCalendarI18nConfig;
+  }
 }
 
 const DEFAULT_LABELS: EventCalendarI18nConfig["labels"] = {
@@ -229,24 +240,21 @@ function makeDefaultFunctions(
   };
 }
 
-const DEFAULT_EVENT_CALENDAR_I18N: EventCalendarI18nConfig = {
+const eventCalendarEn: DictionaryNamespace<EventCalendarI18nConfig> = {
   labels: DEFAULT_LABELS,
   viewNames: DEFAULT_VIEW_NAMES,
   formats: DEFAULT_FORMATS,
-  functions: makeDefaultFunctions({
-    labels: DEFAULT_LABELS,
-    formats: DEFAULT_FORMATS,
-  }),
+  functions: makeDefaultFunctions,
 };
+
+const DEFAULT_EVENT_CALENDAR_I18N = resolveNamespace<EventCalendarI18nConfig>([eventCalendarEn]);
 
 /**
  * One level deeper than `Partial`, because the merge below is per nested
  * section: overriding a single label must not force a consumer to restate the
  * other 22. Unknown keys are still rejected by the excess property check.
  */
-type EventCalendarI18nOverrides = {
-  [K in keyof EventCalendarI18nConfig]?: Partial<EventCalendarI18nConfig[K]>;
-};
+type EventCalendarI18nOverrides = NamespaceOverrides<EventCalendarI18nConfig>;
 
 /**
  * Shallow merge per nested object, matching the filters.tsx i18n contract:
@@ -255,20 +263,8 @@ type EventCalendarI18nOverrides = {
  * overrides still win.
  */
 function mergeEventCalendarI18n(overrides?: EventCalendarI18nOverrides): EventCalendarI18nConfig {
-  if (!overrides) return DEFAULT_EVENT_CALENDAR_I18N;
-  const labels = { ...DEFAULT_LABELS, ...overrides.labels };
-  const viewNames = { ...DEFAULT_VIEW_NAMES, ...overrides.viewNames };
-  const formats = { ...DEFAULT_FORMATS, ...overrides.formats };
-  return {
-    labels,
-    viewNames,
-    formats,
-    functions: {
-      ...makeDefaultFunctions({ labels, formats }),
-      ...overrides.functions,
-    },
-  };
+  return resolveNamespace<EventCalendarI18nConfig>([eventCalendarEn], [overrides]);
 }
 
 export type { EventCalendarI18nConfig, EventCalendarI18nOverrides };
-export { DEFAULT_EVENT_CALENDAR_I18N, mergeEventCalendarI18n };
+export { DEFAULT_EVENT_CALENDAR_I18N, eventCalendarEn, mergeEventCalendarI18n };

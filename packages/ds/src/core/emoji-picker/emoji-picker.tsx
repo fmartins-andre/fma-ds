@@ -64,6 +64,109 @@ import {
 import { Popover } from "@/core/popover/popover";
 import { Skeleton } from "@/core/skeleton/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/core/tabs/tabs";
+import {
+  type DictionaryNamespace,
+  type NamespaceOverrides,
+  resolveNamespace,
+  useFmaMessages,
+} from "@/lib/i18n/i18n";
+
+type EmojiPickerLabels = {
+  /** The trigger's name while there is no value. */
+  trigger: string;
+  /** Names the popup and an inline panel. */
+  panel: string;
+  /** Search placeholder and name. */
+  search: string;
+  clearSearch: string;
+  /** Names the grid. */
+  list: string;
+  /** Names the category tabs. */
+  categories: string;
+  /** The recent section under `recentMode="frequent"`. */
+  frequent: string;
+  /** The recent section under `recentMode="recent"`. */
+  recent: string;
+  searchResults: string;
+  /** Custom emoji with no `customCategories` entry. */
+  custom: string;
+  smileys: string;
+  people: string;
+  nature: string;
+  food: string;
+  travel: string;
+  activities: string;
+  objects: string;
+  symbols: string;
+  flags: string;
+  skinTone: string;
+  /** Default, then light to dark. */
+  skinTones: [string, string, string, string, string, string];
+  empty: string;
+  emptyHint: string;
+  loading: string;
+  error: string;
+  retry: string;
+  /** The preview while nothing is highlighted. */
+  preview: string;
+};
+
+type EmojiPickerFunctions = {
+  /** Announced after a search. */
+  formatResultCount: (count: number) => string;
+  /** Announced after a pick that keeps the picker open. */
+  formatSelected: (label: string) => string;
+  /** The display name, from the lowercase data label. */
+  formatLabel: (label: string) => string;
+};
+
+type EmojiPickerI18nConfig = {
+  labels: EmojiPickerLabels;
+  functions: EmojiPickerFunctions;
+};
+
+declare global {
+  interface FmaNamespaces {
+    emojiPicker: EmojiPickerI18nConfig;
+  }
+}
+
+const emojiPickerEn: DictionaryNamespace<EmojiPickerI18nConfig> = {
+  labels: {
+    trigger: "Add emoji",
+    panel: "Emoji picker",
+    search: "Search emoji",
+    clearSearch: "Clear search",
+    list: "Emoji",
+    categories: "Emoji categories",
+    frequent: "Frequently used",
+    recent: "Recently used",
+    searchResults: "Search results",
+    custom: "Custom",
+    smileys: "Smileys & emotion",
+    people: "People & body",
+    nature: "Animals & nature",
+    food: "Food & drink",
+    travel: "Travel & places",
+    activities: "Activities",
+    objects: "Objects",
+    symbols: "Symbols",
+    flags: "Flags",
+    skinTone: "Skin tone",
+    skinTones: ["Default", "Light", "Medium-light", "Medium", "Medium-dark", "Dark"],
+    empty: "No emoji found",
+    emptyHint: "Try another word or a shortcode",
+    loading: "Loading emoji",
+    error: "Couldn't load emoji",
+    retry: "Try again",
+    preview: "Pick an emoji",
+  },
+  functions: () => ({
+    formatResultCount: (count) => (count === 1 ? "1 emoji found" : `${count} emoji found`),
+    formatSelected: (label) => `${label} selected`,
+    formatLabel: (label) => label.charAt(0).toLocaleUpperCase() + label.slice(1),
+  }),
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                    Types                                   */
@@ -151,115 +254,14 @@ type EmojiPickerSize = "sm" | "default" | "lg";
 
 type EmojiPickerDataStatus = "idle" | "loading" | "ready" | "error";
 
-type EmojiPickerLabels = {
-  /** The trigger's name while there is no value. */
-  trigger: string;
-  /** Names the popup and an inline panel. */
-  panel: string;
-  /** Search placeholder and name. */
-  search: string;
-  clearSearch: string;
-  /** Names the grid. */
-  list: string;
-  /** Names the category tabs. */
-  categories: string;
-  /** The recent section under `recentMode="frequent"`. */
-  frequent: string;
-  /** The recent section under `recentMode="recent"`. */
-  recent: string;
-  searchResults: string;
-  /** Custom emoji with no `customCategories` entry. */
-  custom: string;
-  smileys: string;
-  people: string;
-  nature: string;
-  food: string;
-  travel: string;
-  activities: string;
-  objects: string;
-  symbols: string;
-  flags: string;
-  skinTone: string;
-  /** Default, then light to dark. */
-  skinTones: [string, string, string, string, string, string];
-  empty: string;
-  emptyHint: string;
-  loading: string;
-  error: string;
-  retry: string;
-  /** The preview while nothing is highlighted. */
-  preview: string;
-};
-
-type EmojiPickerFunctions = {
-  /** Announced after a search. */
-  formatResultCount: (count: number) => string;
-  /** Announced after a pick that keeps the picker open. */
-  formatSelected: (label: string) => string;
-  /** The display name, from the lowercase data label. */
-  formatLabel: (label: string) => string;
-};
-
-type EmojiPickerI18nConfig = {
-  labels: EmojiPickerLabels;
-  functions: EmojiPickerFunctions;
-};
-
 /** One level deeper than `Partial`, so a single label can be overridden. */
-type EmojiPickerI18nOverrides = {
-  labels?: Partial<EmojiPickerLabels>;
-  functions?: Partial<EmojiPickerFunctions>;
-};
+type EmojiPickerI18nOverrides = NamespaceOverrides<EmojiPickerI18nConfig>;
 
-const DEFAULT_EMOJI_PICKER_I18N: EmojiPickerI18nConfig = {
-  labels: {
-    trigger: "Add emoji",
-    panel: "Emoji picker",
-    search: "Search emoji",
-    clearSearch: "Clear search",
-    list: "Emoji",
-    categories: "Emoji categories",
-    frequent: "Frequently used",
-    recent: "Recently used",
-    searchResults: "Search results",
-    custom: "Custom",
-    smileys: "Smileys & emotion",
-    people: "People & body",
-    nature: "Animals & nature",
-    food: "Food & drink",
-    travel: "Travel & places",
-    activities: "Activities",
-    objects: "Objects",
-    symbols: "Symbols",
-    flags: "Flags",
-    skinTone: "Skin tone",
-    skinTones: ["Default", "Light", "Medium-light", "Medium", "Medium-dark", "Dark"],
-    empty: "No emoji found",
-    emptyHint: "Try another word or a shortcode",
-    loading: "Loading emoji",
-    error: "Couldn't load emoji",
-    retry: "Try again",
-    preview: "Pick an emoji",
-  },
-  functions: {
-    formatResultCount: (count) => (count === 1 ? "1 emoji found" : `${count} emoji found`),
-    formatSelected: (label) => `${label} selected`,
-    formatLabel: (label) => label.charAt(0).toLocaleUpperCase() + label.slice(1),
-  },
-};
+const DEFAULT_EMOJI_PICKER_I18N = resolveNamespace<EmojiPickerI18nConfig>([emojiPickerEn]);
 
 /** Merges per section, so an override can carry one key without restating the rest. */
 function mergeEmojiPickerI18n(overrides?: EmojiPickerI18nOverrides): EmojiPickerI18nConfig {
-  if (!overrides?.labels && !overrides?.functions) {
-    return DEFAULT_EMOJI_PICKER_I18N;
-  }
-  return {
-    labels: { ...DEFAULT_EMOJI_PICKER_I18N.labels, ...overrides.labels },
-    functions: {
-      ...DEFAULT_EMOJI_PICKER_I18N.functions,
-      ...overrides.functions,
-    },
-  };
+  return resolveNamespace<EmojiPickerI18nConfig>([emojiPickerEn], [overrides]);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1304,7 +1306,7 @@ function EmojiPicker(props: EmojiPickerProps) {
     enabled: wanted || open,
   });
   const support = useEmojiSupport(data, emojiVersion);
-  const i18n = useMemo(() => mergeEmojiPickerI18n(i18nProp), [i18nProp]);
+  const i18n = useFmaMessages("emojiPicker", emojiPickerEn, i18nProp);
   const { labels } = i18n;
   const columnCount = columns === "auto" ? (measuredColumns ?? 8) : Math.max(1, columns);
 

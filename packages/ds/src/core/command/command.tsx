@@ -24,6 +24,29 @@ import {
 } from "react-aria-components";
 import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/core/dialog/dialog";
 import { InputGroup, InputGroupAddon } from "@/core/input-group/input-group";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type CommandConfig = {
+  labels: {
+    title: string;
+    description: string;
+    search: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    command: CommandConfig;
+  }
+}
+
+const commandEn: DictionaryNamespace<CommandConfig> = {
+  labels: {
+    title: "Command Palette",
+    description: "Search for a command to run...",
+    search: "Search",
+  },
+};
 
 function Command({
   className,
@@ -54,8 +77,8 @@ function Command({
 }
 
 function CommandDialog({
-  title = "Command Palette",
-  description = "Search for a command to run...",
+  title,
+  description,
   children,
   open,
   onOpenChange,
@@ -74,6 +97,7 @@ function CommandDialog({
   showCloseButton?: boolean;
   children: React.ReactNode;
 }) {
+  const { labels } = useFmaMessages("command", commandEn);
   return (
     <Dialog
       isOpen={open}
@@ -84,8 +108,8 @@ function CommandDialog({
       {...props}
     >
       <DialogHeader className="sr-only">
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
+        <DialogTitle>{title ?? labels.title}</DialogTitle>
+        <DialogDescription>{description ?? labels.description}</DialogDescription>
       </DialogHeader>
       {children}
     </Dialog>
@@ -93,10 +117,11 @@ function CommandDialog({
 }
 
 function CommandInput({ className, ...props }: InputProps) {
+  const { labels } = useFmaMessages("command", commandEn);
   return (
     <SearchField
       autoFocus
-      aria-label={props.placeholder || "Search"}
+      aria-label={props.placeholder || labels.search}
       data-slot="command-input-wrapper"
       className="p-1 pb-0"
     >

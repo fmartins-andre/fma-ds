@@ -14,15 +14,26 @@ import {
 import { Separator } from "@/core/separator/separator";
 import { Sheet, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/core/sheet/sheet";
 import { Switch } from "@/core/switch/switch";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type OrderSummaryLabels = {
   /** The mobile bar's button that opens the details. */
   details: string;
 };
 
-type OrderSummaryI18n = { labels?: Partial<OrderSummaryLabels> };
+export type OrderSummaryConfig = { labels: OrderSummaryLabels };
 
-const defaultOrderSummaryLabels: OrderSummaryLabels = { details: "View details" };
+declare global {
+  interface FmaNamespaces {
+    orderSummary: OrderSummaryConfig;
+  }
+}
+
+const orderSummaryEn: DictionaryNamespace<OrderSummaryConfig> = {
+  labels: { details: "View details" },
+};
+
+type OrderSummaryI18n = { labels?: Partial<OrderSummaryLabels> };
 
 type OrderSummaryProps = Omit<React.ComponentProps<"div">, "title"> & {
   title: React.ReactNode;
@@ -75,7 +86,7 @@ function OrderSummary({
   children,
   ...props
 }: OrderSummaryProps) {
-  const labels = { ...defaultOrderSummaryLabels, ...i18n?.labels };
+  const { labels } = useFmaMessages("orderSummary", orderSummaryEn, i18n);
   const totalBlock = (
     <OrderSummaryTotal label={totalLabel} value={total} description={totalDescription} />
   );

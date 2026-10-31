@@ -18,18 +18,7 @@ import {
 } from "@/core/glance/glance";
 import { Skeleton } from "@/core/skeleton/skeleton";
 import { Tooltip, TooltipTrigger } from "@/core/tooltip/tooltip";
-
-type NotificationData = {
-  id: string;
-  title: React.ReactNode;
-  message?: React.ReactNode;
-  date?: Date | null;
-  isRead?: boolean;
-  /** Where the notification leads; makes the title a link. */
-  href?: string;
-  /** Replaces the unread dot with an icon (e.g. an `IconTile`). */
-  icon?: React.ReactNode;
-};
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type NotificationLabels = {
   /** The panel and page list name. */
@@ -48,28 +37,51 @@ type NotificationLabels = {
   formatDate: (date: Date, locale: string) => string;
 };
 
-type NotificationI18n = { labels?: Partial<NotificationLabels> };
+export type NotificationCenterConfig = { labels: NotificationLabels };
 
-const defaultNotificationLabels: NotificationLabels = {
-  title: "Notifications",
-  trigger: (unread) =>
-    unread > 0 ? `Notifications, ${unread} unread` : "Notifications, none unread",
-  unread: "Unread",
-  read: "Read",
-  markAsRead: "Mark as read",
-  markAllAsRead: "Mark all as read",
-  delete: "Delete",
-  empty: "No notifications",
-  emptyDescription: "You're all caught up.",
-  loading: "Loading notifications…",
-  viewAll: "View all notifications",
-  formatDate: (date, locale) =>
-    new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(date),
+declare global {
+  interface FmaNamespaces {
+    notificationCenter: NotificationCenterConfig;
+  }
+}
+
+const notificationCenterEn: DictionaryNamespace<NotificationCenterConfig> = {
+  labels: {
+    title: "Notifications",
+    trigger: (unread) =>
+      unread > 0 ? `Notifications, ${unread} unread` : "Notifications, none unread",
+    unread: "Unread",
+    read: "Read",
+    markAsRead: "Mark as read",
+    markAllAsRead: "Mark all as read",
+    delete: "Delete",
+    empty: "No notifications",
+    emptyDescription: "You're all caught up.",
+    loading: "Loading notifications…",
+    viewAll: "View all notifications",
+    formatDate: (date, locale) =>
+      new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(date),
+  },
 };
 
+type NotificationData = {
+  id: string;
+  title: React.ReactNode;
+  message?: React.ReactNode;
+  date?: Date | null;
+  isRead?: boolean;
+  /** Where the notification leads; makes the title a link. */
+  href?: string;
+  /** Replaces the unread dot with an icon (e.g. an `IconTile`). */
+  icon?: React.ReactNode;
+};
+
+type NotificationI18n = { labels?: Partial<NotificationLabels> };
+
+const defaultNotificationLabels = notificationCenterEn.labels;
+
 function useNotificationLabels(i18n?: NotificationI18n): NotificationLabels {
-  const overrides = i18n?.labels;
-  return React.useMemo(() => ({ ...defaultNotificationLabels, ...overrides }), [overrides]);
+  return useFmaMessages("notificationCenter", notificationCenterEn, i18n).labels;
 }
 
 type NotificationHandlers = {
@@ -450,4 +462,4 @@ export type {
   NotificationListProps,
   NotificationMenuProps,
 };
-export { defaultNotificationLabels, NotificationItem, NotificationList, NotificationMenu };
+export { type defaultNotificationLabels, NotificationItem, NotificationList, NotificationMenu };

@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "cn";
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 import type * as React from "react";
@@ -10,6 +12,25 @@ import {
   Link as LinkPrimitive,
   type LinkProps,
 } from "react-aria-components";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type BreadcrumbConfig = {
+  labels: {
+    more: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    breadcrumb: BreadcrumbConfig;
+  }
+}
+
+const breadcrumbEn: DictionaryNamespace<BreadcrumbConfig> = {
+  labels: {
+    more: "More",
+  },
+};
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -86,6 +107,7 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
 }
 
 function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span">) {
+  const { labels } = useFmaMessages("breadcrumb", breadcrumbEn);
   return (
     <span
       data-slot="breadcrumb-ellipsis"
@@ -95,7 +117,7 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span"
       {...props}
     >
       <MoreHorizontalIcon />
-      <span className="sr-only">More</span>
+      <span className="sr-only">{labels.more}</span>
     </span>
   );
 }

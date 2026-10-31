@@ -8,6 +8,7 @@ import { Badge } from "@/core/badge/badge";
 import { RadioCard, RadioGroup } from "@/core/radio-group/radio-group";
 import { ToggleGroup, ToggleGroupItem } from "@/core/toggle-group/toggle-group";
 import { brandGlow } from "@/lib/brand";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type PricingPlansLabels = {
   /** Read before an included feature. */
@@ -16,14 +17,24 @@ type PricingPlansLabels = {
   notIncluded: string;
 };
 
-type PricingPlansI18n = { labels?: Partial<PricingPlansLabels> };
+export type PricingPlansConfig = { labels: PricingPlansLabels };
 
-const defaultPricingPlansLabels: PricingPlansLabels = {
-  included: "Included",
-  notIncluded: "Not included",
+declare global {
+  interface FmaNamespaces {
+    pricingPlans: PricingPlansConfig;
+  }
+}
+
+const pricingPlansEn: DictionaryNamespace<PricingPlansConfig> = {
+  labels: {
+    included: "Included",
+    notIncluded: "Not included",
+  },
 };
 
-const PricingPlansContext = React.createContext<PricingPlansLabels>(defaultPricingPlansLabels);
+type PricingPlansI18n = { labels?: Partial<PricingPlansLabels> };
+
+const PricingPlansContext = React.createContext<PricingPlansLabels | null>(null);
 
 type PricingPlansProps = React.ComponentProps<"div"> & {
   /** The side column: an `OrderSummary` with the chosen plan and the action ("Continue"). */
@@ -39,9 +50,7 @@ type PricingPlansProps = React.ComponentProps<"div"> & {
  * periods and features come from the app.
  */
 function PricingPlans({ summary, i18n, className, children, ...props }: PricingPlansProps) {
-  const included = i18n?.labels?.included ?? defaultPricingPlansLabels.included;
-  const notIncluded = i18n?.labels?.notIncluded ?? defaultPricingPlansLabels.notIncluded;
-  const labels = React.useMemo(() => ({ included, notIncluded }), [included, notIncluded]);
+  const { labels } = useFmaMessages("pricingPlans", pricingPlansEn, i18n);
 
   return (
     <PricingPlansContext.Provider value={labels}>
@@ -223,7 +232,8 @@ function PricingPlanFeature({
   children,
   ...props
 }: React.ComponentProps<"li"> & { isIncluded?: boolean }) {
-  const labels = React.useContext(PricingPlansContext);
+  const { labels: standalone } = useFmaMessages("pricingPlans", pricingPlansEn);
+  const labels = React.useContext(PricingPlansContext) ?? standalone;
   return (
     <li
       data-slot="pricing-plan-feature"
