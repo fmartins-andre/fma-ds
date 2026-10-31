@@ -12,12 +12,13 @@ import { changeLanguage } from "@/lib/i18n-i18next/i18n-i18next";
 import { cn } from "@/lib/utils";
 import { fmaLocales, LOCALE_COOKIE } from "../i18n";
 
-function Flag({ label, children }: { label: string; children: ReactNode }) {
+function Flag({ label, children }: { label?: string; children: ReactNode }) {
   return (
     <svg
       viewBox="0 0 20 14"
-      role="img"
+      role={label ? "img" : undefined}
       aria-label={label}
+      aria-hidden={!label}
       className="h-3.5 w-5 shrink-0 rounded-[2px] ring-1 ring-foreground/10"
     >
       {children}
@@ -55,10 +56,11 @@ const LANGUAGES = [
   },
 ];
 
-/** The site's language, as flags; a cookie keeps it, so the server renders it next time. */
+/** The site's language: the flag when closed, flag and name in the list. A cookie keeps it. */
 export function LocaleSelect({ className }: { className?: string }) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
+  const current = LANGUAGES.find(({ id }) => id === i18n.resolvedLanguage);
   return (
     <Select
       aria-label={t(($) => $.header.language)}
@@ -74,12 +76,17 @@ export function LocaleSelect({ className }: { className?: string }) {
       }}
     >
       <SelectTrigger className={cn("w-fit bg-background", className)}>
-        <SelectValue />
+        <SelectValue>
+          {() => current && <Flag label={current.title}>{current.flag}</Flag>}
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         {LANGUAGES.map(({ id, title, flag }) => (
           <SelectItem key={id} id={id} textValue={title}>
-            <Flag label={title}>{flag}</Flag>
+            <span className="flex items-center gap-2">
+              <Flag>{flag}</Flag>
+              {title}
+            </span>
           </SelectItem>
         ))}
       </SelectContent>

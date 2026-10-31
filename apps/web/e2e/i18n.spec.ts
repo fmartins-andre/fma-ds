@@ -90,7 +90,10 @@ test.describe("English browser", () => {
     await open(page, "/components/carousel");
     await expect(page.getByRole("button", { name: "Next slide" }).first()).toBeVisible();
 
-    await page.getByRole("button", { name: /Language/ }).click();
+    const selector = page.getByRole("button", { name: /Language/ });
+    await expect(selector).not.toContainText("English");
+    await selector.click();
+    await expect(page.getByRole("option", { name: "English" })).toContainText("English");
     await page.getByRole("option", { name: "Português" }).click();
 
     await expect(page.getByRole("button", { name: "Próximo slide" }).first()).toBeVisible();
