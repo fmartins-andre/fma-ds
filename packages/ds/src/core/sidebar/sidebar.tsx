@@ -31,7 +31,7 @@ declare global {
   }
 }
 
-const sidebarEn: DictionaryNamespace<SidebarConfig> = {
+export const sidebarEn: DictionaryNamespace<SidebarConfig> = {
   labels: {
     toggle: "Toggle Sidebar",
   },

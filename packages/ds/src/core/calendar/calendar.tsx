@@ -74,7 +74,7 @@ declare global {
   }
 }
 
-const calendarEn: DictionaryNamespace<CalendarConfig> = {
+export const calendarEn: DictionaryNamespace<CalendarConfig> = {
   labels: {
     chooseMonth: "Choose month",
     chooseYear: "Choose year",

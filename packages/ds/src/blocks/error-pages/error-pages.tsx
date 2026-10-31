@@ -56,7 +56,7 @@ const errorDetails: ErrorDetailsLabels = {
   copyFailed: "Couldn't copy",
 };
 
-const errorPagesEn: DictionaryNamespace<ErrorPagesConfig> = {
+export const errorPagesEn: DictionaryNamespace<ErrorPagesConfig> = {
   errorDetails,
   notFound: {
     code: "404",

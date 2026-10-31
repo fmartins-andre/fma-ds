@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-const pricingPlansEn: DictionaryNamespace<PricingPlansConfig> = {
+export const pricingPlansEn: DictionaryNamespace<PricingPlansConfig> = {
   labels: {
     included: "Included",
     notIncluded: "Not included",

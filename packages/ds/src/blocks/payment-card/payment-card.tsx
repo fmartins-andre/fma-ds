@@ -60,7 +60,7 @@ declare global {
   }
 }
 
-const paymentCardEn: DictionaryNamespace<PaymentCardConfig> = {
+export const paymentCardEn: DictionaryNamespace<PaymentCardConfig> = {
   fields: {
     cardNumber: "Card number",
     expiryDate: "Expiry date",

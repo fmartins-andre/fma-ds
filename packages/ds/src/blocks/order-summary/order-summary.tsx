@@ -29,7 +29,7 @@ declare global {
   }
 }
 
-const orderSummaryEn: DictionaryNamespace<OrderSummaryConfig> = {
+export const orderSummaryEn: DictionaryNamespace<OrderSummaryConfig> = {
   labels: { details: "View details" },
 };
 

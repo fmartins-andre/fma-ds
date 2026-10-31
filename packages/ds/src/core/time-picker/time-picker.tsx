@@ -81,7 +81,7 @@ declare global {
   }
 }
 
-const timePickerEn: DictionaryNamespace<TimePickerI18nConfig> = {
+export const timePickerEn: DictionaryNamespace<TimePickerI18nConfig> = {
   labels: {
     placeholder: "Select time",
     hour: "Hour",

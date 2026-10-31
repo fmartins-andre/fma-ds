@@ -44,7 +44,7 @@ declare global {
   }
 }
 
-const panelCardEn: DictionaryNamespace<PanelCardConfig> = {
+export const panelCardEn: DictionaryNamespace<PanelCardConfig> = {
   labels: {
     help: "More information",
     updatedAt: (formatted) => `Updated ${formatted}`,

@@ -31,7 +31,7 @@ declare global {
   }
 }
 
-const confirmDialogEn: DictionaryNamespace<ConfirmDialogConfig> = {
+export const confirmDialogEn: DictionaryNamespace<ConfirmDialogConfig> = {
   labels: {
     confirm: "Confirm",
     cancel: "Cancel",

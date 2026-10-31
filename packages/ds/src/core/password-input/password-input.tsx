@@ -23,7 +23,7 @@ declare global {
   }
 }
 
-const passwordInputEn: DictionaryNamespace<PasswordInputConfig> = {
+export const passwordInputEn: DictionaryNamespace<PasswordInputConfig> = {
   labels: {
     toggle: "Show password",
   },

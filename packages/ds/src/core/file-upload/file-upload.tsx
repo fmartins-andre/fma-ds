@@ -37,7 +37,7 @@ declare global {
   }
 }
 
-const fileUploadEn: DictionaryNamespace<FileUploadConfig> = {
+export const fileUploadEn: DictionaryNamespace<FileUploadConfig> = {
   labels: {
     dropzone: "Drag and drop a file here",
     dropzoneMultiple: "Drag and drop files here",

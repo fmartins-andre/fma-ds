@@ -26,7 +26,7 @@ declare global {
   }
 }
 
-const breadcrumbEn: DictionaryNamespace<BreadcrumbConfig> = {
+export const breadcrumbEn: DictionaryNamespace<BreadcrumbConfig> = {
   labels: {
     more: "More",
   },

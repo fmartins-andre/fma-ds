@@ -40,7 +40,7 @@ declare global {
   }
 }
 
-const commandEn: DictionaryNamespace<CommandConfig> = {
+export const commandEn: DictionaryNamespace<CommandConfig> = {
   labels: {
     title: "Command Palette",
     description: "Search for a command to run...",

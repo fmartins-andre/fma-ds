@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-const loadingOverlayEn: DictionaryNamespace<LoadingOverlayConfig> = {
+export const loadingOverlayEn: DictionaryNamespace<LoadingOverlayConfig> = {
   labels: {
     loading: "Loading…",
   },

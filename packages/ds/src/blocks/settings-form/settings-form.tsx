@@ -26,7 +26,7 @@ declare global {
   }
 }
 
-const settingsFormEn: DictionaryNamespace<SettingsFormConfig> = {
+export const settingsFormEn: DictionaryNamespace<SettingsFormConfig> = {
   labels: {
     save: "Save changes",
     discard: "Discard",

@@ -26,7 +26,7 @@ declare global {
   }
 }
 
-const creditCardEn: DictionaryNamespace<CreditCardConfig> = {
+export const creditCardEn: DictionaryNamespace<CreditCardConfig> = {
   labels: {
     validThru: "valid thru",
     namePlaceholder: "YOUR NAME HERE",

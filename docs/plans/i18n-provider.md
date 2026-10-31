@@ -6,7 +6,7 @@
 >   `useFmaMessages("carousel", carouselEn, i18n)` recebe o inglês do item.
 > - `FmaNamespaces` é uma interface **global**, estendida com `declare global` no arquivo do item.
 >   `declare module` não serve: o CLI do shadcn não reescreve esse caminho.
-> - Traduções ficam em `<item>/<item>-i18n/<idioma>.ts`, só quando existirem. Não são instaladas com
+> - Traduções ficam em `<item>/<item>-i18n/<item>-<idioma>.ts` (o item no nome é obrigatório: o CLI resolve imports pelo nome do arquivo), só quando existirem. Não são instaladas com
 >   o componente: o item `i18n-<idioma>` as publica com `target` na pasta do componente, e o `index`
 >   dele as agrega. O componente nunca importa uma tradução; ela chega pelo provider.
 > - Arquivos de tradução usam `defineFmaNamespace("carousel", {...})`: tipado se o item está

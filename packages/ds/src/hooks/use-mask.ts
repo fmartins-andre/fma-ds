@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-const maskedInputEn: DictionaryNamespace<MaskedInputConfig> = {
+export const maskedInputEn: DictionaryNamespace<MaskedInputConfig> = {
   labels: { day: "d", month: "m", year: "y", hour: "h", minute: "m" },
 };
 

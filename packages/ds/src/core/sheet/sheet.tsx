@@ -29,7 +29,7 @@ declare global {
   }
 }
 
-const sheetEn: DictionaryNamespace<SheetConfig> = {
+export const sheetEn: DictionaryNamespace<SheetConfig> = {
   labels: {
     close: "Close",
   },

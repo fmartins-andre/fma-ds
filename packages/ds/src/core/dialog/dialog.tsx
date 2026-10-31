@@ -28,7 +28,7 @@ declare global {
   }
 }
 
-const dialogEn: DictionaryNamespace<DialogConfig> = {
+export const dialogEn: DictionaryNamespace<DialogConfig> = {
   labels: {
     close: "Close",
   },

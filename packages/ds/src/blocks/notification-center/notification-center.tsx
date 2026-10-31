@@ -45,7 +45,7 @@ declare global {
   }
 }
 
-const notificationCenterEn: DictionaryNamespace<NotificationCenterConfig> = {
+export const notificationCenterEn: DictionaryNamespace<NotificationCenterConfig> = {
   labels: {
     title: "Notifications",
     trigger: (unread) =>

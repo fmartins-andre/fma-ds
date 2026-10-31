@@ -131,7 +131,7 @@ declare global {
   }
 }
 
-const emojiPickerEn: DictionaryNamespace<EmojiPickerI18nConfig> = {
+export const emojiPickerEn: DictionaryNamespace<EmojiPickerI18nConfig> = {
   labels: {
     trigger: "Add emoji",
     panel: "Emoji picker",

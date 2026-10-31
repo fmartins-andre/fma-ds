@@ -263,7 +263,7 @@
           "password",
           "otp"
         ],
-        "contentHash": "e4457e598b21"
+        "contentHash": "c559593b231c"
       }
     },
     {
@@ -391,7 +391,7 @@
           "navigation",
           "react-aria"
         ],
-        "contentHash": "19bf8b5a4072"
+        "contentHash": "e1e025fa8a1c"
       }
     },
     {
@@ -535,7 +535,7 @@
           "date",
           "react-aria"
         ],
-        "contentHash": "f22299528a96"
+        "contentHash": "b012772ac8c1"
       }
     },
     {
@@ -605,7 +605,7 @@
           "slider",
           "embla"
         ],
-        "contentHash": "846c6f35ac96"
+        "contentHash": "1c4df6758ce6"
       }
     },
     {
@@ -717,7 +717,7 @@
           "shiki",
           "ai"
         ],
-        "contentHash": "6a272eca6a4f"
+        "contentHash": "9b7a5ad1c270"
       }
     },
     {
@@ -823,7 +823,7 @@
           "list",
           "repeater"
         ],
-        "contentHash": "7fa658d86867"
+        "contentHash": "37872d88405c"
       }
     },
     {
@@ -902,7 +902,7 @@
           "oklch",
           "react-aria"
         ],
-        "contentHash": "460b9f842caa"
+        "contentHash": "6d934718e221"
       }
     },
     {
@@ -941,7 +941,7 @@
           "selection",
           "autocomplete"
         ],
-        "contentHash": "7a61cfae3064"
+        "contentHash": "1be09f2e4bea"
       }
     },
     {
@@ -980,7 +980,7 @@
           "command-palette",
           "overlay"
         ],
-        "contentHash": "149c67fdebaa"
+        "contentHash": "f802f5837126"
       }
     },
     {
@@ -1019,7 +1019,7 @@
           "confirm",
           "alert"
         ],
-        "contentHash": "22d100e24672"
+        "contentHash": "3f6030e54d9d"
       }
     },
     {
@@ -1092,7 +1092,7 @@
           "clipboard",
           "copy"
         ],
-        "contentHash": "998cdd087a52"
+        "contentHash": "65b0f400304b"
       }
     },
     {
@@ -1129,7 +1129,7 @@
           "data-display",
           "form"
         ],
-        "contentHash": "f4b1066c7eeb"
+        "contentHash": "095d114a8cbd"
       }
     },
     {
@@ -1210,7 +1210,7 @@
           "tanstack",
           "react-aria"
         ],
-        "contentHash": "f3541eeaa711"
+        "contentHash": "cbf2c50409b7"
       }
     },
     {
@@ -1500,7 +1500,7 @@
           "modal",
           "overlay"
         ],
-        "contentHash": "e401c8a95f98"
+        "contentHash": "5a45cac905b6"
       }
     },
     {
@@ -1644,7 +1644,7 @@
           "popover",
           "react-aria"
         ],
-        "contentHash": "22367b1eeafd"
+        "contentHash": "e421f6875091"
       }
     },
     {
@@ -1720,7 +1720,7 @@
           "forbidden",
           "empty-state"
         ],
-        "contentHash": "fd70414b804d"
+        "contentHash": "7c401fa58741"
       }
     },
     {
@@ -1833,7 +1833,7 @@
           "events",
           "recurrence"
         ],
-        "contentHash": "b06b565d4669"
+        "contentHash": "a034075aebce"
       }
     },
     {
@@ -1992,7 +1992,7 @@
           "dropzone",
           "react-aria"
         ],
-        "contentHash": "43cd3f22260c"
+        "contentHash": "e2886d53e067"
       }
     },
     {
@@ -2037,7 +2037,7 @@
           "toolbar",
           "list"
         ],
-        "contentHash": "63551429b4a0"
+        "contentHash": "e0acd9c855e3"
       }
     },
     {
@@ -2078,7 +2078,7 @@
           "stepper",
           "steps"
         ],
-        "contentHash": "e644dffca6c6"
+        "contentHash": "85840a1c4c4a"
       }
     },
     {
@@ -2210,7 +2210,234 @@
           "i18n",
           "locale"
         ],
-        "contentHash": "b043998b552e"
+        "contentHash": "62e36256d70b"
+      }
+    },
+    {
+      "name": "i18n-pt-br",
+      "type": "registry:lib",
+      "title": "I18n Pt Br",
+      "description": "Every registry item in Brazilian Portuguese, for `FmaI18nProvider`.\n\n- **Use**: `<FmaI18nProvider locale=\"pt-BR\" locales={{ \"pt-BR\": ptBR }}>`, or a loader to fetch it on demand.\n- **Install**: each translation lands next to its item, in `<item>-i18n/<item>-pt-BR.ts`, including items you haven't added: they only hold text, and compile either way.\n- **Update**: install it again after adding items from a newer registry.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/lib/i18n-pt-br/i18n-pt-br.ts",
+          "target": "lib/fma-ds/i18n-pt-br/i18n-pt-br.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/breadcrumb/breadcrumb-i18n/breadcrumb-pt-BR.ts",
+          "target": "components/fma-ds/breadcrumb-i18n/breadcrumb-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/calendar/calendar-i18n/calendar-pt-BR.ts",
+          "target": "components/fma-ds/calendar-i18n/calendar-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/carousel/carousel-i18n/carousel-pt-BR.ts",
+          "target": "components/fma-ds/carousel-i18n/carousel-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/code-block/code-block-i18n/code-block-pt-BR.ts",
+          "target": "components/fma-ds/code-block-i18n/code-block-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/color-picker/color-picker-i18n/color-picker-pt-BR.ts",
+          "target": "components/fma-ds/color-picker-i18n/color-picker-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/combobox/combobox-i18n/combobox-pt-BR.ts",
+          "target": "components/fma-ds/combobox-i18n/combobox-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/command/command-i18n/command-pt-BR.ts",
+          "target": "components/fma-ds/command-i18n/command-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/confirm-dialog/confirm-dialog-i18n/confirm-dialog-pt-BR.ts",
+          "target": "components/fma-ds/confirm-dialog-i18n/confirm-dialog-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/copy-button/copy-button-i18n/copy-button-pt-BR.ts",
+          "target": "components/fma-ds/copy-button-i18n/copy-button-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/credit-card/credit-card-i18n/credit-card-pt-BR.ts",
+          "target": "components/fma-ds/credit-card-i18n/credit-card-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/data-grid/data-grid-i18n/data-grid-pt-BR.ts",
+          "target": "components/fma-ds/data-grid-i18n/data-grid-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/dialog/dialog-i18n/dialog-pt-BR.ts",
+          "target": "components/fma-ds/dialog-i18n/dialog-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/emoji-picker/emoji-picker-i18n/emoji-picker-pt-BR.ts",
+          "target": "components/fma-ds/emoji-picker-i18n/emoji-picker-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/file-upload/file-upload-i18n/file-upload-pt-BR.ts",
+          "target": "components/fma-ds/file-upload-i18n/file-upload-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/loading-overlay/loading-overlay-i18n/loading-overlay-pt-BR.ts",
+          "target": "components/fma-ds/loading-overlay-i18n/loading-overlay-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/pagination/pagination-i18n/pagination-pt-BR.ts",
+          "target": "components/fma-ds/pagination-i18n/pagination-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/password-input/password-input-i18n/password-input-pt-BR.ts",
+          "target": "components/fma-ds/password-input-i18n/password-input-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/questionnaire/questionnaire-i18n/questionnaire-pt-BR.ts",
+          "target": "components/fma-ds/questionnaire-i18n/questionnaire-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/sheet/sheet-i18n/sheet-pt-BR.ts",
+          "target": "components/fma-ds/sheet-i18n/sheet-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/sidebar/sidebar-i18n/sidebar-pt-BR.ts",
+          "target": "components/fma-ds/sidebar-i18n/sidebar-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/spinner/spinner-i18n/spinner-pt-BR.ts",
+          "target": "components/fma-ds/spinner-i18n/spinner-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/time-picker/time-picker-i18n/time-picker-pt-BR.ts",
+          "target": "components/fma-ds/time-picker-i18n/time-picker-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/auth/auth-i18n/auth-pt-BR.ts",
+          "target": "components/fma-ds/auth/auth-i18n/auth-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/collection-field/collection-field-i18n/collection-field-pt-BR.ts",
+          "target": "components/fma-ds/collection-field/collection-field-i18n/collection-field-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/error-pages/error-pages-i18n/error-pages-pt-BR.ts",
+          "target": "components/fma-ds/error-pages/error-pages-i18n/error-pages-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/event-calendar/event-calendar-i18n/event-calendar-pt-BR.ts",
+          "target": "components/fma-ds/event-calendar/event-calendar-i18n/event-calendar-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/filter-toolbar/filter-toolbar-i18n/filter-toolbar-pt-BR.ts",
+          "target": "components/fma-ds/filter-toolbar/filter-toolbar-i18n/filter-toolbar-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/form-wizard/form-wizard-i18n/form-wizard-pt-BR.ts",
+          "target": "components/fma-ds/form-wizard/form-wizard-i18n/form-wizard-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/notification-center/notification-center-i18n/notification-center-pt-BR.ts",
+          "target": "components/fma-ds/notification-center/notification-center-i18n/notification-center-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/order-summary/order-summary-i18n/order-summary-pt-BR.ts",
+          "target": "components/fma-ds/order-summary/order-summary-i18n/order-summary-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/page-header/page-header-i18n/page-header-pt-BR.ts",
+          "target": "components/fma-ds/page-header/page-header-i18n/page-header-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/panel-card/panel-card-i18n/panel-card-pt-BR.ts",
+          "target": "components/fma-ds/panel-card/panel-card-i18n/panel-card-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/payment-card/payment-card-i18n/payment-card-pt-BR.ts",
+          "target": "components/fma-ds/payment-card/payment-card-i18n/payment-card-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/plan-builder/plan-builder-i18n/plan-builder-pt-BR.ts",
+          "target": "components/fma-ds/plan-builder/plan-builder-i18n/plan-builder-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR.ts",
+          "target": "components/fma-ds/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/settings-form/settings-form-i18n/settings-form-pt-BR.ts",
+          "target": "components/fma-ds/settings-form/settings-form-i18n/settings-form-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/stat-cards/stat-cards-i18n/stat-cards-pt-BR.ts",
+          "target": "components/fma-ds/stat-cards/stat-cards-i18n/stat-cards-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/hooks/use-file-upload-i18n/use-file-upload-pt-BR.ts",
+          "target": "hooks/fma-ds/use-file-upload-i18n/use-file-upload-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/hooks/use-mask-i18n/use-mask-pt-BR.ts",
+          "target": "hooks/fma-ds/use-mask-i18n/use-mask-pt-BR.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
+      "dependencies": [],
+      "meta": {
+        "status": "stable",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "i18n",
+          "locale",
+          "pt-BR"
+        ],
+        "contentHash": "805c44d8c603"
       }
     },
     {
@@ -2666,7 +2893,7 @@
           "overlay",
           "busy"
         ],
-        "contentHash": "849454a6b82e"
+        "contentHash": "75fe3f1237fb"
       }
     },
     {
@@ -2950,7 +3177,7 @@
           "popover",
           "list"
         ],
-        "contentHash": "11e43031ba67"
+        "contentHash": "34aff22dfce3"
       }
     },
     {
@@ -2993,7 +3220,7 @@
           "order",
           "total"
         ],
-        "contentHash": "2dba788cb32c"
+        "contentHash": "b38dff5237d4"
       }
     },
     {
@@ -3031,7 +3258,7 @@
           "breadcrumb",
           "navigation"
         ],
-        "contentHash": "be4b88d5d226"
+        "contentHash": "ccba63bfc22e"
       }
     },
     {
@@ -3067,7 +3294,7 @@
           "links",
           "react-aria"
         ],
-        "contentHash": "20613ebead2a"
+        "contentHash": "bec9df5e4fcc"
       }
     },
     {
@@ -3112,7 +3339,7 @@
           "chart",
           "status"
         ],
-        "contentHash": "e187de0cc507"
+        "contentHash": "4c0e12081807"
       }
     },
     {
@@ -3149,7 +3376,7 @@
           "password",
           "react-aria"
         ],
-        "contentHash": "1b27bcc8ca5d"
+        "contentHash": "8a6b7e91b4d4"
       }
     },
     {
@@ -3228,7 +3455,7 @@
           "form",
           "billing"
         ],
-        "contentHash": "062bab047202"
+        "contentHash": "13919624efa0"
       }
     },
     {
@@ -3271,7 +3498,7 @@
           "slider",
           "quantity"
         ],
-        "contentHash": "5f8c5a54894d"
+        "contentHash": "f983c7a220a2"
       }
     },
     {
@@ -3345,7 +3572,7 @@
           "pricing",
           "subscription"
         ],
-        "contentHash": "90d4596134b4"
+        "contentHash": "699082457f0e"
       }
     },
     {
@@ -3414,7 +3641,7 @@
           "form",
           "@shadcn/react"
         ],
-        "contentHash": "f49c29c776e8"
+        "contentHash": "eab40ec72bc9"
       }
     },
     {
@@ -3618,7 +3845,7 @@
           "settings",
           "fields"
         ],
-        "contentHash": "936779499cc9"
+        "contentHash": "1fb95b7ef5a6"
       }
     },
     {
@@ -3658,7 +3885,7 @@
           "drawer",
           "react-aria"
         ],
-        "contentHash": "d9290b9351fc"
+        "contentHash": "2982451af32d"
       }
     },
     {
@@ -3702,7 +3929,7 @@
           "layout",
           "react-aria"
         ],
-        "contentHash": "2096b4e5d539"
+        "contentHash": "c6e8339c0b21"
       }
     },
     {
@@ -3869,7 +4096,7 @@
           "feedback",
           "loading"
         ],
-        "contentHash": "470eda00c1cd"
+        "contentHash": "cc9ac5cf0f6d"
       }
     },
     {
@@ -3909,7 +4136,7 @@
           "totals",
           "filters"
         ],
-        "contentHash": "25781b631ef3"
+        "contentHash": "a75f309ca3ce"
       }
     },
     {
@@ -7559,7 +7786,7 @@
           "popover",
           "react-aria"
         ],
-        "contentHash": "d8c61238b157"
+        "contentHash": "6679abb293aa"
       }
     },
     {
@@ -7885,7 +8112,7 @@
           "file",
           "upload"
         ],
-        "contentHash": "6c10e86477d6"
+        "contentHash": "fa51e6e17784"
       }
     },
     {
@@ -7922,7 +8149,7 @@
           "mask",
           "pt-BR"
         ],
-        "contentHash": "c72bc0067023"
+        "contentHash": "47de1f0d02d9"
       }
     },
     {

@@ -1,0 +1,268 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "i18n-pt-br",
+  "title": "I18n Pt Br",
+  "author": "@fma-ds/ds",
+  "description": "Every registry item in Brazilian Portuguese, for `FmaI18nProvider`.\n\n- **Use**: `<FmaI18nProvider locale=\"pt-BR\" locales={{ \"pt-BR\": ptBR }}>`, or a loader to fetch it on demand.\n- **Install**: each translation lands next to its item, in `<item>-i18n/<item>-pt-BR.ts`, including items you haven't added: they only hold text, and compile either way.\n- **Update**: install it again after adding items from a newer registry.",
+  "dependencies": [],
+  "registryDependencies": [
+    "@fma-ds/i18n"
+  ],
+  "files": [
+    {
+      "path": "src/lib/i18n-pt-br/i18n-pt-br.ts",
+      "content": "import { authPtBR } from \"@/blocks/auth/auth-i18n/auth-pt-BR\";\nimport { collectionFieldPtBR } from \"@/blocks/collection-field/collection-field-i18n/collection-field-pt-BR\";\nimport { errorPagesPtBR } from \"@/blocks/error-pages/error-pages-i18n/error-pages-pt-BR\";\nimport { eventCalendarPtBR } from \"@/blocks/event-calendar/event-calendar-i18n/event-calendar-pt-BR\";\nimport { filterToolbarPtBR } from \"@/blocks/filter-toolbar/filter-toolbar-i18n/filter-toolbar-pt-BR\";\nimport { formWizardPtBR } from \"@/blocks/form-wizard/form-wizard-i18n/form-wizard-pt-BR\";\nimport { notificationCenterPtBR } from \"@/blocks/notification-center/notification-center-i18n/notification-center-pt-BR\";\nimport { orderSummaryPtBR } from \"@/blocks/order-summary/order-summary-i18n/order-summary-pt-BR\";\nimport { pageHeaderPtBR } from \"@/blocks/page-header/page-header-i18n/page-header-pt-BR\";\nimport { panelCardPtBR } from \"@/blocks/panel-card/panel-card-i18n/panel-card-pt-BR\";\nimport { paymentCardPtBR } from \"@/blocks/payment-card/payment-card-i18n/payment-card-pt-BR\";\nimport { planBuilderPtBR } from \"@/blocks/plan-builder/plan-builder-i18n/plan-builder-pt-BR\";\nimport { pricingPlansPtBR } from \"@/blocks/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR\";\nimport { settingsFormPtBR } from \"@/blocks/settings-form/settings-form-i18n/settings-form-pt-BR\";\nimport { statCardsPtBR } from \"@/blocks/stat-cards/stat-cards-i18n/stat-cards-pt-BR\";\nimport { breadcrumbPtBR } from \"@/core/breadcrumb/breadcrumb-i18n/breadcrumb-pt-BR\";\nimport { calendarPtBR } from \"@/core/calendar/calendar-i18n/calendar-pt-BR\";\nimport { carouselPtBR } from \"@/core/carousel/carousel-i18n/carousel-pt-BR\";\nimport { codeBlockPtBR } from \"@/core/code-block/code-block-i18n/code-block-pt-BR\";\nimport { colorPickerPtBR } from \"@/core/color-picker/color-picker-i18n/color-picker-pt-BR\";\nimport { comboboxPtBR } from \"@/core/combobox/combobox-i18n/combobox-pt-BR\";\nimport { commandPtBR } from \"@/core/command/command-i18n/command-pt-BR\";\nimport { confirmDialogPtBR } from \"@/core/confirm-dialog/confirm-dialog-i18n/confirm-dialog-pt-BR\";\nimport { copyButtonPtBR } from \"@/core/copy-button/copy-button-i18n/copy-button-pt-BR\";\nimport { creditCardPtBR } from \"@/core/credit-card/credit-card-i18n/credit-card-pt-BR\";\nimport { dataGridPtBR } from \"@/core/data-grid/data-grid-i18n/data-grid-pt-BR\";\nimport { dialogPtBR } from \"@/core/dialog/dialog-i18n/dialog-pt-BR\";\nimport { emojiPickerPtBR } from \"@/core/emoji-picker/emoji-picker-i18n/emoji-picker-pt-BR\";\nimport { fileUploadPtBR } from \"@/core/file-upload/file-upload-i18n/file-upload-pt-BR\";\nimport { loadingOverlayPtBR } from \"@/core/loading-overlay/loading-overlay-i18n/loading-overlay-pt-BR\";\nimport { paginationPtBR } from \"@/core/pagination/pagination-i18n/pagination-pt-BR\";\nimport { passwordInputPtBR } from \"@/core/password-input/password-input-i18n/password-input-pt-BR\";\nimport { questionnairePtBR } from \"@/core/questionnaire/questionnaire-i18n/questionnaire-pt-BR\";\nimport { sheetPtBR } from \"@/core/sheet/sheet-i18n/sheet-pt-BR\";\nimport { sidebarPtBR } from \"@/core/sidebar/sidebar-i18n/sidebar-pt-BR\";\nimport { spinnerPtBR } from \"@/core/spinner/spinner-i18n/spinner-pt-BR\";\nimport { timePickerPtBR } from \"@/core/time-picker/time-picker-i18n/time-picker-pt-BR\";\nimport { useFileUploadPtBR } from \"@/hooks/use-file-upload-i18n/use-file-upload-pt-BR\";\nimport { maskedInputPtBR } from \"@/hooks/use-mask-i18n/use-mask-pt-BR\";\n\nconst ptBR = {\n  auth: authPtBR,\n  breadcrumb: breadcrumbPtBR,\n  calendar: calendarPtBR,\n  carousel: carouselPtBR,\n  codeBlock: codeBlockPtBR,\n  collectionField: collectionFieldPtBR,\n  colorPicker: colorPickerPtBR,\n  combobox: comboboxPtBR,\n  command: commandPtBR,\n  confirmDialog: confirmDialogPtBR,\n  copyButton: copyButtonPtBR,\n  creditCard: creditCardPtBR,\n  dataGrid: dataGridPtBR,\n  dialog: dialogPtBR,\n  emojiPicker: emojiPickerPtBR,\n  errorPages: errorPagesPtBR,\n  eventCalendar: eventCalendarPtBR,\n  fileUpload: fileUploadPtBR,\n  filterToolbar: filterToolbarPtBR,\n  formWizard: formWizardPtBR,\n  loadingOverlay: loadingOverlayPtBR,\n  maskedInput: maskedInputPtBR,\n  notificationCenter: notificationCenterPtBR,\n  orderSummary: orderSummaryPtBR,\n  pageHeader: pageHeaderPtBR,\n  pagination: paginationPtBR,\n  panelCard: panelCardPtBR,\n  passwordInput: passwordInputPtBR,\n  paymentCard: paymentCardPtBR,\n  planBuilder: planBuilderPtBR,\n  pricingPlans: pricingPlansPtBR,\n  questionnaire: questionnairePtBR,\n  settingsForm: settingsFormPtBR,\n  sheet: sheetPtBR,\n  sidebar: sidebarPtBR,\n  spinner: spinnerPtBR,\n  statCards: statCardsPtBR,\n  timePicker: timePickerPtBR,\n  useFileUpload: useFileUploadPtBR,\n};\n\nexport default ptBR;\n",
+      "type": "registry:lib",
+      "target": "lib/fma-ds/i18n-pt-br/i18n-pt-br.ts"
+    },
+    {
+      "path": "src/core/breadcrumb/breadcrumb-i18n/breadcrumb-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const breadcrumbPtBR = defineFmaNamespace(\"breadcrumb\", { labels: { more: \"Mais\" } });\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/breadcrumb-i18n/breadcrumb-pt-BR.ts"
+    },
+    {
+      "path": "src/core/calendar/calendar-i18n/calendar-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const calendarPtBR = defineFmaNamespace(\"calendar\", {\n  labels: {\n    chooseMonth: \"Escolher mês\",\n    chooseYear: \"Escolher ano\",\n    previousYear: \"Ano anterior\",\n    previousDecade: \"Década anterior\",\n    nextYear: \"Próximo ano\",\n    nextDecade: \"Próxima década\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/calendar-i18n/calendar-pt-BR.ts"
+    },
+    {
+      "path": "src/core/carousel/carousel-i18n/carousel-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const carouselPtBR = defineFmaNamespace(\"carousel\", {\n  labels: {\n    previous: \"Slide anterior\",\n    next: \"Próximo slide\",\n    pause: \"Pausar slides\",\n    start: \"Reproduzir slides\",\n    goToSlide: (slide, total) => `Ir para o slide ${slide} de ${total}`,\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/carousel-i18n/carousel-pt-BR.ts"
+    },
+    {
+      "path": "src/core/code-block/code-block-i18n/code-block-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const codeBlockPtBR = defineFmaNamespace(\"codeBlock\", {\n  labels: { copy: \"Copiar código\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/code-block-i18n/code-block-pt-BR.ts"
+    },
+    {
+      "path": "src/core/color-picker/color-picker-i18n/color-picker-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const colorPickerPtBR = defineFmaNamespace(\"colorPicker\", {\n  labels: {\n    lightness: \"Luminosidade\",\n    chroma: \"Croma\",\n    hue: \"Matiz\",\n    saturation: \"Saturação\",\n    brightness: \"Brilho\",\n    red: \"Vermelho\",\n    green: \"Verde\",\n    blue: \"Azul\",\n    alpha: \"Alfa\",\n    oklchArea: \"Croma e luminosidade\",\n    hsbArea: \"Saturação e brilho\",\n    pickColor: \"Escolher cor\",\n    swatches: \"Cores predefinidas\",\n    format: \"Formato da cor\",\n    copy: \"Copiar cor\",\n    copied: \"Copiado\",\n    copyFailed: \"Não foi possível copiar\",\n    eyeDropper: \"Escolher uma cor da tela\",\n    fix: (level) => `Corrigir para ${level}`,\n    largeText: \"AA grande\",\n    fail: \"Reprovado\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/color-picker-i18n/color-picker-pt-BR.ts"
+    },
+    {
+      "path": "src/core/combobox/combobox-i18n/combobox-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const comboboxPtBR = defineFmaNamespace(\"combobox\", { labels: { clear: \"Limpar\" } });\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/combobox-i18n/combobox-pt-BR.ts"
+    },
+    {
+      "path": "src/core/command/command-i18n/command-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const commandPtBR = defineFmaNamespace(\"command\", {\n  labels: {\n    title: \"Paleta de comandos\",\n    description: \"Pesquise um comando para executar...\",\n    search: \"Pesquisar\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/command-i18n/command-pt-BR.ts"
+    },
+    {
+      "path": "src/core/confirm-dialog/confirm-dialog-i18n/confirm-dialog-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const confirmDialogPtBR = defineFmaNamespace(\"confirmDialog\", {\n  labels: {\n    confirm: \"Confirmar\",\n    cancel: \"Cancelar\",\n    pending: \"Aguarde…\",\n    error: \"Algo deu errado. Tente novamente.\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/confirm-dialog-i18n/confirm-dialog-pt-BR.ts"
+    },
+    {
+      "path": "src/core/copy-button/copy-button-i18n/copy-button-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const copyButtonPtBR = defineFmaNamespace(\"copyButton\", {\n  labels: { copy: \"Copiar\", copied: \"Copiado\", failed: \"Não foi possível copiar\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/copy-button-i18n/copy-button-pt-BR.ts"
+    },
+    {
+      "path": "src/core/credit-card/credit-card-i18n/credit-card-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const creditCardPtBR = defineFmaNamespace(\"creditCard\", {\n  labels: {\n    validThru: \"válido até\",\n    namePlaceholder: \"SEU NOME AQUI\",\n    card: ({ issuer, lastDigits, expiry }) =>\n      `Cartão ${issuer ?? \"de crédito\"}${lastDigits ? ` com final ${lastDigits}` : \"\"}${\n        expiry ? `, vence em ${expiry}` : \"\"\n      }`,\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/credit-card-i18n/credit-card-pt-BR.ts"
+    },
+    {
+      "path": "src/core/data-grid/data-grid-i18n/data-grid-pt-BR.ts",
+      "content": "import { defineFmaNamespace, plural } from \"@/lib/i18n/i18n\";\n\nexport const dataGridPtBR = defineFmaNamespace(\"dataGrid\", {\n  labels: {\n    table: \"Tabela de dados\",\n    loading: \"Carregando...\",\n    fetchingMore: \"Carregando mais...\",\n    allRowsLoaded: \"Todos os registros carregados\",\n    empty: \"Nenhum dado disponível\",\n    sort: \"Ordenar\",\n    sortAscending: \"Crescente\",\n    sortDescending: \"Decrescente\",\n    pin: \"Fixar\",\n    pinColumnStart: \"Fixar no início\",\n    pinColumnEnd: \"Fixar no fim\",\n    unpinColumn: (column) => `Desafixar a coluna ${column}`,\n    move: \"Mover\",\n    moveColumnLeft: \"Mover para a esquerda\",\n    moveColumnRight: \"Mover para a direita\",\n    columns: \"Colunas\",\n    toggleColumns: \"Alternar colunas\",\n    columnMenu: (column) => `Coluna ${column}`,\n    resizeColumn: (column) => `Redimensionar ${column}`,\n    expandRow: \"Expandir linha\",\n    collapseRow: \"Recolher linha\",\n    rowDetails: (row) => `Detalhes de ${row}`,\n    pinRow: \"Fixar linha\",\n    unpinRow: \"Desafixar linha\",\n    rowActions: (row) => (row ? `Ações de ${row}` : \"Ações da linha\"),\n    noRowActions: \"Nenhuma ação disponível\",\n    filter: \"Filtrar\",\n    filterSearch: (title) => `Pesquisar ${title}`,\n    filterNoResults: \"Nenhum resultado encontrado.\",\n    filterClear: \"Limpar filtros\",\n    filterSelected: (count) =>\n      plural(\"pt-BR\", count, { one: \"1 selecionado\", other: `${count} selecionados` }),\n    selectedRows: (count) =>\n      plural(\"pt-BR\", count, { one: \"1 selecionada\", other: `${count} selecionadas` }),\n    selectedOnOtherPages: (count) => `(${count} em outras páginas)`,\n    clearSelection: \"Limpar seleção\",\n    pagination: \"Paginação\",\n    rowsPerPage: \"Linhas por página\",\n    paginationInfo: ({ from, to, count }) => `${from} - ${to} de ${count}`,\n    previousPage: \"Ir para a página anterior\",\n    nextPage: \"Ir para a próxima página\",\n    goToPage: (page) => `Página ${page}`,\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/data-grid-i18n/data-grid-pt-BR.ts"
+    },
+    {
+      "path": "src/core/dialog/dialog-i18n/dialog-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const dialogPtBR = defineFmaNamespace(\"dialog\", { labels: { close: \"Fechar\" } });\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/dialog-i18n/dialog-pt-BR.ts"
+    },
+    {
+      "path": "src/core/emoji-picker/emoji-picker-i18n/emoji-picker-pt-BR.ts",
+      "content": "import { defineFmaNamespace, plural } from \"@/lib/i18n/i18n\";\n\nexport const emojiPickerPtBR = defineFmaNamespace(\"emojiPicker\", {\n  labels: {\n    trigger: \"Adicionar emoji\",\n    panel: \"Seletor de emoji\",\n    search: \"Pesquisar emoji\",\n    clearSearch: \"Limpar pesquisa\",\n    categories: \"Categorias de emoji\",\n    frequent: \"Usados com frequência\",\n    recent: \"Usados recentemente\",\n    searchResults: \"Resultados da pesquisa\",\n    custom: \"Personalizados\",\n    smileys: \"Carinhas e emoções\",\n    people: \"Pessoas e corpo\",\n    nature: \"Animais e natureza\",\n    food: \"Comidas e bebidas\",\n    travel: \"Viagens e lugares\",\n    activities: \"Atividades\",\n    objects: \"Objetos\",\n    symbols: \"Símbolos\",\n    flags: \"Bandeiras\",\n    skinTone: \"Tom de pele\",\n    skinTones: [\"Padrão\", \"Claro\", \"Médio-claro\", \"Médio\", \"Médio-escuro\", \"Escuro\"],\n    empty: \"Nenhum emoji encontrado\",\n    emptyHint: \"Tente outra palavra ou um atalho\",\n    loading: \"Carregando emoji\",\n    error: \"Não foi possível carregar os emoji\",\n    retry: \"Tentar novamente\",\n    preview: \"Escolha um emoji\",\n  },\n  functions: () => ({\n    formatResultCount: (count) =>\n      plural(\"pt-BR\", count, { one: \"1 emoji encontrado\", other: `${count} emoji encontrados` }),\n    formatSelected: (label) => `${label} selecionado`,\n  }),\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/emoji-picker-i18n/emoji-picker-pt-BR.ts"
+    },
+    {
+      "path": "src/core/file-upload/file-upload-i18n/file-upload-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const fileUploadPtBR = defineFmaNamespace(\"fileUpload\", {\n  labels: {\n    dropzone: \"Arraste e solte um arquivo aqui\",\n    dropzoneMultiple: \"Arraste e solte os arquivos aqui\",\n    browse: \"Escolher arquivo\",\n    browseMultiple: \"Escolher arquivos\",\n    remove: (name) => `Remover ${name}`,\n    progress: (name) => `Enviando ${name}`,\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/file-upload-i18n/file-upload-pt-BR.ts"
+    },
+    {
+      "path": "src/core/loading-overlay/loading-overlay-i18n/loading-overlay-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const loadingOverlayPtBR = defineFmaNamespace(\"loadingOverlay\", {\n  labels: { loading: \"Carregando…\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/loading-overlay-i18n/loading-overlay-pt-BR.ts"
+    },
+    {
+      "path": "src/core/pagination/pagination-i18n/pagination-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const paginationPtBR = defineFmaNamespace(\"pagination\", {\n  labels: {\n    previous: \"Anterior\",\n    next: \"Próximo\",\n    goToPrevious: \"Ir para a página anterior\",\n    goToNext: \"Ir para a próxima página\",\n    morePages: \"Mais páginas\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/pagination-i18n/pagination-pt-BR.ts"
+    },
+    {
+      "path": "src/core/password-input/password-input-i18n/password-input-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const passwordInputPtBR = defineFmaNamespace(\"passwordInput\", {\n  labels: { toggle: \"Mostrar senha\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/password-input-i18n/password-input-pt-BR.ts"
+    },
+    {
+      "path": "src/core/questionnaire/questionnaire-i18n/questionnaire-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const questionnairePtBR = defineFmaNamespace(\"questionnaire\", {\n  labels: { previous: \"Anterior\", skip: \"Pular\", next: \"Próximo\", submit: \"Enviar\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/questionnaire-i18n/questionnaire-pt-BR.ts"
+    },
+    {
+      "path": "src/core/sheet/sheet-i18n/sheet-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const sheetPtBR = defineFmaNamespace(\"sheet\", { labels: { close: \"Fechar\" } });\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/sheet-i18n/sheet-pt-BR.ts"
+    },
+    {
+      "path": "src/core/sidebar/sidebar-i18n/sidebar-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const sidebarPtBR = defineFmaNamespace(\"sidebar\", {\n  labels: { toggle: \"Alternar barra lateral\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/sidebar-i18n/sidebar-pt-BR.ts"
+    },
+    {
+      "path": "src/core/spinner/spinner-i18n/spinner-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const spinnerPtBR = defineFmaNamespace(\"spinner\", { labels: { loading: \"Carregando\" } });\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/spinner-i18n/spinner-pt-BR.ts"
+    },
+    {
+      "path": "src/core/time-picker/time-picker-i18n/time-picker-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const timePickerPtBR = defineFmaNamespace(\"timePicker\", {\n  labels: {\n    placeholder: \"Selecionar horário\",\n    hour: \"Hora\",\n    minute: \"Minuto\",\n    second: \"Segundo\",\n    now: \"Agora\",\n    clear: \"Limpar\",\n    panelLabel: \"Escolher horário\",\n    openPicker: \"Abrir seletor de horário\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/time-picker-i18n/time-picker-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/auth/auth-i18n/auth-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const authPtBR = defineFmaNamespace(\"auth\", {\n  resendCode: {\n    resend: \"Reenviar código\",\n    resendIn: (time) => `Reenviar código em ${time}`,\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/auth/auth-i18n/auth-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/collection-field/collection-field-i18n/collection-field-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const collectionFieldPtBR = defineFmaNamespace(\"collectionField\", {\n  labels: {\n    remove: (item) => `Remover ${item}`,\n    removeText: \"Remover\",\n    added: (item) => `${item} adicionado`,\n    removed: (item) => `${item} removido`,\n    maxReached: (max) => `Até ${max} itens.`,\n    empty: \"Nada adicionado ainda.\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/collection-field/collection-field-i18n/collection-field-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/error-pages/error-pages-i18n/error-pages-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const errorPagesPtBR = defineFmaNamespace(\"errorPages\", {\n  errorDetails: {\n    details: \"Detalhes do erro\",\n    copy: \"Copiar detalhes\",\n    copied: \"Copiado\",\n    copyFailed: \"Não foi possível copiar\",\n  },\n  notFound: {\n    title: \"Página não encontrada\",\n    description: \"A página que você procura não existe ou mudou de endereço.\",\n  },\n  forbidden: {\n    title: \"Acesso negado\",\n    description: \"Você não tem permissão para ver esta página. Peça acesso a um administrador.\",\n  },\n  unexpectedError: {\n    title: \"Algo deu errado\",\n    description: \"Ocorreu um erro inesperado. Tente novamente; se continuar, fale com o suporte.\",\n    retry: \"Tentar novamente\",\n    details: \"Detalhes do erro\",\n    copy: \"Copiar detalhes\",\n    copied: \"Copiado\",\n    copyFailed: \"Não foi possível copiar\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/error-pages/error-pages-i18n/error-pages-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/event-calendar/event-calendar-i18n/event-calendar-pt-BR.ts",
+      "content": "import { defineFmaNamespace, plural } from \"@/lib/i18n/i18n\";\n\nexport const eventCalendarPtBR = defineFmaNamespace(\"eventCalendar\", {\n  labels: {\n    today: \"Hoje\",\n    previous: \"Anterior\",\n    next: \"Próximo\",\n    addEvent: \"Adicionar evento\",\n    addEventOn: (date) => `Adicionar evento em ${date}`,\n    allDay: \"Dia inteiro\",\n    more: (count) => `+${count} mais`,\n    noEvents: \"Sem eventos\",\n    loading: \"Carregando eventos\",\n    event: \"evento\",\n    events: (count) => plural(\"pt-BR\", count, { one: \"1 evento\", other: `${count} eventos` }),\n    selectView: \"Selecionar visualização\",\n    week: (weekNumber) => `S${weekNumber}`,\n    resources: \"Recursos\",\n    goToDate: \"Ir para a data\",\n    dropNotAllowed: \"Não é possível colocar aqui\",\n    continues: \"continua\",\n    timeFrom: (time) => `A partir de ${time}`,\n    timeUntil: (time) => `Até ${time}`,\n    viewShortcuts: { month: \"M\", week: \"S\", day: \"D\", days: \"5\", agenda: \"A\", resource: \"R\" },\n    toggleDayEvents: (count) =>\n      plural(\"pt-BR\", count, { one: \"1 evento\", other: `${count} eventos` }),\n  },\n  viewNames: {\n    month: \"Mês\",\n    week: \"Semana\",\n    day: \"Dia\",\n    days: (count) => plural(\"pt-BR\", count, { one: \"1 dia\", other: `${count} dias` }),\n    resource: \"Recursos\",\n  },\n  formats: {\n    monthTitle: \"MMMM 'de' yyyy\",\n    dayTitle: \"EEEE, d 'de' MMMM 'de' yyyy\",\n    agendaDayHeader: \"EEEE, d 'de' MMMM\",\n    moreDayHeader: \"EEEE, d 'de' MMMM\",\n    timeGutter: \"HH'h'\",\n    timeGutterMinute: \"HH:mm\",\n    eventTime: \"HH:mm\",\n    rangeMonthStart: \"d\",\n    rangeMonthEnd: \"d 'de' MMMM 'de' yyyy\",\n    rangeYearStart: \"d 'de' MMM\",\n    rangeFull: \"d 'de' MMM 'de' yyyy\",\n    shortDate: \"d 'de' MMM\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/event-calendar/event-calendar-i18n/event-calendar-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/filter-toolbar/filter-toolbar-i18n/filter-toolbar-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const filterToolbarPtBR = defineFmaNamespace(\"filterToolbar\", {\n  labels: {\n    search: \"Pesquisar\",\n    searchPlaceholder: \"Pesquisar…\",\n    clearSearch: \"Limpar pesquisa\",\n    quickFilters: \"Filtros rápidos\",\n    filters: \"Filtros\",\n    filtersTrigger: (active) => (active > 0 ? `Filtros, ${active} ativos` : \"Filtros\"),\n    filtersTitle: \"Filtrar resultados\",\n    apply: \"Aplicar\",\n    clear: \"Limpar\",\n    activeFilters: \"Filtros ativos\",\n    clearAll: \"Limpar filtros\",\n    refresh: \"Atualizar\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/filter-toolbar/filter-toolbar-i18n/filter-toolbar-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/form-wizard/form-wizard-i18n/form-wizard-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const formWizardPtBR = defineFmaNamespace(\"formWizard\", {\n  labels: {\n    steps: \"Etapas\",\n    back: \"Voltar\",\n    next: \"Próximo\",\n    finish: \"Concluir\",\n    progress: (step, total) => `Etapa ${step} de ${total}`,\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/form-wizard/form-wizard-i18n/form-wizard-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/notification-center/notification-center-i18n/notification-center-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const notificationCenterPtBR = defineFmaNamespace(\"notificationCenter\", {\n  labels: {\n    title: \"Notificações\",\n    trigger: (unread) =>\n      unread > 0 ? `Notificações, ${unread} não lidas` : \"Notificações, nenhuma não lida\",\n    unread: \"Não lida\",\n    read: \"Lida\",\n    markAsRead: \"Marcar como lida\",\n    markAllAsRead: \"Marcar todas como lidas\",\n    delete: \"Excluir\",\n    empty: \"Nenhuma notificação\",\n    emptyDescription: \"Você está em dia.\",\n    loading: \"Carregando notificações…\",\n    viewAll: \"Ver todas as notificações\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/notification-center/notification-center-i18n/notification-center-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/order-summary/order-summary-i18n/order-summary-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const orderSummaryPtBR = defineFmaNamespace(\"orderSummary\", {\n  labels: { details: \"Ver detalhes\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/order-summary/order-summary-i18n/order-summary-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/page-header/page-header-i18n/page-header-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const pageHeaderPtBR = defineFmaNamespace(\"pageHeader\", {\n  labels: { breadcrumb: \"Trilha de navegação\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/page-header/page-header-i18n/page-header-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/panel-card/panel-card-i18n/panel-card-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const panelCardPtBR = defineFmaNamespace(\"panelCard\", {\n  labels: {\n    help: \"Mais informações\",\n    updatedAt: (formatted) => `Atualizado em ${formatted}`,\n    refreshing: \"Atualizando\",\n    loading: \"Carregando\",\n    empty: \"Sem dados\",\n    emptyDescription: \"Ainda não há nada para mostrar neste período.\",\n    error: \"Não foi possível carregar os dados\",\n    errorDescription: \"Verifique sua conexão e tente novamente.\",\n    retry: \"Tentar novamente\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/panel-card/panel-card-i18n/panel-card-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/payment-card/payment-card-i18n/payment-card-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const paymentCardPtBR = defineFmaNamespace(\"paymentCard\", {\n  fields: {\n    cardNumber: \"Número do cartão\",\n    expiryDate: \"Validade\",\n    securityCode: \"Código de segurança\",\n  },\n  details: {\n    issuer: \"Cartão\",\n    number: \"Número\",\n    holder: \"Nome no cartão\",\n    expiry: \"Validade\",\n  },\n  remove: {\n    remove: \"Remover cartão\",\n    confirmTitle: \"Remover este cartão?\",\n    confirmDescription: \"Para pagar com cartão, será preciso adicionar um novamente.\",\n    confirm: \"Remover cartão\",\n    cancel: \"Cancelar\",\n    pending: \"Removendo…\",\n    error: \"Não foi possível remover o cartão. Tente novamente.\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/payment-card/payment-card-i18n/payment-card-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/plan-builder/plan-builder-i18n/plan-builder-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const planBuilderPtBR = defineFmaNamespace(\"planBuilder\", {\n  labels: { included: \"O que está incluído\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/plan-builder/plan-builder-i18n/plan-builder-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const pricingPlansPtBR = defineFmaNamespace(\"pricingPlans\", {\n  labels: { included: \"Incluído\", notIncluded: \"Não incluído\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/settings-form/settings-form-i18n/settings-form-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const settingsFormPtBR = defineFmaNamespace(\"settingsForm\", {\n  labels: {\n    save: \"Salvar alterações\",\n    discard: \"Descartar\",\n    saving: \"Salvando…\",\n    unsaved: \"Você tem alterações não salvas\",\n    saved: \"Nenhuma alteração pendente\",\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/settings-form/settings-form-i18n/settings-form-pt-BR.ts"
+    },
+    {
+      "path": "src/blocks/stat-cards/stat-cards-i18n/stat-cards-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const statCardsPtBR = defineFmaNamespace(\"statCards\", {\n  labels: { loading: \"Carregando\", unavailable: \"Indisponível\" },\n});\n",
+      "type": "registry:lib",
+      "target": "components/fma-ds/stat-cards/stat-cards-i18n/stat-cards-pt-BR.ts"
+    },
+    {
+      "path": "src/hooks/use-file-upload-i18n/use-file-upload-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const useFileUploadPtBR = defineFmaNamespace(\"useFileUpload\", {\n  messages: {\n    fileInvalidType: (file) => `\"${file.name}\" não é um tipo de arquivo aceito.`,\n    tooManyFiles: (maxFiles) => `Você pode adicionar até ${maxFiles} arquivos.`,\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "hooks/fma-ds/use-file-upload-i18n/use-file-upload-pt-BR.ts"
+    },
+    {
+      "path": "src/hooks/use-mask-i18n/use-mask-pt-BR.ts",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const maskedInputPtBR = defineFmaNamespace(\"maskedInput\", {\n  labels: { day: \"d\", month: \"m\", year: \"a\", hour: \"h\", minute: \"m\" },\n});\n",
+      "type": "registry:lib",
+      "target": "hooks/fma-ds/use-mask-i18n/use-mask-pt-BR.ts"
+    }
+  ],
+  "meta": {
+    "status": "stable",
+    "source": "original",
+    "license": "MIT",
+    "tags": [
+      "i18n",
+      "locale",
+      "pt-BR"
+    ],
+    "contentHash": "805c44d8c603"
+  },
+  "categories": [
+    "utils"
+  ],
+  "type": "registry:lib"
+}

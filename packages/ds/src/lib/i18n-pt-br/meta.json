@@ -1,0 +1,8 @@
+{
+  "name": "i18n-pt-br",
+  "category": "utils",
+  "status": "stable",
+  "source": "original",
+  "description": "Every registry item in Brazilian Portuguese, for `FmaI18nProvider`.\n\n- **Use**: `<FmaI18nProvider locale=\"pt-BR\" locales={{ \"pt-BR\": ptBR }}>`, or a loader to fetch it on demand.\n- **Install**: each translation lands next to its item, in `<item>-i18n/<item>-pt-BR.ts`, including items you haven't added: they only hold text, and compile either way.\n- **Update**: install it again after adding items from a newer registry.",
+  "tags": ["i18n", "locale", "pt-BR"]
+}

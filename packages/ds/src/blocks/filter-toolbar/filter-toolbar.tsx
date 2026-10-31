@@ -51,7 +51,7 @@ declare global {
   }
 }
 
-const filterToolbarEn: DictionaryNamespace<FilterToolbarConfig> = {
+export const filterToolbarEn: DictionaryNamespace<FilterToolbarConfig> = {
   labels: {
     search: "Search",
     searchPlaceholder: "Search…",

@@ -37,7 +37,7 @@ declare global {
   }
 }
 
-const formWizardEn: DictionaryNamespace<FormWizardConfig> = {
+export const formWizardEn: DictionaryNamespace<FormWizardConfig> = {
   labels: {
     steps: "Steps",
     back: "Back",

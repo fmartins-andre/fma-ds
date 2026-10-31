@@ -32,7 +32,7 @@ declare global {
   }
 }
 
-const statCardsEn: DictionaryNamespace<StatCardsConfig> = {
+export const statCardsEn: DictionaryNamespace<StatCardsConfig> = {
   labels: {
     loading: "Loading",
     unavailable: "Not available",

@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-const authEn: DictionaryNamespace<AuthConfig> = {
+export const authEn: DictionaryNamespace<AuthConfig> = {
   resendCode: {
     resend: "Resend code",
     resendIn: (time) => `Resend code in ${time}`,

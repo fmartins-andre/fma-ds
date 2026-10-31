@@ -61,7 +61,7 @@ declare global {
   }
 }
 
-const codeBlockEn: DictionaryNamespace<CodeBlockConfig> = {
+export const codeBlockEn: DictionaryNamespace<CodeBlockConfig> = {
   labels: { copy: "Copy code" },
 };
 

@@ -110,7 +110,7 @@ declare global {
   }
 }
 
-const colorPickerEn: DictionaryNamespace<ColorPickerConfig> = {
+export const colorPickerEn: DictionaryNamespace<ColorPickerConfig> = {
   labels: {
     lightness: "Lightness",
     chroma: "Chroma",

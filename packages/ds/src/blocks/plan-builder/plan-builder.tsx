@@ -28,7 +28,7 @@ declare global {
   }
 }
 
-const planBuilderEn: DictionaryNamespace<PlanBuilderConfig> = {
+export const planBuilderEn: DictionaryNamespace<PlanBuilderConfig> = {
   labels: { included: "What's included" },
 };
 

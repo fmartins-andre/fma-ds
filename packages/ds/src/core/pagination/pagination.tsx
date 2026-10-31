@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-const paginationEn: DictionaryNamespace<PaginationConfig> = {
+export const paginationEn: DictionaryNamespace<PaginationConfig> = {
   labels: {
     previous: "Previous",
     next: "Next",

@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-const copyButtonEn: DictionaryNamespace<CopyButtonConfig> = {
+export const copyButtonEn: DictionaryNamespace<CopyButtonConfig> = {
   labels: {
     copy: "Copy",
     copied: "Copied",

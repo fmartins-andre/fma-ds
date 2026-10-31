@@ -16,7 +16,7 @@ declare global {
   }
 }
 
-const spinnerEn: DictionaryNamespace<SpinnerConfig> = {
+export const spinnerEn: DictionaryNamespace<SpinnerConfig> = {
   labels: {
     loading: "Loading",
   },

@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-const questionnaireEn: DictionaryNamespace<QuestionnaireConfig> = {
+export const questionnaireEn: DictionaryNamespace<QuestionnaireConfig> = {
   labels: {
     previous: "Previous",
     skip: "Skip",

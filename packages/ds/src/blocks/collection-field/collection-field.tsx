@@ -35,7 +35,7 @@ declare global {
   }
 }
 
-const collectionFieldEn: DictionaryNamespace<CollectionFieldConfig> = {
+export const collectionFieldEn: DictionaryNamespace<CollectionFieldConfig> = {
   labels: {
     remove: (item) => `Remove ${item}`,
     removeText: "Remove",

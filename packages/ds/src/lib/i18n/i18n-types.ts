@@ -22,15 +22,15 @@ export type PackNamespace<C extends NamespaceConfig> = {
 };
 
 /** What an item that isn't installed looks like to a pack: it has no types to offer. */
-export type LooseMessages = {
-  [key: string]:
-    | string
-    | readonly string[]
-    // biome-ignore lint/suspicious/noExplicitAny: an item that isn't installed has no types to offer
-    | ((...args: any[]) => unknown)
-    | LooseMessages
-    | undefined;
-};
+export type LooseMessages = { [key: string]: LooseMessage };
+
+type LooseMessage =
+  | string
+  | readonly string[]
+  | LooseMessages
+  | undefined
+  // biome-ignore lint/suspicious/noExplicitAny: an item that isn't installed has no types to offer
+  | ((...args: any[]) => LooseMessage);
 
 /** A language pack. It brings every item's texts, whichever are installed. */
 export type FmaMessagesPack = {

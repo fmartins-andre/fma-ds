@@ -17,7 +17,7 @@ declare global {
   }
 }
 
-const useFileUploadEn: DictionaryNamespace<UseFileUploadConfig> = {
+export const useFileUploadEn: DictionaryNamespace<UseFileUploadConfig> = {
   messages: {
     fileInvalidType: (file) => `"${file.name}" isn't an accepted file type.`,
     fileTooLarge: (file, maxSize) => `"${file.name}" is larger than ${formatBytes(maxSize)}.`,

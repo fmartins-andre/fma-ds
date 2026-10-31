@@ -24,7 +24,7 @@ declare global {
   }
 }
 
-const pageHeaderEn: DictionaryNamespace<PageHeaderConfig> = {
+export const pageHeaderEn: DictionaryNamespace<PageHeaderConfig> = {
   labels: {
     breadcrumb: "Breadcrumb",
   },

@@ -160,7 +160,7 @@ declare global {
   }
 }
 
-const dataGridEn: DictionaryNamespace<DataGridI18nConfig> = {
+export const dataGridEn: DictionaryNamespace<DataGridI18nConfig> = {
   labels: {
     table: "Data grid",
     loading: "Loading...",

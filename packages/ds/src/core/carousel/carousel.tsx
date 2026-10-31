@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-const carouselEn: DictionaryNamespace<CarouselConfig> = {
+export const carouselEn: DictionaryNamespace<CarouselConfig> = {
   labels: {
     previous: "Previous slide",
     next: "Next slide",

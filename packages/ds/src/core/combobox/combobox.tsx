@@ -54,7 +54,7 @@ declare global {
   }
 }
 
-const comboboxEn: DictionaryNamespace<ComboboxConfig> = {
+export const comboboxEn: DictionaryNamespace<ComboboxConfig> = {
   labels: {
     clear: "Clear",
   },
