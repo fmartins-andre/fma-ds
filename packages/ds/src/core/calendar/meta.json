@@ -1,0 +1,8 @@
+{
+  "name": "calendar",
+  "category": "forms",
+  "status": "stable",
+  "source": "customized",
+  "description": "A date grid for selecting a single date, multiple dates or a range.\n\n- **Navigation**: the header opens month and year grids for fast navigation.\n- **Granularity**: `granularity` switches the selection to whole months or years.\n- **Availability**: `unavailableRanges` blocks booked spans, and an already-selected value that becomes blocked travels to the nearest available date.",
+  "tags": ["form", "date", "react-aria"]
+}

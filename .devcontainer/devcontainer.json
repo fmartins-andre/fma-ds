@@ -1,0 +1,43 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+  "name": "Node.js & TypeScript",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:4-24-trixie",
+
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    // GitHub CLI (gh) — repo/PR operations from inside the container
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "forwardPorts": [3000, 6006, 8787],
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "postStartCommand": "bash .devcontainer/post-start.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "christian-kohler.npm-intellisense",
+        "bradlc.vscode-tailwindcss",
+        "eamodio.gitlens",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-portuguese-brazilian"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "biomejs.biome",
+        "editor.codeActionsOnSave": {
+          "quickfix.biome": "explicit",
+          "source.organizeImports.biome": "explicit"
+        },
+        // git in the terminal authenticates through gh (post-start.sh), never
+        // through VS Code's askpass prompt.
+        "git.terminalAuthentication": false
+      }
+    }
+  },
+
+  "remoteUser": "node"
+}

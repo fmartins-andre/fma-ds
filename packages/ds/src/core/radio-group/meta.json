@@ -1,0 +1,9 @@
+{
+  "name": "radio-group",
+  "category": "forms",
+  "status": "stable",
+  "source": "customized",
+  "description": "A set of mutually-exclusive radio options.\n\nPair each `RadioGroupItem` with an external `Label` via `id`/`htmlFor` — its own children slot is for a custom indicator, not label text.\n\n- **`RadioCard`**: a choice card — the whole card is the radio, its children are the content (an `IconTile`, `FieldContent` with `FieldTitle` and `FieldDescription`) and a round indicator sits at the end. Selected cards take a `primary` tint, hovered ones `accent`.\n- **Layout**: lay several out with a `className` grid on the group.",
+  "tags": ["form", "selection", "react-aria"],
+  "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)"
+}

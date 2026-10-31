@@ -1,0 +1,8 @@
+{
+  "name": "command",
+  "category": "overlay",
+  "status": "stable",
+  "source": "customized",
+  "description": "A searchable list of commands or actions, filtered live as you type.\n\n- **`CommandDialog`**: wraps it in a `Dialog` for a full command-palette (⌘K) pattern.\n- **Empty state**: pass `CommandEmpty` through `CommandList`'s `renderEmptyState`, not as a child — the list only accepts items, groups and separators.",
+  "tags": ["react-aria", "search", "command-palette", "overlay"]
+}

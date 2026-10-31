@@ -1,0 +1,42 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Button } from "../button/button";
+import { HoverCard, HoverCardTrigger } from "./hover-card";
+import meta from "./meta.json";
+
+const componentMeta = {
+  title: "ds/HoverCard",
+  component: HoverCard,
+  tags: ["autodocs"],
+  parameters: {
+    docs: { description: { component: meta.description } },
+  },
+  argTypes: {
+    placement: {
+      control: "select",
+      options: ["top", "bottom", "left", "right"],
+    },
+  },
+  args: {
+    placement: "bottom",
+  },
+} satisfies Meta<typeof HoverCard>;
+
+export default componentMeta;
+type Story = StoryObj<typeof componentMeta>;
+
+export const Default: Story = {
+  parameters: {
+    docs: { description: { story: "Hover or focus the trigger to reveal the preview card." } },
+  },
+  render: (args) => (
+    <HoverCardTrigger>
+      <Button variant="link">@ada</Button>
+      <HoverCard {...args}>
+        <div className="flex flex-col gap-1">
+          <p className="font-medium">@ada</p>
+          <p className="text-muted-foreground">Mathematician, and the first programmer.</p>
+        </div>
+      </HoverCard>
+    </HoverCardTrigger>
+  ),
+};

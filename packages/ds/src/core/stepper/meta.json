@@ -1,0 +1,9 @@
+{
+  "name": "stepper",
+  "category": "navigation",
+  "status": "stable",
+  "source": "third-party",
+  "origin": "reui.io (https://reui.io/docs/components/base/stepper, MIT); rebuilt on react-aria Tabs",
+  "description": "Multi-step navigation, horizontal or vertical, built on react-aria `Tabs`.\n\n- **Keyboard**: arrow keys, Home and End move between steps; Enter or Space selects one (manual activation).\n- **Value**: `value`/`defaultValue`/`onValueChange` hold the current step.\n- **`StepperItem`**: a tab whose `data-state` is `completed` (before the current step, or `isCompleted`), `active` or `inactive`. `isDisabled` skips it and `isLoading` shows the loading indicator.\n- **`indicators`**: swaps an indicator's content per state.\n- **`StepperContent`**: panels with the current step's content.",
+  "tags": ["navigation", "stepper", "wizard", "tabs", "react-aria"]
+}

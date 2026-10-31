@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input",
+  "title": "Input",
+  "author": "@fma-ds/ds",
+  "description": "A single-line text input, styled to match the rest of the registry. Plain native attributes (disabled, not isDisabled) since it wraps react-aria-components' bare Input rather than a higher-level field primitive.",
+  "dependencies": [
+    "cn@^0.5.0",
+    "react-aria-components@^1.22.1"
+  ],
+  "files": [
+    {
+      "path": "src/core/input/input.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"cn\";\nimport type * as React from \"react\";\nimport { composeRenderProps, Input as InputPrimitive } from \"react-aria-components\";\n\nfunction Input({ className, type, ...props }: React.ComponentProps<typeof InputPrimitive>) {\n  return (\n    <InputPrimitive\n      type={type}\n      data-slot=\"input\"\n      className={composeRenderProps(className, (className) =>\n        cn(\n          \"h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40\",\n          className,\n        ),\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Input };\n",
+      "type": "registry:component",
+      "target": "components/fma-ds/input.tsx"
+    }
+  ],
+  "meta": {
+    "status": "stable",
+    "source": "shadcn",
+    "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
+    "tags": [
+      "forms",
+      "input",
+      "react-aria"
+    ]
+  },
+  "categories": [
+    "forms"
+  ],
+  "type": "registry:ui"
+}

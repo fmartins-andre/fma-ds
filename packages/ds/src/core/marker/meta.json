@@ -1,0 +1,9 @@
+{
+  "name": "marker",
+  "category": "chat",
+  "status": "stable",
+  "source": "shadcn",
+  "origin": "shadcn/ui, style: aria-nova",
+  "description": "A small inline label used in chat/message timelines — a date separator, a status note, or similar metadata — rendered in muted text with an optional icon.",
+  "tags": ["chat", "data-display"]
+}

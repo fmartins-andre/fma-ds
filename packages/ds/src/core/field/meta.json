@@ -1,0 +1,9 @@
+{
+  "name": "field",
+  "category": "forms",
+  "status": "stable",
+  "source": "customized",
+  "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
+  "description": "Layout primitives for building form fields. Pairs with `Label`, `Input`, and friends.\n\n- **`Field`**: the field wrapper.\n- **`FieldSet`/`FieldLegend`**: for grouping.\n- **`FieldLabel`/`FieldDescription`/`FieldError`**: the usual label + hint + error stack.\n- **`FieldSeparator`**: splits a group.\n- **`FieldHelp`**: an ⓘ button beside a label or column header that opens help in a popover (touch and keyboard, unlike a tooltip); its required `label` names the subject.\n- **`choiceCardClassName`**: the choice-card surface shared by `CheckboxCard` and `RadioCard`; hover uses `accent`. With react-aria the control is the card, instead of shadcn's `FieldLabel` wrapping a `Field`, which would nest labels.",
+  "tags": ["forms", "layout", "react-aria"]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "brand",
+  "category": "color",
+  "status": "experimental",
+  "source": "original",
+  "description": "Class strings for the theme's second identity color (`brand`) on surfaces and decoration. Identity only: never for hover, focus, selection or status.\n\n- **`brandSurface`**: a solid brand surface whose focus ring follows the text.\n- **`brandGradient`**: a primary → brand gradient fill.\n- **`brandGradientBorder`**: a primary → brand gradient border; set the surface underneath with `--brand-border-fill`.\n- **`brandGlow`**: a soft brand glow (replaces the element's shadow).\n- **`brandSpinningBorder`**: a wrapper with a spinning gradient edge for something in progress, static with reduced motion.",
+  "tags": ["color", "brand", "theme", "decoration"]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "event-calendar",
+  "category": "blocks",
+  "status": "stable",
+  "source": "third-party",
+  "origin": "reui.io (https://reui.io/docs/components/base/event-calendar, MIT); overlays rebuilt on the registry's react-aria components",
+  "description": "A headless-first event calendar: month, week, day, N-day, agenda and resource views, with recurring events, time zones and drag and drop.\n\n- **Recurrence**: structured rules or RRULE strings.\n- **Drag and drop**: drag to move, resize and create; keyboard users create through `showDayAddButton`'s per-day buttons.\n- **i18n**: with RTL support.\n- **State**: a subscribable store (`useEventCalendar`, `useEventCalendarSelector`).\n\nCompose `<EventCalendar>` with `EventCalendarNav` and `EventCalendarContent`, or build your own parts from the hooks. Events are controlled (`events`/`onEventsChange`) or not (`defaultEvents`); `onEventUpdate` accepts, rejects or adjusts each drag.\n\nThe nav, view switcher, date picker and \"+N more\" popover use the registry's react-aria `Button`, `Tooltip`, `DropdownMenu`, `Popover` and `Calendar`.",
+  "tags": ["block", "calendar", "scheduler", "events", "recurrence"]
+}

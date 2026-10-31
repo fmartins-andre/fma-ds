@@ -1,0 +1,8 @@
+{
+  "name": "page-header",
+  "category": "blocks",
+  "status": "stable",
+  "source": "original",
+  "description": "The top of a page, composed from parts: breadcrumbs, the title with its description and actions, and an optional sub-page nav.\n\n- **`PageHeaderBreadcrumbs`**: an `items` trail whose last entry is the current page.\n- **`PageHeaderContent`**: heading on one side, actions on the other, stacked on narrow screens.\n- **`PageHeaderHeading`**: `PageHeaderTitle` (the `<h1>`, with an `isLoading` skeleton) and `PageHeaderDescription`. Anything that belongs beside the title, like a status select, goes inside it too.\n- **`PageHeaderActions`**: buttons that stretch on mobile.\n- **`PageHeaderNav`**: an area's sub-pages, usually a `TabNav`.\n\nWrap the app in react-aria's `RouterProvider` so breadcrumb and tab links route client-side.",
+  "tags": ["block", "header", "page", "breadcrumb", "navigation"]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "tooltip",
+  "category": "overlay",
+  "status": "stable",
+  "source": "shadcn",
+  "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). TooltipTrigger wraps [trigger, Tooltip] and opens with no delay by default (delay=0).",
+  "description": "A short, non-interactive hint that appears on hover or keyboard focus of its trigger.",
+  "tags": ["overlay", "react-aria"]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "fma-ds",
+  "private": true,
+  "license": "MIT",
+  "version": "0.1.0",
+  "description": "Personal shadcn-compatible component registry: official shadcn/ui components, customized variants, and original components — all redistributable through your own registry.",
+  "scripts": {
+    "preinstall": "node scripts/only-allow-pnpm.mjs",
+    "prepare": "lefthook install",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "biome check .",
+    "clean": "turbo clean",
+    "type-check": "turbo type-check",
+    "test": "turbo test",
+    "storybook": "pnpm --filter @fma-ds/ds storybook",
+    "build-storybook": "pnpm --filter @fma-ds/ds build-storybook",
+    "add:shadcn": "pnpm --filter @fma-ds/ds add:shadcn",
+    "add:registry": "pnpm --filter @fma-ds/ds add:registry"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.2",
+    "lefthook": "^2.1.17",
+    "shadcn": "^4.22.1",
+    "turbo": "^2.11.10",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@12.8.1",
+  "engines": {
+    "node": ">=24.14.0 <25.0.0",
+    "pnpm": ">=12.8.1 <13.0.0"
+  }
+}

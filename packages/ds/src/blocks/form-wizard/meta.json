@@ -1,0 +1,8 @@
+{
+  "name": "form-wizard",
+  "category": "blocks",
+  "status": "experimental",
+  "source": "original",
+  "description": "A form in steps, in a dialog or on a page (a new customer, an onboarding).\n\n`FormWizard` takes `steps` (`{ title, description }` per step) and the current step, controlled (`step`/`onStepChange`) or not (`defaultStep`).\n\n- **Navigation**: it's a react-aria `Form` whose submit is Next, so Enter advances and the current step's fields validate natively (only that step is mounted). Then `onNext(step)` runs — validate or save there (react-hook-form's `trigger`). Returning `false` or throwing keeps the user on the step, and a promise shows Next as pending. Finish runs `onNext` of the last step and then `onComplete`.\n- **`FormWizardSteps`**: the `stepper` list. Earlier steps are reachable, later ones only through Next. Titles show when the wizard is wide enough for that many steps; narrower, only the numbers, with the current title under them (container query).\n- **`FormWizardStep`**: holds a step's fields; after Back or Next, focus moves to its first field.\n- **`FormWizardFooter`**: the progress (\"Step 2 of 4\", announced politely), `children` before Back (a dialog's Cancel), Back and Next/Finish.\n\nThe values stay in the app; with react-hook-form, keep `shouldUnregister` off.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
+  "tags": ["block", "form", "wizard", "stepper", "steps"]
+}

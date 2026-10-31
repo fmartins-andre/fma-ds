@@ -1,0 +1,9 @@
+{
+  "name": "time-picker",
+  "category": "forms",
+  "status": "stable",
+  "source": "third-party",
+  "origin": "reui.io (https://reui.io/docs/components/base/time-picker, MIT); rebuilt on react-aria Popover, Dialog and Button",
+  "description": "A composable time picker: hour, minute, second and AM/PM columns, in a popover or in place.\n\n- **Layouts**: in a popover (`TimePickerTrigger` + `TimePickerContent`), behind a typable field (`TimePickerInput`, which reads `930`, `14h30`, `2:30 pm`…) or in place (`TimePickerPanel`). `<TimePicker />` alone renders a trigger and a popover.\n- **Value**: `@internationalized/date` `Time` objects (`value`/`defaultValue`/`onChange`, `null` when empty).\n- **Columns**: `hourCycle`, `granularity` and `periodPosition` shape them.\n- **Choices**: `hourStep`/`minuteStep`/`secondStep`, `minValue`/`maxValue` (an overnight window when min > max) and `isTimeUnavailable` narrow them, and a pick moves to the nearest selectable time.\n- **`requireConfirm`**: keeps picks as a draft until OK.\n- **Keyboard**: each column is an `aria-activedescendant` listbox — arrows, Home/End, PageUp/PageDown and typed digits pick, Left/Right move between columns, Enter commits and closes.\n- **Forms**: `name` submits `HH:mm` (or `HH:mm:ss`) with a native form; `isRequired`, `isInvalid`, `isReadOnly` and `isDisabled` work as in react-aria.\n- **`useTimePicker()`**: exposes the state inside a picker.\n\nEvery string comes from `i18n`.",
+  "tags": ["forms", "time", "picker", "popover", "react-aria"]
+}

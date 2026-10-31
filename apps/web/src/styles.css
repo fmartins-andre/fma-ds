@@ -1,0 +1,18 @@
+@import "@fma-ds/ds/styles.css";
+
+/* Tailwind only scans this app by default; the components live in packages/ds. */
+@source "../../../packages/ds/src";
+
+/*
+ * Native scrollbars follow the mode (dark ones on .dark) and are thin everywhere
+ * (scrollbar-width: Firefox and Chromium 121+).
+ */
+:root {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}
+* {
+  scrollbar-width: thin;
+}

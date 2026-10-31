@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "types": ["vite/client", "node"],
+    "paths": {
+      "@/*": ["../../packages/ds/src/*"]
+    }
+  },
+  "include": [
+    "src",
+    "e2e",
+    "playwright.config.ts",
+    "vite.config.ts",
+    "storybook-static.ts",
+    "story-snippets.ts",
+    "llms-txt.ts"
+  ]
+}

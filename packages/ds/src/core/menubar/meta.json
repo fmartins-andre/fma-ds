@@ -1,0 +1,9 @@
+{
+  "name": "menubar",
+  "category": "navigation",
+  "status": "stable",
+  "source": "original",
+  "origin": "API of shadcn/ui's Menubar, rebuilt on react-aria Toolbar and the registry's DropdownMenu",
+  "description": "An app-style menu bar (File, Edit, View…).\n\n- **Structure**: `Menubar` is a react-aria `Toolbar`, so arrow keys move between menus. Each `MenubarMenu` pairs a `MenubarTrigger` with a `MenubarContent` built on `DropdownMenu`, including submenus (`MenubarSub`).\n- **Checkable items**: come from react-aria selection — give a `MenubarGroup` a `selectionMode` (`\"multiple\"` or `\"single\"`) and `selectedKeys`/`onSelectionChange`, and its items show a check when selected.\n- **Opening**: menus open on press or Enter/Space/ArrowDown. While one is open, hovering another trigger or pressing ArrowLeft/ArrowRight opens the neighbouring menu.",
+  "tags": ["navigation", "menu", "menubar", "toolbar", "react-aria"]
+}

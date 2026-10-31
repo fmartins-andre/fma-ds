@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "author": "@fma-ds/ds",
+  "description": "A pulsing placeholder block for content that's still loading — size and shape it with className to match whatever it stands in for.",
+  "dependencies": [
+    "cn@^0.5.0"
+  ],
+  "files": [
+    {
+      "path": "src/core/skeleton/skeleton.tsx",
+      "content": "import { cn } from \"cn\";\n\nfunction Skeleton({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn(\"animate-pulse rounded-md bg-muted\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Skeleton };\n",
+      "type": "registry:component",
+      "target": "components/fma-ds/skeleton.tsx"
+    }
+  ],
+  "meta": {
+    "status": "stable",
+    "source": "shadcn",
+    "tags": [
+      "feedback",
+      "loading"
+    ]
+  },
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:ui"
+}

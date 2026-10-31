@@ -1,0 +1,485 @@
+# Contribuindo com o fma-ds
+
+Este guia explica como o repositório funciona por dentro: preparar o ambiente, adicionar ou
+customizar componentes, testar e publicar o registro.
+
+O site publicado (docs, editor de temas, Storybook e o registro em `/r/`) fica em
+[ds.fmartinsandre.dev.br](https://ds.fmartinsandre.dev.br).
+
+> Usando um agente de IA? As regras resumidas para agentes estão em [`AGENTS.md`](AGENTS.md).
+
+## Sumário
+
+- [Ambiente](#ambiente)
+- [Estrutura do repositório](#estrutura-do-repositório)
+- [Comandos](#comandos)
+- [Adicionando componentes](#adicionando-componentes)
+- [Anatomia de um componente](#anatomia-de-um-componente)
+- [Storybook e testes](#storybook-e-testes)
+- [Temas](#temas)
+- [Gerando e publicando o registro](#gerando-e-publicando-o-registro)
+- [Git hooks e CI](#git-hooks-e-ci)
+- [Commits e pull requests](#commits-e-pull-requests)
+  - [PRs empilhados (stacked PRs)](#prs-empilhados-stacked-prs)
+- [Notas de versão](#notas-de-versão)
+
+## Ambiente
+
+### Dev container (recomendado)
+
+O repositório traz um dev container em `.devcontainer/`. Abra a pasta no VS Code e escolha
+**Reopen in Container**. Ele já vem com:
+
+- Node 24, pnpm (via corepack) e o GitHub CLI (`gh`), com as credenciais do git apontando
+  para ele e a extensão `gh stack` instalada a cada start, depois do `gh auth login`;
+- `pnpm install` e o Chromium do Playwright instalados a cada start;
+- portas `3000` (app web), `6006` (Storybook) e `8787` (`pnpm --filter web preview`)
+  encaminhadas;
+- Biome configurado como formatter, com organize imports ao salvar.
+
+### Setup manual
+
+Se preferir rodar sem o dev container:
+
+- **Node** 24.x (LTS Krypton). O `.nvmrc` fixa a versão de desenvolvimento; `engines.node`
+  aceita `>=24.14.0 <25.0.0`.
+- **pnpm** 12.x, com `packageManager` fixando a versão exata via corepack.
+
+```bash
+corepack enable
+pnpm install
+pnpm --filter @fma-ds/ds exec playwright install --with-deps chromium  # só para test:storybook
+```
+
+O `pnpm-workspace.yaml` tem `engineStrict: true`: instalar com Node ou pnpm fora do range
+**falha** (`ERR_PNPM_UNSUPPORTED_ENGINE`), não apenas avisa. O `preinstall` roda
+`scripts/only-allow-pnpm.mjs` (o mesmo que o `only-allow pnpm`, mas local, sem `npx` baixando
+pacote a cada install), então `npm install` e `yarn install` são bloqueados.
+
+### Segurança de dependências
+
+O `pnpm-workspace.yaml` aplica as políticas de supply chain do pnpm, e o `install` falha se o
+lockfile violar alguma:
+
+- `minimumReleaseAge: 10080`: só instala versões publicadas há **7 dias** ou mais. Versão
+  nova demais? Espere, ou fixe uma anterior. Não use `minimumReleaseAgeExclude`.
+- `trustPolicy: no-downgrade`: recusa versão publicada com menos garantias (provenance /
+  trusted publisher) que versões anteriores — sinal típico de token roubado.
+- `blockExoticSubdeps: true`: dependências transitivas só vêm do registry (nada de git/tarball).
+- `allowBuilds`: install scripts de dependências ficam bloqueados; libere só o necessário,
+  padrão `false`.
+
+O Dependabot (`.github/dependabot.yml`) abre PRs semanais com o mesmo cooldown de 7 dias, e as
+GitHub Actions ficam fixadas por SHA de commit.
+
+### Variáveis de ambiente
+
+O gerador do registro e o dev/build do `apps/web` exigem `FMA_DS_SITE_URL`, a URL pública do
+site (vira o `homepage` do registro e o custom domain do Worker). Copie o `.env.example` para
+`.env` (ignorado pelo git) e preencha; em produção o valor é
+`https://ds.fmartinsandre.dev.br`. No CI ela vem da repository variable `FMA_DS_SITE_URL`; no
+Cloudflare, das variáveis de build.
+
+## Estrutura do repositório
+
+```
+packages/
+  registry/   → schemas zod do formato registry.json do shadcn (@fma-ds/registry)
+  ui/         → os componentes (@fma-ds/ds)
+    src/core/<nome>/             → um componente por pasta
+    src/design-tokens/           → stories dos tokens (cor, tipografia, espaçamento...)
+    src/styles.css               → tokens e variantes do Tailwind v4 (= tema "default")
+    src/themes/<nome>.json       → temas curados, publicados como @fma-ds/theme-<nome>
+    src/lib/theme/               → schema, CSS, import e item de registro dos temas (não publicado)
+    scripts/gen-registry-json.ts → gera registry.json a partir de src/core/**/meta.json
+    scripts/add-shadcn.ts        → baixa componentes oficiais do shadcn/ui
+    scripts/add-from-registry.ts → baixa componentes de registros de terceiros
+    tests/                       → testes unitários e gates estruturais
+apps/
+  web/        → TanStack Start; serve os itens finais em /r/<nome>.json
+```
+
+Monorepo com pnpm workspaces + Turborepo. Versões compartilhadas (react, typescript, vite,
+tailwind, `@types/*`) ficam no `catalog:` do `pnpm-workspace.yaml`.
+
+## Comandos
+
+```bash
+pnpm install                 # instala tudo
+pnpm dev                     # turbo dev em todos os pacotes (app web na porta 3000)
+pnpm build                   # build completo (inclui gerar + compilar o registro)
+pnpm lint                    # Biome (format + lint)
+pnpm type-check              # tsc --noEmit em todos os pacotes
+pnpm test                    # testes unitários (vitest --project unit)
+pnpm storybook               # Storybook na porta 6006
+pnpm build-storybook         # build estático em storybook-static/
+pnpm add:shadcn <nomes...>   # baixa componente(s) do shadcn/ui oficial
+pnpm add:shadcn all          # baixa todos os componentes oficiais
+pnpm add:registry <ref>      # baixa componente de um registro de terceiros
+```
+
+## Adicionando componentes
+
+Cada componente declara sua origem no campo `source` do `meta.json`, propagado para o
+`registry.json`:
+
+| `source`      | Significado                                                        |
+| ------------- | ------------------------------------------------------------------ |
+| `shadcn`      | componente oficial vendorizado sem alterações                      |
+| `customized`  | componente oficial com ajustes nossos                              |
+| `original`    | componente criado do zero aqui                                     |
+| `third-party` | componente de outro registro (exige `origin` com a URL/ref)        |
+
+### Do shadcn/ui oficial
+
+```bash
+pnpm add:shadcn button card alert-dialog
+pnpm add:shadcn all   # todos de uma vez
+```
+
+O script roda o `shadcn add` de verdade (instalando as dependências npm), move o resultado de
+`components/ui/<nome>.tsx` para `src/core/<nome>/<nome>.tsx` e cria um `meta.json` stub com
+`"source": "shadcn"`. Depois, edite descrição, categoria e tags.
+
+Como o `components.json` usa `"style": "aria-nova"`, a versão baixada já vem baseada em
+react-aria-components. Com `all`, o script usa a flag `--all` do próprio CLI e descobre os
+componentes pelo que de fato caiu na pasta de staging.
+
+### De um registro de terceiros
+
+```bash
+# por URL direta (qualquer registro shadcn-compatível)
+pnpm add:registry https://exemplo.com/r/fancy-button.json
+
+# por namespace (configure "registries" em packages/ds/components.json)
+pnpm add:registry @acme/fancy-button
+```
+
+```json
+{
+  "registries": {
+    "@acme": "https://exemplo.com/r/{name}.json"
+  }
+}
+```
+
+O `meta.json` sai com `"source": "third-party"` e `"origin"` apontando para a ref usada.
+**Confira a licença do registro de origem antes de republicar.**
+
+### Customizando ou criando
+
+- **Customizar:** edite o `.tsx` e mude `meta.json` para `"source": "customized"`.
+- **Criar:** crie `src/core/<nome>/` com `<nome>.tsx`, `meta.json` (`"source": "original"`) e
+  `<nome>.stories.tsx`.
+
+## Anatomia de um componente
+
+```
+src/core/<nome>/
+  <nome>.tsx           → código
+  meta.json            → metadata (categoria, status, source, tags, descrição)
+  <nome>.stories.tsx   → story do Storybook (obrigatória)
+```
+
+Exemplo de `meta.json` (validado contra `ComponentMetaSchema` em
+`packages/registry/src/schema.ts`):
+
+```json
+{
+  "name": "button",
+  "category": "forms",
+  "status": "stable",
+  "source": "shadcn",
+  "description": "Displays a button, or a component that looks like one...",
+  "tags": ["form", "interactive", "react-aria"]
+}
+```
+
+Convenções:
+
+- **`description` é a única fonte da descrição.** O `registry.json` e a story
+  (`parameters.docs.description.component: meta.description`) leem dela; não duplique o texto.
+- **`cn`** vem do pacote npm [`cn`](https://github.com/shadcn-ui/cn)
+  (`import { cn } from "cn"`). `src/lib/utils.ts` é só um re-export, mantido por compatibilidade.
+- **Outros componentes do registro** são importados via `@/core/<outro>/<outro>`.
+- **Dependências são detectadas automaticamente** a partir dos imports
+  (`detectNpmDependencies` e `detectRegistryDependencies` em `gen-registry-json.ts`): qualquer
+  pacote novo entra sozinho em `dependencies` / `registryDependencies`. O pacote só precisa
+  estar em `packages/ds/package.json`.
+- **API react-aria:** `isDisabled` em vez de `disabled`, `onPress` em vez de `onClick`, sem
+  `asChild`.
+- **Variantes de estado** (`data-checked:`, `data-selected:`, `data-open:`...) dependem do CSS
+  de variantes customizadas de `shadcn/tailwind.css`; veja o comentário em
+  `packages/ds/src/styles.css`.
+
+### Tokens de estado: accent × muted
+
+Seguimos a definição da [doc de theming do shadcn](https://ui.shadcn.com/docs/theming), para
+que cada tema controle a cor de interação de forma coerente em todos os componentes:
+
+| Token | Uso | Exemplos |
+| --- | --- | --- |
+| `accent` / `accent-foreground` | Superfície de **interação**: hover, focus, item ativo/selecionado | item de menu/select/combobox/command em foco, linha de tabela em hover ou selecionada, dia de hoje e meio de intervalo no calendário |
+| `muted` / `muted-foreground` | Superfície **estática** sutil e texto secundário | zebra e coluna fixada da tabela, footer, skeleton, descrições, placeholders |
+| `primary` | Seleção de alta ênfase | dia selecionado, pontas de um intervalo |
+
+Regras:
+
+- Estado interativo usa `bg-accent` com `text-accent-foreground` (ou `bg-accent/50` sem trocar o
+  texto, para hover leve de linha). Nunca `bg-muted` nem `bg-foreground/N`.
+- Os estilos `*-nova` do shadcn divergem da própria doc (calendar e command com `muted`, e o
+  `aria-nova` pinta itens em foco com `bg-foreground/10` no popover, sobrescrevendo o
+  `bg-accent` do item). Ao vendorizar/atualizar um componente, confira e corrija isso.
+- O gate `packages/ds/tests/interaction-tokens.test.ts` verifica componentes `customized` e
+  `original` e todos os blocos. Exceções vão no `ALLOWED` desse teste, com o motivo; hoje são
+  os controles com cara de botão ghost (badge, triggers do menubar e navigation-menu), que
+  acompanham o `Button` e continuam `muted`, e o segmento em foco do date-field.
+
+## Storybook e testes
+
+```bash
+pnpm storybook                               # dev server, porta 6006
+pnpm --filter @fma-ds/ds build-storybook     # build estático
+```
+
+Os testes rodam no Vitest com dois projects (`packages/ds/vitest.config.ts`):
+
+- **`unit`** (`pnpm test`): ambiente Node, sem navegador. Cobre:
+  - funções puras dos scripts (`tests/gen-registry-json.test.ts`);
+  - **gate estrutural** (`tests/registry-consistency.test.ts`): todo componente em `src/core/`
+    precisa de `meta.json` válido e de um `<nome>.stories.tsx` ao lado;
+  - **gate de dependências** (`tests/registry-dependencies.test.ts`): as dependências declaradas
+    no `registry.json` precisam bater com os imports reais, e todo pacote importado precisa
+    estar instalado.
+- **`storybook`** (`pnpm --filter @fma-ds/ds test:storybook`): roda as stories como testes de
+  interação num Chromium headless via Playwright (`@storybook/addon-vitest`). A story **é** o
+  teste: use `play` functions com `storybook/test`, sem arquivo `.test.tsx` separado. Não roda
+  no CI de PR, para manter o job leve.
+
+### A story é o exemplo do site
+
+O site mostra cada story como exemplo, e na aba **Code** o código dela convertido num componente
+pronto para colar no projeto do consumidor (`packages/ds/scripts/story-snippets.ts`, rodado no
+build do `apps/web` como `<arquivo>.stories.tsx?snippets`):
+
+- o `render` vira o corpo de `export function <Item><Story>()`; sem `render`, vira
+  `<Componente {...args} />`;
+- `{...args}` e `args.x` viram as props que representam (args do meta + da story). Ficam de fora
+  os spies `fn()` (props e chamadas `args.onX?.(...)`), args do meta com `false` (padrão do
+  controle), variantes `"default"` do cva, args zerados pela story (`undefined`/`null`) e o
+  `defaultX` quando o elemento passa `x` controlado;
+- `play`, `decorators`, `data-testid` e leituras invisíveis (`<output data-testid
+  className="sr-only">`) somem; constantes e helpers do arquivo usados pelo exemplo vêm junto;
+- os imports apontam para onde o CLI instala (`@/components/fma-ds/<nome>`,
+  `@/lib/fma-ds/...`, `@/hooks/fma-ds/...`), e o Biome formata o resultado.
+
+Por isso, **escreva o render como o uso real do componente** e deixe o que só serve à story fora
+dele: providers de teste (`I18nProvider` fixo, `RouterProvider` com spy), fixtures (dados
+offline, fuso fixo) e a leitura do valor para os testes vão em `decorators`, que podem injetar
+args (`<Story args={{ ...context.args, onChange }} />`). Stories que só existem como teste de
+regressão (`Should*`) levam `tags: ["!autodocs"]` e ficam fora da documentação. Story de outro
+componente do mesmo arquivo (ex.: `DateRangePicker` em `date-picker.stories.tsx`) usa uma factory
+tipada (`rangeStory({ ... })`), que o gerador também lê. Quando nada disso basta,
+`parameters.docs.source.code` fixa o código à mão. O `tests/story-snippets.test.ts` confere que
+todo snippet é autocontido (nada da story vaza, todo nome usado é importado ou declarado, imports
+nos caminhos instalados).
+
+## Temas
+
+Temas curados ficam em `packages/ds/src/themes/<nome>.json` (schema `ThemeSchema` em
+`src/lib/theme/schema.ts`): cores de light/dark para **todos** os tokens de
+`tests/required-tokens.ts`, `radius` e, opcionalmente, `fonts`, `spacing`, `letterSpacing` e
+`shadow`. O que não for definido fica com o valor do `styles.css` (ou do Tailwind).
+
+- O gerador publica cada um como item `registry:theme` chamado `theme-<nome>`; o consumidor
+  instala com `pnpm dlx shadcn add @fma-ds/theme-<nome>` (o CLI reescreve `:root`/`.dark` e o
+  `@theme inline` do CSS dele).
+- **Fontes**: as do catálogo (`GOOGLE_FONTS` em `src/lib/theme/fonts.ts`) entram no item como
+  dependências `@fontsource/<slug>` + um `@import` por peso, então `shadcn add` já instala e
+  carrega as fontes no app consumidor. Fonte fora do catálogo só aparece na nota `docs` do
+  item; temas curados só podem usar fontes do catálogo (o teste confere). Fonte nova no
+  catálogo: confirme que `@fontsource/<slug>` existe com os pesos de `catalogWeights`.
+- `default.json` espelha o `styles.css`; o teste `themes.test.ts` falha se divergirem.
+- Todo tema novo entra na lista de `src/themes/index.ts` (o teste confere).
+- Gate de contraste (`themes.test.ts`): texto principal ≥ 4.5:1, preenchimentos com texto
+  (`primary`, `muted-foreground`, status…) ≥ 3:1, em light e dark.
+- Os nossos `destructive/info/success/warning-foreground` são **texto sobre o fundo tingido** da
+  cor (badge `*-light`), não texto sobre a cor sólida como no shadcn/tweakcn.
+- Tema de terceiros: `"source": "third-party"` + `origin`, e uma linha na tabela de
+  `src/themes/THIRD_PARTY_NOTICES.md` (com a licença). Os atuais vêm do
+  [tweakcn](https://github.com/jnsahaj/tweakcn) (Apache-2.0).
+
+No Storybook, o seletor de tema (ícone de pincel) aplica um tema a todas as stories, e
+`design/Themes` mostra todos lado a lado.
+
+### Editor de temas (`apps/web`, rota `/themes`)
+
+`pnpm dev` e abra `http://localhost:3000/themes` (ou `?preset=<nome>`). Inspirado no tweakcn:
+carrega um tema curado ou importa um (CSS do shadcn/tweakcn, item de registro por URL como
+`https://tweakcn.com/r/themes/<id>.json`, ou JSON exportado aqui), edita cores por modo,
+fontes (Google Fonts), tracking, radius, spacing, sombras e ajuste HSL global, com
+undo/redo (Ctrl+Z) e contraste ao vivo. O preview usa os nossos componentes reais. Exporta
+`index.css`, só as variáveis, o item `registry:theme` (instalável com
+`pnpm dlx shadcn add ./theme-<nome>.json`) ou o JSON do tema — que, salvo em
+`packages/ds/src/themes/`, vira tema curado.
+
+**Todo token de tema tem que ser editável aqui.** A cadeia é verificada automaticamente:
+variável em `styles.css` → algo que um `Theme` consegue gerar (`src/lib/theme/css.ts`) →
+controle no editor (`COLOR_GROUPS` para cores, `FONT_CONTROLS` para fontes, painéis do
+`apps/web` para o resto). `tests/theme-editor-coverage.test.ts` cobre os dois primeiros elos e
+as cores/fontes; o type-check do `apps/web` (`SETTINGS_COVERED` em `editor.tsx`) falha se um
+campo novo do `ThemeSchema` não tiver controle. O CI de PR roda os dois.
+
+Os testes e2e do editor ficam em `apps/web/e2e/` (Playwright, contra o build de produção):
+`pnpm --filter web test:e2e`. O CI de PR roda num job próprio. Mudou o comportamento do
+editor? Atualize ou acrescente um teste lá.
+
+O editor aplica o tema no `<html>` inteiro (inclusive na própria interface do editor), para que popovers e
+dialogs portados para o `<body>` também o recebam. A lógica (estado, histórico, HSL) fica em
+`packages/ds/src/lib/theme/editor.ts`, com testes unitários.
+
+## Gerando e publicando o registro
+
+```bash
+pnpm build
+# ou só o pacote ui:
+pnpm --filter @fma-ds/ds build
+```
+
+Isso roda, em sequência:
+
+1. `tsc --noEmit`: type-check.
+2. `generate:registry`: varre `src/core/**/meta.json` (e libs, hooks, blocos e
+   `src/themes/*.json`) e escreve `packages/ds/registry.json`.
+3. `registry:build`: roda `shadcn build`, que compila o `registry.json` em
+   `apps/web/public/r/<nome>.json`, o formato consumido pelo CLI do shadcn.
+
+> **`registry.json` e `apps/web/public/r/` são gerados: não edite à mão.** Depois de mudar
+> qualquer componente, rode o build e **commite os arquivos gerados junto**.
+
+Para testar o consumo localmente:
+
+```bash
+pnpm dev   # apps/web na porta 3000
+# em outro projeto, com "registries": { "@fma-ds": "http://localhost:3000/r/{name}.json" }
+# no components.json:
+pnpm dlx shadcn add @fma-ds/button
+```
+
+Os itens instalam em `components/fma-ds/`, `hooks/fma-ds/` e `lib/fma-ds/` e dependem uns dos
+outros por `@fma-ds/<nome>` (veja `scripts/gen-registry-json.ts`). O CLI reescreve os imports
+entre itens para esses caminhos, mas só quando o import nomeia um arquivo: importe libs em pasta
+por um arquivo (`@/lib/date-fns-compat/index`), nunca pela pasta — o teste
+`registry-consistency` barra isso.
+
+## Git hooks e CI
+
+Hooks do [lefthook](https://lefthook.dev) (instalados automaticamente no `pnpm install`) espelham
+localmente o que o CI garante:
+
+- **pre-commit:** `lint` (Biome nos arquivos staged) → `type-check` → `registry-check` (quando
+  `packages/ds/src/core/**` muda: rebuilda e falha se o registro estiver fora de sincronia).
+- **pre-push:** `type-check` → `test` → `build` → `build-storybook`.
+
+O CI (`.github/workflows/registry-check.yml`) é o gate real:
+
+- **em PRs:** roda os testes unitários, rebuilda o registro e falha se `registry.json` ou
+  `apps/web/public/r/` estiverem desatualizados;
+- **em PRs:** roda os testes end-to-end do site e do editor de temas (`apps/web`, Playwright);
+- **em push no `main`:** roda o build completo.
+
+O `main` é protegido por um ruleset: nada de push direto, force-push ou deleção; toda mudança
+entra por pull request, e os jobs de drift do registro e de e2e precisam passar antes do merge.
+
+O site (`apps/web`) roda no Cloudflare Workers, em [ds.fmartinsandre.dev.br](https://ds.fmartinsandre.dev.br), com build feito
+pelo Workers Builds do Cloudflare a partir do repositório. `pnpm --filter web preview` serve o
+build localmente no workerd (porta 8787) e `pnpm --filter web deploy:worker` faz o deploy manual
+do último build.
+
+Não use `--no-verify`; corrija a causa.
+
+## Commits e pull requests
+
+- [Conventional Commits](https://www.conventionalcommits.org) em inglês, atômicos, com escopo
+  quando fizer sentido: `feat(ui): ...`, `fix(web): ...`, `chore(devcontainer): ...`,
+  `test(ui): ...`, `ci: ...`, `docs: ...`.
+- Estilo de código garantido pelo Biome: 2 espaços, aspas duplas, ponto e vírgula, trailing
+  commas, largura 100. Rode `pnpm exec biome check --write <arquivos>` para corrigir.
+- Antes de abrir um PR:
+
+  ```bash
+  pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build
+  git status   # inclua registry.json / public/r se mudaram
+  ```
+
+### PRs empilhados (stacked PRs)
+
+Quando um PR depende de outro que ainda não foi mergeado, use os
+[stacked PRs nativos do GitHub](https://docs.github.com/en/pull-requests/get-started/stacked-prs-quickstart)
+com a extensão oficial [`gh stack`](https://github.com/github/gh-stack)
+(`gh extension install github/gh-stack`; o dev container instala sozinho). Exige `gh` ≥ 2.90
+e git ≥ 2.20. Cada PR do stack tem como base o branch do PR de baixo e a cadeia termina na
+`main`; o revisor vê só o diff da camada dele, e o ruleset da `main` (checks de drift e e2e)
+vale para cada PR, sem bypass.
+
+**Quando usar**
+
+- Uma mudança depende de outra ainda em revisão (ex.: um PR que reaproveita uma constante ou
+  um helper criado no anterior).
+- Um trabalho grande que fica mais fácil de revisar em camadas (ex.: lib → componente →
+  bloco → docs).
+
+Mudanças independentes vão em PRs separados contra `main`, não num stack: um stack força a
+ordem de merge e faz o CI rodar de novo em cada camada a cada rebase.
+
+**Fluxo**
+
+```bash
+gh stack init feat/base            # cria o stack (ou adota branches existentes, de baixo pra cima)
+# ... commits ...
+gh stack add feat/em-cima          # nova camada em cima da atual (ou: gh stack add -Am "msg" <branch>)
+# ... commits ...
+gh stack submit --auto             # push + abre/atualiza os PRs com as bases certas e liga o stack
+gh stack view                      # branches, PRs, status
+
+# Mudou uma camada de baixo ou a main andou:
+gh stack rebase                    # rebase em cascata (pausa em conflito: --continue / --abort)
+gh stack push                      # --force-with-lease por branch
+gh stack sync                      # fetch + rebase sobre a main + push + estado dos PRs
+
+# Merge (merge commit, como o resto do histórico):
+gh stack merge <pr> --merge        # mergeia até esse PR, tudo ou nada; o resto é rebaseado e redirecionado
+gh stack sync --prune              # apaga os branches locais já mergeados
+```
+
+`gh stack link <pr> <pr> ...` liga PRs que já existem num stack (de baixo pra cima), sem estado
+local; `gh stack add <branch>` adota um branch que está em outro worktree; `gh stack modify`
+reordena, junta ou remove camadas (o site do GitHub não reordena). O `init` liga o
+`git rerere`, que reaproveita resoluções de conflito entre rebases.
+
+**Cuidados neste repo**
+
+- **Nunca** `gh pr merge --delete-branch` (nem apague à mão) o branch base de um PR empilhado:
+  o GitHub **fecha** o PR de cima em vez de redirecioná-lo pra `main`, e um PR fechado não
+  pode ter a base trocada. Mergeie pelo `gh stack merge`. Sem a extensão, redirecione antes
+  (`gh pr edit <pr-de-cima> --base main`) e só então mergeie e apague o de baixo.
+- **Arquivos gerados**: conflito em `packages/ds/registry.json` ou `apps/web/public/r/` num
+  rebase não se resolve à mão; aceite qualquer lado, rode `pnpm --filter @fma-ds/ds build`
+  na camada e commite o resultado (senão o check de drift falha naquele PR).
+- **Hooks**: `gh stack push` / `submit` empurram cada branch separado, então o pre-push
+  (type-check → test → build → build-storybook) roda uma vez por camada. É lento de
+  propósito; não use `--no-verify`.
+- **Worktrees**: arquivos ignorados num branch (ex.: saídas de build listadas no `.gitignore`
+  só de outra camada) podem vazar num `git add -A` ao trocar de camada no mesmo worktree.
+  Confira o `git status` antes de commitar.
+
+## Notas de versão
+
+- **TypeScript 7** removeu `baseUrl` (use só `paths`, relativo ao tsconfig) e não faz mais
+  auto-discovery de `@types/node` em pacotes com `scripts/` fora de `src/`. Por isso
+  `packages/ds/tsconfig.json` declara `"types": ["node"]` explicitamente.
+- **nitro** está fixado em `3.0.260903-beta` (sem `^`) de propósito: a tag `latest` aponta para
+  essa beta e não existe stable mais nova que a `3.0.0`, antiga demais para o
+  `@tanstack/react-start` atual. Fixei na versão validada (`vite build` com o preset
+  `cloudflare_module` + `wrangler dev` respondendo `/` e `/r/button.json`) para não flutuar para
+  uma beta futura sem aviso.

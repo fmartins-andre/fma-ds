@@ -1,0 +1,8 @@
+{
+  "name": "alert-dialog",
+  "category": "overlay",
+  "status": "stable",
+  "source": "shadcn",
+  "description": "A modal dialog that interrupts the user with important content and expects an explicit response (e.g. confirming a destructive action) — unlike Dialog, it can't be dismissed by clicking outside or pressing Escape.",
+  "tags": ["overlay", "modal", "confirmation", "react-aria"]
+}

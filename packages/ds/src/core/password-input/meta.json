@@ -1,0 +1,8 @@
+{
+  "name": "password-input",
+  "category": "forms",
+  "status": "stable",
+  "source": "original",
+  "description": "A password field with a show/hide toggle, built on `InputGroup`. Pair it with `password-rules` when creating a password.\n\n- **Toggle**: a button named by `toggleLabel` (default \"Show password\"; pass a translation as needed) whose `aria-pressed` reports whether the text is revealed.\n- **Visibility**: uncontrolled (`defaultRevealed`) or controlled (`isRevealed`/`onRevealedChange`).\n- **Input**: the rest of the props go to the input, so it works inside a react-aria `TextField` (label, description, validation) and takes `autoComplete=\"current-password\"` or `\"new-password\"`.\n\nHides Edge's built-in reveal button.",
+  "tags": ["form", "input", "password", "react-aria"]
+}

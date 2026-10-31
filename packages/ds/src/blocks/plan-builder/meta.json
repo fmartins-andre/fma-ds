@@ -1,0 +1,8 @@
+{
+  "name": "plan-builder",
+  "category": "blocks",
+  "status": "experimental",
+  "source": "original",
+  "description": "Build what the user is about to buy by choosing quantities, with the price in real time: a custom plan with several resources, or a quantity of one item (extra notes, credits).\n\n- **`PlanBuilder`**: lays out the resources and its `summary` (an `OrderSummary`: a sticky card on large screens, a bar fixed to the bottom on smaller ones). `isCalculating` turns every `PlanPrice` (a price formatted by the app) into a skeleton while the app recalculates.\n- **`PlanResource`**: a card with `icon`, `title`, `description` and a controlled `Slider` named by `label` (`value`/`onChange`, `minValue`/`maxValue`/`step`, `marks`, `formatValue`, `limit` for stock or quota left, `isDisabled`). A `hint` under the slider says why it stops or is disabled, and an optional `included` accordion lists what comes with it.\n- **`PlanResourceAddon`**: an add-on as a child of the resource — a switch with label and description.\n\nThe price, debouncing, limits and notices stay in the app.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
+  "tags": ["block", "checkout", "plan", "pricing", "slider", "quantity"]
+}

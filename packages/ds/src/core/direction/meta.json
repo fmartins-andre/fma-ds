@@ -1,0 +1,8 @@
+{
+  "name": "direction",
+  "category": "layout",
+  "status": "stable",
+  "source": "shadcn",
+  "description": "Sets LTR/RTL text-direction context for descendant react-aria-components — a compatibility shim so a Radix/Base UI-style `direction` prop keeps working via react-aria's locale system.",
+  "tags": ["layout", "i18n", "react-aria"]
+}

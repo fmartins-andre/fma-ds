@@ -1,0 +1,8 @@
+{
+  "name": "badge",
+  "category": "data-display",
+  "status": "stable",
+  "source": "customized",
+  "description": "A small label for status, count, or category — inline with text or attached to another element.\n\n- **Semantic variants**: info, success, warning, destructive and invert, in solid, `-light` and `-outline` styles.\n- **Neutral**: `muted`/`muted-outline` for inactive or pending states.\n- **Brand**: `brand`, `brand-light`, `brand-outline` and `brand-dot` in the theme's second identity color, for identity labels (\"New\", \"AI\", \"Pro\"), never for status.\n- **Dots**: a `*-dot` family (primary, secondary, brand, success, warning, info, destructive, muted) that shows a colored dot before plain text, for select items and dense lists.\n- **Shape**: size and radius options.\n\nCan also render as a link.",
+  "tags": ["data-display", "status", "label"]
+}

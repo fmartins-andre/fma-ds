@@ -1,0 +1,8 @@
+{
+  "name": "settings-form",
+  "category": "blocks",
+  "status": "experimental",
+  "source": "original",
+  "description": "A long edit form in sections, saved as a whole (account, company, preferences).\n\n- **`SettingsForm`**: a react-aria `Form` that only shows state the app owns, so react-hook-form or any other form state fits: `isDirty` (enables Save and Discard), `isPending` (spinner on Save, `aria-busy`) and `onReset` (adds a Discard button that should restore the saved values).\n- **`SettingsSection`**: groups fields under a `title` and `description` (a labelled group) stacked above them, leaving the width to the fields next to an app sidebar. The fields fall into a two-column grid when there's room (container query); `col-span-full` takes the whole row.\n- **`SettingsFormFooter`**: a save bar stuck to the bottom of the viewport with a polite status line (no changes / unsaved / saving), optional children before the buttons, Discard and Save.\n\nWarning before leaving with unsaved changes stays in the app, since it depends on the router; use `confirm-dialog`.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
+  "tags": ["block", "form", "settings", "fields"]
+}

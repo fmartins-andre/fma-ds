@@ -1,0 +1,8 @@
+{
+  "name": "panel-card",
+  "category": "blocks",
+  "status": "experimental",
+  "source": "original",
+  "description": "A panel on a `Card` — a dashboard chart or table, or one resource and its status (a contract, the current plan) — with a standard header and a body that handles its own states.\n\n### `PanelCardHeader`\n\n- **`title`**: a heading, `headingLevel` 2 by default.\n- **`icon`**: shown in a `soft` `IconTile`.\n- **`description`** and **`status`**: a `Badge` next to the title.\n- **`help`**: opened by an ⓘ button in a popover, so it works with touch and keyboard.\n- **`updatedAt`**: a `Date` or timestamp, formatted with `Intl` in the react-aria locale; `isRefreshing` shows a spinner next to it while the content stays on screen.\n- **`toolbar`**: a slot for the card's own controls, which wraps below the title on narrow cards.\n\n### `PanelCardBody`\n\nShows the first state that applies — `isLoading` (skeleton, first load only), `isError` (message plus \"Try again\" with `onRetry`), `isEmpty` (`Empty`) — or its children. `emptyState`/`errorState` replace the built-in messages (e.g. a missing resource with the action that adds it).\n\n### What goes where\n\n- **Body**: charts, tables, `stat-cards` and `description-list`; problems with the resource go in an `Alert` there, not in the card colors.\n- **`CardFooter`**: actions.\n\n`PanelCard`'s `i18n.labels` reaches every built-in text.",
+  "tags": ["block", "dashboard", "card", "chart", "status"]
+}

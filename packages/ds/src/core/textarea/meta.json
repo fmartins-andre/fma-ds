@@ -1,0 +1,8 @@
+{
+  "name": "textarea",
+  "category": "forms",
+  "status": "stable",
+  "source": "shadcn",
+  "description": "A multi-line text input that auto-sizes to its content by default (field-sizing-content), rather than staying a fixed number of rows.",
+  "tags": ["forms", "input", "react-aria"]
+}

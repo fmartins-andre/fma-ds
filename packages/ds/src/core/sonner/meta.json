@@ -1,0 +1,8 @@
+{
+  "name": "sonner",
+  "category": "feedback",
+  "status": "stable",
+  "source": "shadcn",
+  "description": "A themed wrapper around the sonner toast library. Renders the toast viewport (Toaster); call toast() from \"sonner\" anywhere to actually show one.",
+  "tags": ["feedback", "toast"]
+}

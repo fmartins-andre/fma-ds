@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "collapsible",
+  "title": "Collapsible",
+  "author": "@fma-ds/ds",
+  "description": "Shows or hides a single section of content behind a trigger. A thin wrapper around react-aria-components' Disclosure — for several mutually-exclusive sections, use Accordion instead.",
+  "dependencies": [
+    "react-aria-components@^1.22.1"
+  ],
+  "files": [
+    {
+      "path": "src/core/collapsible/collapsible.tsx",
+      "content": "import {\n  type ButtonProps,\n  DisclosurePanel as CollapsibleContentPrimitive,\n  Disclosure as CollapsiblePrimitive,\n  Button as CollapsibleTriggerPrimitive,\n  type DisclosurePanelProps,\n  type DisclosureProps,\n} from \"react-aria-components\";\n\nfunction Collapsible({ ...props }: DisclosureProps) {\n  return <CollapsiblePrimitive data-slot=\"collapsible\" {...props} />;\n}\n\nfunction CollapsibleTrigger({ ...props }: ButtonProps) {\n  return <CollapsibleTriggerPrimitive slot=\"trigger\" data-slot=\"collapsible-trigger\" {...props} />;\n}\n\nfunction CollapsibleContent({ ...props }: DisclosurePanelProps) {\n  return <CollapsibleContentPrimitive data-slot=\"collapsible-content\" {...props} />;\n}\n\nexport { Collapsible, CollapsibleContent, CollapsibleTrigger };\n",
+      "type": "registry:component",
+      "target": "components/fma-ds/collapsible.tsx"
+    }
+  ],
+  "meta": {
+    "status": "stable",
+    "source": "shadcn",
+    "tags": [
+      "react-aria",
+      "disclosure",
+      "toggle"
+    ]
+  },
+  "categories": [
+    "disclosure"
+  ],
+  "type": "registry:ui"
+}

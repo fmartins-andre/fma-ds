@@ -1,0 +1,8 @@
+{
+  "name": "file-upload",
+  "category": "forms",
+  "status": "stable",
+  "source": "original",
+  "description": "Picks files by dragging them in, pasting them or browsing, and lists them; it doesn't upload.\n\n`FileUpload` holds the `use-file-upload` state — `accept` (`.pdf,.docx`, `image/*`), `maxSize`, `multiple` + `maxFiles`, uncontrolled (`defaultValue`) or controlled (`value`/`onChange`), `isDisabled` — and the parts read it:\n\n- **`FileUploadDropzone`**: a react-aria `DropZone`, with keyboard and paste support. By default an icon, title, `description` and a trigger, highlighted with `accent` while a drag is over it.\n- **`FileUploadTrigger`**: a `FileTrigger` button.\n- **`FileUploadList`**: renders each file with a function.\n- **`FileUploadItem`**: a file-type icon or image thumbnail, name, size, optional `progress`, `error`, extra `actions` such as retry, and a remove button that keeps focus in the widget.\n- **`FileUploadError`**: a `FieldError` with the validation errors (type, size, count).\n\nUpload progress and retries stay with the app, keyed by file id.\n\nBuilt-in text is in English; translate labels and error messages with `i18n`.",
+  "tags": ["form", "file", "upload", "dropzone", "react-aria"]
+}

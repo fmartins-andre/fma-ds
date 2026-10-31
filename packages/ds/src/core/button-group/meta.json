@@ -1,0 +1,8 @@
+{
+  "name": "button-group",
+  "category": "buttons",
+  "status": "stable",
+  "source": "shadcn",
+  "description": "Visually joins a row (or column) of buttons into one connected control, with shared borders and rounded end corners. Can include a separator or a plain text segment.",
+  "tags": ["buttons", "layout"]
+}

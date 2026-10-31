@@ -1,0 +1,8 @@
+{
+  "name": "questionnaire",
+  "category": "chat",
+  "status": "experimental",
+  "source": "shadcn",
+  "description": "A multi-step form/survey block (progress, choices, text input, previous/skip/next/submit) for chat-kit style conversational flows.\n\n**Experimental**: built on `@shadcn/react`, not react-aria-components — upstream hasn't ported it to the aria base yet, and `@shadcn/react` is still pre-1.0.",
+  "tags": ["chat", "form", "@shadcn/react"]
+}

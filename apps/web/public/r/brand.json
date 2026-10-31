@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "brand",
+  "title": "Brand",
+  "author": "@fma-ds/ds",
+  "description": "Class strings for the theme's second identity color (`brand`) on surfaces and decoration. Identity only: never for hover, focus, selection or status.\n\n- **`brandSurface`**: a solid brand surface whose focus ring follows the text.\n- **`brandGradient`**: a primary → brand gradient fill.\n- **`brandGradientBorder`**: a primary → brand gradient border; set the surface underneath with `--brand-border-fill`.\n- **`brandGlow`**: a soft brand glow (replaces the element's shadow).\n- **`brandSpinningBorder`**: a wrapper with a spinning gradient edge for something in progress, static with reduced motion.",
+  "dependencies": [],
+  "files": [
+    {
+      "path": "src/lib/brand.ts",
+      "content": "// Class strings for the theme's second identity color (`brand`) on surfaces and\n// decoration, to pass through cn(). Identity only: never for hover, focus,\n// selection or status, where the color would read as a state.\n\n/** A solid brand surface. The ring follows the text so focus stays visible on it. */\nexport const brandSurface = \"bg-brand text-brand-foreground [--ring:var(--brand-foreground)]\";\n\n/** A primary → brand gradient fill, for bands, panels and thin accents. */\nexport const brandGradient = \"bg-linear-to-r from-primary to-brand\";\n\n/**\n * A primary → brand gradient border (1px; widen with border-2). It paints the\n * background too, so set the surface underneath with `--brand-border-fill`\n * (defaults to the card color) instead of a bg-* class.\n */\nexport const brandGradientBorder =\n  \"border border-transparent [background:linear-gradient(var(--brand-border-fill,var(--card)),var(--brand-border-fill,var(--card)))_padding-box,linear-gradient(to_right,var(--primary),var(--brand))_border-box]\";\n\n/** A soft brand glow. It replaces the element's shadow-* (both are box-shadow). */\nexport const brandGlow = \"shadow-[0_0_24px_-4px_color-mix(in_oklch,var(--brand)_55%,transparent)]\";\n\n/**\n * A wrapper whose 1px edge is a spinning primary → brand gradient, for something\n * in progress (an AI step). Give the child its own background and a radius 1px\n * smaller than the wrapper's. Static with reduced motion; one on screen at a time.\n */\nexport const brandSpinningBorder =\n  \"relative isolate overflow-hidden p-px before:absolute before:top-1/2 before:left-1/2 before:-z-10 before:aspect-square before:w-[200%] before:-translate-1/2 before:bg-[conic-gradient(var(--primary),var(--brand),var(--primary))] motion-safe:before:animate-spin motion-safe:before:[animation-duration:3s]\";\n",
+      "type": "registry:lib",
+      "target": "lib/fma-ds/brand.ts"
+    }
+  ],
+  "meta": {
+    "status": "experimental",
+    "source": "original",
+    "tags": [
+      "color",
+      "brand",
+      "theme",
+      "decoration"
+    ]
+  },
+  "categories": [
+    "color"
+  ],
+  "type": "registry:lib"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "toggle",
+  "category": "buttons",
+  "status": "stable",
+  "source": "customized",
+  "description": "A single two-state pressable button (on/off) — the single-button counterpart to `ToggleGroup`.\n\n- **Styles**: `default` and `outline` variants, in three sizes.\n- **States**: pressed uses `accent` (the theme's selected surface); hover stays `muted`, as in shadcn, so hovering and pressed look different.",
+  "tags": ["buttons", "toggle", "react-aria"]
+}

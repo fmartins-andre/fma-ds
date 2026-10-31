@@ -1,0 +1,8 @@
+{
+  "name": "breadcrumb",
+  "category": "navigation",
+  "status": "stable",
+  "source": "shadcn",
+  "description": "Shows the user's current location within a hierarchy, as a trail of links back to parent pages, with an ellipsis for collapsing long paths.",
+  "tags": ["navigation", "react-aria"]
+}

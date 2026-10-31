@@ -1,0 +1,37 @@
+# Update PRs wait out the same 7-day window as pnpm's `minimumReleaseAge`
+# (pnpm-workspace.yaml), so they are never blocked by it on install.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    ignore:
+      # Tracks the Node major in .nvmrc / engines.node (24); bump them together by hand.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Patch/minor bumps together in one PR; majors each get their own.
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: ci

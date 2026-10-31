@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "title": "Separator",
+  "author": "@fma-ds/ds",
+  "description": "A thin visual divider between content, horizontal or vertical.",
+  "dependencies": [
+    "cn@^0.5.0",
+    "react-aria-components@^1.22.1"
+  ],
+  "files": [
+    {
+      "path": "src/core/separator/separator.tsx",
+      "content": "import { cn } from \"cn\";\nimport { Separator as SeparatorPrimitive } from \"react-aria-components\";\n\nfunction Separator({\n  className,\n  orientation = \"horizontal\",\n  ...props\n}: React.ComponentProps<typeof SeparatorPrimitive>) {\n  return (\n    <SeparatorPrimitive\n      data-slot=\"separator\"\n      orientation={orientation}\n      className={cn(\n        \"block shrink-0 border-0 bg-border aria-[orientation=horizontal]:h-px aria-[orientation=horizontal]:w-full aria-[orientation=vertical]:w-px aria-[orientation=vertical]:self-stretch [:is(hr)]:h-px [:is(hr)]:w-full\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Separator };\n",
+      "type": "registry:component",
+      "target": "components/fma-ds/separator.tsx"
+    }
+  ],
+  "meta": {
+    "status": "stable",
+    "source": "shadcn",
+    "tags": [
+      "layout",
+      "divider",
+      "react-aria"
+    ]
+  },
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

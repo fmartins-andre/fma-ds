@@ -1,0 +1,9 @@
+{
+  "name": "file-type",
+  "category": "data-display",
+  "status": "stable",
+  "source": "third-party",
+  "origin": "reui.io (https://reui.io/docs/components/base/file-type, MIT)",
+  "description": "A file type icon: a page with a folded corner and the extension label, in the format's brand or family color (Word blue, Excel green, the GitHub language colors).\n\n- **`type`**: one of 171 extensions (documents, certificates, code, config, archives…), one of 13 families (`image`, `folder`… drawn as a glyph) or any other string (a neutral labelled page).\n- **`getFileType()`**: resolves a file name, path, URL or MIME type, including well-known names without an extension (Dockerfile, `.env.local`, `go.mod`, LICENSE) and aliases such as `.cer`. `getFileTypeCategory()` returns the family.\n- **`variant`**: `outline`, `solid`, `light` or `mono` (theme gray). A `text-*` class recolors it.\n- **`size`**: from `mini` (18px, for table rows) to `xl`; a Tailwind `size-*` class scales the label and stroke with the box (container units).\n- **Content**: `label` replaces the text, `glyph` shows the family glyph and `icon` draws a custom icon.\n\nRenders a `span` with `role=\"img\"` named after the type. It has no state, so it works in Server Components.",
+  "tags": ["data-display", "file", "icon", "upload"]
+}

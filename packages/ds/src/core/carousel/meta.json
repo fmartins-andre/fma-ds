@@ -1,0 +1,8 @@
+{
+  "name": "carousel",
+  "category": "data-display",
+  "status": "stable",
+  "source": "customized",
+  "description": "A carousel for cycling through slides (images, cards, or any content) with keyboard, swipe, and button navigation.\n\nBuilt on embla-carousel-react; `CarouselPrevious`/`CarouselNext` are `Button`s wired to the carousel API.\n\n- **Autoplay**: `autoplay` (`true` or `{ delay }`, 5000 ms by default) advances on its own and wraps to the first slide. Rotation pauses while the pointer is over the carousel or focus is inside it, and starts paused under reduced motion.\n- **`CarouselAutoplayToggle`**: pause/resume — required for moving content by WCAG 2.2.2; a dev warning flags its absence.\n- **`CarouselDots`**: one dot per slide; marks the current one and goes to a slide on press.\n- **Announcements**: slide changes are announced (`aria-live`) only when not rotating.\n\nThe toggle and dots are not positioned; place them where they fit.\n\nBuilt-in labels are in English; translate them with `i18n.labels`.",
+  "tags": ["data-display", "carousel", "slider", "embla"]
+}

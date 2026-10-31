@@ -1,0 +1,8 @@
+{
+  "name": "error-pages",
+  "category": "blocks",
+  "status": "experimental",
+  "source": "original",
+  "description": "Error screens on top of `empty` and `icon-stack`: `NotFound` (404), `Forbidden` (403) and `UnexpectedError`, plus the bare `ErrorPage` for other cases (maintenance, expired link).\n\nEach shows an icon, the status `code` as a small label, the title as the page's `h1`, a description and your `actions` (home, back, support).\n\n- **Layout**: `layout=\"page\"` fills the viewport; `layout=\"inline\"` fills the content area of the app's layout.\n- **`UnexpectedError`**: puts a \"Try again\" button first with `onRetry` (pending while its promise runs). With `error`, it adds a collapsible `ErrorDetails` with the message and stack and a button that copies them — leave `error` out where users shouldn't see it.\n- **In the app**: wiring to the router (error and not-found routes), reporting and automatic reloads.\n\nBuilt-in text is in English; translate it with `i18n.labels`, or override `title` and `description`.",
+  "tags": ["block", "error", "404", "403", "not-found", "forbidden", "empty-state"]
+}

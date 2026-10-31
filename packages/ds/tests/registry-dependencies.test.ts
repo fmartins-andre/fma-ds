@@ -1,0 +1,71 @@
+// Structural gate: every registry.json item's declared dependencies must
+// match what its actual source file imports — catches registry.json going
+// stale (hand-edited, or generated from an older version of the source) and
+// catches a real npm dependency being used but never installed.
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import type { Registry } from "@fma-ds/registry";
+import { describe, expect, it } from "vitest";
+import {
+  detectNpmDependencies,
+  detectRegistryDependencies,
+  NAMESPACE,
+  packageName,
+} from "../scripts/gen-registry-json";
+
+const ROOT = join(__dirname, "..");
+
+const registry = JSON.parse(readFileSync(join(ROOT, "registry.json"), "utf8")) as Registry;
+
+const packageJson = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as {
+  dependencies?: Record<string, string>;
+};
+const installedDeps = new Set(Object.keys(packageJson.dependencies ?? {}));
+
+const registryItemNames = new Set(registry.items.map((item) => item.name));
+
+// Themes (registry:theme) are pure cssVars: no files, no dependencies. They're
+// checked by tests/themes.test.ts instead.
+const codeItems = registry.items.filter((item) => item.type !== "registry:theme");
+
+describe.each(codeItems.map((item) => [item.name, item] as const))(
+  "registry item: %s",
+  (name, item) => {
+    if (item.files.length === 0) throw new Error(`${name} declares no files`);
+    // Multi-file libs (e.g. input-masks) declare the union of all their files' imports.
+    const source = item.files.map((file) => readFileSync(join(ROOT, file.path), "utf8")).join("\n");
+
+    it("declares exactly the npm dependencies its source actually imports", () => {
+      expect(new Set((item.dependencies ?? []).map(packageName))).toEqual(
+        new Set(detectNpmDependencies(source)),
+      );
+    });
+
+    it("declares exactly the registryDependencies its source actually cross-imports", () => {
+      expect(new Set(item.registryDependencies ?? [])).toEqual(
+        new Set(detectRegistryDependencies(source, name).map((id) => `${NAMESPACE}/${id}`)),
+      );
+    });
+
+    it("every declared npm dependency is actually installed in package.json", () => {
+      for (const dependency of item.dependencies ?? []) {
+        const dep = packageName(dependency);
+        expect(
+          installedDeps.has(dep),
+          `"${dep}" is imported by ${name} but missing from packages/ds/package.json dependencies`,
+        ).toBe(true);
+      }
+    });
+
+    it("every declared registryDependency points at a real item in this registry", () => {
+      for (const dep of item.registryDependencies ?? []) {
+        // Namespaced, so the shadcn CLI resolves it here and not in the official registry.
+        expect(dep.startsWith(`${NAMESPACE}/`), `"${dep}" isn't namespaced`).toBe(true);
+        expect(
+          registryItemNames.has(dep.slice(NAMESPACE.length + 1)),
+          `registryDependency "${dep}" declared by ${name} doesn't exist in registry.json`,
+        ).toBe(true);
+      }
+    });
+  },
+);

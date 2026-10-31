@@ -1,0 +1,9 @@
+{
+  "name": "item",
+  "category": "layout",
+  "status": "stable",
+  "source": "customized",
+  "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
+  "description": "A generic row layout for lists of things — media/icon, title, description, and trailing actions.\n\n- **Rendering**: a `<div>` or, when given an `href`, a real link (hovered with the theme's `accent`).\n- **`ItemGroup`**: stacks several with consistent spacing.",
+  "tags": ["layout", "list", "react-aria"]
+}

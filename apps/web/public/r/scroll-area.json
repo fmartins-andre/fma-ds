@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-area",
+  "title": "Scroll Area",
+  "author": "@fma-ds/ds",
+  "description": "A scrollable container with a themeable, always-consistent-looking scrollbar via native scrollbar-width/scrollbar-color — no JS scrollbar emulation.",
+  "dependencies": [
+    "cn@^0.5.0"
+  ],
+  "files": [
+    {
+      "path": "src/core/scroll-area/scroll-area.tsx",
+      "content": "import { cn } from \"cn\";\nimport type * as React from \"react\";\n\nfunction ScrollArea({ className, children, ...props }: React.ComponentProps<\"div\">) {\n  // Use native scrollbar-width and scrollbar-color to customize the scrollbar.\n  return (\n    <div\n      data-slot=\"scroll-area\"\n      className={cn(\n        \"relative [scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent] overflow-auto outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </div>\n  );\n}\n\nexport { ScrollArea };\n",
+      "type": "registry:component",
+      "target": "components/fma-ds/scroll-area.tsx"
+    }
+  ],
+  "meta": {
+    "status": "stable",
+    "source": "shadcn",
+    "tags": [
+      "layout",
+      "scroll"
+    ]
+  },
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:ui"
+}

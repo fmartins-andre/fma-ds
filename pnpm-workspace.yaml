@@ -1,0 +1,57 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# Fail install when Node/pnpm are outside `engines` instead of only warning.
+engineStrict: true
+
+# Supply-chain hardening (https://pnpm.io/supply-chain-security). Never add
+# exclusions to dodge these; wait for the version to age or pin an older one.
+# Versions must be at least 7 days old: most npm compromises are caught and
+# unpublished within hours or days. Dependabot's cooldown matches this.
+minimumReleaseAge: 10080
+# Refuse a version published with weaker trust evidence (e.g. no provenance /
+# trusted publisher) than an earlier release of the same package, the typical
+# sign of a stolen publish token.
+trustPolicy: no-downgrade
+# Only judge trust on versions published in the last year: older releases of
+# long-lived lines (e.g. semver@6.3.1, reselect@5.1.1, backports published
+# without provenance after newer majors had it) predate the attack window.
+trustPolicyIgnoreAfter: 525600
+# Transitive dependencies may only come from the registry, never from git
+# repositories or tarball URLs.
+blockExoticSubdeps: true
+
+# pnpm blocks install scripts by default and fails install on any undecided
+# one; this is the declarative decision instead of the interactive
+# `pnpm approve-builds`. Default to false for anything new. lefthook's
+# postinstall only runs `lefthook install`, which the root `prepare` script
+# already does (the binary ships in its platform optional deps); esbuild's
+# (via storybook) and workerd's (via wrangler) only re-verify the binary their
+# optional deps already ship.
+allowBuilds:
+  lefthook: false
+  esbuild: false
+  workerd: false
+
+# Transitive deps with a published security fix that their parents haven't
+# picked up yet. Drop each entry once the parent range includes the fix.
+overrides:
+  # GHSA-wq5f-xc86-pv6w (via wrangler > miniflare)
+  sharp: ">=0.35.5"
+  # GHSA-6qxp-vccf-f47h (via shadcn)
+  "@modelcontextprotocol/sdk": ">=1.31.0"
+  # source-map-js <1.2.2 advisory (via postcss)
+  source-map-js: ">=1.2.2"
+
+catalog:
+  react: ^19.3.1
+  react-dom: ^19.3.1
+  typescript: ^7.0.2
+  "@types/node": ^24.19.2
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  vite: ^8.3.5
+  "@vitejs/plugin-react": ^6.1.2
+  tailwindcss: ^4.3.3
+  "@tailwindcss/vite": ^4.3.3

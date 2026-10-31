@@ -1,0 +1,8 @@
+{
+  "name": "stat-cards",
+  "category": "blocks",
+  "status": "experimental",
+  "source": "original",
+  "description": "Totals above a list or on a dashboard: figures on their own or on cards that are static, pressable, links or filters.\n\n### `Stat`\n\nA label (`StatLabel`), a value (`StatValue`, formatted by the app, with `isLoading` and `isUnavailable` states), an optional `StatIcon` (a `soft` `IconTile`) and a `StatDescription`.\n\n- **`tone`**: `default`, `success`, `warning`, `info`, `destructive` or `muted`; tints the icon and the value.\n- **`size=\"lg\"`**: enlarges the value.\n\nOn its own, `Stat` has no surface, for several figures inside one card.\n\n### Cards\n\n- **`StatCard`**: static.\n- **`StatCardButton`**: runs `onPress`, or opens a dialog as the child of a `DialogTrigger`.\n- **`StatCardLink`**: navigates, e.g. to the list already filtered.\n- **`StatCardToggle`**: the selectable cards of a `StatCardGroup`, a react-aria `ToggleButtonGroup` that filters a list. `selectionMode=\"single\"` behaves like radios and `\"multiple\"` like checkboxes, controlled by `selectedKeys`/`onSelectionChange` so it maps to a search param.\n\n`StatGrid` and `StatCardGroup` lay cards out in as many columns as fit, and their `i18n.labels` reach every value inside.",
+  "tags": ["block", "stats", "dashboard", "totals", "filters"]
+}

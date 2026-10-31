@@ -1,0 +1,8 @@
+{
+  "name": "date-picker",
+  "category": "forms",
+  "status": "stable",
+  "source": "original",
+  "description": "A typed date input paired with a calendar popover over one value, for single dates (`DatePicker`) or ranges (`DateRangePicker`).\n\n- **Granularity**: month- and year-only, as well as days.\n- **Availability**: `unavailableRanges` blocks dates.\n- **Non-modal popover**: the input stays editable while the calendar is open, and the calendar follows what is typed.",
+  "tags": ["form", "date", "react-aria"]
+}

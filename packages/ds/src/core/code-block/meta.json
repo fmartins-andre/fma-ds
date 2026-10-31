@@ -1,0 +1,9 @@
+{
+  "name": "code-block",
+  "category": "data-display",
+  "status": "stable",
+  "source": "third-party",
+  "origin": "reui.io (https://reui.io/docs/components/base/code-block, MIT); buttons rebuilt on react-aria Button",
+  "description": "A code block with shiki syntax highlighting, for docs and AI chat UIs. `<CodeBlock code={code} language=\"tsx\" />` is complete on its own.\n\n### Parts\n\n- **`CodeBlockHeader`**: the chrome — `CodeBlockTitle`, `CodeBlockLanguage`, `CodeBlockWrapToggle`, `CodeBlockCopyButton`, `CodeBlockDownloadButton`.\n- **`CodeBlockExpandButton`**: with `maxLines`.\n- **`CodeBlockContent`**: to place inside your own scroll container.\n- **`CodeBlockLineActions`**: one action group on the hovered or focused line.\n\nA pinned copy button stays put while the code scrolls.\n\n### Highlighting\n\nshiki loads lazily on the first highlight (JavaScript regex engine, no WebAssembly) through the `code-block-highlight` lib. Pass `lines` from `highlightCode()` in a server loader, or `highlight={false}`, to never load it. Light and dark token colors switch with the theme.\n\n### Lines\n\n- **Marking**: `showLineNumbers`/`startLine`, `highlightedLines`/`highlightedWords`/`focusedLines` (line specs like `\"2-4,7\"`), `diff` and `lineLevels` — or shiki `transformers`.\n- **`streaming`**: grows the code with a caret and stick-to-bottom, re-rendering only changed lines.\n- **`foldable`**: folds by indentation.\n- **`selectable`**: turns lines into a multi-select listbox.",
+  "tags": ["data-display", "code", "syntax-highlighting", "shiki", "ai"]
+}
