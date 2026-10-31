@@ -195,6 +195,9 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    componentes `customized`/`original` e blocos por `tests/interaction-tokens.test.ts`
    (exceções no `ALLOWED`, com motivo). Detalhes no `CONTRIBUTING.md`.
 
+12. **Sem requisições de rede em código publicado**: `fetch`, WebSocket e URLs fixas exigem exceção
+   declarada em `tests/external-requests.test.ts` e no guia `offline.md`.
+
 ## Estilo de código
 
 - Biome é lint + formatter (sem ESLint/Prettier): 2 espaços, aspas duplas, ponto-e-vírgula,
