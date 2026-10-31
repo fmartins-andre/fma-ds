@@ -1,3 +1,4 @@
+import { GUIDES } from "../guides";
 import { BLOCKS, COMPONENTS, STORYBOOK_URL } from "./registry";
 
 export interface NavLink {
@@ -29,6 +30,10 @@ export const DOCS_NAV: NavSection[] = [
       { title: "Theme editor", href: "/themes" },
       { title: "Storybook", href: STORYBOOK_URL, external: true },
     ],
+  },
+  {
+    title: "Guides",
+    links: GUIDES.map((guide) => ({ title: guide.title, href: `/docs/${guide.slug}` })),
   },
   {
     title: "Components",

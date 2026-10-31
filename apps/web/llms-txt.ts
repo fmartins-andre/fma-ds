@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import type { Plugin } from "vite";
+import { fillGuide, GUIDES } from "./src/guides/index.ts";
 import { SHADCN_ADD } from "./src/site/shadcn.ts";
 import { readStorySnippets } from "./story-snippets.ts";
 
@@ -9,8 +10,10 @@ import { readStorySnippets } from "./story-snippets.ts";
 // build time (static assets of the Worker, which has no fs at runtime) and
 // rendered on each request by the dev server.
 
+const REPO = "https://github.com/fmartins-andre/fma-ds";
 const UI = resolve(import.meta.dirname, "../../packages/ds");
 const PUBLIC = resolve(import.meta.dirname, "public");
+const GUIDES_DIR = resolve(import.meta.dirname, "src/guides");
 const FILES = ["llms.txt", "llms-full.txt"] as const;
 
 interface Item {
@@ -20,6 +23,10 @@ interface Item {
   description: string;
   dependencies?: string[];
   registryDependencies?: string[];
+}
+
+function readGuide(slug: string) {
+  return fillGuide(readFileSync(join(GUIDES_DIR, `${slug}.md`), "utf8")).trim();
 }
 
 function readItems(): Item[] {
@@ -62,7 +69,9 @@ Register the namespace in components.json:
 
 Then add items by name: \`${SHADCN_ADD} @fma-ds/button\`. Dependencies between items resolve through the same namespace. Everything installs into \`fma-ds\` folders (\`components/fma-ds/\`, \`hooks/fma-ds/\`, \`lib/fma-ds/\`), so it never collides with the official shadcn components.
 
-The APIs follow React Aria, not Radix: \`isDisabled\` instead of \`disabled\`, \`onPress\` instead of \`onClick\`, and no \`asChild\` (use \`LinkButton\` for a link that looks like a button). Wrap the app in React Aria's \`RouterProvider\` for client-side links.
+The APIs follow React Aria, not Radix: \`isDisabled\` instead of \`disabled\`, \`onPress\` instead of \`onClick\`, and no \`asChild\` (use \`LinkButton\` for a link that looks like a button). Wrap the app in React Aria's \`RouterProvider\` for client-side links (see the Routing guide).
+
+License: MIT. Third-party items keep their own license (${REPO}/blob/main/THIRD_PARTY_NOTICES.md).
 `;
 }
 
@@ -88,6 +97,9 @@ export function llmsTxt(siteUrl: string, items = readItems()) {
     header(siteUrl),
     "## Docs\n",
     link("Introduction", `${siteUrl}/docs`, "Installation, React Aria conventions, themes."),
+    ...GUIDES.map((guide) =>
+      link(guide.title, `${siteUrl}/docs/${guide.slug}`, summary(readGuide(guide.slug))),
+    ),
     link(
       "Registry index",
       `${siteUrl}/r/registry.json`,
@@ -134,6 +146,8 @@ export function llmsFullTxt(siteUrl: string, items = readItems()) {
   ];
   return [
     header(siteUrl),
+    "## Guides\n",
+    ...GUIDES.map((guide) => `### ${guide.title}\n\n${readGuide(guide.slug)}\n`),
     ...group("Components", "registry:ui"),
     ...group("Blocks", "registry:block"),
     ...group("Libs", "registry:lib"),
