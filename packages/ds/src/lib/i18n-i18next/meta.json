@@ -1,0 +1,8 @@
+{
+  "name": "i18n-i18next",
+  "category": "utils",
+  "status": "stable",
+  "source": "original",
+  "description": "Keeps the registry items in i18next's language, so your app's texts and the components switch together.\n\n- **`FmaI18nextProvider`**: goes inside `I18nextProvider` and reads the language, the fallback and the detection from that instance. Each server request can have its own instance.\n- **`changeLanguage`**: loads the pack first, then switches i18next, so nothing shows two languages. With `i18n.changeLanguage`, components keep their language until the pack arrives.\n- **`useFmaLocale().setLocale`** switches i18next too, so a language selector works the same way.",
+  "tags": ["i18n", "i18next", "locale"]
+}

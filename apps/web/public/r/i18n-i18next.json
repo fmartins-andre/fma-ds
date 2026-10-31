@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "i18n-i18next",
+  "title": "I18n I18next",
+  "author": "@fma-ds/ds",
+  "description": "Keeps the registry items in i18next's language, so your app's texts and the components switch together.\n\n- **`FmaI18nextProvider`**: goes inside `I18nextProvider` and reads the language, the fallback and the detection from that instance. Each server request can have its own instance.\n- **`changeLanguage`**: loads the pack first, then switches i18next, so nothing shows two languages. With `i18n.changeLanguage`, components keep their language until the pack arrives.\n- **`useFmaLocale().setLocale`** switches i18next too, so a language selector works the same way.",
+  "dependencies": [
+    "i18next@^26.5.10",
+    "react-i18next@^17.1.8"
+  ],
+  "registryDependencies": [
+    "@fma-ds/i18n"
+  ],
+  "files": [
+    {
+      "path": "src/lib/i18n-i18next/i18n-i18next.tsx",
+      "content": "\"use client\";\n\nimport type { i18n as I18next } from \"i18next\";\nimport * as React from \"react\";\nimport { useTranslation } from \"react-i18next\";\nimport {\n  FmaI18nProvider,\n  type FmaI18nProviderProps,\n  type FmaLocales,\n  loadFmaMessages,\n  matchLocale,\n} from \"@/lib/i18n/i18n\";\n\nexport type FmaI18nextProviderProps = Pick<FmaI18nProviderProps, \"children\" | \"overrides\"> & {\n  /** Keep it outside the component: the provider reads it once. */\n  locales: FmaLocales;\n  /** Defaults to the instance in the `I18nextProvider` above. */\n  i18n?: I18next;\n};\n\n/** `fallbackLng` as one of the packs; i18next's default, `dev`, never is. */\nfunction fallbackLocale({ options: { fallbackLng } }: I18next, locales: FmaLocales) {\n  const fallback = Array.isArray(fallbackLng) ? fallbackLng[0] : fallbackLng;\n  if (typeof fallback !== \"string\") return \"en\";\n  return matchLocale(fallback, [\"en\", ...Object.keys(locales)]) ?? \"en\";\n}\n\n/** Loads the pack first, then switches i18next: components and app change in the same commit. */\nexport async function changeLanguage(i18n: I18next, lng: string, locales: FmaLocales) {\n  await loadFmaMessages(locales, lng, fallbackLocale(i18n, locales));\n  await i18n.changeLanguage(lng);\n}\n\n/** Keeps every registry item in i18next's language, which also does the detection. */\nexport function FmaI18nextProvider({\n  children,\n  locales,\n  overrides,\n  i18n: instance,\n}: FmaI18nextProviderProps) {\n  const { i18n } = useTranslation(undefined, { i18n: instance });\n\n  React.useEffect(() => {\n    // A failure here reaches the provider, which loads the pack again when the language changes.\n    const preload = (lng?: string) => {\n      if (lng) loadFmaMessages(locales, lng, fallbackLocale(i18n, locales)).catch(() => {});\n    };\n    i18n.on(\"languageChanging\", preload);\n    return () => i18n.off(\"languageChanging\", preload);\n  }, [i18n, locales]);\n\n  const onLocaleChange = React.useCallback(\n    (locale: string) => void changeLanguage(i18n, locale, locales),\n    [i18n, locales],\n  );\n\n  return (\n    <FmaI18nProvider\n      locale={i18n.resolvedLanguage ?? i18n.language}\n      locales={locales}\n      fallbackLocale={fallbackLocale(i18n, locales)}\n      detect={false}\n      overrides={overrides}\n      onLocaleChange={onLocaleChange}\n    >\n      {children}\n    </FmaI18nProvider>\n  );\n}\n",
+      "type": "registry:lib",
+      "target": "lib/fma-ds/i18n-i18next/i18n-i18next.tsx"
+    }
+  ],
+  "meta": {
+    "status": "stable",
+    "source": "original",
+    "license": "MIT",
+    "tags": [
+      "i18n",
+      "i18next",
+      "locale"
+    ],
+    "contentHash": "694f3ba8b4c1"
+  },
+  "categories": [
+    "utils"
+  ],
+  "type": "registry:lib"
+}

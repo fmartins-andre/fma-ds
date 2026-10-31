@@ -2214,6 +2214,41 @@
       }
     },
     {
+      "name": "i18n-i18next",
+      "type": "registry:lib",
+      "title": "I18n I18next",
+      "description": "Keeps the registry items in i18next's language, so your app's texts and the components switch together.\n\n- **`FmaI18nextProvider`**: goes inside `I18nextProvider` and reads the language, the fallback and the detection from that instance. Each server request can have its own instance.\n- **`changeLanguage`**: loads the pack first, then switches i18next, so nothing shows two languages. With `i18n.changeLanguage`, components keep their language until the pack arrives.\n- **`useFmaLocale().setLocale`** switches i18next too, so a language selector works the same way.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/lib/i18n-i18next/i18n-i18next.tsx",
+          "target": "lib/fma-ds/i18n-i18next/i18n-i18next.tsx",
+          "type": "registry:lib"
+        }
+      ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
+      "dependencies": [
+        "i18next@^26.5.10",
+        "react-i18next@^17.1.8"
+      ],
+      "meta": {
+        "status": "stable",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "i18n",
+          "i18next",
+          "locale"
+        ],
+        "contentHash": "694f3ba8b4c1"
+      }
+    },
+    {
       "name": "i18n-pt-br",
       "type": "registry:lib",
       "title": "I18n Pt Br",
