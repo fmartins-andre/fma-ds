@@ -27,7 +27,8 @@
       "modal",
       "confirmation",
       "react-aria"
-    ]
+    ],
+    "contentHash": "a4d060a3a152"
   },
   "categories": [
     "overlay"

@@ -26,7 +26,8 @@
       "reorder",
       "list",
       "react-aria"
-    ]
+    ],
+    "contentHash": "0f29f5662dc9"
   },
   "categories": [
     "data-display"

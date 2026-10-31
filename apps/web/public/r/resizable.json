@@ -23,7 +23,8 @@
       "layout",
       "panels",
       "react-resizable-panels"
-    ]
+    ],
+    "contentHash": "d88bd34b533c"
   },
   "categories": [
     "layout"

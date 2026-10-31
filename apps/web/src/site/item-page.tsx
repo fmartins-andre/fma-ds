@@ -20,6 +20,7 @@ import {
   neighbors,
   packageName,
   REGISTRIES_SNIPPET,
+  REPO_URL,
   type RegistryItem,
   registryDependencyLink,
   STORYBOOK_URL,
@@ -316,6 +317,16 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
             <Badge variant="warning-light">{item.meta.status}</Badge>
           )}
           <span className="flex-1" />
+          <LinkButton
+            href={`${REPO_URL}/commits/main/packages/ds/src/${kind === "blocks" ? "blocks" : "core"}/${item.name}`}
+            target="_blank"
+            rel="noreferrer"
+            variant="outline"
+            size="sm"
+          >
+            Changelog
+            <ArrowUpRightIcon data-icon="inline-end" />
+          </LinkButton>
           {loaded?.stories && (
             <LinkButton
               href={`${STORYBOOK_URL}?path=/docs/${loaded.stories.docsId}`}

@@ -24,7 +24,8 @@
       "disclosure",
       "collapsible",
       "react-aria"
-    ]
+    ],
+    "contentHash": "01447dcc1482"
   },
   "categories": [
     "disclosure"

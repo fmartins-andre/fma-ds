@@ -22,7 +22,8 @@
       "layout",
       "i18n",
       "react-aria"
-    ]
+    ],
+    "contentHash": "74859b34147c"
   },
   "categories": [
     "layout"

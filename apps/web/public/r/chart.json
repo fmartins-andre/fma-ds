@@ -24,7 +24,8 @@
       "charts",
       "recharts",
       "visualization"
-    ]
+    ],
+    "contentHash": "0eb1a539328d"
   },
   "categories": [
     "data-display"

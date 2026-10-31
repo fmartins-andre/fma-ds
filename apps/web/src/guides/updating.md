@@ -1,6 +1,12 @@
 The code lives in your project, so nothing updates by itself: you choose when to pull changes and which ones to keep.
 
-Items aren't versioned yet, so there is no installed version to compare with. Compare the code instead.
+Items have no version numbers. Each one has a content hash, which changes whenever its published code does:
+
+```bash
+curl -s https://<registry>/r/button.json | jq -r .meta.contentHash
+```
+
+Save the hash when you install an item, in a comment or a commit message, and a different value later means there is something new. The CLI rewrites imports on install, so hashing your local copy won't match. To see what changed, open the **Changelog** link on the item's page: it is the Git history of that item.
 
 ## Check before overwriting
 

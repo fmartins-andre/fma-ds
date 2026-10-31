@@ -27,7 +27,8 @@
       "forms",
       "input",
       "react-aria"
-    ]
+    ],
+    "contentHash": "d2abc2cf276f"
   },
   "categories": [
     "forms"

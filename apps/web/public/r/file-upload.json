@@ -34,7 +34,8 @@
       "upload",
       "dropzone",
       "react-aria"
-    ]
+    ],
+    "contentHash": "c41bcda28536"
   },
   "categories": [
     "forms"

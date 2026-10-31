@@ -34,7 +34,8 @@
       "not-found",
       "forbidden",
       "empty-state"
-    ]
+    ],
+    "contentHash": "00336537e030"
   },
   "categories": [
     "blocks"

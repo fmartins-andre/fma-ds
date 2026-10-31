@@ -27,7 +27,8 @@
       "chat",
       "form",
       "@shadcn/react"
-    ]
+    ],
+    "contentHash": "1c7f3ec3e00f"
   },
   "categories": [
     "chat"

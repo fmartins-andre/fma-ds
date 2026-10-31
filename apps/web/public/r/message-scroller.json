@@ -28,7 +28,8 @@
       "chat",
       "scroll",
       "@shadcn/react"
-    ]
+    ],
+    "contentHash": "3ae18a214230"
   },
   "categories": [
     "chat"
