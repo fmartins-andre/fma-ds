@@ -1,9 +1,12 @@
+import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/table/table";
 import { COLOR_GROUPS, checkContrast, type Theme, type ThemeMode } from "@/lib/theme/index";
 import { ContrastBadge } from "./fields";
+import type { themeEditor } from "./i18n/en";
 import { themeInstall } from "./install";
 
 export function Palette({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
+  const { t } = useTranslation("themeEditor");
   const colors = theme[mode];
   const results = checkContrast(theme, mode);
   const failing = results.filter((result) => !result.passes);
@@ -11,20 +14,28 @@ export function Palette({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
     <div className="flex flex-col gap-8">
       <section className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <h2 className="font-heading text-lg font-medium">Contrast ({mode})</h2>
+          <h2 className="font-heading text-lg font-medium">
+            {t(($) => $.contrast.title, { mode: t(($) => $.modes[mode]) })}
+          </h2>
           <p className="text-sm text-muted-foreground">
-            {failing.length === 0
-              ? "Every pair meets the bar curated themes must pass (4.5:1 for body text, 3:1 for the rest)."
-              : `${failing.length} pair${failing.length > 1 ? "s" : ""} below the bar curated themes must pass.`}
+            {t(
+              ($) =>
+                failing.length === 0
+                  ? $.contrast.allPass
+                  : failing.length === 1
+                    ? $.contrast.oneFails
+                    : $.contrast.manyFail,
+              { count: failing.length },
+            )}
           </p>
         </div>
-        <Table aria-label="Contrast pairs">
+        <Table aria-label={t(($) => $.contrast.pairs)}>
           <TableHeader>
-            <TableHead isRowHeader>Sample</TableHead>
-            <TableHead>Text</TableHead>
-            <TableHead>On</TableHead>
-            <TableHead>Minimum</TableHead>
-            <TableHead className="text-right">Ratio</TableHead>
+            <TableHead isRowHeader>{t(($) => $.contrast.sample)}</TableHead>
+            <TableHead>{t(($) => $.contrast.text)}</TableHead>
+            <TableHead>{t(($) => $.contrast.on)}</TableHead>
+            <TableHead>{t(($) => $.contrast.minimum)}</TableHead>
+            <TableHead className="text-right">{t(($) => $.contrast.ratio)}</TableHead>
           </TableHeader>
           <TableBody>
             {results.map(({ background: bg, foreground: fg, minimum, passes }) => {
@@ -56,7 +67,9 @@ export function Palette({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
       </section>
       {COLOR_GROUPS.map((group) => (
         <section key={group.id} className="flex flex-col gap-3">
-          <h2 className="font-heading text-sm font-medium text-muted-foreground">{group.title}</h2>
+          <h2 className="font-heading text-sm font-medium text-muted-foreground">
+            {t(($) => $.groups[group.id as keyof typeof themeEditor.groups])}
+          </h2>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
             {group.colors.map(({ token }) => (
               <div key={token} className="flex items-center gap-3">

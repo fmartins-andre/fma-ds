@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "react-aria-components";
+import { Trans, useTranslation } from "react-i18next";
 import { plainSummaryOf } from "../../../site/markdown";
-import { COMPONENTS, componentsByCategory } from "../../../site/registry";
+import { COMPONENTS } from "../../../site/registry";
+import { useComponentsByCategory } from "../../../site/use-categories";
 
 export const Route = createFileRoute("/_site/_docs/components/")({
   head: () => ({ meta: [{ title: "Components · fma-ds" }] }),
@@ -9,14 +11,22 @@ export const Route = createFileRoute("/_site/_docs/components/")({
 });
 
 function ComponentsIndex() {
+  const { t } = useTranslation();
+  const groups = useComponentsByCategory();
   return (
     <div className="pb-12">
-      <h1 className="font-heading text-3xl font-semibold tracking-tight">Components</h1>
+      <h1 className="font-heading text-3xl font-semibold tracking-tight">
+        {t(($) => $.nav.components)}
+      </h1>
       <p className="mt-2 max-w-2xl text-base text-muted-foreground">
-        {COMPONENTS.length} components built on react-aria-components. Each one installs with the
-        shadcn CLI into <code className="font-mono text-sm">components/fma-ds/</code>.
+        <Trans
+          t={t}
+          i18nKey={($) => $.lists.componentsLead}
+          values={{ count: COMPONENTS.length }}
+          components={{ code: <code className="font-mono text-sm" /> }}
+        />
       </p>
-      {componentsByCategory().map((group) => (
+      {groups.map((group) => (
         <section
           key={group.category}
           aria-labelledby={`category-${group.category}`}

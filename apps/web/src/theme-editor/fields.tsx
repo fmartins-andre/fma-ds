@@ -1,4 +1,5 @@
 import { type ReactNode, useId } from "react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/core/badge/badge";
 import {
   ColorPicker,
@@ -18,6 +19,7 @@ export function ContrastBadge({
   background: string;
   foreground: string;
 }) {
+  const { t } = useTranslation("themeEditor");
   const ratio = contrastRatio(background, foreground);
   const level = contrastLevel(ratio);
   return (
@@ -29,9 +31,14 @@ export function ContrastBadge({
             ? "warning-light"
             : "success-light"
       }
-      title={`Contrast ${ratio.toFixed(2)}:1 against its background`}
+      title={t(($) => $.contrast.badge, { ratio: ratio.toFixed(2) })}
     >
-      {ratio.toFixed(1)} {level === "AA18" ? "AA large" : level}
+      {ratio.toFixed(1)}{" "}
+      {level === "AA18"
+        ? t(($) => $.contrast.aaLarge)
+        : level === "Fail"
+          ? t(($) => $.contrast.fail)
+          : level}
     </Badge>
   );
 }
@@ -51,6 +58,7 @@ export function ColorField({
   /** The background this color is text on: shows a contrast badge, and contrast in the picker. */
   contrastWith?: string;
 }) {
+  const { t } = useTranslation("themeEditor");
   const id = useId();
 
   return (
@@ -62,7 +70,7 @@ export function ColorField({
         {contrastWith && <ContrastBadge background={contrastWith} foreground={value} />}
       </div>
       <ColorPicker
-        label={`Pick ${label}`}
+        label={t(($) => $.contrast.pick, { label })}
         value={value}
         onChange={onChange}
         onChangeEnd={onChangeEnd}

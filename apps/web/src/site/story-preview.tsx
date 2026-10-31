@@ -1,5 +1,6 @@
 import { ArrowUpRightIcon } from "lucide-react";
 import { Component, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import {
   CodeBlock,
   CodeBlockCopyButton,
@@ -13,6 +14,11 @@ import type { ItemKind } from "./registry";
 import { STORYBOOK_URL } from "./registry";
 import type { DocStory } from "./stories";
 
+function PreviewError({ message }: { message: string }) {
+  const { t } = useTranslation();
+  return <p className="text-sm text-destructive">{t(($) => $.story.failed, { message })}</p>;
+}
+
 class PreviewBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
   state = { error: null as Error | null };
   static getDerivedStateFromError(error: Error) {
@@ -20,11 +26,7 @@ class PreviewBoundary extends Component<{ children: ReactNode }, { error: Error 
   }
   render() {
     if (this.state.error) {
-      return (
-        <p className="text-sm text-destructive">
-          This example failed to render: {this.state.error.message}
-        </p>
-      );
+      return <PreviewError message={this.state.error.message} />;
     }
     return this.props.children;
   }
@@ -63,14 +65,15 @@ export function StoryPreview({
   story: DocStory;
   className?: string;
 }) {
+  const { t } = useTranslation();
   const framed = kind === "blocks" || story.layout === "fullscreen";
   const { Component: Story } = story;
   return (
     <Tabs className={cn("gap-3", className)} defaultSelectedKey="preview">
       <div className="flex items-center justify-between gap-2">
-        <TabsList variant="line" aria-label={`${story.name} example`}>
-          <TabsTrigger id="preview">Preview</TabsTrigger>
-          <TabsTrigger id="code">Code</TabsTrigger>
+        <TabsList variant="line" aria-label={t(($) => $.story.example, { name: story.name })}>
+          <TabsTrigger id="preview">{t(($) => $.story.preview)}</TabsTrigger>
+          <TabsTrigger id="code">{t(($) => $.story.code)}</TabsTrigger>
         </TabsList>
         <a
           href={framed ? previewPath(kind, name, story.exportName) : storybookStoryUrl(story.id)}
@@ -78,14 +81,14 @@ export function StoryPreview({
           rel="noreferrer"
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
         >
-          {framed ? "Open in new tab" : "Open in Storybook"}
+          {t(($) => (framed ? $.story.newTab : $.story.openStorybook))}
           <ArrowUpRightIcon className="size-3" aria-hidden="true" />
         </a>
       </div>
       <TabsContent id="preview">
         {framed ? (
           <iframe
-            title={`${story.name} preview`}
+            title={t(($) => $.lists.preview, { title: story.name })}
             src={previewPath(kind, name, story.exportName)}
             className="h-[640px] w-full rounded-xl border bg-background"
             loading="lazy"

@@ -1,5 +1,6 @@
 import { Upload } from "lucide-react";
 import { useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/core/button/button";
 import {
   Dialog,
@@ -18,6 +19,7 @@ import { DEFAULT_THEME } from "@/themes/index";
 const IDENTITY = { name: "custom", title: "Custom", description: "Imported in the theme editor." };
 
 export function ImportDialog({ onImport }: { onImport: (theme: Theme) => void }) {
+  const { t } = useTranslation("themeEditor");
   const [text, setText] = useState("");
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -40,26 +42,29 @@ export function ImportDialog({ onImport }: { onImport: (theme: Theme) => void })
     <DialogTrigger isOpen={open} onOpenChange={setOpen}>
       <Button variant="outline">
         <Upload data-icon="inline-start" />
-        Import
+        {t(($) => $.import.action)}
       </Button>
       <Dialog className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>Import a theme</DialogTitle>
+          <DialogTitle>{t(($) => $.import.title)}</DialogTitle>
           <DialogDescription>
-            A shadcn <code>styles.css</code> (from here, tweakcn or ui.shadcn.com/themes), a shadcn
-            registry theme item such as <code>tweakcn.com/r/themes/&lt;id&gt;.json</code>, or a
-            theme JSON exported here. Missing tokens come from the default theme.
+            <Trans
+              t={t}
+              i18nKey={($) => $.import.description}
+              values={{ id: "<id>" }}
+              components={{ code: <code /> }}
+            />
           </DialogDescription>
         </DialogHeader>
         <Tabs onSelectionChange={() => setError(null)}>
           <TabsList>
-            <TabsTrigger id="paste">Paste</TabsTrigger>
-            <TabsTrigger id="url">URL</TabsTrigger>
-            <TabsTrigger id="file">File</TabsTrigger>
+            <TabsTrigger id="paste">{t(($) => $.import.paste)}</TabsTrigger>
+            <TabsTrigger id="url">{t(($) => $.import.url)}</TabsTrigger>
+            <TabsTrigger id="file">{t(($) => $.import.file)}</TabsTrigger>
           </TabsList>
           <TabsContent id="paste" className="flex flex-col gap-3">
             <Textarea
-              aria-label="CSS or JSON"
+              aria-label={t(($) => $.import.pasteLabel)}
               className="h-56 font-mono text-xs"
               placeholder={":root {\n  --background: oklch(1 0 0);\n  …\n}\n.dark { … }"}
               value={text}
@@ -67,13 +72,13 @@ export function ImportDialog({ onImport }: { onImport: (theme: Theme) => void })
             />
             <DialogFooter>
               <Button isDisabled={!text.trim()} onPress={() => importText(text)}>
-                Import
+                {t(($) => $.import.action)}
               </Button>
             </DialogFooter>
           </TabsContent>
           <TabsContent id="url" className="flex flex-col gap-3">
             <Input
-              aria-label="Theme URL"
+              aria-label={t(($) => $.import.urlLabel)}
               type="url"
               placeholder="https://tweakcn.com/r/themes/amethyst-haze.json"
               value={url}
@@ -90,20 +95,22 @@ export function ImportDialog({ onImport }: { onImport: (theme: Theme) => void })
                     importText(await response.text());
                   } catch (cause) {
                     setError(
-                      `Couldn't fetch it (${cause instanceof Error ? cause.message : cause}). The server must allow CORS; otherwise download it and paste.`,
+                      t(($) => $.import.fetchFailed, {
+                        reason: cause instanceof Error ? cause.message : String(cause),
+                      }),
                     );
                   } finally {
                     setBusy(false);
                   }
                 }}
               >
-                {busy ? "Fetching…" : "Fetch and import"}
+                {t(($) => (busy ? $.import.fetching : $.import.fetch))}
               </Button>
             </DialogFooter>
           </TabsContent>
           <TabsContent id="file" className="flex flex-col gap-3">
             <Input
-              aria-label="Theme file"
+              aria-label={t(($) => $.import.fileLabel)}
               type="file"
               accept=".css,.json,text/css,application/json"
               onChange={async (event) => {
