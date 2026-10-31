@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileBadgeIcon, FilePlusIcon, PercentIcon } from "lucide-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { IconTile } from "@/core/icon-tile/icon-tile";
-import { FmaI18nProvider } from "@/lib/i18n/index";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import {
   Carousel,
   CarouselAutoplayToggle,

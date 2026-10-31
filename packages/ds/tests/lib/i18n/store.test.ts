@@ -5,7 +5,7 @@ import {
   type FmaMessagesPack,
   loadFmaMessages,
   readFmaMessages,
-} from "@/lib/i18n/index";
+} from "@/lib/i18n/i18n";
 
 const pack = {} as FmaMessagesPack;
 

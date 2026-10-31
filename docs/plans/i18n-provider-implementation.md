@@ -49,7 +49,7 @@ plano decide nomes, arquivos e testes, o spec decide o comportamento.
 - Sem provider, todo componente renderiza **exatamente** o texto de hoje (inglês), e as máscaras
   continuam brasileiras.
 - A prop `i18n`/`labels` atual de cada item continua aceitando o mesmo formato de hoje.
-- O pacote de idioma importa só `@/lib/i18n/index` (nunca componentes).
+- O pacote de idioma importa só `@/lib/i18n/i18n` (nunca componentes).
 - Precedência de texto: prop do componente > `overrides` > idioma ativo > fallback > inglês.
 - Precedência de locale: `locale` controlado > `initialLocale` > detectado > `defaultLocale`. Com
   a ponte, o `locale` controlado é o `resolvedLanguage` do i18next.
@@ -81,7 +81,7 @@ plano decide nomes, arquivos e testes, o spec decide o comportamento.
 ## Mapa de arquivos
 
 `packages/ds/src/lib/i18n/` (novo, `registry:lib` `i18n`; importado sempre por
-`@/lib/i18n/index`):
+`@/lib/i18n/i18n`):
 
 | Arquivo | Responsabilidade |
 |---|---|
@@ -124,8 +124,8 @@ Testes: `packages/ds/tests/lib/i18n/*.test.ts(x)`, `tests/lib/i18n-pt-br.test.ts
 ### Task 1: tipos, formatação e negociação
 
 **Files:**
-- Create: `src/lib/i18n/{types,format,negotiate}.ts`, `src/lib/i18n/index.ts`
-- Test: `tests/lib/i18n/format.test.ts`, `tests/lib/i18n/negotiate.test.ts`
+- Create: `src/lib/i18n/{types,format,negotiate}.ts`, `src/lib/i18n/i18n.ts`
+- Test: `tests/lib/i18n/i18n-format.test.ts`, `tests/lib/i18n/negotiate.test.ts`
 
 **Interfaces (produz):**
 ```ts
@@ -501,7 +501,7 @@ hoje). O `maskKey` inclui o locale. Quando o locale muda, o estado é refeito a 
   - pacote parcial (`defineFmaMessages({ carousel: {...} })`) atribuível a `FmaMessagesPack`
     e, com `<FmaI18nProvider locale="pt-BR" locales={{ "pt-BR": parcial }}>`, `dataGrid` sai em
     inglês (Foco 5).
-  - o arquivo só importa `@/lib/i18n/index` (leia o texto dos arquivos e cheque os imports).
+  - o arquivo só importa `@/lib/i18n/i18n` (leia o texto dos arquivos e cheque os imports).
 - [ ] **Step 2–4:** FAIL → escrever o pacote → PASS; build do registro mostra
   `i18n-pt-br` com `registryDependencies: ["@fma-ds/i18n"]` e nenhum componente.
 - [ ] **Step 5:** stories: nas stories que hoje passam `i18n={{…pt-BR…}}` só para mostrar
@@ -550,7 +550,7 @@ function changeLanguage(i18n: i18n, lng: string, locales: FmaLocales): Promise<v
   - SSR: duas instâncias (`i18next.createInstance`) em `pt-BR` e `en` renderizadas em paralelo →
     cada HTML no seu idioma (Foco 2).
   - `fallbackLng: ["pt-BR"]` vira o fallback dos componentes.
-  - o arquivo da lib não importa componentes (só `@/lib/i18n/index`, `i18next`, `react-i18next`).
+  - o arquivo da lib não importa componentes (só `@/lib/i18n/i18n`, `i18next`, `react-i18next`).
 - [ ] **Step 2–4:** FAIL → implementar → PASS. `meta.json`: `name: "i18n-i18next"`,
   `source: "original"`, descrição dizendo que liga o idioma do i18next aos componentes.
 - [ ] **Step 5:** build do registro mostra `i18n-i18next` com `registryDependencies:
@@ -597,7 +597,7 @@ Seções, na ordem:
 - Create: `apps/web/src/i18n/index.ts`: `createI18n(lng)` faz `i18next.createInstance()` com
   `fallbackLng: "en"`, `supportedLngs: ["en", "pt-BR"]`, `defaultNS: "common"`, backend
   `resourcesToBackend((lng, ns) => import(...))` e `react: { useSuspense: true }`. Também exporta
-  `fmaLocales = { "pt-BR": () => import("@/lib/i18n-pt-br/index") }`.
+  `fmaLocales = { "pt-BR": () => import("@/lib/i18n-pt-br/i18n-pt-br") }`.
 - Create: `apps/web/src/i18n/i18next.d.ts` (`CustomTypeOptions` com `resources` dos três
   namespaces em inglês e `enableSelector: true`)
 - Create: namespaces como TS `as const` (para inferir os parâmetros):

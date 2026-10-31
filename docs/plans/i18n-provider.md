@@ -110,7 +110,7 @@ Combinado em 2026-10-29 (modelo híbrido com i18next decidido no mesmo dia).
 ### Itens do registro
 
 - **`@fma-ds/i18n`** (`registry:lib`, pasta `src/lib/i18n/` com `meta.json`; importada por arquivo,
-  `@/lib/i18n/index`, regra 5). Contém:
+  `@/lib/i18n/i18n`, regra 5). Contém:
   - o provider e os hooks;
   - um store enxuto, criado por instância do provider;
   - os helpers `plural`, `number`, `currency` e `date`;
@@ -120,7 +120,7 @@ Combinado em 2026-10-29 (modelo híbrido com i18next decidido no mesmo dia).
 
   Sem dependência npm além de `react` e `react-aria-components`.
 - **Um item por idioma**: `@fma-ds/i18n-pt-br` (`registry:lib`), exporta `default` do tipo
-  `FmaMessages`. Importa só tipos/helpers de `@/lib/i18n/index`, então instalar o pacote traz só a
+  `FmaMessages`. Importa só tipos/helpers de `@/lib/i18n/i18n`, então instalar o pacote traz só a
   lib, nunca os componentes.
 - **`@fma-ds/i18n-i18next`** (`registry:lib`): a ponte. Depende de `@fma-ds/i18n`, `i18next` e
   `react-i18next`. É o único item que traz o i18next.
@@ -367,7 +367,7 @@ que já tem a lib exige sobrescrevê-la (o `shadcn add` pergunta). Regras:
 
 ## Testes e gates
 
-- Testes unit da lib (`tests/`, importando `@/lib/i18n/index`, regra 2):
+- Testes unit da lib (`tests/`, importando `@/lib/i18n/i18n`, regra 2):
   - precedência e mescla com religação de `functions`;
   - negociação de locale;
   - troca sem estado intermediário;

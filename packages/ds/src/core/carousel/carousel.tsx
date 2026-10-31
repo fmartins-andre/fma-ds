@@ -5,11 +5,7 @@ import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-reac
 import { ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/core/button/button";
-import {
-  type DictionaryNamespace,
-  type NamespaceOverrides,
-  useFmaMessages,
-} from "@/lib/i18n/index";
+import { type DictionaryNamespace, type NamespaceOverrides, useFmaMessages } from "@/lib/i18n/i18n";
 
 type CarouselLabels = {
   previous: string;

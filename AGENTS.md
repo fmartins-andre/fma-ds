@@ -155,7 +155,9 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    `src/lib/utils.ts` é só re-export. Outros componentes do registro via
    `@/core/<outro>/<outro>` ou `../<outro>/<outro>`. Libs em pasta são importadas por um
    arquivo (`@/lib/date-fns-compat/index`), nunca pela pasta: o CLI do shadcn só reescreve
-   imports que nomeiam arquivos. Variantes com `class-variance-authority`.
+   imports que nomeiam arquivos, e pelo nome, não pelo caminho: arquivo importado por alias precisa
+   de nome único no registro (`tests/registry-import-names.test.ts`). Variantes com
+   `class-variance-authority`.
    Ícones de `lucide-react`.
 6. **API react-aria**: os componentes seguem a API do react-aria-components, não a do Radix
    (ex.: `isDisabled` em vez de `disabled`, sem `asChild` — `LinkButton` pra link com cara

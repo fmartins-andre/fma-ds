@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveNamespace } from "@/lib/i18n/index";
+import { resolveNamespace } from "@/lib/i18n/i18n";
 
 type Config = {
   labels: { today: string; next: string };

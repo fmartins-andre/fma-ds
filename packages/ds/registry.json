@@ -600,7 +600,7 @@
           "slider",
           "embla"
         ],
-        "contentHash": "b1af2570e993"
+        "contentHash": "846c6f35ac96"
       }
     },
     {
@@ -2143,13 +2143,18 @@
       ],
       "files": [
         {
-          "path": "src/lib/i18n/format.ts",
-          "target": "lib/fma-ds/i18n/format.ts",
+          "path": "src/lib/i18n/i18n-format.ts",
+          "target": "lib/fma-ds/i18n/i18n-format.ts",
           "type": "registry:lib"
         },
         {
-          "path": "src/lib/i18n/index.ts",
-          "target": "lib/fma-ds/i18n/index.ts",
+          "path": "src/lib/i18n/i18n-types.ts",
+          "target": "lib/fma-ds/i18n/i18n-types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/i18n/i18n.ts",
+          "target": "lib/fma-ds/i18n/i18n.ts",
           "type": "registry:lib"
         },
         {
@@ -2171,11 +2176,6 @@
           "path": "src/lib/i18n/store.ts",
           "target": "lib/fma-ds/i18n/store.ts",
           "type": "registry:lib"
-        },
-        {
-          "path": "src/lib/i18n/types.ts",
-          "target": "lib/fma-ds/i18n/types.ts",
-          "type": "registry:lib"
         }
       ],
       "dependencies": [
@@ -2189,7 +2189,7 @@
           "i18n",
           "locale"
         ],
-        "contentHash": "abcdd9e09662"
+        "contentHash": "b043998b552e"
       }
     },
     {

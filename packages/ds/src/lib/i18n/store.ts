@@ -1,5 +1,5 @@
+import type { FmaMessagesPack } from "./i18n-types";
 import { getBrowserLocales, matchLocale, negotiateLocale } from "./negotiate";
-import type { FmaMessagesPack } from "./types";
 
 // Bundlers replace process.env.NODE_ENV at build time; declared here so
 // consumers without @types/node still compile.

@@ -1,4 +1,4 @@
-import type { NamespaceConfig, NamespaceOverrides, PackNamespace } from "./types";
+import type { NamespaceConfig, NamespaceOverrides, PackNamespace } from "./i18n-types";
 
 type Layer = Record<string, unknown> | undefined;
 type Factory = (sections: Record<string, object>) => object;

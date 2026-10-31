@@ -2,6 +2,12 @@
 
 import * as React from "react";
 import { I18nProvider } from "react-aria-components";
+import type {
+  FmaMessagesPack,
+  FmaOverrides,
+  NamespaceOverrides,
+  PackNamespace,
+} from "./i18n-types";
 import { resolveNamespace } from "./merge";
 import {
   createStore,
@@ -10,7 +16,6 @@ import {
   readFmaMessages,
   type StoreOptions,
 } from "./store";
-import type { FmaMessagesPack, FmaOverrides, NamespaceOverrides, PackNamespace } from "./types";
 
 type FmaLocaleControls = {
   locale: string;

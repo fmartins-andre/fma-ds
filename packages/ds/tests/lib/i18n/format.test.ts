@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { currency, date, number, plural } from "@/lib/i18n/index";
+import { currency, date, number, plural } from "@/lib/i18n/i18n";
 
 afterEach(() => vi.restoreAllMocks());
 
