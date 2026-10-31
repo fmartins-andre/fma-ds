@@ -28,6 +28,7 @@
   "meta": {
     "status": "experimental",
     "source": "original",
+    "license": "MIT",
     "tags": [
       "block",
       "notifications",

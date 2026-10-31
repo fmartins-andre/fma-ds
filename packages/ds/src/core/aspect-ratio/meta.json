@@ -1,6 +1,6 @@
 {
   "name": "aspect-ratio",
-  "category": "media",
+  "category": "layout",
   "status": "stable",
   "source": "shadcn",
   "description": "Constrains content (typically an image or video) to a fixed width/height ratio, so it scales without distortion or layout shift.",

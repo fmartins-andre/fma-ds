@@ -21,6 +21,7 @@
   "meta": {
     "status": "stable",
     "source": "third-party",
+    "license": "MIT",
     "origin": "react-credit-cards-2 (https://github.com/felquis/react-credit-cards-2, MIT), ported to Tailwind",
     "tags": [
       "payment",

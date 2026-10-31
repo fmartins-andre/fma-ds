@@ -20,6 +20,7 @@
   "meta": {
     "status": "stable",
     "source": "shadcn",
+    "license": "MIT",
     "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). No asChild — use LinkButton for a link styled as a button, and isDisabled instead of disabled.",
     "tags": [
       "form",
@@ -30,7 +31,7 @@
     "contentHash": "a6504d2df11f"
   },
   "categories": [
-    "forms"
+    "buttons"
   ],
   "type": "registry:ui"
 }

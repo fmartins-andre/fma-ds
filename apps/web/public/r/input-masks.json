@@ -108,6 +108,7 @@
   "meta": {
     "status": "stable",
     "source": "original",
+    "license": "MIT",
     "tags": [
       "forms",
       "mask",

@@ -19,6 +19,7 @@
   "meta": {
     "status": "stable",
     "source": "shadcn",
+    "license": "MIT",
     "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). Pair with an external Label via id/htmlFor — its own children slot is for a custom thumb, not label text.",
     "tags": [
       "forms",

@@ -19,6 +19,7 @@
   "meta": {
     "status": "stable",
     "source": "shadcn",
+    "license": "MIT",
     "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
     "tags": [
       "data-display",

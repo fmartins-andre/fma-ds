@@ -30,6 +30,7 @@
   "meta": {
     "status": "stable",
     "source": "customized",
+    "license": "MIT",
     "tags": [
       "form",
       "date",

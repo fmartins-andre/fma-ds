@@ -48,6 +48,7 @@
   "meta": {
     "status": "stable",
     "source": "original",
+    "license": "MIT",
     "origin": "shadcn/ui block sidebar-07, rebuilt on the registry's react-aria Sidebar, Collapsible and DropdownMenu",
     "tags": [
       "block",

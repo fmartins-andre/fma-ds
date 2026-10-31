@@ -16,6 +16,7 @@
   "meta": {
     "status": "stable",
     "source": "third-party",
+    "license": "MIT",
     "origin": "reui.io (https://reui.io/r/use-file-upload.json, MIT)",
     "tags": [
       "hook",

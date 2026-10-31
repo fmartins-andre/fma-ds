@@ -1805,7 +1805,7 @@ function ColorPickerInput({
     <div ref={picker.anchorRef} data-slot="color-picker-input" className={cn("w-full", className)}>
       <InputGroup isDisabled={picker.isDisabled}>
         <InputGroupAddon align="inline-start">
-          <ColorPickerTrigger className="size-5 rounded-sm" />
+          <ColorPickerTrigger className="relative size-5 rounded-sm after:absolute after:-inset-0.5" />
         </InputGroupAddon>
         <InputGroupInput
           value={draft}

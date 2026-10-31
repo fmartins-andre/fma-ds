@@ -23,6 +23,7 @@
   "meta": {
     "status": "stable",
     "source": "original",
+    "license": "MIT",
     "tags": [
       "buttons",
       "clipboard",

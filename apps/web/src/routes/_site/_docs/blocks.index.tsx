@@ -61,6 +61,7 @@ function BlocksIndex() {
         <p className="mt-2 max-w-2xl text-base text-muted-foreground">
           Multi-file compositions of the registry's components, ready to drop into an app. They
           install into <code className="font-mono text-sm">components/fma-ds/&lt;block&gt;/</code>.
+          Each one comes from a real app's need, so this is not a general application kit.
         </p>
       </div>
       {BLOCKS.map((item) => (

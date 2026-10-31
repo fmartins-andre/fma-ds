@@ -1,6 +1,6 @@
 {
   "name": "button",
-  "category": "forms",
+  "category": "buttons",
   "status": "stable",
   "source": "shadcn",
   "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). No asChild — use LinkButton for a link styled as a button, and isDisabled instead of disabled.",

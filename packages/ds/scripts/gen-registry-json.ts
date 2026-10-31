@@ -174,6 +174,9 @@ function toItemMeta(meta: ComponentMeta): RegistryItem["meta"] {
   return {
     status: meta.status,
     source: meta.source,
+    // Upstream sources (shadcn/ui, ReUI, react-credit-cards-2) are MIT too; see
+    // THIRD_PARTY_NOTICES.md for their copyright notices.
+    license: "MIT",
     ...(meta.origin && { origin: meta.origin }),
     tags: meta.tags,
   };

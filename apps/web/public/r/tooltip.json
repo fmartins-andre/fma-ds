@@ -19,6 +19,7 @@
   "meta": {
     "status": "stable",
     "source": "shadcn",
+    "license": "MIT",
     "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). TooltipTrigger wraps [trigger, Tooltip] and opens with no delay by default (delay=0).",
     "tags": [
       "overlay",

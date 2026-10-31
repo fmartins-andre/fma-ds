@@ -99,6 +99,7 @@
   },
   "meta": {
     "source": "third-party",
+    "license": "Apache-2.0",
     "origin": "https://tweakcn.com/r/themes/caffeine.json",
     "tags": [
       "brown",

@@ -26,6 +26,7 @@
   "meta": {
     "status": "stable",
     "source": "third-party",
+    "license": "MIT",
     "origin": "reui.io (https://reui.io/docs/components/base/time-picker, MIT); rebuilt on react-aria Popover, Dialog and Button",
     "tags": [
       "forms",

@@ -23,6 +23,7 @@
   "meta": {
     "status": "stable",
     "source": "customized",
+    "license": "MIT",
     "tags": [
       "data-display",
       "carousel",

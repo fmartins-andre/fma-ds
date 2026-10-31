@@ -155,15 +155,16 @@ function DocsIntroduction() {
 
       <H2 id="license">License</H2>
       <P>
-        MIT. You can use the code in open source and in proprietary projects. Third-party items keep
-        their own license, listed in{" "}
+        MIT, so you can use the code in open source and in proprietary projects. Themes adapted from
+        tweakcn are Apache-2.0. Each item states its license on its page and in{" "}
+        <code className="font-mono text-sm">meta.license</code>; upstream copyright is in{" "}
         <a
           href={`${REPO_URL}/blob/main/THIRD_PARTY_NOTICES.md`}
           className="font-medium underline underline-offset-4"
         >
           the notices
-        </a>{" "}
-        and in each item's origin.
+        </a>
+        .
       </P>
     </article>
   );

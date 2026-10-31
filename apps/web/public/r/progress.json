@@ -19,6 +19,7 @@
   "meta": {
     "status": "stable",
     "source": "shadcn",
+    "license": "MIT",
     "tags": [
       "feedback",
       "loading",

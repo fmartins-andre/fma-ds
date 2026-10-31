@@ -19,6 +19,7 @@
   "meta": {
     "status": "stable",
     "source": "customized",
+    "license": "MIT",
     "tags": [
       "feedback",
       "callout"

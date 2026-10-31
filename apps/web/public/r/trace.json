@@ -23,6 +23,7 @@
   "meta": {
     "status": "experimental",
     "source": "shadcn",
+    "license": "MIT",
     "tags": [
       "chat",
       "ai",
