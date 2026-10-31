@@ -312,6 +312,7 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
             <Badge variant="secondary">{categoryTitle(item.categories[0])}</Badge>
           )}
           <Badge variant="outline">{item.meta.source}</Badge>
+          <Badge variant="outline">{item.meta.license}</Badge>
           {item.meta.status !== "stable" && (
             <Badge variant="warning-light">{item.meta.status}</Badge>
           )}

@@ -21,6 +21,7 @@
   "meta": {
     "status": "stable",
     "source": "customized",
+    "license": "MIT",
     "tags": [
       "react-aria",
       "menu",

@@ -18,6 +18,7 @@
   "meta": {
     "status": "stable",
     "source": "third-party",
+    "license": "MIT",
     "origin": "reui.io (https://reui.io/docs/components/base/icon-stack, MIT)",
     "tags": [
       "feedback",

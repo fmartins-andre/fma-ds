@@ -72,6 +72,7 @@
   "meta": {
     "status": "stable",
     "source": "original",
+    "license": "MIT",
     "tags": [
       "date",
       "time-zone",

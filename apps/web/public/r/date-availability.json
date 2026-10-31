@@ -21,6 +21,7 @@
   "meta": {
     "status": "stable",
     "source": "original",
+    "license": "MIT",
     "tags": [
       "date",
       "validation"

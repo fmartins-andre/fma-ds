@@ -23,6 +23,7 @@
   "meta": {
     "status": "stable",
     "source": "customized",
+    "license": "MIT",
     "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
     "tags": [
       "layout",

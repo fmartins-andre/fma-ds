@@ -24,6 +24,7 @@
   "meta": {
     "status": "stable",
     "source": "original",
+    "license": "MIT",
     "tags": [
       "overlay",
       "dialog",

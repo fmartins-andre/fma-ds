@@ -28,6 +28,7 @@
   "meta": {
     "status": "stable",
     "source": "original",
+    "license": "MIT",
     "tags": [
       "form",
       "file",

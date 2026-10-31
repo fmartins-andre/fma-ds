@@ -23,6 +23,7 @@
   "meta": {
     "status": "experimental",
     "source": "shadcn",
+    "license": "MIT",
     "origin": "shadcn/ui, style: aria-nova. Built on @shadcn/react/message-scroller, not react-aria-components — upstream hasn't ported this one to the aria base yet.",
     "tags": [
       "chat",
