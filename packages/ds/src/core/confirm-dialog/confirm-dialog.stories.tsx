@@ -94,7 +94,7 @@ export const AsyncConfirm: Story = {
     return (
       <>
         <Button variant="outline" onPress={() => download.open()}>
-          Baixar DAS
+          Baixar relatório
         </Button>
         <ConfirmDialog
           controller={download}
@@ -112,7 +112,7 @@ export const AsyncConfirm: Story = {
     );
   },
   play: async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Baixar DAS" }));
+    await userEvent.click(canvas.getByRole("button", { name: "Baixar relatório" }));
     await userEvent.click(await body.findByRole("button", { name: "Gerar relatório" }));
     await expect(await body.findByRole("alert")).toHaveTextContent("Serviço indisponível");
     await userEvent.click(body.getByRole("button", { name: "Gerar relatório" }));

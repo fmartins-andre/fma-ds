@@ -135,7 +135,7 @@ const RECEIPTS: Receipt[] = [
   { id: "0987", customer: "Padaria Pão Quente", amount: "R$ 42,00", deadlinePassed: true },
 ];
 
-const CANCEL_STEPS = ["Conferir o prazo", "Estornar na maquininha", "Atualizar o recebimento"];
+const CANCEL_STEPS = ["Conferir o prazo", "Estornar no cartão", "Atualizar o recebimento"];
 
 /** Stands in for the app's API: reports each step and fails past the deadline. */
 async function cancelReceipt(receipt: Receipt, onStep: (step: number) => void) {
@@ -209,7 +209,7 @@ function CancelReceiptDialog({ controller }: { controller: DialogController<Rece
           <DialogHeader>
             <DialogTitle>Cancelar recebimento #{receipt?.id}</DialogTitle>
             <DialogDescription>
-              {receipt?.amount} volta para {receipt?.customer} pela maquininha.
+              {receipt?.amount} volta para {receipt?.customer} no cartão.
             </DialogDescription>
           </DialogHeader>
           <Field data-invalid={showAcceptError}>
@@ -526,7 +526,7 @@ export const RecordDetails: Story = {
               <DropdownMenu placement="bottom end" className="w-48" onAction={handleAction}>
                 <DropdownMenuItem id="edit">Editar</DropdownMenuItem>
                 <DropdownMenuItem id="clone">Clonar</DropdownMenuItem>
-                <DropdownMenuItem id="receive">Receber em mãos</DropdownMenuItem>
+                <DropdownMenuItem id="receive">Registrar pagamento</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem id="cancel" variant="destructive">
                   Cancelar pagamento
