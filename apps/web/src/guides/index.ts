@@ -14,6 +14,7 @@ export const GUIDES: Guide[] = [
   { slug: "dark-mode", title: "Dark mode" },
   { slug: "routing", title: "Routing" },
   { slug: "offline", title: "Offline and privacy" },
+  { slug: "touch", title: "Touch" },
   { slug: "updating", title: "Updating items" },
   { slug: "contributing", title: "Contributing" },
 ];
