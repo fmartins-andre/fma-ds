@@ -7,7 +7,7 @@ import { type Theme, ThemeSchema } from "../../../packages/ds/src/lib/theme/sche
 
 export { COLOR_TOKENS } from "../../../packages/ds/src/lib/theme/schema";
 
-const DIR = join(import.meta.dirname, "..", "..", "..", "packages", "ui", "src", "themes");
+const DIR = join(import.meta.dirname, "..", "..", "..", "packages", "ds", "src", "themes");
 
 export const THEMES: Theme[] = readdirSync(DIR)
   .filter((file) => file.endsWith(".json"))
