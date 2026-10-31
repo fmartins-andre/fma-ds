@@ -124,7 +124,7 @@ export const LoadingAndUnavailable: Story = {
             </StatIcon>
           </StatCard>
           <StatCard tone="muted">
-            <StatLabel>MEIs no limite</StatLabel>
+            <StatLabel>Clientes no limite</StatLabel>
             <StatValue isLoading={isLoading} isUnavailable>
               0
             </StatValue>

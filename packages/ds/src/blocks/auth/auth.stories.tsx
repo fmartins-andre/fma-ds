@@ -59,7 +59,7 @@ function BrandPanel() {
         Pedidos, contratos e relatórios dos seus clientes num lugar só.
       </p>
       <p className="max-w-md text-muted-foreground">
-        Acompanhe pendências e emita documentos sem trocar de sistema.
+        Acompanhe pendências e gere documentos sem trocar de sistema.
       </p>
     </div>
   );
@@ -73,7 +73,7 @@ function BrandSurfacePanel() {
         Pedidos, contratos e relatórios dos seus clientes num lugar só.
       </p>
       <p className="max-w-md opacity-80">
-        Acompanhe pendências e emita documentos sem trocar de sistema.
+        Acompanhe pendências e gere documentos sem trocar de sistema.
       </p>
     </div>
   );
@@ -548,12 +548,12 @@ export const SignUp: Story = {
             </FormWizardStep>
             <FormWizardStep step={2}>
               <TextField {...field("cnpj")} isRequired className="flex flex-col gap-2">
-                <Label>CNPJ do escritório</Label>
+                <Label>CNPJ da empresa</Label>
                 <Input inputMode="numeric" placeholder="00.000.000/0000-00" />
                 <FieldError className="text-sm text-destructive" />
               </TextField>
               <TextField {...field("company")} isRequired className="flex flex-col gap-2">
-                <Label>Nome do escritório</Label>
+                <Label>Nome da empresa</Label>
                 <Input autoComplete="organization" />
                 <FieldError className="text-sm text-destructive" />
               </TextField>
@@ -647,13 +647,10 @@ export const SignUp: Story = {
     await waitFor(() => expect(canvas.getByText("Etapa 2 de 4")).toBeInTheDocument());
 
     await userEvent.type(
-      canvas.getByRole("textbox", { name: "CNPJ do escritório" }),
+      canvas.getByRole("textbox", { name: "CNPJ da empresa" }),
       "12345678000195",
     );
-    await userEvent.type(
-      canvas.getByRole("textbox", { name: "Nome do escritório" }),
-      "Silva Contábil",
-    );
+    await userEvent.type(canvas.getByRole("textbox", { name: "Nome da empresa" }), "Silva Estúdio");
     await next();
     await waitFor(() => expect(canvas.getByText("Etapa 3 de 4")).toBeInTheDocument());
 

@@ -119,7 +119,7 @@ export const WithNavigation: Story = {
         <PageHeaderNav>
           <TabNav aria-label="Seções do cliente" currentHref={currentPath}>
             <TabNavItem href="/clientes/42/info">Informações</TabNavItem>
-            <TabNavItem href="/clientes/42/inscricoes-estaduais">Inscrições estaduais</TabNavItem>
+            <TabNavItem href="/clientes/42/enderecos">Endereços</TabNavItem>
             <TabNavItem href="/clientes/42/modulos">Módulos</TabNavItem>
             <TabNavItem href="/clientes/42/contrato">Contrato de serviço</TabNavItem>
             <TabNavItem href="/clientes/42/pedidos">Pedidos</TabNavItem>
