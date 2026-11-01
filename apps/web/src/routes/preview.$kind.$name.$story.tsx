@@ -25,7 +25,8 @@ export const Route = createFileRoute("/preview/$kind/$name/$story")({
 });
 
 function PreviewPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage;
   const { name, story: exportName } = Route.useParams();
   const { kind } = Route.useLoaderData();
   const [story, setStory] = useState<DocStory | null | undefined>(undefined);
@@ -33,10 +34,10 @@ function PreviewPage() {
   useThemeState();
 
   useEffect(() => {
-    void loadStories(kind, name).then((stories) =>
+    void loadStories(kind, name, locale).then((stories) =>
       setStory(stories?.stories.find((s) => s.exportName === exportName) ?? null),
     );
-  }, [kind, name, exportName]);
+  }, [kind, name, exportName, locale]);
 
   if (story === undefined) return null;
   if (story === null) return <p className="p-6 text-sm">{t(($) => $.story.notFound)}</p>;

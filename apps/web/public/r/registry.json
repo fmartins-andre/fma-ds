@@ -4007,7 +4007,7 @@
       "name": "slider",
       "type": "registry:ui",
       "title": "Slider",
-      "description": "A draggable single- or range-value slider, horizontal or vertical. Pass an array default/value to get one thumb per value.\n\n- **`label`**: names it above the track.\n- **`showValue`**: prints the value (or range) beside it, formatted by `formatValue` (\"200 pedidos\") or `formatOptions` (currency, percent — also what screen readers announce).\n- **`marks`**: labelled stops under the track (`number` or `{ value, label }`). Clicking one moves the nearest thumb there and fires `onChangeEnd`, while the keyboard keeps using the thumb.\n- **`limit`**: caps the value below `maxValue` (stock left, plan quota). The scale and marks still run to `maxValue`, the track above the limit is drawn as unavailable and its marks are disabled.\n- **`description`**: under the track, says why, and is read with the value.",
+      "description": "A draggable single- or range-value slider, horizontal or vertical. Pass an array default/value to get one thumb per value.\n\n- **`label`**: names it above the track.\n- **`showValue`**: prints the value (or range) beside it, formatted by `formatValue` (\"200 orders\") or `formatOptions` (currency, percent — also what screen readers announce).\n- **`marks`**: labelled stops under the track (`number` or `{ value, label }`). Clicking one moves the nearest thumb there and fires `onChangeEnd`, while the keyboard keeps using the thumb.\n- **`limit`**: caps the value below `maxValue` (stock left, plan quota). The scale and marks still run to `maxValue`, the track above the limit is drawn as unavailable and its marks are disabled.\n- **`description`**: under the track, says why, and is read with the value.",
       "author": "@fma-ds/ds",
       "categories": [
         "forms"
@@ -4036,7 +4036,7 @@
           "input",
           "react-aria"
         ],
-        "contentHash": "d2abc2cf276f"
+        "contentHash": "e5f1a8943d35"
       }
     },
     {

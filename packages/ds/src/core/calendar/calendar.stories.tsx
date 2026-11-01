@@ -1,7 +1,7 @@
 import { CalendarDate } from "@internationalized/date";
 import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
-import { type DateValue, I18nProvider, type RangeValue } from "react-aria-components";
+import type { DateValue, RangeValue } from "react-aria-components";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { pinLocale } from "../../../.storybook/pin-locale";
 import { Calendar, RangeCalendar } from "./calendar";
@@ -163,17 +163,6 @@ export const UnavailableRanges: Story = {
       { from: new CalendarDate(2026, 3, 23), to: new CalendarDate(2026, 3, 25) },
     ],
   },
-};
-
-export const Localized: Story = {
-  parameters: {
-    docs: { description: { story: "Labels follow the nearest `I18nProvider` locale." } },
-  },
-  render: (args) => (
-    <I18nProvider locale="pt-BR">
-      <Calendar {...args} aria-label="Data do evento" />
-    </I18nProvider>
-  ),
 };
 
 // ---------------------------------------------------------------------------

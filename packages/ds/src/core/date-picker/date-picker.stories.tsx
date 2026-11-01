@@ -159,14 +159,6 @@ export const UnavailableRanges: Story = {
   args: { placeholderValue: MARCH_15, unavailableRanges: BOOKED },
 };
 
-export const Localized: Story = {
-  render: (args) => (
-    <I18nProvider locale="pt-BR">
-      <DatePicker {...args} aria-label="Data do evento" />
-    </I18nProvider>
-  ),
-};
-
 // ---------------------------------------------------------------------------
 // Interaction tests
 

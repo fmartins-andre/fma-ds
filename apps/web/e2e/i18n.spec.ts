@@ -84,6 +84,15 @@ test.describe("Portuguese content", () => {
     await expect(frame.getByText(/de março de 2026/).first()).toBeVisible({ timeout: 20_000 });
   });
 
+  test("an example's preview and its code show the same language", async ({ page }) => {
+    await open(page, "/components/accordion");
+    const preview = page.locator("[data-slot=story-preview]").first();
+    await expect(preview.getByRole("button", { name: "É acessível?" })).toBeVisible();
+
+    await page.getByRole("tab", { name: "Código" }).first().click();
+    await expect(page.getByRole("tabpanel").first()).toContainText("É acessível?");
+  });
+
   test("the theme editor's demos are in Portuguese", async ({ page }) => {
     await open(page, "/themes");
     await expect(page.getByText("Crie uma conta")).toBeVisible();
@@ -99,6 +108,12 @@ test("placeholders in translated markup stay as text", async ({ page }) => {
 
 test.describe("English browser", () => {
   test.use({ locale: "en-US" });
+
+  test("a story written in Portuguese shows in English", async ({ page }) => {
+    await open(page, "/components/confirm-dialog");
+    const preview = page.locator("[data-slot=story-preview]").first();
+    await expect(preview.getByRole("button", { name: /Block customer/ })).toBeVisible();
+  });
 
   test("stays in English, and the selector loads the pack on demand", async ({ page }) => {
     await open(page, "/components/carousel");

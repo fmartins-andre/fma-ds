@@ -1,7 +1,7 @@
 import { CalendarDate } from "@internationalized/date";
 import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
-import { type DateValue, I18nProvider, type RangeValue } from "react-aria-components";
+import type { DateValue, RangeValue } from "react-aria-components";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { DateRangePicker } from "@/core/date-picker/date-picker";
 import { InputGroup } from "@/core/input-group/input-group";
@@ -170,14 +170,6 @@ export const UnavailableRanges: Story = {
     },
   },
   args: { unavailableRanges: BOOKED, placeholderValue: MARCH_12 },
-};
-
-export const Localized: Story = {
-  render: (args) => (
-    <I18nProvider locale="pt-BR">
-      <DateField {...args} aria-label="Data do evento" />
-    </I18nProvider>
-  ),
 };
 
 // ---------------------------------------------------------------------------

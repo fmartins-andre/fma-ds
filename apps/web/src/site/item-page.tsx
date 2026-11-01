@@ -47,14 +47,16 @@ function codeKey(code: string) {
 }
 
 function useStories(kind: ItemKind, name: string) {
+  const { i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage;
   const [state, setState] = useState<{ name: string; stories: DocStories | null } | null>(null);
   useEffect(() => {
     let active = true;
-    void loadStories(kind, name).then((stories) => active && setState({ name, stories }));
+    void loadStories(kind, name, locale).then((stories) => active && setState({ name, stories }));
     return () => {
       active = false;
     };
-  }, [kind, name]);
+  }, [kind, name, locale]);
   return state?.name === name ? state : null;
 }
 

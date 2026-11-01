@@ -5,6 +5,7 @@ import type { ItemKind } from "./registry";
 // The registry's stories double as the docs examples (portable stories), and
 // their code is each story turned into a copyable component, generated at build
 // time (`?snippets`, see story-snippets.ts). Lazy globs: each page loads only its own.
+// Each has a side per language, built from the same story by the same plugin.
 // Client-only (pages load them in effects): `import.meta.env.SSR` drops them, and
 // Storybook with them, from the server bundle, which must fit a Cloudflare Worker.
 type StoryModule = Parameters<typeof composeStories>[0];
@@ -15,25 +16,52 @@ const loadStorybook = import.meta.env.SSR
 
 type Loaders<T> = Record<string, () => Promise<T>>;
 
-const storyModules: Loaders<StoryModule> = import.meta.env.SSR
-  ? {}
+/** The site's languages: each story has a side for each one. */
+type Language = "en" | "pt-BR";
+
+const storyModules: Record<Language, Loaders<StoryModule>> = import.meta.env.SSR
+  ? { en: {}, "pt-BR": {} }
   : {
-      ...import.meta.glob<StoryModule>("../../../../packages/ds/src/core/*/*.stories.tsx"),
-      ...import.meta.glob<StoryModule>("../../../../packages/ds/src/blocks/*/*.stories.tsx"),
+      en: {
+        ...import.meta.glob<StoryModule>("../../../../packages/ds/src/core/*/*.stories.tsx", {
+          query: "?lang=en",
+        }),
+        ...import.meta.glob<StoryModule>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
+          query: "?lang=en",
+        }),
+      },
+      "pt-BR": {
+        ...import.meta.glob<StoryModule>("../../../../packages/ds/src/core/*/*.stories.tsx", {
+          query: "?lang=pt-BR",
+        }),
+        ...import.meta.glob<StoryModule>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
+          query: "?lang=pt-BR",
+        }),
+      },
     };
 
 /** Code and JSDoc description of each story, by export name. */
 type Snippets = { default: Record<string, string>; descriptions: Record<string, string> };
 
-const snippetModules: Loaders<Snippets> = import.meta.env.SSR
-  ? {}
+const snippetModules: Record<Language, Loaders<Snippets>> = import.meta.env.SSR
+  ? { en: {}, "pt-BR": {} }
   : {
-      ...import.meta.glob<Snippets>("../../../../packages/ds/src/core/*/*.stories.tsx", {
-        query: "?snippets",
-      }),
-      ...import.meta.glob<Snippets>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
-        query: "?snippets",
-      }),
+      en: {
+        ...import.meta.glob<Snippets>("../../../../packages/ds/src/core/*/*.stories.tsx", {
+          query: "?snippets-en",
+        }),
+        ...import.meta.glob<Snippets>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
+          query: "?snippets-en",
+        }),
+      },
+      "pt-BR": {
+        ...import.meta.glob<Snippets>("../../../../packages/ds/src/core/*/*.stories.tsx", {
+          query: "?snippets-pt-BR",
+        }),
+        ...import.meta.glob<Snippets>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
+          query: "?snippets-pt-BR",
+        }),
+      },
     };
 
 const sources: Loaders<string> = import.meta.env.SSR
@@ -51,15 +79,19 @@ function registryPath(key: string) {
   return key.slice(key.indexOf("packages/ds/") + "packages/ds/".length);
 }
 
-const sourceByPath = new Map(
-  Object.entries(sources).map(([key, load]) => [registryPath(key), load]),
-);
-const storiesByPath = new Map(
-  Object.entries(storyModules).map(([key, load]) => [registryPath(key), load]),
-);
-const snippetsByPath = new Map(
-  Object.entries(snippetModules).map(([key, load]) => [registryPath(key), load]),
-);
+function byPath<T>(loaders: Loaders<T>) {
+  return new Map(Object.entries(loaders).map(([key, load]) => [registryPath(key), load]));
+}
+
+const sourceByPath = byPath(sources);
+const storiesByPath = {
+  en: byPath(storyModules.en),
+  "pt-BR": byPath(storyModules["pt-BR"]),
+};
+const snippetsByPath = {
+  en: byPath(snippetModules.en),
+  "pt-BR": byPath(snippetModules["pt-BR"]),
+};
 
 function storiesPath(kind: ItemKind, name: string) {
   return `src/${kind === "components" ? "core" : "blocks"}/${name}/${name}.stories.tsx`;
@@ -107,10 +139,15 @@ function storyNameFromExport(exportName: string) {
     .replace(/([a-zA-Z])(\d)/g, "$1 $2");
 }
 
-export async function loadStories(kind: ItemKind, name: string): Promise<DocStories | null> {
+export async function loadStories(
+  kind: ItemKind,
+  name: string,
+  locale?: string,
+): Promise<DocStories | null> {
   const path = storiesPath(kind, name);
-  const load = storiesByPath.get(path);
-  const loadSnippets = snippetsByPath.get(path);
+  const language: Language = locale === "pt-BR" ? "pt-BR" : "en";
+  const load = storiesByPath[language].get(path);
+  const loadSnippets = snippetsByPath[language].get(path);
   if (!load || !loadSnippets) return null;
   const [module, { default: snippets, descriptions }, { composeStories }] = await Promise.all([
     load(),

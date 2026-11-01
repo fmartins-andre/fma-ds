@@ -25,7 +25,7 @@ type SliderProps<T extends SliderValue = SliderValue> = Omit<
   /** Shows the current value (or range) next to the label. */
   showValue?: boolean;
   /**
-   * Formats the value shown by `showValue` ("200 pedidos"). Without it, and for
+   * Formats the value shown by `showValue` ("200 orders"). Without it, and for
    * marks without a `label`, `formatOptions` applies; that is also what screen
    * readers announce.
    */

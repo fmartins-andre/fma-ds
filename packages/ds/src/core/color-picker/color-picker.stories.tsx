@@ -547,54 +547,6 @@ export const Wheel: Story = {
   },
 };
 
-export const Localized: Story = {
-  args: { value: "oklch(0.75 0.15 250)", contrastWith: "#ffffff" },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "`labels` overrides any text the picker shows or announces (`DEFAULT_COLOR_PICKER_LABELS` lists them); numbers already follow the locale of react-aria's `I18nProvider`.",
-      },
-    },
-  },
-  render: function Render(args) {
-    const [value, setValue] = useState(args.value);
-    return (
-      <div className="flex w-72 flex-col gap-3">
-        <ColorPicker
-          value={value}
-          onChange={setValue}
-          contrastWith={args.contrastWith}
-          labels={{
-            hue: "Matiz",
-            oklchArea: "Croma e luminosidade",
-            lightness: "Luminosidade",
-            chroma: "Croma",
-            fail: "Falha",
-            largeText: "AA texto grande",
-            fix: (level) => `Corrigir para ${level}`,
-          }}
-        >
-          <ColorPickerPreview />
-          <ColorPickerArea />
-          <ColorPickerSlider channel="hue" />
-          <ColorPickerFixContrast />
-        </ColorPicker>
-      </div>
-    );
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    expect(canvas.getByRole("slider", { name: "Matiz" })).toBeInTheDocument();
-    const area = canvas.getByRole("slider", { name: "Croma e luminosidade" });
-    expect(area.getAttribute("aria-valuetext")).toMatch(/^Luminosidade 0\.750, Croma /);
-    expect(canvas.getByText("Falha")).toBeInTheDocument();
-
-    await userEvent.click(canvas.getByRole("button", { name: "Corrigir para AA" }));
-    await waitFor(() => expect(canvas.queryByText("Falha")).not.toBeInTheDocument());
-  },
-};
-
 export const FormField: Story = {
   args: { value: "#0ea5e9" },
   parameters: {
@@ -655,18 +607,53 @@ export const ShouldUseProviderMessages: Story = {
     (Story) => (
       <FmaI18nProvider
         locale="pt-BR"
-        locales={{ "pt-BR": { colorPicker: { labels: { oklchArea: "Croma e luminosidade" } } } }}
+        locales={{
+          "pt-BR": {
+            colorPicker: {
+              labels: {
+                hue: "Matiz",
+                oklchArea: "Croma e luminosidade",
+                lightness: "Luminosidade",
+                chroma: "Croma",
+                largeText: "AA texto grande",
+                fix: (level) => `Corrigir para ${level}`,
+              },
+            },
+          },
+        }}
       >
         <Story />
       </FmaI18nProvider>
     ),
   ],
-  play: async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Primary color" }));
-    const dialog = await within(document.body).findByRole("dialog", { name: "Primary color" });
-    await expect(
-      within(dialog).getByRole("slider", { name: "Croma e luminosidade" }),
-    ).toBeInTheDocument();
-    await userEvent.keyboard("{Escape}");
+  args: { value: "oklch(0.75 0.15 250)", contrastWith: "#ffffff" },
+  render: function Render(args) {
+    const [value, setValue] = useState(args.value);
+    return (
+      <div className="flex w-72 flex-col gap-3">
+        {/* The `labels` prop wins over the provider. */}
+        <ColorPicker
+          value={value}
+          onChange={setValue}
+          contrastWith={args.contrastWith}
+          labels={{ fail: "Falha" }}
+        >
+          <ColorPickerPreview />
+          <ColorPickerArea />
+          <ColorPickerSlider channel="hue" />
+          <ColorPickerFixContrast />
+        </ColorPicker>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("slider", { name: "Matiz" })).toBeInTheDocument();
+    const area = canvas.getByRole("slider", { name: "Croma e luminosidade" });
+    await expect(area.getAttribute("aria-valuetext")).toMatch(/^Luminosidade 0\.750, Croma /);
+    await expect(canvas.getByText("Falha")).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole("button", { name: "Corrigir para AA" }));
+    await waitFor(() => expect(canvas.queryByText("Falha")).not.toBeInTheDocument());
   },
 };

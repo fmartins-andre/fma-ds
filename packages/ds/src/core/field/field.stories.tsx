@@ -479,8 +479,8 @@ const ptBR = pinLocale("pt-BR");
 
 /**
  * How a subscription or recurring order repeats: how often, from when, and for how long, with
- * a summary that says it in words — "Todo dia 15 de cada mês · 12 pagamentos · última em
- * 15/10/2027" — announced as it changes.
+ * a summary that says it in words — "Every 15th of each month · 12 payments · last on
+ * Oct 15, 2027" — announced as it changes.
  *
  * Here the due day is the start date's (the start drives the summary) and the last date is
  * worked out in the browser. How the app stores it (enums, days) stays in the app.
