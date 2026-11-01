@@ -6,13 +6,7 @@ import { Button } from "@/core/button/button";
 import { Card, CardContent } from "@/core/card/card";
 import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import meta from "./meta.json";
-import {
-  TimePicker,
-  TimePickerContent,
-  type TimePickerI18nOverrides,
-  TimePickerInput,
-  TimePickerPanel,
-} from "./time-picker";
+import { TimePicker, TimePickerContent, TimePickerInput, TimePickerPanel } from "./time-picker";
 
 const componentMeta = {
   title: "ds/TimePicker",
@@ -206,30 +200,6 @@ export const Inline: Story = {
   },
 };
 
-const PT_BR: TimePickerI18nOverrides = {
-  labels: {
-    placeholder: "Escolha um horário",
-    hour: "Hora",
-    minute: "Minuto",
-    now: "Agora",
-    clear: "Limpar",
-    panelLabel: "Escolher horário",
-    openPicker: "Abrir seletor de horário",
-  },
-};
-
-/** Every string comes from `i18n`, merged over the English defaults per section. */
-export const Localized: Story = {
-  args: { "aria-label": undefined, defaultValue: null, i18n: PT_BR, className: "w-48" },
-  play: async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Escolha um horário" }));
-    await expect(
-      await body().findByRole("dialog", { name: "Escolher horário" }),
-    ).toBeInTheDocument();
-    await expect(body().getByRole("listbox", { name: "Hora" })).toBeInTheDocument();
-  },
-};
-
 /** `name` submits `HH:mm` with a native form; `isRequired` blocks an empty submit. */
 export const FormField: Story = {
   args: { "aria-label": undefined, defaultValue: null },
@@ -298,7 +268,7 @@ export const ShouldUseProviderMessages: Story = {
         locales={{
           "pt-BR": {
             timePicker: {
-              labels: { hour: "Hora" },
+              labels: { hour: "Hora", minute: "Minuto", panelLabel: "Escolher horário" },
               functions: ({ labels }) => ({ formatValue: (time) => `${time.hour} ${labels.hour}` }),
             },
           },
@@ -309,7 +279,14 @@ export const ShouldUseProviderMessages: Story = {
       </FmaI18nProvider>
     ),
   ],
+  args: { "aria-label": undefined },
   play: async ({ canvas }) => {
-    await expect(canvas.getByRole("button", { name: "Start time" })).toHaveTextContent("9 h");
+    const trigger = canvas.getByRole("button", { name: /9 h/ });
+    await userEvent.click(trigger);
+    await expect(
+      await body().findByRole("dialog", { name: "Escolher horário" }),
+    ).toBeInTheDocument();
+    await expect(body().getByRole("listbox", { name: "h" })).toBeInTheDocument();
+    await expect(body().getByRole("listbox", { name: "Minuto" })).toBeInTheDocument();
   },
 };

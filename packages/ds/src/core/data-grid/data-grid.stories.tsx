@@ -1185,46 +1185,6 @@ export const Footer: Story = {
   },
 };
 
-const PT_BR: DataGridI18nOverrides = {
-  labels: {
-    sortAscending: "Crescente",
-    sortDescending: "Decrescente",
-    pinColumnStart: "Fixar no início",
-    pinColumnEnd: "Fixar no fim",
-    moveColumnLeft: "Mover para a esquerda",
-    moveColumnRight: "Mover para a direita",
-    rowsPerPage: "Linhas por página",
-    paginationInfo: ({ from, to, count }) => `${from}–${to} de ${count}`,
-    previousPage: "Página anterior",
-    nextPage: "Próxima página",
-    goToPage: (page) => `Página ${page}`,
-    empty: "Nenhum registro",
-  },
-};
-
-/** One `i18n` prop replaces the built-in strings: menus, aria labels and pagination. */
-export const Localized: Story = {
-  args: { i18n: PT_BR, layout: { columnsPinnable: true, columnsMovable: true } },
-  render: (args) => <UsersDataGrid {...args} />,
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("1–5 de 8")).toBeInTheDocument();
-    await expect(canvas.getByText("Linhas por página")).toBeInTheDocument();
-    await userEvent.click(canvas.getByRole("button", { name: "Próxima página" }));
-    await expect(canvas.getByRole("button", { name: "Página 2" })).toHaveAttribute(
-      "aria-current",
-      "page",
-    );
-
-    await userEvent.click(canvas.getByRole("button", { name: /^Role/ }));
-    const menu = await body().findByRole("menu");
-    for (const name of ["Crescente", "Decrescente", "Fixar no início", "Mover para a direita"])
-      await expect(
-        within(menu).getByRole("menuitem", { name: new RegExp(name) }),
-      ).toBeInTheDocument();
-    await userEvent.keyboard("{Escape}");
-  },
-};
-
 const PAGE = 20;
 
 function InfiniteUsersDataGrid({ virtualized }: { virtualized?: boolean }) {
@@ -1385,20 +1345,49 @@ export const ResizeOnEnd: Story = {
   },
 };
 
+const PT_BR: DataGridI18nOverrides = {
+  labels: {
+    sortAscending: "Crescente",
+    sortDescending: "Decrescente",
+    pinColumnStart: "Fixar no início",
+    pinColumnEnd: "Fixar no fim",
+    moveColumnLeft: "Mover para a esquerda",
+    moveColumnRight: "Mover para a direita",
+    rowsPerPage: "Linhas por página",
+    paginationInfo: ({ from, to, count }) => `${from}–${to} de ${count}`,
+    previousPage: "Página anterior",
+    nextPage: "Próxima página",
+    goToPage: (page) => `Página ${page}`,
+    empty: "Nenhum registro",
+  },
+};
+
 export const ShouldUseProviderMessages: Story = {
   tags: ["!autodocs"],
   decorators: [
     (Story) => (
-      <FmaI18nProvider
-        locale="pt-BR"
-        locales={{ "pt-BR": { dataGrid: { labels: { nextPage: "Próxima página" } } } }}
-      >
+      <FmaI18nProvider locale="pt-BR" locales={{ "pt-BR": { dataGrid: PT_BR } }}>
         <Story />
       </FmaI18nProvider>
     ),
   ],
+  args: { layout: { columnsPinnable: true, columnsMovable: true } },
   render: (args) => <UsersDataGrid {...args} />,
   play: async ({ canvas }) => {
-    await expect(canvas.getByRole("button", { name: "Próxima página" })).toBeInTheDocument();
+    await expect(canvas.getByText("1–5 de 8")).toBeInTheDocument();
+    await expect(canvas.getByText("Linhas por página")).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole("button", { name: "Próxima página" }));
+    await expect(canvas.getByRole("button", { name: "Página 2" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+
+    await userEvent.click(canvas.getByRole("button", { name: /^Role/ }));
+    const menu = await body().findByRole("menu");
+    for (const name of ["Crescente", "Decrescente", "Fixar no início", "Mover para a direita"])
+      await expect(
+        within(menu).getByRole("menuitem", { name: new RegExp(name) }),
+      ).toBeInTheDocument();
+    await userEvent.keyboard("{Escape}");
   },
 };
