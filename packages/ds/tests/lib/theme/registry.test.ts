@@ -162,8 +162,12 @@ describe("shadowScale", () => {
   });
 
   it("multiplies the color's alpha with the opacity and layers the mid sizes", () => {
-    expect(scale.xs).toBe("0px 1px 3px 1px oklch(0 0 0 / 5%)");
-    expect(scale.md).toBe("0px 1px 3px 1px oklch(0 0 0 / 10%), 0px 2px 4px 0px oklch(0 0 0 / 10%)");
-    expect(scale["2xl"]).toBe("0px 1px 3px 1px oklch(0 0 0 / 25%)");
+    expect(scale.xs).toBe("0px 1px 2px 1px oklch(0 0 0 / 5%)");
+    expect(scale.md).toBe(
+      "0px 4px 6px 0px oklch(0 0 0 / 13%), 0px 2px 4px -1px oklch(0 0 0 / 13%)",
+    );
+    expect(scale["2xl"]).toBe(
+      "0px 25px 50px -11px oklch(0 0 0 / 20%), 0px 12px 14px -7px oklch(0 0 0 / 20%)",
+    );
   });
 });

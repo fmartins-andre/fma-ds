@@ -59,13 +59,13 @@
       "sidebar-accent-foreground": "oklch(0.426 0.031 59.215)",
       "sidebar-border": "oklch(0.907 0.017 88.004)",
       "sidebar-ring": "oklch(0.655 0.056 130.849)",
-      "shadow-2xs": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 1%)",
-      "shadow-xs": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 1%)",
-      "shadow-sm": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 1px 2px -1px oklch(0.509 0.063 128.776 / 2%)",
-      "shadow-md": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 2px 4px -1px oklch(0.509 0.063 128.776 / 2%)",
-      "shadow-lg": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 4px 6px -1px oklch(0.509 0.063 128.776 / 2%)",
-      "shadow-xl": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 8px 10px -1px oklch(0.509 0.063 128.776 / 2%)",
-      "shadow-2xl": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 6%)",
+      "shadow-2xs": "3px 3px 0px 0px oklch(0.509 0.063 128.776 / 1%)",
+      "shadow-xs": "3px 3px 1px 0px oklch(0.509 0.063 128.776 / 1%)",
+      "shadow-sm": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 3px 1px -0.67px oklch(0.509 0.063 128.776 / 2%)",
+      "shadow-md": "3px 6px 4px -0.67px oklch(0.509 0.063 128.776 / 3%), 3px 4px 2.67px -1.33px oklch(0.509 0.063 128.776 / 3%)",
+      "shadow-lg": "3px 12px 10px -2px oklch(0.509 0.063 128.776 / 3%), 3px 6px 4px -2.67px oklch(0.509 0.063 128.776 / 3%)",
+      "shadow-xl": "3px 22px 16.67px -3.33px oklch(0.509 0.063 128.776 / 4%), 3px 10px 6.67px -4px oklch(0.509 0.063 128.776 / 4%)",
+      "shadow-2xl": "3px 27px 33.33px -8px oklch(0.509 0.063 128.776 / 4%), 3px 14px 9.33px -5.33px oklch(0.509 0.063 128.776 / 4%)",
       "radius": "0.425rem"
     },
     "dark": {
@@ -111,13 +111,13 @@
       "sidebar-accent-foreground": "oklch(0.269 0.01 61.021)",
       "sidebar-border": "oklch(0.445 0.024 84.55)",
       "sidebar-ring": "oklch(0.676 0.057 132.448)",
-      "shadow-2xs": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 1%)",
-      "shadow-xs": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 1%)",
-      "shadow-sm": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 1px 2px -1px oklch(0.509 0.063 128.776 / 2%)",
-      "shadow-md": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 2px 4px -1px oklch(0.509 0.063 128.776 / 2%)",
-      "shadow-lg": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 4px 6px -1px oklch(0.509 0.063 128.776 / 2%)",
-      "shadow-xl": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 8px 10px -1px oklch(0.509 0.063 128.776 / 2%)",
-      "shadow-2xl": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 6%)"
+      "shadow-2xs": "3px 3px 0px 0px oklch(0.509 0.063 128.776 / 1%)",
+      "shadow-xs": "3px 3px 1px 0px oklch(0.509 0.063 128.776 / 1%)",
+      "shadow-sm": "3px 3px 2px 0px oklch(0.509 0.063 128.776 / 2%), 3px 3px 1px -0.67px oklch(0.509 0.063 128.776 / 2%)",
+      "shadow-md": "3px 6px 4px -0.67px oklch(0.509 0.063 128.776 / 3%), 3px 4px 2.67px -1.33px oklch(0.509 0.063 128.776 / 3%)",
+      "shadow-lg": "3px 12px 10px -2px oklch(0.509 0.063 128.776 / 3%), 3px 6px 4px -2.67px oklch(0.509 0.063 128.776 / 3%)",
+      "shadow-xl": "3px 22px 16.67px -3.33px oklch(0.509 0.063 128.776 / 4%), 3px 10px 6.67px -4px oklch(0.509 0.063 128.776 / 4%)",
+      "shadow-2xl": "3px 27px 33.33px -8px oklch(0.509 0.063 128.776 / 4%), 3px 14px 9.33px -5.33px oklch(0.509 0.063 128.776 / 4%)"
     }
   },
   "css": {
@@ -161,7 +161,7 @@
         "offsetY": "3px"
       }
     },
-    "contentHash": "230d23d7cb5b"
+    "contentHash": "caffff542f95"
   },
   "categories": [
     "theme"
