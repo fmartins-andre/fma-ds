@@ -27,13 +27,24 @@ const toRegistryDependency = (id: string) => `${NAMESPACE}/${id}`;
 // npm dependencies ship with the range from package.json ("pkg@^8.21.3"), so
 // consumers get the major these components were tested against, not whatever
 // "latest" is (a new major can break them, as TanStack Table v9 would).
-const PACKAGE_RANGES: Record<string, string> = JSON.parse(
+const PACKAGE_JSON: Record<"dependencies" | "devDependencies", Record<string, string>> = JSON.parse(
   readFileSync("package.json", "utf8"),
-).dependencies;
+);
+const PACKAGE_RANGES = PACKAGE_JSON.dependencies;
+const DEV_RANGES = PACKAGE_JSON.devDependencies;
 
 export function withVersion(name: string, ranges = PACKAGE_RANGES): string {
   const range = ranges[name];
   return range && !/^(catalog|workspace):/.test(range) ? `${name}@${range}` : name;
+}
+
+// A dependency that ships no types needs its @types package in the consumer too,
+// or the installed item fails a strict tsc on the import.
+export function detectTypePackages(dependencies: string[], ranges = DEV_RANGES): string[] {
+  return dependencies
+    .map((name) => `@types/${name}`)
+    .filter((name) => name in ranges)
+    .map((name) => withVersion(name, ranges));
 }
 
 /** "pkg@^1.0.0" or "@scope/pkg@^1.0.0" → the package name. */
@@ -166,8 +177,17 @@ export function processComponent(componentId: string): RegistryItem | null {
     ...(registryDependencies.length > 0 && {
       registryDependencies: registryDependencies.map(toRegistryDependency),
     }),
-    dependencies: detectNpmDependencies(source).map((name) => withVersion(name)),
+    ...npmDependencies(source),
     meta: toItemMeta(meta),
+  };
+}
+
+function npmDependencies(source: string): Pick<RegistryItem, "dependencies" | "devDependencies"> {
+  const dependencies = detectNpmDependencies(source);
+  const devDependencies = detectTypePackages(dependencies);
+  return {
+    dependencies: dependencies.map((name) => withVersion(name)),
+    ...(devDependencies.length > 0 && { devDependencies }),
   };
 }
 
@@ -273,7 +293,7 @@ export function processModule(module: {
     ...(registryDependencies.length > 0 && {
       registryDependencies: registryDependencies.map(toRegistryDependency),
     }),
-    dependencies: detectNpmDependencies(source).map((name) => withVersion(name)),
+    ...npmDependencies(source),
     meta: toItemMeta(meta),
   };
 }

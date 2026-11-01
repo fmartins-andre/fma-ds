@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import {
   detectNpmDependencies,
   detectRegistryDependencies,
+  detectTypePackages,
   discoverModules,
   NAMESPACE,
   packageName,
@@ -130,6 +131,12 @@ describe("npm dependency versions", () => {
     expect(withVersion("@tanstack/react-table", ranges)).toBe("@tanstack/react-table@^8.21.3");
     expect(withVersion("react", ranges)).toBe("react");
     expect(withVersion("unknown", ranges)).toBe("unknown");
+  });
+
+  it("adds the @types package of a dependency without its own types", () => {
+    const ranges = { "@types/culori": "^4.0.1", "@types/node": "catalog:" };
+    expect(detectTypePackages(["culori", "shiki"], ranges)).toEqual(["@types/culori@^4.0.1"]);
+    expect(detectTypePackages(["shiki"], ranges)).toEqual([]);
   });
 
   it("reads package names back from pinned dependencies", () => {

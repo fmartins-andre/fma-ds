@@ -39,3 +39,14 @@ describe("files imported by alias", () => {
     expect(others).toEqual([]);
   });
 });
+
+// The CLI only rewrites import declarations: `export { x } from "@/lib/..."` reaches the
+// consumer as it is, pointing at a path that doesn't exist there.
+describe("published files", () => {
+  it("don't re-export from an alias", () => {
+    const reExports = files.filter(({ path }) =>
+      /^export\s[^;"]*from\s+"@\//m.test(readFileSync(join(root, path), "utf8")),
+    );
+    expect(reExports).toEqual([]);
+  });
+});
