@@ -5,6 +5,9 @@ async function open(page: Page, path: string) {
   await page.goto(path, { waitUntil: "networkidle" });
 }
 
+/** Pages full of story iframes: the network takes too long to go idle, so wait for the content. */
+const visit = (page: Page, path: string) => page.goto(path, { waitUntil: "domcontentloaded" });
+
 const nav = (page: Page, name: string) => page.getByRole("navigation", { name });
 
 test.describe("Portuguese browser", () => {
@@ -76,9 +79,9 @@ test.describe("Portuguese content", () => {
       page.getByRole("main").getByRole("button", { name: "Anterior" }).first(),
     ).toBeVisible();
 
-    await open(page, "/blocks/event-calendar");
+    await visit(page, "/blocks/event-calendar");
     const frame = page.frameLocator('iframe[title^="Prévia"]').first();
-    await expect(frame.getByText(/de março de 2026/).first()).toBeVisible();
+    await expect(frame.getByText(/de março de 2026/).first()).toBeVisible({ timeout: 20_000 });
   });
 
   test("the theme editor's demos are in Portuguese", async ({ page }) => {
@@ -90,7 +93,7 @@ test.describe("Portuguese content", () => {
 });
 
 test("placeholders in translated markup stay as text", async ({ page }) => {
-  await open(page, "/blocks");
+  await visit(page, "/blocks");
   await expect(page.getByRole("main").getByText("components/fma-ds/<block>/")).toBeVisible();
 });
 
