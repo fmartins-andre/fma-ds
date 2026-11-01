@@ -164,19 +164,21 @@ export function storyTexts(source: string) {
 }
 
 function replacement({ text, kind }: Found, translated: string) {
-  if (kind === "string") return JSON.stringify(translated);
-  // JSX and template text keep the spacing around them: it separates them from what's next.
+  // The spacing around a text separates it from what's next.
   const [before = ""] = text.match(/^\s*/) ?? [];
   const [after = ""] = text.match(/\s*$/) ?? [];
-  return `${before}${translated}${after}`;
+  const spaced = `${before}${translated}${after}`;
+  return kind === "string" ? JSON.stringify(spaced) : spaced;
 }
 
-/** The stories file with each text the dictionary knows replaced. */
+/** The stories file with each text the dictionary changes replaced. */
 export function translateStory(source: string, dictionary: Record<string, string>) {
   let result = source;
   for (const item of find(source).reverse()) {
-    const translated = dictionary[textKey(item.text)];
-    if (translated === undefined) continue;
+    const key = textKey(item.text);
+    const translated = dictionary[key];
+    // A key has no line breaks or inner spacing: only a real translation may replace the text.
+    if (translated === undefined || translated === key) continue;
     result = result.slice(0, item.start) + replacement(item, translated) + result.slice(item.end);
   }
   return result;

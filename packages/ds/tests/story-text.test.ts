@@ -59,4 +59,26 @@ describe("story text", () => {
   it("leaves a text the dictionary doesn't know", () => {
     expect(translateStory(story, {})).toBe(story);
   });
+
+  it("leaves a text the dictionary keeps as it is", () => {
+    const code = 'const CODE = `const first = "one";\n\n  const second = "two";`;';
+    const keys = storyTexts(code);
+    expect(keys).toHaveLength(1);
+    expect(translateStory(code, Object.fromEntries(keys.map((key) => [key, key])))).toBe(code);
+    const spaced = 'const mask = { prefix: "R$ ", label: "Two  spaces" };';
+    expect(translateStory(spaced, { R$: "R$", "Two spaces": "Two spaces" })).toBe(spaced);
+  });
+
+  it("keeps the spacing around a translated string", () => {
+    expect(translateStory('const text = "Ship it ";', { "Ship it": "Enviar" })).toBe(
+      'const text = "Enviar ";',
+    );
+  });
+
+  it("takes the line breaks of a translation from the dictionary", () => {
+    const text = "const text = `First line\n  second line`;";
+    expect(translateStory(text, { "First line second line": "Primeira\n  segunda" })).toBe(
+      "const text = `Primeira\n  segunda`;",
+    );
+  });
 });

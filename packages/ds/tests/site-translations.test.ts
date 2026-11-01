@@ -76,6 +76,11 @@ describe("story text in both languages", () => {
     );
   });
 
+  it.each(sources)("%s stays the same when no text changes", (_, source) => {
+    const unchanged = Object.fromEntries(storyTexts(source).map((key) => [key, key]));
+    expect(translateStory(source, unchanged)).toBe(source);
+  });
+
   it.each(sources)("%s still parses once translated", (_, source) => {
     expect(() => storyTexts(translateStory(source, ptBR))).not.toThrow();
     expect(() => storyTexts(translateStory(source, en))).not.toThrow();
