@@ -224,6 +224,29 @@ export const HoverSwitch: Story = {
   },
 };
 
+/** Switching makes the old menu inert and focus falls on the body: an arrow pressed then counts. */
+export const ShouldSwitchWhileFocusIsInTransit: Story = {
+  tags: ["!autodocs"],
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "File" }));
+    await body().findByRole("menu");
+    await waitFor(() => expect(document.activeElement?.closest("[role=menu]")).not.toBeNull());
+    await userEvent.keyboard("{ArrowRight}");
+    await waitFor(() =>
+      expect(canvas.getByRole("button", { name: "Edit" })).toHaveAttribute("aria-expanded", "true"),
+    );
+    await waitFor(() => expect(document.activeElement?.closest("[role=menu]")).not.toBeNull());
+    (document.activeElement as HTMLElement).blur();
+    await expect(document.activeElement).toBe(document.body);
+    await userEvent.keyboard("{ArrowRight}");
+    await waitFor(() =>
+      expect(canvas.getByRole("button", { name: "View" })).toHaveAttribute("aria-expanded", "true"),
+    );
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(body().queryByRole("menu")).toBeNull());
+  },
+};
+
 /** With a menu open, ArrowRight/ArrowLeft move to the neighbouring menu (wrapping). */
 export const ArrowsBetweenMenus: Story = {
   play: async ({ canvas }) => {
