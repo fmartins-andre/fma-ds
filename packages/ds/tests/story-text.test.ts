@@ -38,7 +38,7 @@ describe("story text", () => {
   });
 
   it("tells prose from identifiers", () => {
-    expect(["Save", "save changes", "Ok!"].every(isProse)).toBe(true);
+    expect(["Save", "save changes", "Ok!", "/mês", "1 usuário"].every(isProse)).toBe(true);
     expect(["outline", "/docs", "https://example.com", "a@b.com", "42"].some(isProse)).toBe(false);
   });
 

@@ -1,10 +1,11 @@
 import { parse } from "@babel/parser";
 import type * as t from "@babel/types";
+import { storyDescriptions } from "./story-snippets";
 
 /**
  * The text a reader sees in a stories file, and that file with the text swapped for another
- * language's: the docs site's translated examples start here, so the story stays the single
- * source in English. Only what renders counts: `play`, `decorators` and the like never reach
+ * language's: the docs site's examples in each language start here, so the story stays a single
+ * file. Only what renders counts: `play`, `decorators` and the like never reach
  * the page, and a string only counts when it reads like prose (see `isProse`).
  *
  * Node-only (it parses with babel), like story-snippets.ts.
@@ -70,6 +71,8 @@ const CODE_CALLS = new Set(["cn", "cva", "fn", "expect", "require", "Date"]);
 export function isProse(text: string) {
   const trimmed = text.trim();
   if (!/\p{L}/u.test(trimmed)) return false;
+  // An identifier is plain ASCII, so an accent means a word ("/mês", "1 usuário").
+  if (/\p{L}/u.test(trimmed.replace(/\p{ASCII}/gu, "")) && !trimmed.startsWith("<")) return true;
   if (
     /^(https?:|mailto:|tel:|<|#|\/|\.\/|@\/|[\w.-]+@[\w.-]+$|[\w-]+\/[\w-]+$|ds\/)/.test(trimmed)
   ) {
@@ -177,4 +180,42 @@ export function translateStory(source: string, dictionary: Record<string, string
     result = result.slice(0, item.start) + replacement(item, translated) + result.slice(item.end);
   }
   return result;
+}
+
+function member(object: Node | undefined, name: string) {
+  if (object?.type !== "ObjectExpression") return undefined;
+  const found = object.properties.find(
+    (property) => property.type === "ObjectProperty" && keyName(property.key) === name,
+  );
+  return found?.type === "ObjectProperty" ? found.value : undefined;
+}
+
+/** The descriptions a reader sees: `parameters.docs` wins over the JSDoc, as in Storybook. */
+export function shownDescriptions(source: string) {
+  const comments = storyDescriptions(source);
+  const ast = parse(source, { sourceType: "module", plugins: ["typescript", "jsx"] });
+  return ast.program.body.flatMap((statement) => {
+    if (statement.type !== "ExportNamedDeclaration") return [];
+    if (statement.declaration?.type !== "VariableDeclaration") return [];
+    return statement.declaration.declarations.flatMap(({ id, init }) => {
+      const story = init?.type === "TSSatisfiesExpression" ? init.expression : init;
+      const tags = member(story ?? undefined, "tags");
+      if (tags?.type === "ArrayExpression") {
+        const hidden = tags.elements.some(
+          (tag) => tag?.type === "StringLiteral" && tag.value === "!autodocs",
+        );
+        if (hidden) return [];
+      }
+      const docs = member(member(story ?? undefined, "parameters"), "docs");
+      const text = member(member(docs, "description"), "story");
+      const explicit =
+        text?.type === "StringLiteral"
+          ? text.value
+          : text?.type === "TemplateLiteral"
+            ? text.quasis[0]?.value.cooked
+            : undefined;
+      const description = explicit ?? (id.type === "Identifier" ? comments[id.name] : undefined);
+      return description ? [textKey(description)] : [];
+    });
+  });
 }

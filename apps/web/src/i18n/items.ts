@@ -2,12 +2,14 @@ import { useTranslation } from "react-i18next";
 import items from "../site/i18n/items-pt-BR.json";
 import stories from "../site/i18n/stories-pt-BR.json";
 import storyNames from "../site/i18n/story-names-pt-BR.json";
+import storyTextEn from "../site/i18n/story-text-en.json";
 
 type Item = { name: string; description: string };
 
 const ITEMS: Record<string, string> = items;
 const STORIES: Record<string, string> = stories;
 const STORY_NAMES: Record<string, string> = storyNames;
+const STORY_TEXT_EN: Record<string, string> = storyTextEn;
 
 /** An item's description; `meta.json` holds the English, the source of truth. */
 export function itemDescription(locale: string | undefined, item: Item) {
@@ -26,9 +28,16 @@ export function useItemDescription() {
 export function useStoryDescription() {
   const { i18n } = useTranslation();
   return (english: string) =>
-    (i18n.resolvedLanguage === "pt-BR"
-      ? STORIES[english.replace(/\s+/g, " ").trim()]
-      : undefined) ?? english;
+    i18n.resolvedLanguage === "pt-BR"
+      ? (STORIES[english.replace(/\s+/g, " ").trim()] ?? english)
+      : withEnglishLabels(english);
+}
+
+/** A description quotes the labels of its story, which may be written in Portuguese. */
+function withEnglishLabels(description: string) {
+  return description.replace(/"([^"]+)"/g, (quoted, label) =>
+    STORY_TEXT_EN[label] ? `"${STORY_TEXT_EN[label]}"` : quoted,
+  );
 }
 
 /** A story's title, found the same way. */

@@ -109,6 +109,12 @@ test("placeholders in translated markup stay as text", async ({ page }) => {
 test.describe("English browser", () => {
   test.use({ locale: "en-US" });
 
+  test("a story written in Portuguese shows in English", async ({ page }) => {
+    await open(page, "/components/confirm-dialog");
+    const preview = page.locator("[data-slot=story-preview]").first();
+    await expect(preview.getByRole("button", { name: /Block customer/ })).toBeVisible();
+  });
+
   test("stays in English, and the selector loads the pack on demand", async ({ page }) => {
     await open(page, "/components/carousel");
     await expect(page.getByRole("button", { name: "Next slide" }).first()).toBeVisible();

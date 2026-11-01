@@ -5,7 +5,7 @@ import type { ItemKind } from "./registry";
 // The registry's stories double as the docs examples (portable stories), and
 // their code is each story turned into a copyable component, generated at build
 // time (`?snippets`, see story-snippets.ts). Lazy globs: each page loads only its own.
-// Each has a translated side, built from the English stories by the same plugin.
+// Each has a side per language, built from the same story by the same plugin.
 // Client-only (pages load them in effects): `import.meta.env.SSR` drops them, and
 // Storybook with them, from the server bundle, which must fit a Cloudflare Worker.
 type StoryModule = Parameters<typeof composeStories>[0];
@@ -16,47 +16,52 @@ const loadStorybook = import.meta.env.SSR
 
 type Loaders<T> = Record<string, () => Promise<T>>;
 
-const storyModules: Loaders<StoryModule> = import.meta.env.SSR
-  ? {}
-  : {
-      ...import.meta.glob<StoryModule>("../../../../packages/ds/src/core/*/*.stories.tsx"),
-      ...import.meta.glob<StoryModule>("../../../../packages/ds/src/blocks/*/*.stories.tsx"),
-    };
+/** The site's languages: each story has a side for each one. */
+type Language = "en" | "pt-BR";
 
-const storyModulesPtBR: Loaders<StoryModule> = import.meta.env.SSR
-  ? {}
+const storyModules: Record<Language, Loaders<StoryModule>> = import.meta.env.SSR
+  ? { en: {}, "pt-BR": {} }
   : {
-      ...import.meta.glob<StoryModule>("../../../../packages/ds/src/core/*/*.stories.tsx", {
-        query: "?lang=pt-BR",
-      }),
-      ...import.meta.glob<StoryModule>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
-        query: "?lang=pt-BR",
-      }),
+      en: {
+        ...import.meta.glob<StoryModule>("../../../../packages/ds/src/core/*/*.stories.tsx", {
+          query: "?lang=en",
+        }),
+        ...import.meta.glob<StoryModule>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
+          query: "?lang=en",
+        }),
+      },
+      "pt-BR": {
+        ...import.meta.glob<StoryModule>("../../../../packages/ds/src/core/*/*.stories.tsx", {
+          query: "?lang=pt-BR",
+        }),
+        ...import.meta.glob<StoryModule>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
+          query: "?lang=pt-BR",
+        }),
+      },
     };
 
 /** Code and JSDoc description of each story, by export name. */
 type Snippets = { default: Record<string, string>; descriptions: Record<string, string> };
 
-const snippetModules: Loaders<Snippets> = import.meta.env.SSR
-  ? {}
+const snippetModules: Record<Language, Loaders<Snippets>> = import.meta.env.SSR
+  ? { en: {}, "pt-BR": {} }
   : {
-      ...import.meta.glob<Snippets>("../../../../packages/ds/src/core/*/*.stories.tsx", {
-        query: "?snippets",
-      }),
-      ...import.meta.glob<Snippets>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
-        query: "?snippets",
-      }),
-    };
-
-const snippetModulesPtBR: Loaders<Snippets> = import.meta.env.SSR
-  ? {}
-  : {
-      ...import.meta.glob<Snippets>("../../../../packages/ds/src/core/*/*.stories.tsx", {
-        query: "?snippets-pt-BR",
-      }),
-      ...import.meta.glob<Snippets>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
-        query: "?snippets-pt-BR",
-      }),
+      en: {
+        ...import.meta.glob<Snippets>("../../../../packages/ds/src/core/*/*.stories.tsx", {
+          query: "?snippets-en",
+        }),
+        ...import.meta.glob<Snippets>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
+          query: "?snippets-en",
+        }),
+      },
+      "pt-BR": {
+        ...import.meta.glob<Snippets>("../../../../packages/ds/src/core/*/*.stories.tsx", {
+          query: "?snippets-pt-BR",
+        }),
+        ...import.meta.glob<Snippets>("../../../../packages/ds/src/blocks/*/*.stories.tsx", {
+          query: "?snippets-pt-BR",
+        }),
+      },
     };
 
 const sources: Loaders<string> = import.meta.env.SSR
@@ -80,12 +85,12 @@ function byPath<T>(loaders: Loaders<T>) {
 
 const sourceByPath = byPath(sources);
 const storiesByPath = {
-  en: byPath(storyModules),
-  "pt-BR": byPath(storyModulesPtBR),
+  en: byPath(storyModules.en),
+  "pt-BR": byPath(storyModules["pt-BR"]),
 };
 const snippetsByPath = {
-  en: byPath(snippetModules),
-  "pt-BR": byPath(snippetModulesPtBR),
+  en: byPath(snippetModules.en),
+  "pt-BR": byPath(snippetModules["pt-BR"]),
 };
 
 function storiesPath(kind: ItemKind, name: string) {
@@ -140,7 +145,7 @@ export async function loadStories(
   locale?: string,
 ): Promise<DocStories | null> {
   const path = storiesPath(kind, name);
-  const language = locale === "pt-BR" ? "pt-BR" : "en";
+  const language: Language = locale === "pt-BR" ? "pt-BR" : "en";
   const load = storiesByPath[language].get(path);
   const loadSnippets = snippetsByPath[language].get(path);
   if (!load || !loadSnippets) return null;
