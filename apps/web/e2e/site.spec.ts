@@ -116,6 +116,24 @@ test("a component page shows a live preview, its code and the install command", 
   await expect(page.getByText("components/fma-ds/button.tsx")).toBeVisible();
 });
 
+test("the charts draw at a real size, on the site and in Storybook", async ({ page }) => {
+  const warnings: string[] = [];
+  page.on("console", (message) => {
+    if (message.text().includes("of chart should be greater than 0")) warnings.push(message.text());
+  });
+  const drawn = "[data-slot=chart] svg.recharts-surface";
+
+  await open(page, "/components/chart");
+  await expect(page.locator(drawn)).toHaveCount(4);
+  for (const surface of await page.locator(drawn).all()) {
+    expect((await surface.boundingBox())?.width).toBeGreaterThan(300);
+  }
+
+  await open(page, "/storybook/iframe.html?id=ds-chart--stacked-area-chart&viewMode=story");
+  await expect(page.locator(drawn)).toHaveCount(1);
+  expect(warnings).toEqual([]);
+});
+
 test("a block page previews the block in an iframe", async ({ page }) => {
   // Each story's iframe keeps the network busy: wait for the content, not for idle.
   await page.goto("/blocks/app-sidebar", { waitUntil: "domcontentloaded" });

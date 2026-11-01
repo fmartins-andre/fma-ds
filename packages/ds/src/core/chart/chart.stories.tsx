@@ -48,10 +48,12 @@ const componentMeta = {
   component: ChartContainer,
   tags: ["autodocs"],
   parameters: {
+    layout: "padded",
     docs: { description: { component: meta.description } },
   },
   args: {
     children: <div />,
+    className: "w-full max-w-2xl",
   },
 } satisfies Meta<typeof ChartContainer>;
 
