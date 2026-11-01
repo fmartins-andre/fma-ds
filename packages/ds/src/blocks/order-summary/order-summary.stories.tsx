@@ -497,7 +497,7 @@ export const Checkout: Story = {
     await userEvent.type(canvas.getByRole("textbox", { name: "CVV" }), "123");
     const [pay] = canvas.getAllByRole("button", { name: /Pagar R\$/ });
     if (pay) await userEvent.click(pay);
-    await canvas.findByText("Pagamento aprovado", {}, { timeout: 3000 });
+    await canvas.findByText("Pagamento aprovado");
     await expect(canvas.queryByRole("radio", { name: /Pix/ })).not.toBeInTheDocument();
   },
 };

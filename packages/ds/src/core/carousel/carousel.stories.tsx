@@ -156,9 +156,7 @@ export const Autoplay: Story = {
       await expect(carousel).toHaveAttribute("data-rotating", "true");
     });
     await waitFor(() => expect(dot(1)).toHaveAttribute("aria-current", "true"));
-    await waitFor(() => expect(dot(2)).toHaveAttribute("aria-current", "true"), {
-      timeout: 4000,
-    });
+    await waitFor(() => expect(dot(2)).toHaveAttribute("aria-current", "true"));
 
     // The toggle pauses; the slides are announced again.
     await userEvent.click(canvas.getByRole("button", { name: "Pausar slides" }));

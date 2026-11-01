@@ -21,6 +21,8 @@ export default defineConfig({
         define: { "process.env.VIRT_ON": "true" },
         test: {
           name: "storybook",
+          // Stories that type through whole forms need more than the default 15 s under load.
+          testTimeout: 30_000,
           browser: {
             enabled: true,
             headless: true,

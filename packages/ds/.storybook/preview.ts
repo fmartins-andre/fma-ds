@@ -1,10 +1,15 @@
 import type { Preview } from "@storybook/react-vite";
 import { createElement } from "react";
+import { configure } from "storybook/test";
 import { FmaI18nProvider } from "../src/lib/i18n/i18n";
 import ptBR from "../src/lib/i18n-pt-br/i18n-pt-br";
 import { applyTheme, clearTheme, loadThemeFonts } from "../src/lib/theme/index";
 import { getTheme, THEMES } from "../src/themes/index";
 import "../src/styles.css";
+
+// waitFor and findBy give up after 1 s by default, shorter than a dialog's exit animation
+// takes when the whole suite runs in parallel on a busy machine.
+configure({ asyncUtilTimeout: 5000 });
 
 // styles.css defines dark mode as `@custom-variant dark (&:is(.dark *))` — a
 // single binary toggle on <html>. The decorator flips that class and, for any

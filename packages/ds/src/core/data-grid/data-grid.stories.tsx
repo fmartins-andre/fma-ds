@@ -1277,9 +1277,8 @@ const scrollToEnd = async (canvasElement: HTMLElement, loaded: number) => {
   ) as HTMLElement;
   scroller.scrollTop = scroller.scrollHeight;
   scroller.dispatchEvent(new Event("scroll"));
-  await waitFor(
-    () => expect(within(canvasElement).getByTestId("loaded")).toHaveTextContent(String(loaded)),
-    { timeout: 3000 },
+  await waitFor(() =>
+    expect(within(canvasElement).getByTestId("loaded")).toHaveTextContent(String(loaded)),
   );
 };
 

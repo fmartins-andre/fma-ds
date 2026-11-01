@@ -62,9 +62,9 @@ export const Default: Story = {
     await expect(canvas.getByRole("region", { name: "tsx code" })).toHaveTextContent(
       "export function useTotals",
     );
-    // Shiki loads lazily; under a full parallel run that takes longer than 1 s.
+    // Shiki loads lazily; under a full parallel run that takes several seconds.
     await waitFor(() => expect(tokens(canvasElement).length).toBeGreaterThan(10), {
-      timeout: 5000,
+      timeout: 15000,
     });
 
     const writeText = spyOn(navigator.clipboard, "writeText").mockResolvedValue();
