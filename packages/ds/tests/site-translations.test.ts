@@ -3,6 +3,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { storyTexts, translateStory } from "../scripts/story-text";
 
 const web = join(import.meta.dirname, "../../../apps/web/src");
 const read = (path: string) => readFileSync(join(web, path), "utf8");
@@ -42,5 +43,29 @@ describe("guides in pt-BR", () => {
     expect(fences(portuguese)).toEqual(fences(english));
     expect(headings(portuguese)).toBe(headings(english));
     expect(portuguese.match(/\{\{[^}]+\}\}/g)).toEqual(english.match(/\{\{[^}]+\}\}/g));
+  });
+});
+
+describe("story text in pt-BR", () => {
+  const text = JSON.parse(read("site/i18n/story-text-pt-BR.json")) as Record<string, string>;
+  const src = join(import.meta.dirname, "../src");
+  const stories = ["core", "blocks"].flatMap((kind) =>
+    readdirSync(join(src, kind))
+      .map((name) => join(src, kind, name, `${name}.stories.tsx`))
+      .filter(existsSync),
+  );
+  const sources = stories.map((path) => [path, readFileSync(path, "utf8")] as const);
+  const texts = new Set(sources.flatMap(([, source]) => storyTexts(source)));
+
+  it.each(sources)("%s has every text in story-text-pt-BR.json", (_, source) => {
+    expect(storyTexts(source).filter((key) => text[key] === undefined)).toEqual([]);
+  });
+
+  it.each(sources)("%s still parses once translated", (_, source) => {
+    expect(() => storyTexts(translateStory(source, text))).not.toThrow();
+  });
+
+  it("has no text the stories lost", () => {
+    expect(Object.keys(text).filter((key) => !texts.has(key))).toEqual([]);
   });
 });

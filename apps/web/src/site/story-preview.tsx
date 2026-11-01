@@ -66,7 +66,7 @@ export function StoryPreview({
   story: DocStory;
   className?: string;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const title = useStoryName()(story.name);
   const framed = kind === "blocks" || story.layout === "fullscreen";
   const { Component: Story } = story;
@@ -90,6 +90,7 @@ export function StoryPreview({
       <TabsContent id="preview">
         {framed ? (
           <iframe
+            key={i18n.resolvedLanguage}
             title={t(($) => $.lists.preview, { title: title })}
             src={previewPath(kind, name, story.exportName)}
             className="h-[640px] w-full rounded-xl border bg-background"
