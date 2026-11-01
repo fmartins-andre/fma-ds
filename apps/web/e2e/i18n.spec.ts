@@ -8,6 +8,16 @@ async function open(page: Page, path: string) {
 /** Pages full of story iframes: the network takes too long to go idle, so wait for the content. */
 const visit = (page: Page, path: string) => page.goto(path, { waitUntil: "domcontentloaded" });
 
+/** The code-block example, whose text isn't translated, in lines in its preview and code. */
+async function expectCodeLines(page: Page, codeTab: string) {
+  await open(page, "/components/code-block");
+  const lines = "[data-slot=code-block-line]";
+  await expect(page.locator(`[data-slot=story-preview] >> nth=0 >> ${lines}`)).toHaveCount(13);
+  await page.getByRole("tab", { name: codeTab }).first().click();
+  const code = page.getByRole("tabpanel").first().locator(lines);
+  await expect(code.filter({ hasText: /^\s*\d*\s*export function useTotals/ })).toHaveCount(1);
+}
+
 const nav = (page: Page, name: string) => page.getByRole("navigation", { name });
 
 test.describe("Portuguese browser", () => {
@@ -93,6 +103,10 @@ test.describe("Portuguese content", () => {
     await expect(page.getByRole("tabpanel").first()).toContainText("É acessível?");
   });
 
+  test("an example written in several lines keeps them", async ({ page }) => {
+    await expectCodeLines(page, "Código");
+  });
+
   test("the theme editor's demos are in Portuguese", async ({ page }) => {
     await open(page, "/themes");
     await expect(page.getByText("Crie uma conta")).toBeVisible();
@@ -113,6 +127,10 @@ test.describe("English browser", () => {
     await open(page, "/components/confirm-dialog");
     const preview = page.locator("[data-slot=story-preview]").first();
     await expect(preview.getByRole("button", { name: /Block customer/ })).toBeVisible();
+  });
+
+  test("an example written in several lines keeps them", async ({ page }) => {
+    await expectCodeLines(page, "Code");
   });
 
   test("stays in English, and the selector loads the pack on demand", async ({ page }) => {
