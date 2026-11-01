@@ -1,4 +1,4 @@
-import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   AlertTriangleIcon,
   CheckIcon,
@@ -14,7 +14,6 @@ import {
   WalletIcon,
 } from "lucide-react";
 import * as React from "react";
-import { I18nProvider } from "react-aria-components";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import {
@@ -61,14 +60,11 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/table/table";
 import { ToggleGroup, ToggleGroupItem } from "@/core/toggle-group/toggle-group";
 import { useDialogPromise } from "@/hooks/use-dialog-promise";
+import { pinLocale } from "../../../.storybook/pin-locale";
 import meta from "./meta.json";
 import { PanelCard, PanelCardBody, PanelCardHeader, type PanelCardI18n } from "./panel-card";
 
-const withPtBR: Decorator = (Story) => (
-  <I18nProvider locale="pt-BR">
-    <Story />
-  </I18nProvider>
-);
+const withPtBR = pinLocale("pt-BR");
 
 const componentMeta = {
   title: "blocks/PanelCard",

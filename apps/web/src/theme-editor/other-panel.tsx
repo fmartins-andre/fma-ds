@@ -1,4 +1,5 @@
 import { type Dispatch, Fragment, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/core/button/button";
 import { Switch } from "@/core/switch/switch";
 import {
@@ -26,17 +27,17 @@ const DEFAULT_SHADOW: ThemeShadow = {
 };
 
 // tweakcn's HSL presets, minus the arbitrary combined ones.
-const HSL_PRESETS: { label: string; hsl: HslAdjustment }[] = [
-  { label: "Hue −60°", hsl: { ...NO_HSL_ADJUSTMENT, hueShift: -60 } },
-  { label: "Hue +60°", hsl: { ...NO_HSL_ADJUSTMENT, hueShift: 60 } },
-  { label: "Hue +120°", hsl: { ...NO_HSL_ADJUSTMENT, hueShift: 120 } },
-  { label: "Invert hue", hsl: { ...NO_HSL_ADJUSTMENT, hueShift: 180 } },
-  { label: "Grayscale", hsl: { ...NO_HSL_ADJUSTMENT, saturationScale: 0 } },
-  { label: "Muted", hsl: { ...NO_HSL_ADJUSTMENT, saturationScale: 0.6 } },
-  { label: "Vibrant", hsl: { ...NO_HSL_ADJUSTMENT, saturationScale: 1.4 } },
-  { label: "Dimmer", hsl: { ...NO_HSL_ADJUSTMENT, lightnessScale: 0.9 } },
-  { label: "Brighter", hsl: { ...NO_HSL_ADJUSTMENT, lightnessScale: 1.1 } },
-];
+const HSL_PRESETS = [
+  { id: "hueMinus60", hsl: { ...NO_HSL_ADJUSTMENT, hueShift: -60 } },
+  { id: "huePlus60", hsl: { ...NO_HSL_ADJUSTMENT, hueShift: 60 } },
+  { id: "huePlus120", hsl: { ...NO_HSL_ADJUSTMENT, hueShift: 120 } },
+  { id: "invert", hsl: { ...NO_HSL_ADJUSTMENT, hueShift: 180 } },
+  { id: "grayscale", hsl: { ...NO_HSL_ADJUSTMENT, saturationScale: 0 } },
+  { id: "muted", hsl: { ...NO_HSL_ADJUSTMENT, saturationScale: 0.6 } },
+  { id: "vibrant", hsl: { ...NO_HSL_ADJUSTMENT, saturationScale: 1.4 } },
+  { id: "dimmer", hsl: { ...NO_HSL_ADJUSTMENT, lightnessScale: 0.9 } },
+  { id: "brighter", hsl: { ...NO_HSL_ADJUSTMENT, lightnessScale: 1.1 } },
+] as const satisfies { id: string; hsl: HslAdjustment }[];
 
 const px = (value: string) => Number.parseFloat(value) || 0;
 const rem = (value: string | undefined, fallback: number) =>
@@ -55,6 +56,7 @@ export function OtherPanel({
   edit: (update: (theme: Theme) => Theme) => void;
   dispatch: Dispatch<ThemeEditorAction>;
 }) {
+  const { t } = useTranslation("themeEditor");
   const shadow = theme.shadow?.[mode];
   const setHsl = (next: HslAdjustment) => dispatch({ type: "hsl", hsl: next, at: Date.now() });
 
@@ -75,7 +77,7 @@ export function OtherPanel({
 
   const sections: Record<OtherSetting, ReactNode> = {
     radius: (
-      <Section title="Radius">
+      <Section title={t(($) => $.other.radius)}>
         <SliderField
           label="--radius"
           value={rem(theme.radius, 0.625)}
@@ -90,9 +92,9 @@ export function OtherPanel({
       </Section>
     ),
     spacing: (
-      <Section title="Spacing">
+      <Section title={t(($) => $.other.spacing)}>
         <Toggle
-          label="Custom base spacing"
+          label={t(($) => $.other.customSpacing)}
           isSelected={theme.spacing !== undefined}
           onChange={(on) =>
             edit((current) => ({ ...current, spacing: on ? "0.25rem" : undefined }))
@@ -114,9 +116,9 @@ export function OtherPanel({
       </Section>
     ),
     shadow: (
-      <Section title="Shadow">
+      <Section title={t(($) => $.other.shadow)}>
         <Toggle
-          label="Custom shadows (else Tailwind's)"
+          label={t(($) => $.other.customShadow)}
           isSelected={theme.shadow !== undefined}
           onChange={(on) =>
             edit((current) => ({
@@ -128,13 +130,13 @@ export function OtherPanel({
         {shadow && (
           <>
             <ColorField
-              label={`Color (${mode})`}
+              label={t(($) => $.other.color, { mode: t(($) => $.modes[mode]) })}
               value={shadow.color}
               onChange={(color) => setShadow({ color })}
               onChangeEnd={() => dispatch({ type: "checkpoint" })}
             />
             <SliderField
-              label="Opacity"
+              label={t(($) => $.other.opacity)}
               value={shadow.opacity}
               min={0}
               max={1}
@@ -142,7 +144,7 @@ export function OtherPanel({
               onChange={(opacity) => setShadow({ opacity: Number(opacity.toFixed(2)) })}
             />
             <SliderField
-              label="Blur"
+              label={t(($) => $.other.blur)}
               value={px(shadow.blur)}
               min={0}
               max={50}
@@ -151,7 +153,7 @@ export function OtherPanel({
               onChange={(value) => setShadow({ blur: `${value}px` })}
             />
             <SliderField
-              label="Spread"
+              label={t(($) => $.other.spread)}
               value={px(shadow.spread)}
               min={-50}
               max={50}
@@ -160,7 +162,7 @@ export function OtherPanel({
               onChange={(value) => setShadow({ spread: `${value}px` })}
             />
             <SliderField
-              label="Offset X"
+              label={t(($) => $.other.offsetX)}
               value={px(shadow.offsetX)}
               min={-50}
               max={50}
@@ -169,7 +171,7 @@ export function OtherPanel({
               onChange={(value) => setShadow({ offsetX: `${value}px` })}
             />
             <SliderField
-              label="Offset Y"
+              label={t(($) => $.other.offsetY)}
               value={px(shadow.offsetY)}
               min={-50}
               max={50}
@@ -188,24 +190,17 @@ export function OtherPanel({
         <Fragment key={setting}>{sections[setting]}</Fragment>
       ))}
       {/* An editing tool, not a theme setting: it rewrites the colors. */}
-      <Section title="HSL adjustment">
-        <p className="text-xs text-muted-foreground">
-          Shifts every color of both modes at once. Editing a color afterwards keeps the result.
-        </p>
+      <Section title={t(($) => $.other.hsl)}>
+        <p className="text-xs text-muted-foreground">{t(($) => $.other.hslNote)}</p>
         <div className="flex flex-wrap gap-1.5">
           {HSL_PRESETS.map((preset) => (
-            <Button
-              key={preset.label}
-              size="xs"
-              variant="outline"
-              onPress={() => setHsl(preset.hsl)}
-            >
-              {preset.label}
+            <Button key={preset.id} size="xs" variant="outline" onPress={() => setHsl(preset.hsl)}>
+              {t(($) => $.other.presets[preset.id])}
             </Button>
           ))}
         </div>
         <SliderField
-          label="Hue shift"
+          label={t(($) => $.other.hue)}
           value={hsl.hueShift}
           min={-180}
           max={180}
@@ -214,7 +209,7 @@ export function OtherPanel({
           onChange={(hueShift) => setHsl({ ...hsl, hueShift })}
         />
         <SliderField
-          label="Saturation"
+          label={t(($) => $.other.saturation)}
           value={hsl.saturationScale}
           min={0}
           max={2}
@@ -223,7 +218,7 @@ export function OtherPanel({
           onChange={(saturationScale) => setHsl({ ...hsl, saturationScale })}
         />
         <SliderField
-          label="Lightness"
+          label={t(($) => $.other.lightness)}
           value={hsl.lightnessScale}
           min={0.5}
           max={1.5}

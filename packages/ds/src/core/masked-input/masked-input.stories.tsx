@@ -20,6 +20,7 @@ import { Label } from "@/core/label/label";
 import { Spinner } from "@/core/spinner/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/core/toggle-group/toggle-group";
 import { useMask } from "@/hooks/use-mask";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import { cpfMaskRemover, makeStableMaskitoOptions } from "@/lib/input-masks";
 import { MaskedInput } from "./masked-input";
 import meta from "./meta.json";
@@ -583,5 +584,20 @@ export const Lookup: Story = {
     await expect(await canvas.findByText("CEP não encontrado. Preencha o endereço.")).toBeVisible();
     await expect(cep).toHaveAttribute("aria-invalid", "true");
     await expect(street).toHaveValue("Avenida Rio Branco");
+  },
+};
+
+export const ShouldFollowProviderLocale: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider locale="en">
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  render: () => <MaskedInput aria-label="Amount" mask="decimal" defaultValue="1234.5" />,
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("textbox", { name: "Amount" })).toHaveValue("1,234.50");
   },
 };

@@ -14,6 +14,31 @@ import {
 } from "@/core/alert-dialog/alert-dialog";
 import { Button } from "@/core/button/button";
 import type { DialogController } from "@/hooks/use-dialog-promise";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type ConfirmDialogConfig = {
+  labels: {
+    confirm: string;
+    cancel: string;
+    pending: string;
+    error: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    confirmDialog: ConfirmDialogConfig;
+  }
+}
+
+export const confirmDialogEn: DictionaryNamespace<ConfirmDialogConfig> = {
+  labels: {
+    confirm: "Confirm",
+    cancel: "Cancel",
+    pending: "Please wait…",
+    error: "Something went wrong. Please try again.",
+  },
+};
 
 type OrFromData<T, D> = T | ((data: D | undefined) => T);
 
@@ -58,14 +83,19 @@ function ConfirmDialog<D = void>({
   children,
   media,
   tone = "default",
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
-  pendingLabel = "Please wait…",
+  confirmLabel: confirmLabelProp,
+  cancelLabel: cancelLabelProp,
+  pendingLabel: pendingLabelProp,
   onConfirm,
-  errorMessage = "Something went wrong. Please try again.",
+  errorMessage: errorMessageProp,
   size = "default",
   className,
 }: ConfirmDialogProps<D>) {
+  const { labels } = useFmaMessages("confirmDialog", confirmDialogEn);
+  const confirmLabel = confirmLabelProp ?? labels.confirm;
+  const cancelLabel = cancelLabelProp ?? labels.cancel;
+  const pendingLabel = pendingLabelProp ?? labels.pending;
+  const errorMessage = errorMessageProp ?? labels.error;
   const { data, isPending, error, dialogProps, confirm, cancel } = controller;
 
   function handleConfirm() {

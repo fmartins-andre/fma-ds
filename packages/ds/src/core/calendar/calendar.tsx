@@ -53,8 +53,37 @@ import {
   periodBounds,
   periodEnd,
 } from "@/lib/date-granularity";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 import { createIsWithinAnyInterval } from "@/lib/interval-helpers";
 import type { Interval } from "@/lib/types";
+
+type CalendarConfig = {
+  labels: {
+    chooseMonth: string;
+    chooseYear: string;
+    previousYear: string;
+    previousDecade: string;
+    nextYear: string;
+    nextDecade: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    calendar: CalendarConfig;
+  }
+}
+
+export const calendarEn: DictionaryNamespace<CalendarConfig> = {
+  labels: {
+    chooseMonth: "Choose month",
+    chooseYear: "Choose year",
+    previousYear: "Previous year",
+    previousDecade: "Previous decade",
+    nextYear: "Next year",
+    nextDecade: "Next decade",
+  },
+};
 
 /**
  * What a selection represents. `"day"` is the regular day grid; `"month"` and
@@ -556,6 +585,7 @@ function DayView({
   state: AnyCalendarState;
   onShowView: (view: CalendarGranularity, focusedDate?: CalendarDate) => void;
 }) {
+  const { labels } = useFmaMessages("calendar", calendarEn);
   const { locale } = useLocale();
 
   return (
@@ -588,7 +618,7 @@ function DayView({
                 <>
                   <button
                     type="button"
-                    aria-label="Choose month"
+                    aria-label={labels.chooseMonth}
                     className={captionButtonClasses(buttonVariant)}
                     onClick={() => onShowView("month", panelFocus)}
                   >
@@ -598,7 +628,7 @@ function DayView({
                   </button>
                   <button
                     type="button"
-                    aria-label="Choose year"
+                    aria-label={labels.chooseYear}
                     className={captionButtonClasses(buttonVariant)}
                     onClick={() => onShowView("year", panelFocus)}
                   >
@@ -702,6 +732,7 @@ function PeriodGrid({
   onEscape?: () => void;
   onKeyboardMove: () => void;
 }) {
+  const { labels } = useFmaMessages("calendar", calendarEn);
   const { locale, direction } = useLocale();
   const { focusedDate, minValue, maxValue, timeZone } = state;
   const todayDate = today(timeZone);
@@ -822,7 +853,7 @@ function PeriodGrid({
       <div className="flex h-(--cell-size) items-center justify-between gap-1">
         <button
           type="button"
-          aria-label={period === "month" ? "Previous year" : "Previous decade"}
+          aria-label={period === "month" ? labels.previousYear : labels.previousDecade}
           disabled={isPrevDisabled}
           className={navButtonClasses(buttonVariant)}
           onClick={() => state.setFocusedDate(focusedDate.subtract(page))}
@@ -832,7 +863,7 @@ function PeriodGrid({
         {onShowYears ? (
           <button
             type="button"
-            aria-label="Choose year"
+            aria-label={labels.chooseYear}
             aria-live="polite"
             className={captionButtonClasses(buttonVariant)}
             onClick={onShowYears}
@@ -846,7 +877,7 @@ function PeriodGrid({
         )}
         <button
           type="button"
-          aria-label={period === "month" ? "Next year" : "Next decade"}
+          aria-label={period === "month" ? labels.nextYear : labels.nextDecade}
           disabled={isNextDisabled}
           className={navButtonClasses(buttonVariant)}
           onClick={() => state.setFocusedDate(focusedDate.add(page))}

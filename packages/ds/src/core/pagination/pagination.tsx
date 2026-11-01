@@ -1,7 +1,36 @@
+"use client";
+
 import { cn } from "cn";
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 import type * as React from "react";
 import { LinkButton } from "@/core/button/button";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type PaginationConfig = {
+  labels: {
+    previous: string;
+    next: string;
+    goToPrevious: string;
+    goToNext: string;
+    morePages: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    pagination: PaginationConfig;
+  }
+}
+
+export const paginationEn: DictionaryNamespace<PaginationConfig> = {
+  labels: {
+    previous: "Previous",
+    next: "Next",
+    goToPrevious: "Go to previous page",
+    goToNext: "Go to next page",
+    morePages: "More pages",
+  },
+};
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -48,41 +77,44 @@ function PaginationLink({ className, isActive, size = "icon", ...props }: Pagina
 
 function PaginationPrevious({
   className,
-  text = "Previous",
+  text,
   ...props
 }: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
+  const { labels } = useFmaMessages("pagination", paginationEn);
   return (
     <PaginationLink
-      aria-label="Go to previous page"
+      aria-label={labels.goToPrevious}
       size="default"
       className={cn("pl-1.5!", className)}
       {...props}
     >
       <ChevronLeftIcon data-icon="inline-start" />
-      <span className="hidden sm:block">{text}</span>
+      <span className="hidden sm:block">{text ?? labels.previous}</span>
     </PaginationLink>
   );
 }
 
 function PaginationNext({
   className,
-  text = "Next",
+  text,
   ...props
 }: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
+  const { labels } = useFmaMessages("pagination", paginationEn);
   return (
     <PaginationLink
-      aria-label="Go to next page"
+      aria-label={labels.goToNext}
       size="default"
       className={cn("pr-1.5!", className)}
       {...props}
     >
-      <span className="hidden sm:block">{text}</span>
+      <span className="hidden sm:block">{text ?? labels.next}</span>
       <ChevronRightIcon data-icon="inline-end" />
     </PaginationLink>
   );
 }
 
 function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span">) {
+  const { labels } = useFmaMessages("pagination", paginationEn);
   return (
     <span
       aria-hidden
@@ -94,7 +126,7 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span"
       {...props}
     >
       <MoreHorizontalIcon />
-      <span className="sr-only">More pages</span>
+      <span className="sr-only">{labels.morePages}</span>
     </span>
   );
 }

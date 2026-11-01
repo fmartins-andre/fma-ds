@@ -1,3 +1,4 @@
+export * from "./locale";
 /**
  * Input-mask system built on Maskito: mask option hooks, formatters, and remover utilities for CPF/CNPJ/phone/date/etc.
  */

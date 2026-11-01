@@ -1,5 +1,6 @@
 import { Redo2, RotateCcw, Undo2 } from "lucide-react";
 import type { ReactNode } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Badge } from "@/core/badge/badge";
 import { Button } from "@/core/button/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/core/tabs/tabs";
@@ -59,6 +60,7 @@ function IconButton({
 const PANEL = "order-last basis-full pt-2";
 
 export function ThemeEditor({ preset }: { preset?: string }) {
+  const { t } = useTranslation("themeEditor");
   const { state, dispatch, edit, checkpoint, mode } = useThemeEditor(preset);
   const { theme, loaded } = state;
   const modified = !sameTheme(theme, loaded);
@@ -66,19 +68,23 @@ export function ThemeEditor({ preset }: { preset?: string }) {
   return (
     <div className="flex h-full flex-col">
       {/* The site header names the page; the heading is for screen readers and outlines. */}
-      <h1 className="sr-only">Themes</h1>
+      <h1 className="sr-only">{t(($) => $.title)}</h1>
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
         <aside className="max-h-[45dvh] shrink-0 overflow-y-auto border-b p-4 lg:max-h-none lg:w-96 lg:border-r lg:border-b-0">
           <Tabs defaultSelectedKey="colors">
             <TabsList className="w-full">
-              <TabsTrigger id="colors">Colors</TabsTrigger>
-              <TabsTrigger id="typography">Typography</TabsTrigger>
-              <TabsTrigger id="other">Other</TabsTrigger>
+              <TabsTrigger id="colors">{t(($) => $.tabs.colors)}</TabsTrigger>
+              <TabsTrigger id="typography">{t(($) => $.tabs.typography)}</TabsTrigger>
+              <TabsTrigger id="other">{t(($) => $.tabs.other)}</TabsTrigger>
             </TabsList>
             <TabsContent id="colors">
               <p className="py-2 text-xs text-muted-foreground">
-                Editing the <strong>{mode}</strong> palette. Toggle the mode in the header to edit
-                the other one.
+                <Trans
+                  t={t}
+                  i18nKey={($) => $.editing}
+                  values={{ mode: t(($) => $.modes[mode]) }}
+                  components={{ strong: <strong /> }}
+                />
               </p>
               <ColorsPanel theme={theme} mode={mode} edit={edit} checkpoint={checkpoint} />
             </TabsContent>
@@ -111,10 +117,10 @@ export function ThemeEditor({ preset }: { preset?: string }) {
                 vertically in Chromium.
               */}
               <TabsList className="max-w-full justify-start overflow-x-auto overflow-y-hidden">
-                <TabsTrigger id="components">Components</TabsTrigger>
-                <TabsTrigger id="sidebar">Sidebar</TabsTrigger>
-                <TabsTrigger id="palette">Palette & contrast</TabsTrigger>
-                <TabsTrigger id="typography">Typography</TabsTrigger>
+                <TabsTrigger id="components">{t(($) => $.tabs.components)}</TabsTrigger>
+                <TabsTrigger id="sidebar">{t(($) => $.tabs.sidebar)}</TabsTrigger>
+                <TabsTrigger id="palette">{t(($) => $.tabs.palette)}</TabsTrigger>
+                <TabsTrigger id="typography">{t(($) => $.tabs.typography)}</TabsTrigger>
               </TabsList>
               <TabsContent id="components" className={PANEL}>
                 <Showcase />
@@ -132,25 +138,25 @@ export function ThemeEditor({ preset }: { preset?: string }) {
             <div className="ml-auto flex flex-wrap items-center gap-2">
               {/* Same picker as the site header, which hides it below md. */}
               <ThemeSelect className="w-48 md:hidden" />
-              {modified && <Badge variant="warning-light">Modified</Badge>}
+              {modified && <Badge variant="warning-light">{t(($) => $.modified)}</Badge>}
               <ImportDialog onImport={(next) => dispatch({ type: "load", theme: next })} />
               <div className="flex items-center">
                 <IconButton
-                  label="Undo (Ctrl+Z)"
+                  label={t(($) => $.undo)}
                   isDisabled={state.past.length === 0}
                   onPress={() => dispatch({ type: "undo" })}
                 >
                   <Undo2 />
                 </IconButton>
                 <IconButton
-                  label="Redo (Ctrl+Shift+Z)"
+                  label={t(($) => $.redo)}
                   isDisabled={state.future.length === 0}
                   onPress={() => dispatch({ type: "redo" })}
                 >
                   <Redo2 />
                 </IconButton>
                 <IconButton
-                  label={`Reset to ${loaded.title}`}
+                  label={t(($) => $.reset, { title: loaded.title })}
                   isDisabled={!modified}
                   onPress={() => dispatch({ type: "reset" })}
                 >

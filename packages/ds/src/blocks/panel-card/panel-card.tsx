@@ -18,6 +18,7 @@ import { FieldHelp } from "@/core/field/field";
 import { IconTile } from "@/core/icon-tile/icon-tile";
 import { Skeleton } from "@/core/skeleton/skeleton";
 import { Spinner } from "@/core/spinner/spinner";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type PanelCardLabels = {
   /** The help button's accessible name; a text `title` is appended ("More information: Sales"). */
@@ -35,25 +36,38 @@ type PanelCardLabels = {
   retry: string;
 };
 
-type PanelCardI18n = { labels?: Partial<PanelCardLabels> };
+export type PanelCardConfig = { labels: PanelCardLabels };
 
-const defaultPanelCardLabels: PanelCardLabels = {
-  help: "More information",
-  updatedAt: (formatted) => `Updated ${formatted}`,
-  formatDate: (date, locale) =>
-    new Intl.DateTimeFormat(locale, { dateStyle: "short", timeStyle: "short" }).format(date),
-  refreshing: "Updating",
-  loading: "Loading",
-  empty: "No data",
-  emptyDescription: "There's nothing to show for this period yet.",
-  error: "Couldn't load the data",
-  errorDescription: "Check your connection and try again.",
-  retry: "Try again",
+declare global {
+  interface FmaNamespaces {
+    panelCard: PanelCardConfig;
+  }
+}
+
+export const panelCardEn: DictionaryNamespace<PanelCardConfig> = {
+  labels: {
+    help: "More information",
+    updatedAt: (formatted) => `Updated ${formatted}`,
+    formatDate: (date, locale) =>
+      new Intl.DateTimeFormat(locale, { dateStyle: "short", timeStyle: "short" }).format(date),
+    refreshing: "Updating",
+    loading: "Loading",
+    empty: "No data",
+    emptyDescription: "There's nothing to show for this period yet.",
+    error: "Couldn't load the data",
+    errorDescription: "Check your connection and try again.",
+    retry: "Try again",
+  },
 };
 
-const PanelCardContext = React.createContext<PanelCardLabels>(defaultPanelCardLabels);
+type PanelCardI18n = { labels?: Partial<PanelCardLabels> };
 
-const usePanelCardLabels = () => React.useContext(PanelCardContext);
+const PanelCardContext = React.createContext<PanelCardLabels | null>(null);
+
+function usePanelCardLabels() {
+  const { labels } = useFmaMessages("panelCard", panelCardEn);
+  return React.useContext(PanelCardContext) ?? labels;
+}
 
 /**
  * A `Card` for a panel: a dashboard chart or table, or one resource and its
@@ -65,8 +79,7 @@ function PanelCard({
   className,
   ...props
 }: React.ComponentProps<typeof Card> & { i18n?: PanelCardI18n }) {
-  const overrides = i18n?.labels;
-  const labels = React.useMemo(() => ({ ...defaultPanelCardLabels, ...overrides }), [overrides]);
+  const { labels } = useFmaMessages("panelCard", panelCardEn, i18n);
   return (
     <PanelCardContext.Provider value={labels}>
       <Card data-slot="panel-card" className={cn("min-w-0", className)} {...props} />

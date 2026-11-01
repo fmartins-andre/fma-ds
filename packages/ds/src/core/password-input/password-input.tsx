@@ -9,6 +9,25 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/core/input-group/input-group";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type PasswordInputConfig = {
+  labels: {
+    toggle: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    passwordInput: PasswordInputConfig;
+  }
+}
+
+export const passwordInputEn: DictionaryNamespace<PasswordInputConfig> = {
+  labels: {
+    toggle: "Show password",
+  },
+};
 
 type PasswordInputProps = Omit<React.ComponentProps<typeof InputGroupInput>, "type"> & {
   /** Accessible name of the reveal toggle; its pressed state says whether it's on. */
@@ -27,7 +46,7 @@ type PasswordInputProps = Omit<React.ComponentProps<typeof InputGroupInput>, "ty
  * ("current-password" / "new-password").
  */
 function PasswordInput({
-  toggleLabel = "Show password",
+  toggleLabel: toggleLabelProp,
   isRevealed: isRevealedProp,
   defaultRevealed = false,
   onRevealedChange,
@@ -36,6 +55,8 @@ function PasswordInput({
   disabled,
   ...props
 }: PasswordInputProps) {
+  const { labels } = useFmaMessages("passwordInput", passwordInputEn);
+  const toggleLabel = toggleLabelProp ?? labels.toggle;
   const [uncontrolled, setUncontrolled] = React.useState(defaultRevealed);
   const isRevealed = isRevealedProp ?? uncontrolled;
 

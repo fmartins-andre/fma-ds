@@ -13,20 +13,31 @@ import { IconTile } from "@/core/icon-tile/icon-tile";
 import { Skeleton } from "@/core/skeleton/skeleton";
 import { Slider, type SliderProps } from "@/core/slider/slider";
 import { Switch } from "@/core/switch/switch";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type PlanBuilderLabels = {
   /** The trigger of a resource's "what's included" accordion. */
   included: string;
 };
 
-type PlanBuilderI18n = { labels?: Partial<PlanBuilderLabels> };
+export type PlanBuilderConfig = { labels: PlanBuilderLabels };
 
-const defaultPlanBuilderLabels: PlanBuilderLabels = { included: "What's included" };
+declare global {
+  interface FmaNamespaces {
+    planBuilder: PlanBuilderConfig;
+  }
+}
+
+export const planBuilderEn: DictionaryNamespace<PlanBuilderConfig> = {
+  labels: { included: "What's included" },
+};
+
+type PlanBuilderI18n = { labels?: Partial<PlanBuilderLabels> };
 
 const PlanBuilderContext = React.createContext<{
   isCalculating: boolean;
   labels: PlanBuilderLabels;
-}>({ isCalculating: false, labels: defaultPlanBuilderLabels });
+}>({ isCalculating: false, labels: planBuilderEn.labels });
 
 type PlanBuilderProps = React.ComponentProps<"div"> & {
   /** The side column: an `OrderSummary` with the lines, the total and the action. */
@@ -50,11 +61,8 @@ function PlanBuilder({
   children,
   ...props
 }: PlanBuilderProps) {
-  const included = i18n?.labels?.included ?? defaultPlanBuilderLabels.included;
-  const context = React.useMemo(
-    () => ({ isCalculating, labels: { included } }),
-    [isCalculating, included],
-  );
+  const { labels } = useFmaMessages("planBuilder", planBuilderEn, i18n);
+  const context = React.useMemo(() => ({ isCalculating, labels }), [isCalculating, labels]);
 
   return (
     <PlanBuilderContext.Provider value={context}>

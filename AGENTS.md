@@ -37,6 +37,11 @@ packages/ds/        → @fma-ds/ds: os componentes
 apps/web/           → TanStack Start; serve public/r/<nome>.json (GERADO — não editar à mão)
   src/guides/                         guias do /docs em markdown (index.ts lista); site e llms.txt
                                       leem o mesmo texto; {{dep}} vira a versão do package.json
+  src/i18n/                           i18next do site (instância por requisição, idiomas); os textos ficam em
+                                      src/site/i18n/ e src/theme-editor/i18n/ (<idioma>.ts), com pt-BR checado
+                                      contra o inglês; texto novo de interface entra nos dois. Conteúdo: guias em
+                                      src/guides/pt-BR/, descrições em src/site/i18n/items-pt-BR.json e
+                                      stories-pt-BR.json; tests/site-translations.test.ts impõe guias e itens
   src/theme-editor/                   editor de temas em /themes (estilo tweakcn); importa a UI
                                       de packages/ds via alias @/* (tsconfig paths)
   src/site/, src/routes/_site/        site de docs (estilo shadcn): home, /docs, /components/<nome>,
@@ -155,7 +160,9 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    `src/lib/utils.ts` é só re-export. Outros componentes do registro via
    `@/core/<outro>/<outro>` ou `../<outro>/<outro>`. Libs em pasta são importadas por um
    arquivo (`@/lib/date-fns-compat/index`), nunca pela pasta: o CLI do shadcn só reescreve
-   imports que nomeiam arquivos. Variantes com `class-variance-authority`.
+   imports que nomeiam arquivos, e pelo nome, não pelo caminho: arquivo importado por alias precisa
+   de nome único no registro (`tests/registry-import-names.test.ts`). Variantes com
+   `class-variance-authority`.
    Ícones de `lucide-react`.
 6. **API react-aria**: os componentes seguem a API do react-aria-components, não a do Radix
    (ex.: `isDisabled` em vez de `disabled`, sem `asChild` — `LinkButton` pra link com cara
@@ -197,6 +204,10 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
 
 12. **Sem requisições de rede em código publicado**: `fetch`, WebSocket e URLs fixas exigem exceção
    declarada em `tests/external-requests.test.ts` e no guia `offline.md`.
+
+13. **Textos de componente**: nada de inglês fixo. Declare o tipo e o inglês no próprio item, estenda
+   `FmaNamespaces` com `declare global` e leia com `useFmaMessages("<item>", <item>En, props.i18n)`;
+   o arquivo precisa de `"use client"`. `tests/i18n-coverage.test.ts` impõe.
 
 ## Estilo de código
 

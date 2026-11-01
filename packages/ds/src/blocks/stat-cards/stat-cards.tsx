@@ -15,6 +15,7 @@ import {
 } from "react-aria-components";
 import { IconTile } from "@/core/icon-tile/icon-tile";
 import { Skeleton } from "@/core/skeleton/skeleton";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type StatLabels = {
   /** Read by screen readers while a value loads. */
@@ -23,18 +24,27 @@ type StatLabels = {
   unavailable: string;
 };
 
-type StatI18n = { labels?: Partial<StatLabels> };
+export type StatCardsConfig = { labels: StatLabels };
 
-const defaultStatLabels: StatLabels = {
-  loading: "Loading",
-  unavailable: "Not available",
+declare global {
+  interface FmaNamespaces {
+    statCards: StatCardsConfig;
+  }
+}
+
+export const statCardsEn: DictionaryNamespace<StatCardsConfig> = {
+  labels: {
+    loading: "Loading",
+    unavailable: "Not available",
+  },
 };
 
-const StatLabelsContext = React.createContext<StatLabels>(defaultStatLabels);
+type StatI18n = { labels?: Partial<StatLabels> };
+
+const StatLabelsContext = React.createContext<StatLabels | null>(null);
 
 function useMergedLabels(i18n?: StatI18n) {
-  const overrides = i18n?.labels;
-  return React.useMemo(() => ({ ...defaultStatLabels, ...overrides }), [overrides]);
+  return useFmaMessages("statCards", statCardsEn, i18n).labels;
 }
 
 /**
@@ -102,7 +112,8 @@ function StatValue({
   children,
   ...props
 }: React.ComponentProps<"div"> & { isLoading?: boolean; isUnavailable?: boolean }) {
-  const labels = React.useContext(StatLabelsContext);
+  const standalone = useMergedLabels();
+  const labels = React.useContext(StatLabelsContext) ?? standalone;
   let content = children;
   if (isLoading) {
     content = (

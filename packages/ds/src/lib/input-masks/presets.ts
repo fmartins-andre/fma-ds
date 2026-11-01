@@ -17,7 +17,13 @@ import {
   dateTimeMaskFormatter,
   dateTimeMaskRemover,
 } from "./date-time-mask";
-import { createDecimalMaskOptions, decimalMaskFormatter, decimalMaskRemover } from "./decimal-mask";
+import {
+  createDecimalMaskOptions,
+  decimalMaskFormatter,
+  decimalMaskRemover,
+  decimalMaskSeparators,
+} from "./decimal-mask";
+import { getDateOrder, getDateSeparator } from "./locale";
 import { createPhoneMaskOptions, phoneMaskRemover } from "./phone-mask";
 import { makeStableMaskitoOptions, type StableMaskitoOptions } from "./stable-mask";
 import { createTimeMaskOptions, timeMaskRemover } from "./time-mask";
@@ -71,18 +77,65 @@ export type ResolvedMask = {
   placeholder?: string;
 };
 
+/** The letters of a date or time placeholder ("a" gives "dd/mm/aaaa"). */
+export type MaskedInputLabels = {
+  day: string;
+  month: string;
+  year: string;
+  hour: string;
+  minute: string;
+};
+
+/** Without these, masks keep their Brazilian formats. */
+export type MaskLocaleOptions = { locale?: string; labels?: MaskedInputLabels };
+
 const digits = (value: string) => value.replace(/\D/g, "");
 
 function transformWith(options: StableMaskitoOptions) {
   return (raw: string) => (raw ? maskitoTransform(raw, options) : "");
 }
 
-// "dd/mm/yyyy" → "dd/mm/aaaa": placeholders follow the pt-BR masks.
-const datePlaceholder = (mode: string, separator = "/") =>
+const PT_BR_LETTERS = { day: "d", month: "m", year: "a", hour: "h", minute: "m" };
+
+// "dd/mm/yyyy" → "dd/mm/aaaa": without labels, placeholders follow the pt-BR masks.
+const datePlaceholder = (mode: string, separator = "/", labels = PT_BR_LETTERS) =>
   mode
-    .replace("yyyy", "aaaa")
-    .replace(/\byy\b/, "aa")
+    .replaceAll("d", labels.day)
+    .replaceAll("m", labels.month)
+    .replaceAll("y", labels.year)
     .replaceAll("/", separator);
+
+const timePlaceholder = (mode: string, labels = PT_BR_LETTERS) =>
+  mode
+    .replaceAll("HH", labels.hour.repeat(2))
+    .replaceAll("MM", labels.minute.repeat(2))
+    .toLowerCase();
+
+// A range's raw value is always ddmmyyyy per side, so the same range keeps the same
+// raw value in every locale. Only the locale's full-date orders need reordering.
+function rangeDigits(masked: string, order: string) {
+  const sides = digits(masked).match(/\d{8}/g) ?? [];
+  if (order === "dd/mm/yyyy" || sides.length === 0) return digits(masked);
+  return sides
+    .map((side) =>
+      order === "mm/dd/yyyy"
+        ? `${side.slice(2, 4)}${side.slice(0, 2)}${side.slice(4)}`
+        : `${side.slice(6)}${side.slice(4, 6)}${side.slice(0, 4)}`,
+    )
+    .join("");
+}
+
+function rangeFromRaw(raw: string, order: string) {
+  if (order === "dd/mm/yyyy" || !/^(\d{8}){1,2}$/.test(raw)) return raw;
+  const sides = raw.match(/\d{8}/g) ?? [];
+  return sides
+    .map((side) =>
+      order === "mm/dd/yyyy"
+        ? `${side.slice(2, 4)}${side.slice(0, 2)}${side.slice(4)}`
+        : `${side.slice(4)}${side.slice(2, 4)}${side.slice(0, 2)}`,
+    )
+    .join("");
+}
 
 function resolveDigits(
   options: StableMaskitoOptions,
@@ -92,7 +145,7 @@ function resolveDigits(
   return { options, unmask, format: transformWith(options), ...hints };
 }
 
-function resolvePreset(spec: MaskSpec): ResolvedMask {
+function resolvePreset(spec: MaskSpec, { locale, labels }: MaskLocaleOptions = {}): ResolvedMask {
   const { type, ...params } = typeof spec === "string" ? { type: spec } : spec;
   const stable = makeStableMaskitoOptions;
 
@@ -130,17 +183,22 @@ function resolvePreset(spec: MaskSpec): ResolvedMask {
         placeholder: "0000 0000 0000 0000",
       });
     case "date": {
-      const dateParams = params as DateParams;
+      const given = params as DateParams;
+      // An explicit mode wins, separator included: "mm/yy" is the card's, not the locale's.
+      const dateParams =
+        locale && !given.mode
+          ? { ...given, mode: getDateOrder(locale), separator: getDateSeparator(locale) }
+          : given;
       const mode = dateParams.mode ?? "dd/mm/yyyy";
       return {
         options: stable(createDateMaskOptions(dateParams)),
-        unmask: (masked) => dateMaskRemover(masked, mode),
+        unmask: (masked) => dateMaskRemover(masked, mode, dateParams.separator),
         format: (raw) => {
           const date = /^\d{4}(-\d{2}){0,2}$/.test(raw) ? parseIsoDateParts(raw) : undefined;
           return date ? dateMaskFormatter(date, dateParams) : dateMaskFormatter(raw, dateParams);
         },
         inputMode: "numeric",
-        placeholder: datePlaceholder(mode),
+        placeholder: datePlaceholder(mode, dateParams.separator, labels),
       };
     }
     case "time": {
@@ -151,44 +209,53 @@ function resolvePreset(spec: MaskSpec): ResolvedMask {
         unmask: timeMaskRemover,
         format: transformWith(options),
         inputMode: "numeric",
-        placeholder: (timeParams.mode ?? "HH:MM").toLowerCase(),
+        placeholder: timePlaceholder(timeParams.mode ?? "HH:MM", labels),
       };
     }
     case "date-time": {
-      const dateTimeParams = params as DateTimeParams;
+      const given = params as DateTimeParams;
+      const dateTimeParams =
+        locale && !given.dateMode
+          ? { ...given, dateMode: getDateOrder(locale), dateSeparator: getDateSeparator(locale) }
+          : given;
       const dateMode = dateTimeParams.dateMode ?? "dd/mm/yyyy";
       const timeMode = dateTimeParams.timeMode ?? "HH:MM";
       return {
         options: stable(createDateTimeMaskOptions(dateTimeParams)),
-        unmask: dateTimeMaskRemover,
+        unmask: (masked) => dateTimeMaskRemover(masked, dateTimeParams),
         format: (raw) => {
           const date = /^\d{4}-\d{2}-\d{2}T/.test(raw) ? new Date(raw) : undefined;
           return dateTimeMaskFormatter(date ?? raw, dateTimeParams);
         },
         inputMode: "numeric",
-        placeholder: `${datePlaceholder(dateMode, dateTimeParams.dateSeparator)}, ${timeMode.toLowerCase()}`,
+        placeholder: `${datePlaceholder(dateMode, dateTimeParams.dateSeparator, labels)}, ${timePlaceholder(timeMode, labels)}`,
       };
     }
     case "date-range": {
-      const rangeParams = params as DateRangeParams;
-      const placeholder = datePlaceholder(
-        rangeParams.mode ?? "dd/mm/yyyy",
-        rangeParams.dateSeparator,
-      );
+      const given = params as DateRangeParams;
+      const rangeParams =
+        locale && !given.mode
+          ? { ...given, mode: getDateOrder(locale), dateSeparator: getDateSeparator(locale) }
+          : given;
+      const order = rangeParams.mode ?? "dd/mm/yyyy";
+      const placeholder = datePlaceholder(order, rangeParams.dateSeparator, labels);
       const options = stable(createDateRangeMaskOptions(rangeParams));
+      const format = transformWith(options);
       return {
         options,
-        unmask: (masked) => digits(dateRangeMaskRemover(masked)),
-        format: transformWith(options),
+        unmask: (masked) => rangeDigits(dateRangeMaskRemover(masked), order),
+        format: (raw) => format(rangeFromRaw(raw, order)),
         inputMode: "numeric",
         placeholder: `${placeholder} – ${placeholder}`,
       };
     }
     case "decimal": {
-      const decimalParams = params as DecimalParams;
+      const given = params as DecimalParams;
+      const decimalParams = locale ? { locale, ...given } : given;
+      const separators = decimalMaskSeparators(decimalParams);
       return {
         options: stable(createDecimalMaskOptions(decimalParams)),
-        unmask: decimalMaskRemover,
+        unmask: (masked) => decimalMaskRemover(masked, separators),
         format: (raw) => {
           if (!raw) return "";
           const number = Number(raw);
@@ -208,7 +275,10 @@ function resolvePreset(spec: MaskSpec): ResolvedMask {
  * the masked text itself, since there is no generic way to unmask it).
  * Creates fresh options on every call: call it once per input (`useMask` does).
  */
-export function resolveMask(mask: MaskSpec | StableMaskitoOptions): ResolvedMask {
-  if (typeof mask === "string" || "type" in mask) return resolvePreset(mask);
+export function resolveMask(
+  mask: MaskSpec | StableMaskitoOptions,
+  options?: MaskLocaleOptions,
+): ResolvedMask {
+  if (typeof mask === "string" || "type" in mask) return resolvePreset(mask, options);
   return { options: mask, unmask: (masked) => masked, format: transformWith(mask) };
 }

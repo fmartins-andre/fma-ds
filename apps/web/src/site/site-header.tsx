@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { ArrowUpRightIcon, MenuIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Button, LinkButton } from "@/core/button/button";
 import {
   NavigationMenu,
@@ -14,12 +15,15 @@ import {
 import { Separator } from "@/core/separator/separator";
 import { Sheet, SheetHeader, SheetTitle, SheetTrigger } from "@/core/sheet/sheet";
 import { cn } from "@/lib/utils";
+import { useItemDescription } from "../i18n/items";
 import { DocsNav } from "./docs-nav";
+import { LocaleSelect } from "./locale-select";
 import { plainSummaryOf } from "./markdown";
 import type { Mode } from "./mode";
-import { BLOCKS, componentsByCategory, REPO_URL, STORYBOOK_URL } from "./registry";
+import { BLOCKS, REPO_URL, STORYBOOK_URL } from "./registry";
 import { SiteSearch } from "./search";
 import { ThemeSelect } from "./theme-select";
+import { useComponentsByCategory } from "./use-categories";
 
 export function Logo({ className }: { className?: string }) {
   return (
@@ -50,10 +54,12 @@ function GitHubIcon(props: React.ComponentProps<"svg">) {
 }
 
 function ComponentsMenu() {
+  const { t } = useTranslation();
+  const groups = useComponentsByCategory();
   return (
-    <NavigationMenuContent aria-label="Components">
+    <NavigationMenuContent aria-label={t(($) => $.header.components)}>
       <div className="max-h-[70vh] w-[min(52rem,calc(100vw-2rem))] columns-2 gap-4 overflow-y-auto p-2 md:columns-4">
-        {componentsByCategory().map((group) => (
+        {groups.map((group) => (
           <div key={group.category} className="mb-3 flex break-inside-avoid flex-col">
             <span className="px-2 py-1 text-xs font-medium text-muted-foreground">
               {group.title}
@@ -72,15 +78,17 @@ function ComponentsMenu() {
       </div>
       <Separator />
       <NavigationMenuLink href="/components" className="m-1 font-medium">
-        Browse all components
+        {t(($) => $.header.browseComponents)}
       </NavigationMenuLink>
     </NavigationMenuContent>
   );
 }
 
 function BlocksMenu() {
+  const { t } = useTranslation();
+  const description = useItemDescription();
   return (
-    <NavigationMenuContent aria-label="Blocks">
+    <NavigationMenuContent aria-label={t(($) => $.header.blocks)}>
       <ul className="grid w-96 gap-1">
         {BLOCKS.map((item) => (
           <li key={item.name}>
@@ -88,7 +96,7 @@ function BlocksMenu() {
               <span className="flex flex-col gap-0.5">
                 <span className="font-medium">{item.title}</span>
                 <span className="line-clamp-2 text-muted-foreground">
-                  {plainSummaryOf(item.description)}
+                  {plainSummaryOf(description(item))}
                 </span>
               </span>
             </NavigationMenuLink>
@@ -97,7 +105,7 @@ function BlocksMenu() {
         <li>
           <Separator className="my-1" />
           <NavigationMenuLink href="/blocks" className="font-medium">
-            Browse all blocks
+            {t(($) => $.header.browseBlocks)}
           </NavigationMenuLink>
         </li>
       </ul>
@@ -106,11 +114,12 @@ function BlocksMenu() {
 }
 
 function MainNav() {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const current = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`) ? "page" : undefined;
   return (
-    <NavigationMenu aria-label="Main" openOnHover className="hidden md:flex">
+    <NavigationMenu aria-label={t(($) => $.header.main)} openOnHover className="hidden md:flex">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink
@@ -118,15 +127,15 @@ function MainNav() {
             aria-current={current("/docs")}
             className={navigationMenuTriggerStyle()}
           >
-            Docs
+            {t(($) => $.header.docs)}
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuTrigger>{t(($) => $.header.components)}</NavigationMenuTrigger>
           <ComponentsMenu />
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Blocks</NavigationMenuTrigger>
+          <NavigationMenuTrigger>{t(($) => $.header.blocks)}</NavigationMenuTrigger>
           <BlocksMenu />
         </NavigationMenuItem>
         <NavigationMenuItem>
@@ -135,7 +144,7 @@ function MainNav() {
             aria-current={current("/themes")}
             className={navigationMenuTriggerStyle()}
           >
-            Themes
+            {t(($) => $.header.themes)}
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
@@ -155,10 +164,16 @@ function MainNav() {
 }
 
 function MobileNav() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   return (
     <SheetTrigger isOpen={open} onOpenChange={setOpen}>
-      <Button variant="ghost" size="icon" aria-label="Open menu" className="md:hidden">
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label={t(($) => $.header.openMenu)}
+        className="md:hidden"
+      >
         <MenuIcon />
       </Button>
       <Sheet side="left" isDismissable className="overflow-y-auto">
@@ -168,6 +183,7 @@ function MobileNav() {
           </SheetTitle>
         </SheetHeader>
         <ThemeSelect className="mx-4 w-auto" />
+        <LocaleSelect className="mx-4 w-auto" />
         <DocsNav className="px-2 pb-6" onNavigate={() => setOpen(false)} />
       </Sheet>
     </SheetTrigger>
@@ -181,6 +197,7 @@ export function SiteHeader({
   mode: Mode;
   onModeChange: (mode: Mode) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="mx-auto flex h-14 max-w-screen-2xl items-center gap-2 px-4 md:px-6">
@@ -192,6 +209,7 @@ export function SiteHeader({
             <SiteSearch />
           </div>
           <ThemeSelect className="hidden md:flex" />
+          <LocaleSelect className="hidden md:flex" />
           <LinkButton
             href={REPO_URL}
             target="_blank"
@@ -205,7 +223,7 @@ export function SiteHeader({
           <Button
             variant="ghost"
             size="icon"
-            aria-label={mode === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            aria-label={t(($) => (mode === "dark" ? $.header.toLight : $.header.toDark))}
             onPress={() => onModeChange(mode === "dark" ? "light" : "dark")}
           >
             {mode === "dark" ? <SunIcon /> : <MoonIcon />}
@@ -217,32 +235,41 @@ export function SiteHeader({
 }
 
 export function SiteFooter() {
+  const { t } = useTranslation();
   return (
     <footer className="border-t py-6 text-sm text-muted-foreground">
       <div className="mx-auto flex max-w-screen-2xl flex-col items-center justify-between gap-2 px-4 md:flex-row md:px-6">
         <p>
-          Built on{" "}
-          <a
-            href="https://react-spectrum.adobe.com/react-aria/"
-            className="underline underline-offset-4"
-          >
-            react-aria-components
-          </a>
-          , distributed in the{" "}
-          <a href="https://ui.shadcn.com/docs/registry" className="underline underline-offset-4">
-            shadcn registry
-          </a>{" "}
-          format. MIT licensed.
+          <Trans
+            t={t}
+            i18nKey={($) => $.footer.builtOn}
+            components={{
+              aria: (
+                // biome-ignore lint/a11y/useAnchorContent: Trans fills it.
+                <a
+                  href="https://react-spectrum.adobe.com/react-aria/"
+                  className="underline underline-offset-4"
+                />
+              ),
+              registry: (
+                // biome-ignore lint/a11y/useAnchorContent: Trans fills it.
+                <a
+                  href="https://ui.shadcn.com/docs/registry"
+                  className="underline underline-offset-4"
+                />
+              ),
+            }}
+          />
         </p>
         <div className="flex gap-4">
           <a href={`${REPO_URL}/blob/main/LICENSE`} className="underline underline-offset-4">
-            License
+            {t(($) => $.footer.license)}
           </a>
           <a href="/llms.txt" className="underline underline-offset-4">
             llms.txt
           </a>
           <a href={REPO_URL} className="underline underline-offset-4">
-            Source on GitHub
+            {t(($) => $.footer.source)}
           </a>
         </div>
       </div>

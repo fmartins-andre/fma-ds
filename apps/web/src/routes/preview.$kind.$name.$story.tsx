@@ -1,6 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { siteText } from "../i18n/head";
 import { useMode } from "../site/mode";
 import { getItem, type ItemKind } from "../site/registry";
 import { type DocStory, loadStories } from "../site/stories";
@@ -16,11 +18,14 @@ export const Route = createFileRoute("/preview/$kind/$name/$story")({
     }
     return { kind };
   },
-  head: () => ({ meta: [{ title: "Preview · fma-ds" }] }),
+  head: ({ matches }) => ({
+    meta: [{ title: `${siteText(matches)(($) => $.story.preview)} · fma-ds` }],
+  }),
   component: PreviewPage,
 });
 
 function PreviewPage() {
+  const { t } = useTranslation();
   const { name, story: exportName } = Route.useParams();
   const { kind } = Route.useLoaderData();
   const [story, setStory] = useState<DocStory | null | undefined>(undefined);
@@ -34,7 +39,7 @@ function PreviewPage() {
   }, [kind, name, exportName]);
 
   if (story === undefined) return null;
-  if (story === null) return <p className="p-6 text-sm">Story not found.</p>;
+  if (story === null) return <p className="p-6 text-sm">{t(($) => $.story.notFound)}</p>;
   const { Component } = story;
   return (
     <div

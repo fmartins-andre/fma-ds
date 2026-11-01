@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "cn";
 import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react";
 import * as React from "react";
@@ -38,6 +40,25 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/core/input-group/input-group";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type ComboboxConfig = {
+  labels: {
+    clear: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    combobox: ComboboxConfig;
+  }
+}
+
+export const comboboxEn: DictionaryNamespace<ComboboxConfig> = {
+  labels: {
+    clear: "Clear",
+  },
+};
 
 function ComboboxValue<T>({ ...props }: ComboBoxValueProps<T>) {
   return <ComboBoxValuePrimitive data-slot="combobox-value" {...props} />;
@@ -63,6 +84,7 @@ function ComboboxTrigger({
 }
 
 function ComboboxClear({ className, ...props }: React.ComponentProps<typeof InputGroupButton>) {
+  const { labels } = useFmaMessages("combobox", comboboxEn);
   const state = React.useContext(ComboBoxStateContext);
   if (state?.inputValue === "") {
     return null;
@@ -73,7 +95,7 @@ function ComboboxClear({ className, ...props }: React.ComponentProps<typeof Inpu
       data-slot="combobox-clear"
       variant="ghost"
       size="icon-xs"
-      aria-label="Clear"
+      aria-label={labels.clear}
       className={cn(className)}
       onPress={() => {
         state?.setValue(null);

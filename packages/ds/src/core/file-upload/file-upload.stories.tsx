@@ -3,6 +3,7 @@ import { RotateCwIcon } from "lucide-react";
 import { useState } from "react";
 import { expect, userEvent, waitFor } from "storybook/test";
 import { Button } from "@/core/button/button";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import {
   FileUpload,
   FileUploadDropzone,
@@ -235,5 +236,27 @@ export const Disabled: Story = {
   ),
   play: async ({ canvas }) => {
     await expect(canvas.getByRole("button", { name: "Selecionar arquivo" })).toBeDisabled();
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { fileUpload: { labels: { dropzone: "Arraste um arquivo" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  render: () => (
+    <FileUpload className="w-96">
+      <FileUploadDropzone />
+    </FileUpload>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Arraste um arquivo")).toBeInTheDocument();
   },
 };

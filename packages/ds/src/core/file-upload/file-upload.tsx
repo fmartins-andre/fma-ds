@@ -17,6 +17,7 @@ import {
   type UseFileUploadOptions,
   useFileUpload,
 } from "@/hooks/use-file-upload";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type FileUploadLabels = {
   /** The drop zone's name, also its visible title. */
@@ -28,19 +29,29 @@ type FileUploadLabels = {
   progress: (name: string) => string;
 };
 
+export type FileUploadConfig = { labels: FileUploadLabels };
+
+declare global {
+  interface FmaNamespaces {
+    fileUpload: FileUploadConfig;
+  }
+}
+
+export const fileUploadEn: DictionaryNamespace<FileUploadConfig> = {
+  labels: {
+    dropzone: "Drag and drop a file here",
+    dropzoneMultiple: "Drag and drop files here",
+    browse: "Choose file",
+    browseMultiple: "Choose files",
+    remove: (name) => `Remove ${name}`,
+    progress: (name) => `Uploading ${name}`,
+  },
+};
+
 type FileUploadI18n = {
   labels?: Partial<FileUploadLabels>;
   /** The validation errors (see `use-file-upload`). */
   messages?: Partial<FileUploadMessages>;
-};
-
-const defaultFileUploadLabels: FileUploadLabels = {
-  dropzone: "Drag and drop a file here",
-  dropzoneMultiple: "Drag and drop files here",
-  browse: "Choose file",
-  browseMultiple: "Choose files",
-  remove: (name) => `Remove ${name}`,
-  progress: (name) => `Uploading ${name}`,
 };
 
 type FileUploadContextValue = FileUploadController & {
@@ -97,10 +108,8 @@ function FileUpload({
   });
   const rootRef = React.useRef<HTMLDivElement>(null);
   const labelOverrides = i18n?.labels;
-  const labels = React.useMemo(
-    () => ({ ...defaultFileUploadLabels, ...labelOverrides }),
-    [labelOverrides],
-  );
+  const overrides = React.useMemo(() => ({ labels: labelOverrides }), [labelOverrides]);
+  const { labels } = useFmaMessages("fileUpload", fileUploadEn, overrides);
   const context = { ...upload, labels, rootRef };
 
   return (

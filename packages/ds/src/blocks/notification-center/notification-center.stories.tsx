@@ -1,7 +1,7 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import { FileTextIcon, ReceiptIcon, ShieldAlertIcon } from "lucide-react";
 import * as React from "react";
-import { I18nProvider, RouterProvider } from "react-aria-components";
+import { RouterProvider } from "react-aria-components";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { ConfirmDialog } from "@/core/confirm-dialog/confirm-dialog";
 import { IconTile } from "@/core/icon-tile/icon-tile";
@@ -14,6 +14,7 @@ import {
   PaginationPrevious,
 } from "@/core/pagination/pagination";
 import { useDialogPromise } from "@/hooks/use-dialog-promise";
+import { pinLocale } from "../../../.storybook/pin-locale";
 import meta from "./meta.json";
 import {
   type NotificationData,
@@ -22,20 +23,18 @@ import {
   NotificationMenu,
 } from "./notification-center";
 
-/** pt-BR locale for the dates, and an in-memory router so links don't leave the story. */
-const withEnvironment: Decorator = (Story) => (
-  <I18nProvider locale="pt-BR">
-    <RouterProvider navigate={fn()}>
-      <Story />
-    </RouterProvider>
-  </I18nProvider>
+/** An in-memory router, so links don't leave the story. */
+const withRouter: Decorator = (Story) => (
+  <RouterProvider navigate={fn()}>
+    <Story />
+  </RouterProvider>
 );
 
 const componentMeta = {
   title: "blocks/NotificationCenter",
   component: NotificationMenu,
   tags: ["autodocs"],
-  decorators: [withEnvironment],
+  decorators: [pinLocale("pt-BR"), withRouter],
   parameters: {
     layout: "centered",
     docs: { description: { component: meta.description } },

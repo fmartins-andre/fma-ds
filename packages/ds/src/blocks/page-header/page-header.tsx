@@ -10,6 +10,25 @@ import {
   BreadcrumbPage,
 } from "@/core/breadcrumb/breadcrumb";
 import { Skeleton } from "@/core/skeleton/skeleton";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type PageHeaderConfig = {
+  labels: {
+    breadcrumb: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    pageHeader: PageHeaderConfig;
+  }
+}
+
+export const pageHeaderEn: DictionaryNamespace<PageHeaderConfig> = {
+  labels: {
+    breadcrumb: "Breadcrumb",
+  },
+};
 
 /**
  * The top of a page: breadcrumbs, title, description, actions and, for areas
@@ -31,14 +50,15 @@ type PageHeaderBreadcrumb = { label: React.ReactNode; href?: string };
 function PageHeaderBreadcrumbs({
   items,
   className,
-  "aria-label": ariaLabel = "Breadcrumb",
+  "aria-label": ariaLabel,
 }: {
   items: PageHeaderBreadcrumb[];
   className?: string;
   "aria-label"?: string;
 }) {
+  const { labels } = useFmaMessages("pageHeader", pageHeaderEn);
   return (
-    <Breadcrumb aria-label={ariaLabel} className={className}>
+    <Breadcrumb aria-label={ariaLabel ?? labels.breadcrumb} className={className}>
       <BreadcrumbList>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

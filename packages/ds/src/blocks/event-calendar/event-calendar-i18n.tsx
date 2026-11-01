@@ -2,9 +2,14 @@
 // Description: Default UI texts, date-format strings, and formatter functions for the event calendar, fully overridable per key.
 
 import { format, isSameMonth, isSameYear, subMilliseconds } from "@/lib/date-fns-compat/index";
+import {
+  type DictionaryNamespace,
+  type NamespaceOverrides,
+  resolveNamespace,
+} from "@/lib/i18n/i18n";
 import type { CalendarView, EventCalendarDateRange } from "./event-calendar-types";
 
-interface EventCalendarI18nConfig {
+type EventCalendarI18nConfig = {
   labels: {
     today: string;
     previous: string;
@@ -79,6 +84,15 @@ interface EventCalendarI18nConfig {
     timeGutterMinute: string;
     eventTime: string;
     monthCellDay: string;
+    /** A range label inside one month: its start and end. */
+    rangeMonthStart: string;
+    rangeMonthEnd: string;
+    /** A range label inside one year: its start. */
+    rangeYearStart: string;
+    /** The ends of a range label that crosses years, and the end inside one year. */
+    rangeFull: string;
+    /** The date of a multi-day event, and of a day range. */
+    shortDate: string;
   };
   functions: {
     formatTitle: (
@@ -103,6 +117,12 @@ interface EventCalendarI18nConfig {
     /** Chip aria-label composition. */
     formatEventAriaLabel?: (title: string, timeLabel: string, continues: boolean) => string;
   };
+};
+
+declare global {
+  interface FmaNamespaces {
+    eventCalendar: EventCalendarI18nConfig;
+  }
 }
 
 const DEFAULT_LABELS: EventCalendarI18nConfig["labels"] = {
@@ -167,6 +187,11 @@ const DEFAULT_FORMATS: EventCalendarI18nConfig["formats"] = {
   timeGutterMinute: "h:mm a",
   eventTime: "h:mm a",
   monthCellDay: "d",
+  rangeMonthStart: "MMMM d",
+  rangeMonthEnd: "d, yyyy",
+  rangeYearStart: "MMM d",
+  rangeFull: "MMM d, yyyy",
+  shortDate: "MMM d",
 };
 
 /**
@@ -201,12 +226,12 @@ function makeDefaultFunctions(
       const rangeEnd = subMilliseconds(activeRange.end, 1);
       const start = activeRange.start;
       if (isSameMonth(start, rangeEnd)) {
-        return `${format(start, "MMMM d", opts)} - ${format(rangeEnd, "d, yyyy", opts)}`;
+        return `${format(start, cfg.formats.rangeMonthStart, opts)} - ${format(rangeEnd, cfg.formats.rangeMonthEnd, opts)}`;
       }
       if (isSameYear(start, rangeEnd)) {
-        return `${format(start, "MMM d", opts)} - ${format(rangeEnd, "MMM d, yyyy", opts)}`;
+        return `${format(start, cfg.formats.rangeYearStart, opts)} - ${format(rangeEnd, cfg.formats.rangeFull, opts)}`;
       }
-      return `${format(start, "MMM d, yyyy", opts)} - ${format(rangeEnd, "MMM d, yyyy", opts)}`;
+      return `${format(start, cfg.formats.rangeFull, opts)} - ${format(rangeEnd, cfg.formats.rangeFull, opts)}`;
     },
     formatEventTime: (start, end, allDay, opts) => {
       if (allDay) return cfg.labels.allDay;
@@ -217,36 +242,35 @@ function makeDefaultFunctions(
       // exactly-24h event and a DST day that only runs 23 hours.
       const lastInstant = end.getTime() - 1 >= start.getTime() ? subMilliseconds(end, 1) : start;
       if (format(start, "yyyy-MM-dd") !== format(lastInstant, "yyyy-MM-dd")) {
-        return `${format(start, `MMM d, ${fmt}`, opts)} - ${format(end, `MMM d, ${fmt}`, opts)}`;
+        const dated = `${cfg.formats.shortDate}, ${fmt}`;
+        return `${format(start, dated, opts)} - ${format(end, dated, opts)}`;
       }
       return `${format(start, fmt, opts)} - ${format(end, fmt, opts)}`;
     },
     formatDayRange: (range, opts) => {
       // subMilliseconds keeps the zoned date type, same reason as formatTitle
       const rangeEnd = subMilliseconds(range.end, 1);
-      return `${format(range.start, "MMM d", opts)} - ${format(rangeEnd, "MMM d", opts)}`;
+      const day = cfg.formats.shortDate;
+      return `${format(range.start, day, opts)} - ${format(rangeEnd, day, opts)}`;
     },
   };
 }
 
-const DEFAULT_EVENT_CALENDAR_I18N: EventCalendarI18nConfig = {
+export const eventCalendarEn: DictionaryNamespace<EventCalendarI18nConfig> = {
   labels: DEFAULT_LABELS,
   viewNames: DEFAULT_VIEW_NAMES,
   formats: DEFAULT_FORMATS,
-  functions: makeDefaultFunctions({
-    labels: DEFAULT_LABELS,
-    formats: DEFAULT_FORMATS,
-  }),
+  functions: makeDefaultFunctions,
 };
+
+const DEFAULT_EVENT_CALENDAR_I18N = resolveNamespace<EventCalendarI18nConfig>([eventCalendarEn]);
 
 /**
  * One level deeper than `Partial`, because the merge below is per nested
  * section: overriding a single label must not force a consumer to restate the
  * other 22. Unknown keys are still rejected by the excess property check.
  */
-type EventCalendarI18nOverrides = {
-  [K in keyof EventCalendarI18nConfig]?: Partial<EventCalendarI18nConfig[K]>;
-};
+type EventCalendarI18nOverrides = NamespaceOverrides<EventCalendarI18nConfig>;
 
 /**
  * Shallow merge per nested object, matching the filters.tsx i18n contract:
@@ -255,19 +279,7 @@ type EventCalendarI18nOverrides = {
  * overrides still win.
  */
 function mergeEventCalendarI18n(overrides?: EventCalendarI18nOverrides): EventCalendarI18nConfig {
-  if (!overrides) return DEFAULT_EVENT_CALENDAR_I18N;
-  const labels = { ...DEFAULT_LABELS, ...overrides.labels };
-  const viewNames = { ...DEFAULT_VIEW_NAMES, ...overrides.viewNames };
-  const formats = { ...DEFAULT_FORMATS, ...overrides.formats };
-  return {
-    labels,
-    viewNames,
-    formats,
-    functions: {
-      ...makeDefaultFunctions({ labels, formats }),
-      ...overrides.functions,
-    },
-  };
+  return resolveNamespace<EventCalendarI18nConfig>([eventCalendarEn], [overrides]);
 }
 
 export type { EventCalendarI18nConfig, EventCalendarI18nOverrides };

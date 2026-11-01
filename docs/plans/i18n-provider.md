@@ -1,5 +1,21 @@
 # Plano: provider de i18n e dicionário central
 
+> **Desenho revisado em 2026-10-31** (decisão do usuário). Onde este texto divergir, vale isto:
+>
+> - O inglês e os tipos ficam **no próprio componente**, não na lib. A lib não tem dicionário:
+>   `useFmaMessages("carousel", carouselEn, i18n)` recebe o inglês do item.
+> - `FmaNamespaces` é uma interface **global**, estendida com `declare global` no arquivo do item.
+>   `declare module` não serve: o CLI do shadcn não reescreve esse caminho.
+> - Traduções ficam em `<item>/<item>-i18n/<item>-<idioma>.ts` (o item no nome é obrigatório: o CLI resolve imports pelo nome do arquivo), só quando existirem. Não são instaladas com
+>   o componente: o item `i18n-<idioma>` as publica com `target` na pasta do componente, e o `index`
+>   dele as agrega. O componente nunca importa uma tradução; ela chega pelo provider.
+> - Arquivos de tradução usam `defineFmaNamespace("carousel", {...})`: tipado se o item está
+>   instalado, solto (`LooseMessages`) se não. Validado com o CLI real e `tsc --strict`.
+> - Consequências: instalar um item não traz textos de outros; adicionar um item não sobrescreve a
+>   lib; o pacote de idioma instala as traduções de todos os itens.
+> - Todas as fábricas de `functions` rodam, da camada mais fraca para a mais forte, então um pacote
+>   pode trazer só parte delas.
+
 Objetivo: configurar o idioma de todos os componentes do registro de uma vez, com pt-BR pronto, e
 deixar o idioma deles seguir o do app (seletor de idioma, rota, detecção). Os textos do próprio app
 ficam com o i18next (ou outra lib de i18n), e uma ponte sincroniza o idioma. Hoje cada item tem a
@@ -94,7 +110,7 @@ Combinado em 2026-10-29 (modelo híbrido com i18next decidido no mesmo dia).
 ### Itens do registro
 
 - **`@fma-ds/i18n`** (`registry:lib`, pasta `src/lib/i18n/` com `meta.json`; importada por arquivo,
-  `@/lib/i18n/index`, regra 5). Contém:
+  `@/lib/i18n/i18n`, regra 5). Contém:
   - o provider e os hooks;
   - um store enxuto, criado por instância do provider;
   - os helpers `plural`, `number`, `currency` e `date`;
@@ -104,7 +120,7 @@ Combinado em 2026-10-29 (modelo híbrido com i18next decidido no mesmo dia).
 
   Sem dependência npm além de `react` e `react-aria-components`.
 - **Um item por idioma**: `@fma-ds/i18n-pt-br` (`registry:lib`), exporta `default` do tipo
-  `FmaMessages`. Importa só tipos/helpers de `@/lib/i18n/index`, então instalar o pacote traz só a
+  `FmaMessages`. Importa só tipos/helpers de `@/lib/i18n/i18n`, então instalar o pacote traz só a
   lib, nunca os componentes.
 - **`@fma-ds/i18n-i18next`** (`registry:lib`): a ponte. Depende de `@fma-ds/i18n`, `i18next` e
   `react-i18next`. É o único item que traz o i18next.
@@ -193,7 +209,9 @@ import ptBR from "@/lib/fma-ds/i18n-pt-br/index";
   app.
 - Para SSR sem suspender: `loadFmaMessages(locales, pedido)` no loader da rota carrega o pacote
   (cache por loader) e devolve o locale negociado, que vai para `locale`/`initialLocale`. Sem isso,
-  o provider suspende (React `use`) até o pacote carregar.
+  o provider suspende (React `use`) até o pacote carregar, dentro de uma fronteira `Suspense` própria
+  (prop `fallback`): sem ela, o React descartaria o store na primeira montagem e um loader inline
+  carregaria sem parar. Por isso a fronteira também pega o que suspende nos filhos.
 
 ### Ponte com o i18next (`@fma-ds/i18n-i18next`)
 
@@ -265,8 +283,10 @@ import ptBR from "@/lib/fma-ds/i18n-pt-br/index";
   outro idioma. No SSR, o loader faz `loadFmaMessages(locales, params.lang)`. Um `locale` da rota que não está em
   `locales` passa pela negociação (`pt` → `pt-BR`); sem match, fallback e aviso em dev. Receita na
   doc com TanStack Router (`/$lang` + `beforeLoad`).
-- **SSR e isolamento**: o store é por instância do provider, e o único estado de módulo é o cache
-  das promessas dos loaders, que guarda dicionários imutáveis. Duas requisições simultâneas em
+- **SSR e isolamento**: o store é por instância do provider. O estado de módulo são caches de
+  dados imutáveis: os pacotes dos loaders, os formatadores de `Intl` e a memo de `resolveNamespace`,
+  chaveada por identidade em `WeakMap`, que por isso pode guardar `overrides` enquanto o objeto
+  viver. Duas requisições simultâneas em
   idiomas diferentes não se enxergam. Sem `AsyncLocalStorage` (exigiria `nodejs_compat` no Workers
   e é API de Node).
 - **Formatação dependente de locale** (decisão do planejamento): com o provider, o `locale` dele
@@ -351,7 +371,7 @@ que já tem a lib exige sobrescrevê-la (o `shadcn add` pergunta). Regras:
 
 ## Testes e gates
 
-- Testes unit da lib (`tests/`, importando `@/lib/i18n/index`, regra 2):
+- Testes unit da lib (`tests/`, importando `@/lib/i18n/i18n`, regra 2):
   - precedência e mescla com religação de `functions`;
   - negociação de locale;
   - troca sem estado intermediário;

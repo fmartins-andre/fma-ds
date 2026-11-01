@@ -5,6 +5,7 @@ import { expect, fn, spyOn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "@/core/button/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/core/card/card";
 import { ansiToLines, parseUnifiedDiff } from "@/lib/code-block-highlight";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import {
   CodeBlock,
   CodeBlockContent,
@@ -312,5 +313,27 @@ export const PlainText: Story = {
     await new Promise((resolve) => setTimeout(resolve, 300));
     await expect(tokens(canvasElement)).toHaveLength(0);
     await expect(within(canvasElement).getByText(/export function useTotals/)).toBeVisible();
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { codeBlock: { labels: { copy: "Copiar código" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  render: (args) => (
+    <CodeBlock {...args}>
+      <CodeBlockCopyButton />
+    </CodeBlock>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: "Copiar código" })).toBeInTheDocument();
   },
 };

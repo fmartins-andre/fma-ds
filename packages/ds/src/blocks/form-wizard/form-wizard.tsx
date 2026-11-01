@@ -18,6 +18,7 @@ import {
   StepperTitle,
   StepperTrigger,
 } from "@/core/stepper/stepper";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type FormWizardLabels = {
   /** The step list's accessible name. */
@@ -28,15 +29,25 @@ type FormWizardLabels = {
   progress: (step: number, total: number) => string;
 };
 
-type FormWizardI18n = { labels?: Partial<FormWizardLabels> };
+export type FormWizardConfig = { labels: FormWizardLabels };
 
-const defaultFormWizardLabels: FormWizardLabels = {
-  steps: "Steps",
-  back: "Back",
-  next: "Next",
-  finish: "Finish",
-  progress: (step, total) => `Step ${step} of ${total}`,
+declare global {
+  interface FmaNamespaces {
+    formWizard: FormWizardConfig;
+  }
+}
+
+export const formWizardEn: DictionaryNamespace<FormWizardConfig> = {
+  labels: {
+    steps: "Steps",
+    back: "Back",
+    next: "Next",
+    finish: "Finish",
+    progress: (step, total) => `Step ${step} of ${total}`,
+  },
 };
+
+type FormWizardI18n = { labels?: Partial<FormWizardLabels> };
 
 type FormWizardStepInfo = { title: React.ReactNode; description?: React.ReactNode };
 
@@ -110,8 +121,7 @@ function FormWizard({
   const total = steps.length;
   const rootRef = React.useRef<HTMLFormElement>(null);
   const shouldFocusStep = React.useRef(false);
-  const overrides = i18n?.labels;
-  const labels = React.useMemo(() => ({ ...defaultFormWizardLabels, ...overrides }), [overrides]);
+  const { labels } = useFmaMessages("formWizard", formWizardEn, i18n);
 
   const goTo = React.useCallback(
     (next: number) => {

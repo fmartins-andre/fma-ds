@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, spyOn, userEvent, waitFor, within } from "storybook/test";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import {
   ColorPicker,
   ColorPickerArea,
@@ -645,5 +646,27 @@ export const FormField: Story = {
 
     await userEvent.click(canvas.getByRole("button", { name: "Reset" }));
     await waitFor(() => expect(input).toHaveValue("#0ea5e9"));
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { colorPicker: { labels: { oklchArea: "Croma e luminosidade" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Primary color" }));
+    const dialog = await within(document.body).findByRole("dialog", { name: "Primary color" });
+    await expect(
+      within(dialog).getByRole("slider", { name: "Croma e luminosidade" }),
+    ).toBeInTheDocument();
+    await userEvent.keyboard("{Escape}");
   },
 };

@@ -28,11 +28,12 @@ const defaultOptions: { mode: MaskitoDateMode; dateSeparator?: string } = {
 
 const RANGE_SEPARATOR = " – ";
 
-// Only the 3 modes the date pickers use get a correctly-shaped placeholder;
-// any other MaskitoDateMode (e.g. the American "mm/dd/yyyy") falls back to a
-// fixed dd/mm/yyyy-shaped one.
+// The modes the date pickers and the locales use get a correctly-shaped
+// placeholder; any other MaskitoDateMode falls back to a dd/mm/yyyy-shaped one.
 const RANGE_SEGMENT_PLACEHOLDER: Partial<Record<MaskitoDateMode, string>> = {
   "dd/mm/yyyy": "__/__/____",
+  "mm/dd/yyyy": "__/__/____",
+  "yyyy/mm/dd": "____/__/__",
   "mm/yyyy": "__/____",
   yyyy: "____",
 };
@@ -47,8 +48,9 @@ export const createDateRangeMaskOptions: (options?: DateRangeMaskOptionsProps) =
   };
   const generatedOptions = maskitoDateRange(validOptions);
 
-  const segmentPlaceholder =
-    RANGE_SEGMENT_PLACEHOLDER[validOptions.mode] ?? DEFAULT_RANGE_SEGMENT_PLACEHOLDER;
+  const segmentPlaceholder = (
+    RANGE_SEGMENT_PLACEHOLDER[validOptions.mode] ?? DEFAULT_RANGE_SEGMENT_PLACEHOLDER
+  ).replaceAll("/", validOptions.dateSeparator ?? "/");
   const fullPlaceholder = `${segmentPlaceholder}${RANGE_SEPARATOR}${segmentPlaceholder}`;
   const { plugins: drPlaceholderPlugins, ...drPlaceholderOptions } = maskitoWithPlaceholder(
     fullPlaceholder,
@@ -107,6 +109,8 @@ export function dateRangeMaskFormatter(
 // the single-date mask already uses, no duplication.
 const SEGMENT_PATTERN_BY_MODE: Record<DateMaskMode, string> = {
   "dd/mm/yyyy": String.raw`\d{2}\/\d{2}\/\d{4}`,
+  "mm/dd/yyyy": String.raw`\d{2}\/\d{2}\/\d{4}`,
+  "yyyy/mm/dd": String.raw`\d{4}\/\d{2}\/\d{2}`,
   "mm/yyyy": String.raw`\d{2}\/\d{4}`,
   "mm/yy": String.raw`\d{2}\/\d{2}`,
   yyyy: String.raw`\d{4}`,

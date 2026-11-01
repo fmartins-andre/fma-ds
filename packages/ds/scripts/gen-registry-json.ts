@@ -127,7 +127,8 @@ export function detectRegistryDependencies(source: string, componentId: string):
     while ((match = regex.exec(code)) !== null) {
       // biome-ignore lint/style/noNonNullAssertion: capture group 1 always matches when the regex matches
       const depId = match[1]!;
-      if (depId !== componentId && depId !== "utils") deps.add(depId);
+      // A translation folder belongs to its language pack, not to an item.
+      if (depId !== componentId && depId !== "utils" && !depId.endsWith("-i18n")) deps.add(depId);
     }
   }
   return [...deps];
@@ -182,7 +183,31 @@ function toItemMeta(meta: ComponentMeta): RegistryItem["meta"] {
   };
 }
 
-const isSourceFile = (file: string) => /\.tsx?$/.test(file) && !file.endsWith(".stories.tsx");
+const isSourceFile = (file: string) =>
+  /\.tsx?$/.test(file) && !file.endsWith(".stories.tsx") && !file.includes("-i18n/");
+
+type ItemFileType = RegistryItem["files"][number]["type"];
+
+// A language pack publishes each item's translation, which lives next to the item
+// (`<item>-i18n/<item>-<language>.ts`) and stays out of the item's own install. The
+// item is in the file name because the CLI resolves imports by name.
+function translationFiles(id: string): RegistryItem["files"] {
+  const language = id.match(/^i18n-(.+)$/)?.[1];
+  if (!language) return [];
+  return ["src/core", "src/blocks", "src/hooks"].flatMap((dir) =>
+    readdirSync(dir, { recursive: true, encoding: "utf8" })
+      .filter((file) => file.includes("-i18n/") && file.toLowerCase().endsWith(`-${language}.ts`))
+      .sort()
+      .map((file) => ({
+        path: join(dir, file),
+        target:
+          dir === "src/core"
+            ? `components/${INSTALL_DIR}/${file.slice(file.indexOf("/") + 1)}`
+            : `${dir === "src/hooks" ? "hooks" : "components"}/${INSTALL_DIR}/${file}`,
+        type: "registry:lib" as const,
+      })),
+  );
+}
 
 // Finds every lib/hook with metadata, in either shape described at MODULE_DIRS.
 // Returned paths are relative to `root` (the packages/ds directory).
@@ -192,7 +217,10 @@ export function discoverModules(root = "."): { id: string; metaPath: string; fil
     if (!existsSync(join(root, dir))) continue;
     for (const entry of readdirSync(join(root, dir), { withFileTypes: true })) {
       if (entry.isDirectory() && existsSync(join(root, dir, entry.name, "meta.json"))) {
-        const files = readdirSync(join(root, dir, entry.name))
+        const files = readdirSync(join(root, dir, entry.name), {
+          recursive: true,
+          encoding: "utf8",
+        })
           .filter(isSourceFile)
           .sort()
           .map((file) => join(dir, entry.name, file));
@@ -221,7 +249,10 @@ export function processModule(module: {
   }
 
   const meta = ComponentMetaSchema.parse(JSON.parse(readFileSync(module.metaPath, "utf8")));
-  const source = module.files.map((file) => readFileSync(file, "utf8")).join("\n");
+  const translations = translationFiles(module.id);
+  const source = [...module.files, ...translations.map((file) => file.path)]
+    .map((file) => readFileSync(file, "utf8"))
+    .join("\n");
   const registryDependencies = detectRegistryDependencies(source, module.id);
 
   return {
@@ -231,11 +262,14 @@ export function processModule(module: {
     description: meta.description,
     author: "@fma-ds/ds",
     categories: [meta.category],
-    files: module.files.map((file) => ({
-      path: file,
-      target: `${base.target}/${file.slice(base.dir.length + 1)}`,
-      type: base.type === "registry:block" ? "registry:component" : base.type,
-    })),
+    files: [
+      ...module.files.map((file) => ({
+        path: file,
+        target: `${base.target}/${file.slice(base.dir.length + 1)}`,
+        type: (base.type === "registry:block" ? "registry:component" : base.type) as ItemFileType,
+      })),
+      ...translations,
+    ],
     ...(registryDependencies.length > 0 && {
       registryDependencies: registryDependencies.map(toRegistryDependency),
     }),

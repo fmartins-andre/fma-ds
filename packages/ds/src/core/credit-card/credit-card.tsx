@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "cn";
 import type { ComponentProps } from "react";
 import {
@@ -5,6 +7,35 @@ import {
   getCreditCardIssuer,
   getCreditCardIssuerById,
 } from "@/lib/credit-card-validation";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type CreditCardLabels = {
+  /** The caption above the expiry date. */
+  validThru: string;
+  /** Shown while `name` is empty. */
+  namePlaceholder: string;
+  /** The card's accessible name, read in place of the drawing. */
+  card: (card: { issuer?: string; lastDigits?: string; expiry?: string }) => string;
+};
+
+export type CreditCardConfig = { labels: CreditCardLabels };
+
+declare global {
+  interface FmaNamespaces {
+    creditCard: CreditCardConfig;
+  }
+}
+
+export const creditCardEn: DictionaryNamespace<CreditCardConfig> = {
+  labels: {
+    validThru: "valid thru",
+    namePlaceholder: "YOUR NAME HERE",
+    card: ({ issuer, lastDigits, expiry }) =>
+      `${issuer ?? "Credit"} card${lastDigits ? ` ending in ${lastDigits}` : ""}${
+        expiry ? `, expires ${expiry}` : ""
+      }`,
+  },
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                  Artwork                                   */
@@ -124,24 +155,6 @@ function formatExpiry(expiry: string) {
 
 type CreditCardField = "number" | "name" | "expiry" | "cvc";
 
-type CreditCardLabels = {
-  /** The caption above the expiry date. */
-  validThru: string;
-  /** Shown while `name` is empty. */
-  namePlaceholder: string;
-  /** The card's accessible name, read in place of the drawing. */
-  card: (card: { issuer?: string; lastDigits?: string; expiry?: string }) => string;
-};
-
-const defaultCreditCardLabels: CreditCardLabels = {
-  validThru: "valid thru",
-  namePlaceholder: "YOUR NAME HERE",
-  card: ({ issuer, lastDigits, expiry }) =>
-    `${issuer ?? "Credit"} card${lastDigits ? ` ending in ${lastDigits}` : ""}${
-      expiry ? `, expires ${expiry}` : ""
-    }`,
-};
-
 type CreditCardProps = Omit<ComponentProps<"div">, "children"> & {
   /** The card number, with or without spaces; `*` or `x` hide a digit (`**** **** **** 4242`). */
   number?: string;
@@ -185,7 +198,7 @@ function CreditCard({
   className,
   ...props
 }: CreditCardProps) {
-  const labels = { ...defaultCreditCardLabels, ...labelsProp };
+  const { labels } = useFmaMessages("creditCard", creditCardEn, { labels: labelsProp });
   const issuer = issuerProp ? getCreditCardIssuerById(issuerProp) : getCreditCardIssuer(number);
   const look = (issuer && ISSUER_LOOKS[issuer.type]) || {};
   const isAmex = issuer?.type === "american-express";

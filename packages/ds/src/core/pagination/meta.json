@@ -2,7 +2,7 @@
   "name": "pagination",
   "category": "navigation",
   "status": "stable",
-  "source": "shadcn",
+  "source": "customized",
   "description": "Page-number navigation built from LinkButton — previous/next controls, numbered links, and an ellipsis for collapsed ranges.",
   "tags": ["navigation", "links", "react-aria"]
 }

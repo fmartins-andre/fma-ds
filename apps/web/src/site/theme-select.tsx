@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   Select,
   SelectContent,
@@ -15,13 +16,14 @@ const CUSTOM_KEY = "__custom";
 
 /** Picks the site theme from the curated presets; the theme editor customizes it. */
 export function ThemeSelect({ className }: { className?: string }) {
+  const { t } = useTranslation();
   const { loaded } = useThemeState();
   const loadedPreset = getTheme(loaded.name);
   const presetKey = loadedPreset && sameTheme(loadedPreset, loaded) ? loaded.name : CUSTOM_KEY;
 
   return (
     <Select
-      aria-label="Theme preset"
+      aria-label={t(($) => $.header.themePreset)}
       selectedKey={presetKey}
       onSelectionChange={(key) => {
         const next = key === null ? undefined : getTheme(String(key));
@@ -35,7 +37,9 @@ export function ThemeSelect({ className }: { className?: string }) {
       <SelectContent>
         {presetKey === CUSTOM_KEY && (
           <>
-            <SelectItem id={CUSTOM_KEY}>{loaded.title} (imported)</SelectItem>
+            <SelectItem id={CUSTOM_KEY}>
+              {t(($) => $.header.imported, { title: loaded.title })}
+            </SelectItem>
             <SelectSeparator />
           </>
         )}

@@ -5,6 +5,7 @@ import * as React from "react";
 import { Form } from "react-aria-components";
 import { Button } from "@/core/button/button";
 import { Spinner } from "@/core/spinner/spinner";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
 
 type SettingsFormLabels = {
   save: string;
@@ -17,15 +18,25 @@ type SettingsFormLabels = {
   saved: string;
 };
 
-type SettingsFormI18n = { labels?: Partial<SettingsFormLabels> };
+export type SettingsFormConfig = { labels: SettingsFormLabels };
 
-const defaultSettingsFormLabels: SettingsFormLabels = {
-  save: "Save changes",
-  discard: "Discard",
-  saving: "Saving…",
-  unsaved: "You have unsaved changes",
-  saved: "No unsaved changes",
+declare global {
+  interface FmaNamespaces {
+    settingsForm: SettingsFormConfig;
+  }
+}
+
+export const settingsFormEn: DictionaryNamespace<SettingsFormConfig> = {
+  labels: {
+    save: "Save changes",
+    discard: "Discard",
+    saving: "Saving…",
+    unsaved: "You have unsaved changes",
+    saved: "No unsaved changes",
+  },
 };
+
+type SettingsFormI18n = { labels?: Partial<SettingsFormLabels> };
 
 type SettingsFormContextValue = {
   isDirty: boolean;
@@ -66,8 +77,7 @@ function SettingsForm({
   className,
   ...props
 }: SettingsFormProps) {
-  const overrides = i18n?.labels;
-  const labels = React.useMemo(() => ({ ...defaultSettingsFormLabels, ...overrides }), [overrides]);
+  const { labels } = useFmaMessages("settingsForm", settingsFormEn, i18n);
   const context = React.useMemo(
     () => ({ isDirty, isPending, onReset, labels }),
     [isDirty, isPending, onReset, labels],

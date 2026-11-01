@@ -246,7 +246,8 @@
         "@fma-ds/button",
         "@fma-ds/card",
         "@fma-ds/spinner",
-        "@fma-ds/brand"
+        "@fma-ds/brand",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0"
@@ -262,7 +263,7 @@
           "password",
           "otp"
         ],
-        "contentHash": "c1859f7520ac"
+        "contentHash": "c559593b231c"
       }
     },
     {
@@ -374,6 +375,9 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
       "dependencies": [
         "cn@^0.5.0",
         "lucide-react@^1.61.0",
@@ -381,13 +385,13 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "navigation",
           "react-aria"
         ],
-        "contentHash": "f29a2d3cb2d3"
+        "contentHash": "e1e025fa8a1c"
       }
     },
     {
@@ -511,6 +515,7 @@
         "@fma-ds/select",
         "@fma-ds/use-available-date-correction",
         "@fma-ds/date-granularity",
+        "@fma-ds/i18n",
         "@fma-ds/interval-helpers",
         "@fma-ds/types"
       ],
@@ -530,7 +535,7 @@
           "date",
           "react-aria"
         ],
-        "contentHash": "95e2dacf97d5"
+        "contentHash": "b012772ac8c1"
       }
     },
     {
@@ -582,7 +587,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -599,7 +605,7 @@
           "slider",
           "embla"
         ],
-        "contentHash": "db3fae44db69"
+        "contentHash": "1c4df6758ce6"
       }
     },
     {
@@ -692,7 +698,8 @@
       "registryDependencies": [
         "@fma-ds/button",
         "@fma-ds/copy-button",
-        "@fma-ds/code-block-highlight"
+        "@fma-ds/code-block-highlight",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -710,7 +717,7 @@
           "shiki",
           "ai"
         ],
-        "contentHash": "38255a4d8d09"
+        "contentHash": "9b7a5ad1c270"
       }
     },
     {
@@ -798,7 +805,8 @@
         "@fma-ds/button",
         "@fma-ds/description-list",
         "@fma-ds/empty",
-        "@fma-ds/field"
+        "@fma-ds/field",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -815,7 +823,7 @@
           "list",
           "repeater"
         ],
-        "contentHash": "485d5b54137a"
+        "contentHash": "37872d88405c"
       }
     },
     {
@@ -873,7 +881,8 @@
         "@fma-ds/input-group",
         "@fma-ds/popover",
         "@fma-ds/select",
-        "@fma-ds/color-contrast"
+        "@fma-ds/color-contrast",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -893,7 +902,7 @@
           "oklch",
           "react-aria"
         ],
-        "contentHash": "538c1f4f4734"
+        "contentHash": "6d934718e221"
       }
     },
     {
@@ -914,7 +923,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/button",
-        "@fma-ds/input-group"
+        "@fma-ds/input-group",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -931,7 +941,7 @@
           "selection",
           "autocomplete"
         ],
-        "contentHash": "fbc6acc6716f"
+        "contentHash": "1be09f2e4bea"
       }
     },
     {
@@ -952,7 +962,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/dialog",
-        "@fma-ds/input-group"
+        "@fma-ds/input-group",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -969,7 +980,7 @@
           "command-palette",
           "overlay"
         ],
-        "contentHash": "98fd814bfa4f"
+        "contentHash": "f802f5837126"
       }
     },
     {
@@ -991,7 +1002,8 @@
       "registryDependencies": [
         "@fma-ds/alert-dialog",
         "@fma-ds/button",
-        "@fma-ds/use-dialog-promise"
+        "@fma-ds/use-dialog-promise",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1007,7 +1019,7 @@
           "confirm",
           "alert"
         ],
-        "contentHash": "cb346e883317"
+        "contentHash": "3f6030e54d9d"
       }
     },
     {
@@ -1064,7 +1076,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/button",
-        "@fma-ds/tooltip"
+        "@fma-ds/tooltip",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1079,7 +1092,7 @@
           "clipboard",
           "copy"
         ],
-        "contentHash": "ee9f7a219cca"
+        "contentHash": "65b0f400304b"
       }
     },
     {
@@ -1099,7 +1112,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/credit-card-validation"
+        "@fma-ds/credit-card-validation",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0"
@@ -1115,7 +1129,7 @@
           "data-display",
           "form"
         ],
-        "contentHash": "793d900d3ab2"
+        "contentHash": "095d114a8cbd"
       }
     },
     {
@@ -1175,7 +1189,8 @@
         "@fma-ds/popover",
         "@fma-ds/select",
         "@fma-ds/skeleton",
-        "@fma-ds/spinner"
+        "@fma-ds/spinner",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "@tanstack/react-table@^9.3.1",
@@ -1195,7 +1210,7 @@
           "tanstack",
           "react-aria"
         ],
-        "contentHash": "1fe5772f3aab"
+        "contentHash": "cbf2c50409b7"
       }
     },
     {
@@ -1468,7 +1483,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1477,14 +1493,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "react-aria",
           "modal",
           "overlay"
         ],
-        "contentHash": "bc7c3204eb2f"
+        "contentHash": "5a45cac905b6"
       }
     },
     {
@@ -1608,7 +1624,8 @@
         "@fma-ds/input-group",
         "@fma-ds/popover",
         "@fma-ds/skeleton",
-        "@fma-ds/tabs"
+        "@fma-ds/tabs",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1627,7 +1644,7 @@
           "popover",
           "react-aria"
         ],
-        "contentHash": "401d10890e88"
+        "contentHash": "e421f6875091"
       }
     },
     {
@@ -1683,7 +1700,8 @@
         "@fma-ds/collapsible",
         "@fma-ds/copy-button",
         "@fma-ds/empty",
-        "@fma-ds/icon-stack"
+        "@fma-ds/icon-stack",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1702,7 +1720,7 @@
           "forbidden",
           "empty-state"
         ],
-        "contentHash": "00336537e030"
+        "contentHash": "7c401fa58741"
       }
     },
     {
@@ -1794,7 +1812,8 @@
         "@fma-ds/button",
         "@fma-ds/calendar",
         "@fma-ds/dropdown-menu",
-        "@fma-ds/date-fns-compat"
+        "@fma-ds/date-fns-compat",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1814,7 +1833,7 @@
           "events",
           "recurrence"
         ],
-        "contentHash": "2067b0243b9b"
+        "contentHash": "a034075aebce"
       }
     },
     {
@@ -1954,7 +1973,8 @@
         "@fma-ds/file-type",
         "@fma-ds/icon-tile",
         "@fma-ds/progress",
-        "@fma-ds/use-file-upload"
+        "@fma-ds/use-file-upload",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -1972,7 +1992,7 @@
           "dropzone",
           "react-aria"
         ],
-        "contentHash": "c41bcda28536"
+        "contentHash": "e2886d53e067"
       }
     },
     {
@@ -1998,7 +2018,8 @@
         "@fma-ds/input-group",
         "@fma-ds/sheet",
         "@fma-ds/toggle-group",
-        "@fma-ds/tooltip"
+        "@fma-ds/tooltip",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -2016,7 +2037,7 @@
           "toolbar",
           "list"
         ],
-        "contentHash": "7b36ec2c4eb6"
+        "contentHash": "e0acd9c855e3"
       }
     },
     {
@@ -2038,7 +2059,8 @@
       "registryDependencies": [
         "@fma-ds/button",
         "@fma-ds/spinner",
-        "@fma-ds/stepper"
+        "@fma-ds/stepper",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -2056,7 +2078,7 @@
           "stepper",
           "steps"
         ],
-        "contentHash": "6ab43968d4da"
+        "contentHash": "85840a1c4c4a"
       }
     },
     {
@@ -2129,6 +2151,328 @@
           "react-aria"
         ],
         "contentHash": "f7733fe02493"
+      }
+    },
+    {
+      "name": "i18n",
+      "type": "registry:lib",
+      "title": "I18n",
+      "description": "Puts every registry item in one language with a single optional provider. Without it, items render their own English.\n\n- **`FmaI18nProvider`**: fixed language, the route's, another library's, or its own (`setLocale`, detection, packs loaded on demand). Switching keeps the old language until the new pack loads, so languages never mix. It's a Suspense boundary, with a `fallback` prop for the first load.\n- **Precedence**: an item's `i18n` prop, then `overrides`, then the active language, then the fallback, then the item's English.\n- **`useFmaMessages`** reads a namespace; **`useFmaLocale`** gives a language selector what it needs.\n- **Server rendering**: `loadFmaMessages` and `parseAcceptLanguage` in a route loader. The store is per provider, so requests never share a language.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/lib/i18n/i18n-format.ts",
+          "target": "lib/fma-ds/i18n/i18n-format.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/i18n/i18n-types.ts",
+          "target": "lib/fma-ds/i18n/i18n-types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/i18n/i18n.ts",
+          "target": "lib/fma-ds/i18n/i18n.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/i18n/merge.ts",
+          "target": "lib/fma-ds/i18n/merge.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/i18n/negotiate.ts",
+          "target": "lib/fma-ds/i18n/negotiate.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/i18n/react.tsx",
+          "target": "lib/fma-ds/i18n/react.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/i18n/store.ts",
+          "target": "lib/fma-ds/i18n/store.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "dependencies": [
+        "react-aria-components@^1.22.1"
+      ],
+      "meta": {
+        "status": "stable",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "i18n",
+          "locale"
+        ],
+        "contentHash": "1ebfbd497c56"
+      }
+    },
+    {
+      "name": "i18n-i18next",
+      "type": "registry:lib",
+      "title": "I18n I18next",
+      "description": "Keeps the registry items in i18next's language, so your app's texts and the components switch together.\n\n- **`FmaI18nextProvider`**: goes inside `I18nextProvider` and reads the language, the fallback and the detection from that instance. Each server request can have its own instance.\n- **`changeLanguage`**: loads the pack first, then switches i18next, so nothing shows two languages. With `i18n.changeLanguage`, components keep their language until the pack arrives.\n- **`useFmaLocale().setLocale`** switches i18next too, so a language selector works the same way.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/lib/i18n-i18next/i18n-i18next.tsx",
+          "target": "lib/fma-ds/i18n-i18next/i18n-i18next.tsx",
+          "type": "registry:lib"
+        }
+      ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
+      "dependencies": [
+        "i18next@^26.5.10",
+        "react-i18next@^17.1.8"
+      ],
+      "meta": {
+        "status": "stable",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "i18n",
+          "i18next",
+          "locale"
+        ],
+        "contentHash": "c5f19b9260ae"
+      }
+    },
+    {
+      "name": "i18n-pt-br",
+      "type": "registry:lib",
+      "title": "I18n Pt Br",
+      "description": "Every registry item in Brazilian Portuguese, for `FmaI18nProvider`.\n\n- **Use**: `<FmaI18nProvider locale=\"pt-BR\" locales={{ \"pt-BR\": ptBR }}>`, or a loader to fetch it on demand.\n- **Install**: each translation lands next to its item, in `<item>-i18n/<item>-pt-BR.ts`, including items you haven't added: they only hold text, and compile either way.\n- **Update**: install it again after adding items from a newer registry.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/lib/i18n-pt-br/i18n-pt-br.ts",
+          "target": "lib/fma-ds/i18n-pt-br/i18n-pt-br.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/breadcrumb/breadcrumb-i18n/breadcrumb-pt-BR.ts",
+          "target": "components/fma-ds/breadcrumb-i18n/breadcrumb-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/calendar/calendar-i18n/calendar-pt-BR.ts",
+          "target": "components/fma-ds/calendar-i18n/calendar-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/carousel/carousel-i18n/carousel-pt-BR.ts",
+          "target": "components/fma-ds/carousel-i18n/carousel-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/code-block/code-block-i18n/code-block-pt-BR.ts",
+          "target": "components/fma-ds/code-block-i18n/code-block-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/color-picker/color-picker-i18n/color-picker-pt-BR.ts",
+          "target": "components/fma-ds/color-picker-i18n/color-picker-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/combobox/combobox-i18n/combobox-pt-BR.ts",
+          "target": "components/fma-ds/combobox-i18n/combobox-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/command/command-i18n/command-pt-BR.ts",
+          "target": "components/fma-ds/command-i18n/command-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/confirm-dialog/confirm-dialog-i18n/confirm-dialog-pt-BR.ts",
+          "target": "components/fma-ds/confirm-dialog-i18n/confirm-dialog-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/copy-button/copy-button-i18n/copy-button-pt-BR.ts",
+          "target": "components/fma-ds/copy-button-i18n/copy-button-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/credit-card/credit-card-i18n/credit-card-pt-BR.ts",
+          "target": "components/fma-ds/credit-card-i18n/credit-card-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/data-grid/data-grid-i18n/data-grid-pt-BR.ts",
+          "target": "components/fma-ds/data-grid-i18n/data-grid-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/dialog/dialog-i18n/dialog-pt-BR.ts",
+          "target": "components/fma-ds/dialog-i18n/dialog-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/emoji-picker/emoji-picker-i18n/emoji-picker-pt-BR.ts",
+          "target": "components/fma-ds/emoji-picker-i18n/emoji-picker-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/file-upload/file-upload-i18n/file-upload-pt-BR.ts",
+          "target": "components/fma-ds/file-upload-i18n/file-upload-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/loading-overlay/loading-overlay-i18n/loading-overlay-pt-BR.ts",
+          "target": "components/fma-ds/loading-overlay-i18n/loading-overlay-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/pagination/pagination-i18n/pagination-pt-BR.ts",
+          "target": "components/fma-ds/pagination-i18n/pagination-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/password-input/password-input-i18n/password-input-pt-BR.ts",
+          "target": "components/fma-ds/password-input-i18n/password-input-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/questionnaire/questionnaire-i18n/questionnaire-pt-BR.ts",
+          "target": "components/fma-ds/questionnaire-i18n/questionnaire-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/sheet/sheet-i18n/sheet-pt-BR.ts",
+          "target": "components/fma-ds/sheet-i18n/sheet-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/sidebar/sidebar-i18n/sidebar-pt-BR.ts",
+          "target": "components/fma-ds/sidebar-i18n/sidebar-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/spinner/spinner-i18n/spinner-pt-BR.ts",
+          "target": "components/fma-ds/spinner-i18n/spinner-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/core/time-picker/time-picker-i18n/time-picker-pt-BR.ts",
+          "target": "components/fma-ds/time-picker-i18n/time-picker-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/auth/auth-i18n/auth-pt-BR.ts",
+          "target": "components/fma-ds/auth/auth-i18n/auth-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/collection-field/collection-field-i18n/collection-field-pt-BR.ts",
+          "target": "components/fma-ds/collection-field/collection-field-i18n/collection-field-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/error-pages/error-pages-i18n/error-pages-pt-BR.ts",
+          "target": "components/fma-ds/error-pages/error-pages-i18n/error-pages-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/event-calendar/event-calendar-i18n/event-calendar-pt-BR.ts",
+          "target": "components/fma-ds/event-calendar/event-calendar-i18n/event-calendar-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/filter-toolbar/filter-toolbar-i18n/filter-toolbar-pt-BR.ts",
+          "target": "components/fma-ds/filter-toolbar/filter-toolbar-i18n/filter-toolbar-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/form-wizard/form-wizard-i18n/form-wizard-pt-BR.ts",
+          "target": "components/fma-ds/form-wizard/form-wizard-i18n/form-wizard-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/notification-center/notification-center-i18n/notification-center-pt-BR.ts",
+          "target": "components/fma-ds/notification-center/notification-center-i18n/notification-center-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/order-summary/order-summary-i18n/order-summary-pt-BR.ts",
+          "target": "components/fma-ds/order-summary/order-summary-i18n/order-summary-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/page-header/page-header-i18n/page-header-pt-BR.ts",
+          "target": "components/fma-ds/page-header/page-header-i18n/page-header-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/panel-card/panel-card-i18n/panel-card-pt-BR.ts",
+          "target": "components/fma-ds/panel-card/panel-card-i18n/panel-card-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/payment-card/payment-card-i18n/payment-card-pt-BR.ts",
+          "target": "components/fma-ds/payment-card/payment-card-i18n/payment-card-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/plan-builder/plan-builder-i18n/plan-builder-pt-BR.ts",
+          "target": "components/fma-ds/plan-builder/plan-builder-i18n/plan-builder-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR.ts",
+          "target": "components/fma-ds/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/settings-form/settings-form-i18n/settings-form-pt-BR.ts",
+          "target": "components/fma-ds/settings-form/settings-form-i18n/settings-form-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/blocks/stat-cards/stat-cards-i18n/stat-cards-pt-BR.ts",
+          "target": "components/fma-ds/stat-cards/stat-cards-i18n/stat-cards-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/hooks/use-file-upload-i18n/use-file-upload-pt-BR.ts",
+          "target": "hooks/fma-ds/use-file-upload-i18n/use-file-upload-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/hooks/use-mask-i18n/use-mask-pt-BR.ts",
+          "target": "hooks/fma-ds/use-mask-i18n/use-mask-pt-BR.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
+      "dependencies": [],
+      "meta": {
+        "status": "stable",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "i18n",
+          "locale",
+          "pt-BR"
+        ],
+        "contentHash": "805c44d8c603"
       }
     },
     {
@@ -2330,6 +2674,11 @@
           "type": "registry:lib"
         },
         {
+          "path": "src/lib/input-masks/locale.ts",
+          "target": "lib/fma-ds/input-masks/locale.ts",
+          "type": "registry:lib"
+        },
+        {
           "path": "src/lib/input-masks/pattern-mask.ts",
           "target": "lib/fma-ds/input-masks/pattern-mask.ts",
           "type": "registry:lib"
@@ -2374,7 +2723,7 @@
           "input",
           "pt-BR"
         ],
-        "contentHash": "7f3e9e524aa5"
+        "contentHash": "b75bebd2debc"
       }
     },
     {
@@ -2561,6 +2910,9 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
       "dependencies": [
         "cn@^0.5.0",
         "lucide-react@^1.61.0",
@@ -2576,7 +2928,7 @@
           "overlay",
           "busy"
         ],
-        "contentHash": "51bfa514b089"
+        "contentHash": "75fe3f1237fb"
       }
     },
     {
@@ -2841,7 +3193,8 @@
         "@fma-ds/empty",
         "@fma-ds/glance",
         "@fma-ds/skeleton",
-        "@fma-ds/tooltip"
+        "@fma-ds/tooltip",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -2859,7 +3212,7 @@
           "popover",
           "list"
         ],
-        "contentHash": "4ba2b130b1df"
+        "contentHash": "34aff22dfce3"
       }
     },
     {
@@ -2884,7 +3237,8 @@
         "@fma-ds/description-list",
         "@fma-ds/separator",
         "@fma-ds/sheet",
-        "@fma-ds/switch"
+        "@fma-ds/switch",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -2901,7 +3255,7 @@
           "order",
           "total"
         ],
-        "contentHash": "917b083c47a4"
+        "contentHash": "b38dff5237d4"
       }
     },
     {
@@ -2922,7 +3276,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/breadcrumb",
-        "@fma-ds/skeleton"
+        "@fma-ds/skeleton",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0"
@@ -2938,7 +3293,7 @@
           "breadcrumb",
           "navigation"
         ],
-        "contentHash": "b977a28df88b"
+        "contentHash": "ccba63bfc22e"
       }
     },
     {
@@ -2958,7 +3313,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -2966,14 +3322,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "navigation",
           "links",
           "react-aria"
         ],
-        "contentHash": "cfb64741af70"
+        "contentHash": "bec9df5e4fcc"
       }
     },
     {
@@ -2999,7 +3355,8 @@
         "@fma-ds/field",
         "@fma-ds/icon-tile",
         "@fma-ds/skeleton",
-        "@fma-ds/spinner"
+        "@fma-ds/spinner",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3017,7 +3374,7 @@
           "chart",
           "status"
         ],
-        "contentHash": "293c6339cf41"
+        "contentHash": "4c0e12081807"
       }
     },
     {
@@ -3037,7 +3394,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/input-group"
+        "@fma-ds/input-group",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3053,7 +3411,7 @@
           "password",
           "react-aria"
         ],
-        "contentHash": "cec54111bd25"
+        "contentHash": "8a6b7e91b4d4"
       }
     },
     {
@@ -3113,7 +3471,8 @@
         "@fma-ds/label",
         "@fma-ds/masked-input",
         "@fma-ds/use-dialog-promise",
-        "@fma-ds/credit-card-validation"
+        "@fma-ds/credit-card-validation",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3131,7 +3490,7 @@
           "form",
           "billing"
         ],
-        "contentHash": "0ecb95fbae48"
+        "contentHash": "13919624efa0"
       }
     },
     {
@@ -3156,7 +3515,8 @@
         "@fma-ds/icon-tile",
         "@fma-ds/skeleton",
         "@fma-ds/slider",
-        "@fma-ds/switch"
+        "@fma-ds/switch",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0"
@@ -3173,7 +3533,7 @@
           "slider",
           "quantity"
         ],
-        "contentHash": "ff4c976d1e45"
+        "contentHash": "f983c7a220a2"
       }
     },
     {
@@ -3228,7 +3588,8 @@
         "@fma-ds/badge",
         "@fma-ds/radio-group",
         "@fma-ds/toggle-group",
-        "@fma-ds/brand"
+        "@fma-ds/brand",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3246,7 +3607,7 @@
           "pricing",
           "subscription"
         ],
-        "contentHash": "4cae110cc392"
+        "contentHash": "699082457f0e"
       }
     },
     {
@@ -3298,7 +3659,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "@shadcn/react@^0.3.1",
@@ -3307,14 +3669,14 @@
       ],
       "meta": {
         "status": "experimental",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "chat",
           "form",
           "@shadcn/react"
         ],
-        "contentHash": "1c7f3ec3e00f"
+        "contentHash": "eab40ec72bc9"
       }
     },
     {
@@ -3501,7 +3863,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/button",
-        "@fma-ds/spinner"
+        "@fma-ds/spinner",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "cn@^0.5.0",
@@ -3517,7 +3880,7 @@
           "settings",
           "fields"
         ],
-        "contentHash": "2d3831fee4d1"
+        "contentHash": "1fb95b7ef5a6"
       }
     },
     {
@@ -3537,7 +3900,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -3556,7 +3920,7 @@
           "drawer",
           "react-aria"
         ],
-        "contentHash": "68c99528f19b"
+        "contentHash": "2982451af32d"
       }
     },
     {
@@ -3582,7 +3946,8 @@
         "@fma-ds/sheet",
         "@fma-ds/skeleton",
         "@fma-ds/tooltip",
-        "@fma-ds/use-mobile"
+        "@fma-ds/use-mobile",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -3592,14 +3957,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "navigation",
           "layout",
           "react-aria"
         ],
-        "contentHash": "a8982072190c"
+        "contentHash": "c6e8339c0b21"
       }
     },
     {
@@ -3751,19 +4116,22 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
       "dependencies": [
         "cn@^0.5.0",
         "lucide-react@^1.61.0"
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "feedback",
           "loading"
         ],
-        "contentHash": "d8ff8cb260b4"
+        "contentHash": "cc9ac5cf0f6d"
       }
     },
     {
@@ -3784,7 +4152,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/icon-tile",
-        "@fma-ds/skeleton"
+        "@fma-ds/skeleton",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -3802,7 +4171,7 @@
           "totals",
           "filters"
         ],
-        "contentHash": "69acf80190a0"
+        "contentHash": "a75f309ca3ce"
       }
     },
     {
@@ -7431,7 +7800,8 @@
       "registryDependencies": [
         "@fma-ds/button",
         "@fma-ds/input-group",
-        "@fma-ds/popover"
+        "@fma-ds/popover",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "@internationalized/date@^3.12.4",
@@ -7451,7 +7821,7 @@
           "popover",
           "react-aria"
         ],
-        "contentHash": "79c8a802fbb2"
+        "contentHash": "6679abb293aa"
       }
     },
     {
@@ -7762,6 +8132,9 @@
           "type": "registry:hook"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/i18n"
+      ],
       "dependencies": [],
       "meta": {
         "status": "stable",
@@ -7774,7 +8147,7 @@
           "file",
           "upload"
         ],
-        "contentHash": "96b78ef16db8"
+        "contentHash": "fa51e6e17784"
       }
     },
     {
@@ -7794,6 +8167,7 @@
         }
       ],
       "registryDependencies": [
+        "@fma-ds/i18n",
         "@fma-ds/input-masks"
       ],
       "dependencies": [
@@ -7810,7 +8184,7 @@
           "mask",
           "pt-BR"
         ],
-        "contentHash": "25d968e24406"
+        "contentHash": "47de1f0d02d9"
       }
     },
     {

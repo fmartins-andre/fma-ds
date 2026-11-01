@@ -1,19 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { LinkButton } from "@/core/button/button";
 import { Skeleton } from "@/core/skeleton/skeleton";
+import { siteText } from "../../../i18n/head";
+import { useItemDescription } from "../../../i18n/items";
 import { InlineMarkdown, summaryOf } from "../../../site/markdown";
 import { BLOCKS, type RegistryItem } from "../../../site/registry";
 import { loadStories } from "../../../site/stories";
 import { previewPath } from "../../../site/story-preview";
 
 export const Route = createFileRoute("/_site/_docs/blocks/")({
-  head: () => ({ meta: [{ title: "Blocks · fma-ds" }] }),
+  head: ({ matches }) => ({
+    meta: [{ title: `${siteText(matches)(($) => $.nav.blocks)} · fma-ds` }],
+  }),
   component: BlocksIndex,
 });
 
 function BlockCard({ item }: { item: RegistryItem }) {
+  const { t } = useTranslation();
+  const description = useItemDescription();
   const [story, setStory] = useState<string | null>(null);
   useEffect(() => {
     void loadStories("blocks", item.name).then((stories) =>
@@ -31,17 +38,17 @@ function BlockCard({ item }: { item: RegistryItem }) {
             {item.title}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            <InlineMarkdown text={summaryOf(item.description)} />
+            <InlineMarkdown text={summaryOf(description(item))} />
           </p>
         </div>
         <LinkButton href={`/blocks/${item.name}`} variant="outline" size="sm">
-          View block
+          {t(($) => $.lists.viewBlock)}
           <ArrowRightIcon data-icon="inline-end" />
         </LinkButton>
       </div>
       {story ? (
         <iframe
-          title={`${item.title} preview`}
+          title={t(($) => $.lists.preview, { title: item.title })}
           src={previewPath("blocks", item.name, story)}
           className="h-[560px] w-full rounded-xl border bg-background"
           loading="lazy"
@@ -54,14 +61,20 @@ function BlockCard({ item }: { item: RegistryItem }) {
 }
 
 function BlocksIndex() {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-12 pb-12">
       <div>
-        <h1 className="font-heading text-3xl font-semibold tracking-tight">Blocks</h1>
+        <h1 className="font-heading text-3xl font-semibold tracking-tight">
+          {t(($) => $.nav.blocks)}
+        </h1>
         <p className="mt-2 max-w-2xl text-base text-muted-foreground">
-          Multi-file compositions of the registry's components, ready to drop into an app. They
-          install into <code className="font-mono text-sm">components/fma-ds/&lt;block&gt;/</code>.
-          Each one comes from a real app's need, so this is not a general application kit.
+          <Trans
+            t={t}
+            i18nKey={($) => $.lists.blocksLead}
+            values={{ block: "<block>" }}
+            components={{ code: <code className="font-mono text-sm" /> }}
+          />
         </p>
       </div>
       {BLOCKS.map((item) => (

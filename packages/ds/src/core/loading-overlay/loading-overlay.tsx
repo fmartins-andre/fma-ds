@@ -4,6 +4,25 @@ import { cn } from "cn";
 import { Loader2Icon } from "lucide-react";
 import type * as React from "react";
 import { Dialog, Modal, ModalOverlay } from "react-aria-components";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type LoadingOverlayConfig = {
+  labels: {
+    loading: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    loadingOverlay: LoadingOverlayConfig;
+  }
+}
+
+export const loadingOverlayEn: DictionaryNamespace<LoadingOverlayConfig> = {
+  labels: {
+    loading: "Loading…",
+  },
+};
 
 function LoadingStatus({ label, className }: { label: React.ReactNode; className?: string }) {
   return (
@@ -33,12 +52,14 @@ type LoadingOverlayProps = React.ComponentProps<"div"> & {
  */
 function LoadingOverlay({
   isLoading,
-  label = "Loading…",
+  label: labelProp,
   className,
   contentClassName,
   children,
   ...props
 }: LoadingOverlayProps) {
+  const { labels } = useFmaMessages("loadingOverlay", loadingOverlayEn);
+  const label = labelProp ?? labels.loading;
   return (
     <div
       data-slot="loading-overlay"
@@ -69,13 +90,15 @@ function LoadingOverlay({
  */
 function LoadingScreen({
   isLoading,
-  label = "Loading…",
+  label: labelProp,
   className,
 }: {
   isLoading: boolean;
   label?: React.ReactNode;
   className?: string;
 }) {
+  const { labels } = useFmaMessages("loadingOverlay", loadingOverlayEn);
+  const label = labelProp ?? labels.loading;
   return (
     <ModalOverlay
       isOpen={isLoading}

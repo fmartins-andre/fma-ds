@@ -1,4 +1,7 @@
 import type { Preview } from "@storybook/react-vite";
+import { createElement } from "react";
+import { FmaI18nProvider } from "../src/lib/i18n/i18n";
+import ptBR from "../src/lib/i18n-pt-br/i18n-pt-br";
 import { applyTheme, clearTheme, loadThemeFonts } from "../src/lib/theme/index";
 import { getTheme, THEMES } from "../src/themes/index";
 import "../src/styles.css";
@@ -24,9 +27,29 @@ function withTheme(
   return Story();
 }
 
+// Off by default: with a provider, masks would follow its locale instead of
+// staying Brazilian, and stories show the no-provider behavior.
+function withLocale(Story: () => unknown, context: { globals: { locale?: string } }) {
+  const { locale } = context.globals;
+  if (!locale || locale === "none") return Story();
+  const props = { locale, locales: { "pt-BR": ptBR }, children: null };
+  return createElement(FmaI18nProvider, props, Story() as React.ReactNode);
+}
+
 const preview: Preview = {
-  decorators: [withTheme as never],
+  decorators: [withTheme as never, withLocale as never],
   globalTypes: {
+    locale: {
+      description: "Puts the items in a language through FmaI18nProvider",
+      toolbar: {
+        icon: "globe",
+        items: [
+          { value: "none", title: "No provider" },
+          { value: "en", title: "English" },
+          { value: "pt-BR", title: "Português" },
+        ],
+      },
+    },
     theme: {
       description: "Light/dark mode (toggles the `dark` class from src/styles.css)",
       toolbar: {

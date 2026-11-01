@@ -6,6 +6,28 @@ import { Button } from "@/core/button/button";
 import { Card, CardContent, CardDescription, CardHeader } from "@/core/card/card";
 import { Spinner } from "@/core/spinner/spinner";
 import { brandSurface } from "@/lib/brand";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type ResendCodeLabels = {
+  resend: string;
+  /** The disabled button while the cooldown runs, given the time left as `m:ss`. */
+  resendIn: (time: string) => string;
+};
+
+export type AuthConfig = { resendCode: ResendCodeLabels };
+
+declare global {
+  interface FmaNamespaces {
+    auth: AuthConfig;
+  }
+}
+
+export const authEn: DictionaryNamespace<AuthConfig> = {
+  resendCode: {
+    resend: "Resend code",
+    resendIn: (time) => `Resend code in ${time}`,
+  },
+};
 
 /**
  * The page around a sign-in, sign-up or recovery card: the `logo` on top and
@@ -124,18 +146,7 @@ function AuthSubmit({
   );
 }
 
-type ResendCodeLabels = {
-  resend: string;
-  /** The disabled button while the cooldown runs, given the time left as `m:ss`. */
-  resendIn: (time: string) => string;
-};
-
 type ResendCodeI18n = { labels?: Partial<ResendCodeLabels> };
-
-const defaultResendCodeLabels: ResendCodeLabels = {
-  resend: "Resend code",
-  resendIn: (time) => `Resend code in ${time}`,
-};
 
 const formatCooldown = (seconds: number) =>
   `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
@@ -157,7 +168,7 @@ function ResendCode({
   cooldown?: number;
   i18n?: ResendCodeI18n;
 }) {
-  const labels = { ...defaultResendCodeLabels, ...i18n?.labels };
+  const { resendCode: labels } = useFmaMessages("auth", authEn, { resendCode: i18n?.labels });
   const [readyAt, setReadyAt] = React.useState(() => Date.now() + cooldown * 1000);
   const [now, setNow] = React.useState(() => Date.now());
   const [isPending, setIsPending] = React.useState(false);

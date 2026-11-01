@@ -5,6 +5,31 @@ import { cn } from "cn";
 import { CheckIcon } from "lucide-react";
 import type * as React from "react";
 import { type Button, buttonVariants } from "@/core/button/button";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type QuestionnaireConfig = {
+  labels: {
+    previous: string;
+    skip: string;
+    next: string;
+    submit: string;
+  };
+};
+
+declare global {
+  interface FmaNamespaces {
+    questionnaire: QuestionnaireConfig;
+  }
+}
+
+export const questionnaireEn: DictionaryNamespace<QuestionnaireConfig> = {
+  labels: {
+    previous: "Previous",
+    skip: "Skip",
+    next: "Next",
+    submit: "Submit",
+  },
+};
 
 function Questionnaire({
   className,
@@ -99,7 +124,7 @@ function QuestionnaireChoice({
     <QuestionnairePrimitive.Choice
       data-slot="questionnaire-choice"
       className={cn(
-        "group/questionnaire-choice relative flex min-h-11 cursor-pointer items-start gap-2.5 rounded-lg border border-input bg-transparent px-3 py-2.5 text-start text-sm transition-colors outline-none select-none hover:bg-muted/50 has-[>input:focus-visible]:border-ring has-[>input:focus-visible]:ring-3 has-[>input:focus-visible]:ring-ring/50 data-invalid:border-destructive dark:bg-input/20 data-checked:border-primary/40 data-checked:bg-muted dark:data-checked:bg-muted",
+        "group/questionnaire-choice relative flex min-h-11 cursor-pointer items-start gap-2.5 rounded-lg border border-input bg-transparent px-3 py-2.5 text-start text-sm transition-colors outline-none select-none hover:bg-accent hover:text-accent-foreground has-[>input:focus-visible]:border-ring has-[>input:focus-visible]:ring-3 has-[>input:focus-visible]:ring-ring/50 data-invalid:border-destructive dark:bg-input/20 data-checked:border-primary/40 data-checked:bg-accent data-checked:text-accent-foreground dark:data-checked:bg-accent",
         "data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-disabled:opacity-50",
         className,
       )}
@@ -203,6 +228,7 @@ function QuestionnairePrevious({
   ...props
 }: React.ComponentProps<typeof QuestionnairePrimitive.Previous> &
   Pick<React.ComponentProps<typeof Button>, "size" | "variant">) {
+  const { labels } = useFmaMessages("questionnaire", questionnaireEn);
   return (
     <QuestionnairePrimitive.Previous
       data-slot="questionnaire-previous"
@@ -215,7 +241,7 @@ function QuestionnairePrevious({
       )}
       {...props}
     >
-      {children ?? "Previous"}
+      {children ?? labels.previous}
     </QuestionnairePrimitive.Previous>
   );
 }
@@ -228,6 +254,7 @@ function QuestionnaireSkip({
   ...props
 }: React.ComponentProps<typeof QuestionnairePrimitive.Skip> &
   Pick<React.ComponentProps<typeof Button>, "size" | "variant">) {
+  const { labels } = useFmaMessages("questionnaire", questionnaireEn);
   return (
     <QuestionnairePrimitive.Skip
       data-slot="questionnaire-skip"
@@ -240,7 +267,7 @@ function QuestionnaireSkip({
       )}
       {...props}
     >
-      {children ?? "Skip"}
+      {children ?? labels.skip}
     </QuestionnairePrimitive.Skip>
   );
 }
@@ -253,6 +280,7 @@ function QuestionnaireNext({
   ...props
 }: React.ComponentProps<typeof QuestionnairePrimitive.Next> &
   Pick<React.ComponentProps<typeof Button>, "size" | "variant">) {
+  const { labels } = useFmaMessages("questionnaire", questionnaireEn);
   return (
     <QuestionnairePrimitive.Next
       data-slot="questionnaire-next"
@@ -265,7 +293,7 @@ function QuestionnaireNext({
       )}
       {...props}
     >
-      {children ?? "Next"}
+      {children ?? labels.next}
     </QuestionnairePrimitive.Next>
   );
 }
@@ -278,6 +306,7 @@ function QuestionnaireSubmit({
   ...props
 }: React.ComponentProps<typeof QuestionnairePrimitive.Submit> &
   Pick<React.ComponentProps<typeof Button>, "size" | "variant">) {
+  const { labels } = useFmaMessages("questionnaire", questionnaireEn);
   return (
     <QuestionnairePrimitive.Submit
       data-slot="questionnaire-submit"
@@ -290,7 +319,7 @@ function QuestionnaireSubmit({
       )}
       {...props}
     >
-      {children ?? "Submit"}
+      {children ?? labels.submit}
     </QuestionnairePrimitive.Submit>
   );
 }

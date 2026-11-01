@@ -2,8 +2,9 @@ import { type CalendarDate, getLocalTimeZone, parseDate, today } from "@internat
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Building2Icon, UserIcon } from "lucide-react";
 import * as React from "react";
-import { I18nProvider, Text } from "react-aria-components";
+import { Text } from "react-aria-components";
 import { expect, userEvent, waitFor, within } from "storybook/test";
+import { pinLocale } from "../../../.storybook/pin-locale";
 import { DateInput } from "../date-field/date-field";
 import { DatePicker, DatePickerContent, DatePickerTrigger } from "../date-picker/date-picker";
 import { IconTile } from "../icon-tile/icon-tile";
@@ -474,11 +475,7 @@ function RecurrenceFields({ chooseDueDay, calculatesOnServer, isLocked }: Recurr
   );
 }
 
-const ptBR = (Story: React.ComponentType) => (
-  <I18nProvider locale="pt-BR">
-    <Story />
-  </I18nProvider>
-);
+const ptBR = pinLocale("pt-BR");
 
 /**
  * How a subscription or recurring order repeats: how often, from when, and for how long, with

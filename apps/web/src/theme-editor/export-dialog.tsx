@@ -1,5 +1,6 @@
 import { Check, Copy, Download } from "lucide-react";
 import { useId, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/core/button/button";
 import {
   Dialog,
@@ -29,7 +30,8 @@ function download(filename: string, text: string, type: string) {
   URL.revokeObjectURL(url);
 }
 
-function CopyButton({ text, label = "Copy" }: { text: string; label?: string }) {
+function CopyButton({ text }: { text: string }) {
+  const { t } = useTranslation("themeEditor");
   const [copied, setCopied] = useState(false);
   return (
     <Button
@@ -42,7 +44,7 @@ function CopyButton({ text, label = "Copy" }: { text: string; label?: string }) 
       }}
     >
       {copied ? <Check data-icon="inline-start" /> : <Copy data-icon="inline-start" />}
-      {copied ? "Copied" : label}
+      {t(($) => (copied ? $.export.copied : $.export.copy))}
     </Button>
   );
 }
@@ -63,6 +65,7 @@ export function ExportDialog({
   theme: Theme;
   edit: (update: (theme: Theme) => Theme) => void;
 }) {
+  const { t } = useTranslation("themeEditor");
   const nameId = useId();
   const titleId = useId();
   const { published, itemName, command } = themeInstall(theme);
@@ -73,31 +76,31 @@ export function ExportDialog({
     {
       id: "index",
       label: "index.css",
-      hint: "Complete Tailwind v4 stylesheet: this repo's styles.css with the theme's :root and .dark.",
+      hint: t(($) => $.export.indexHint),
       filename: "index.css",
       type: "text/css",
       text: generateIndexCss(theme, baseCss),
     },
     {
       id: "vars",
-      label: "Variables",
-      hint: "Just the :root and .dark blocks, to swap into a stylesheet that already maps the tokens.",
+      label: t(($) => $.export.variables),
+      hint: t(($) => $.export.varsHint),
       filename: `${theme.name}.css`,
       type: "text/css",
       text: generateThemeCss(theme),
     },
     {
       id: "registry",
-      label: "Registry item",
-      hint: "shadcn registry:theme item — install it with the command above.",
+      label: t(($) => $.export.registryItem),
+      hint: t(($) => $.export.registryHint),
       filename: `${itemName}.json`,
       type: "application/json",
       text: `${JSON.stringify(themeRegistryItem(theme), null, 2)}\n`,
     },
     {
       id: "json",
-      label: "Theme JSON",
-      hint: "This editor's format. Drop it in packages/ds/src/themes/ to curate it into the registry.",
+      label: t(($) => $.export.themeJson),
+      hint: t(($) => $.export.jsonHint),
       filename: `${theme.name}.json`,
       type: "application/json",
       text: `${JSON.stringify(theme, null, 2)}\n`,
@@ -108,18 +111,16 @@ export function ExportDialog({
     <DialogTrigger>
       <Button>
         <Download data-icon="inline-start" />
-        Export
+        {t(($) => $.export.action)}
       </Button>
       <Dialog className="sm:max-w-3xl">
         <DialogHeader>
-          <DialogTitle>Export theme</DialogTitle>
-          <DialogDescription>
-            Install it with the shadcn CLI, or copy/download the CSS or JSON.
-          </DialogDescription>
+          <DialogTitle>{t(($) => $.export.title)}</DialogTitle>
+          <DialogDescription>{t(($) => $.export.description)}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor={nameId}>Name</Label>
+            <Label htmlFor={nameId}>{t(($) => $.export.name)}</Label>
             <Input
               id={nameId}
               value={theme.name}
@@ -130,7 +131,7 @@ export function ExportDialog({
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor={titleId}>Title</Label>
+            <Label htmlFor={titleId}>{t(($) => $.export.nameTitle)}</Label>
             <Input
               id={titleId}
               value={theme.title}
@@ -142,21 +143,23 @@ export function ExportDialog({
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <h3 className="text-sm font-medium">Install</h3>
+          <h3 className="text-sm font-medium">{t(($) => $.export.install)}</h3>
           {published ? (
             <>
               <Command>{command}</Command>
               <p className="text-xs text-muted-foreground">
-                Needs <code>{`"@fma-ds": "${origin}/r/{name}.json"`}</code> in your components.json
-                registries. Or use the URL directly:
+                <Trans
+                  t={t}
+                  i18nKey={($) => $.export.needs}
+                  values={{ registry: `"@fma-ds": "${origin}/r/{name}.json"` }}
+                  components={{ code: <code /> }}
+                />
               </p>
               <Command>{`${SHADCN_ADD} ${origin}/r/${itemName}.json`}</Command>
             </>
           ) : (
             <>
-              <p className="text-xs text-muted-foreground">
-                Customized themes aren't hosted: download the registry item, then install the file.
-              </p>
+              <p className="text-xs text-muted-foreground">{t(($) => $.export.notHosted)}</p>
               <div className="flex flex-wrap items-center gap-2">
                 <Button
                   size="sm"
@@ -203,17 +206,13 @@ export function ExportDialog({
               </div>
               {file.id === "index" && fontPackages.dependencies.length > 0 && (
                 <>
-                  <p className="text-xs text-muted-foreground">
-                    It imports the theme's fonts from @fontsource; install them first (the shadcn
-                    command above does it for you):
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t(($) => $.export.fontsNote)}</p>
                   <Command>{`npm install ${fontPackages.dependencies.join(" ")}`}</Command>
                 </>
               )}
               {file.id === "index" && fontPackages.unpackaged.length > 0 && (
                 <p className="text-xs text-muted-foreground">
-                  Load {fontPackages.unpackaged.join(", ")} yourself — not in the @fontsource
-                  catalog.
+                  {t(($) => $.export.unpackaged, { fonts: fontPackages.unpackaged.join(", ") })}
                 </p>
               )}
               <pre className="max-h-80 overflow-auto rounded-lg border bg-muted/50 p-3 font-mono text-xs">

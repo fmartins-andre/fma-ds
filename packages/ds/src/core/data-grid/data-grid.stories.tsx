@@ -20,6 +20,7 @@ import { Button } from "@/core/button/button";
 import { DropdownMenuItem } from "@/core/dropdown-menu/dropdown-menu";
 import { FieldHelp } from "@/core/field/field";
 import { Skeleton } from "@/core/skeleton/skeleton";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import {
   DataGrid,
   DataGridColumnFilter,
@@ -1382,5 +1383,23 @@ export const ResizeOnEnd: Story = {
     await waitFor(() => expect(Number(sizing.textContent)).toBeGreaterThan(before + 40));
     await expect(header.getBoundingClientRect().width).toBeGreaterThan(before + 40);
     await expect(indicator).not.toBeVisible();
+  },
+};
+
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{ "pt-BR": { dataGrid: { labels: { nextPage: "Próxima página" } } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  render: (args) => <UsersDataGrid {...args} />,
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: "Próxima página" })).toBeInTheDocument();
   },
 };

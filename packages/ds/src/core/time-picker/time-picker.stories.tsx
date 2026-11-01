@@ -4,6 +4,7 @@ import * as React from "react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "@/core/button/button";
 import { Card, CardContent } from "@/core/card/card";
+import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import meta from "./meta.json";
 import {
   TimePicker,
@@ -284,5 +285,31 @@ export const Disabled: Story = {
   args: { isDisabled: true },
   play: async ({ canvas }) => {
     await expect(canvas.getByRole("button")).toBeDisabled();
+  },
+};
+
+/** A pack's `functions` factory receives the merged labels, overrides included. */
+export const ShouldUseProviderMessages: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <FmaI18nProvider
+        locale="pt-BR"
+        locales={{
+          "pt-BR": {
+            timePicker: {
+              labels: { hour: "Hora" },
+              functions: ({ labels }) => ({ formatValue: (time) => `${time.hour} ${labels.hour}` }),
+            },
+          },
+        }}
+        overrides={{ timePicker: { labels: { hour: "h" } } }}
+      >
+        <Story />
+      </FmaI18nProvider>
+    ),
+  ],
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: "Start time" })).toHaveTextContent("9 h");
   },
 };

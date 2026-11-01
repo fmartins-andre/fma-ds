@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Link } from "react-aria-components";
+import { useTranslation } from "react-i18next";
 import { CodeBlock, CodeBlockCopyButton } from "@/core/code-block/code-block";
 import { fillGuide, GUIDES } from "../guides";
 import { InlineMarkdown } from "./markdown";
@@ -10,9 +11,17 @@ const SOURCES = import.meta.glob<string>("../guides/*.md", {
   eager: true,
 });
 
-export function getGuide(slug: string) {
+const SOURCES_PT_BR = import.meta.glob<string>("../guides/pt-BR/*.md", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+
+export function getGuide(slug: string, locale?: string) {
   const guide = GUIDES.find((item) => item.slug === slug);
-  const source = SOURCES[`../guides/${slug}.md`];
+  const source =
+    (locale === "pt-BR" ? SOURCES_PT_BR[`../guides/pt-BR/${slug}.md`] : undefined) ??
+    SOURCES[`../guides/${slug}.md`];
   return guide && source ? { ...guide, text: fillGuide(source) } : undefined;
 }
 
@@ -149,8 +158,12 @@ function GuideBlock({ block }: { block: Block }) {
   }
 }
 
-export function GuidePage({ title, text }: { title: string; text: string }) {
-  const [lead, ...rest] = parseBlocks(text);
+export function GuidePage({ slug }: { slug: string }) {
+  const { t, i18n } = useTranslation();
+  const guide = getGuide(slug, i18n.resolvedLanguage);
+  if (!guide) return null;
+  const title = t(($) => $.guides[slug as keyof typeof $.guides], { defaultValue: guide.title });
+  const [lead, ...rest] = parseBlocks(guide.text);
   return (
     <article className="max-w-3xl pb-12">
       <h1 className="font-heading text-3xl font-semibold tracking-tight">{title}</h1>

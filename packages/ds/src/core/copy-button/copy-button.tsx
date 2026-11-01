@@ -1,8 +1,34 @@
+"use client";
+
 import { cn } from "cn";
 import { CheckIcon, CopyIcon, XIcon } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/core/button/button";
 import { Tooltip, TooltipTrigger } from "@/core/tooltip/tooltip";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type CopyButtonLabels = {
+  /** The button's accessible name; name what is copied ("Copy tracking code"). */
+  copy: string;
+  copied: string;
+  failed: string;
+};
+
+export type CopyButtonConfig = { labels: CopyButtonLabels };
+
+declare global {
+  interface FmaNamespaces {
+    copyButton: CopyButtonConfig;
+  }
+}
+
+export const copyButtonEn: DictionaryNamespace<CopyButtonConfig> = {
+  labels: {
+    copy: "Copy",
+    copied: "Copied",
+    failed: "Couldn't copy",
+  },
+};
 
 type CopyStatus = "idle" | "copied" | "failed";
 
@@ -64,18 +90,7 @@ function useCopyToClipboard({
   return { status: state.status, count: state.count, copy, reset };
 }
 
-type CopyButtonLabels = {
-  /** The button's accessible name; name what is copied ("Copy tracking code"). */
-  copy: string;
-  copied: string;
-  failed: string;
-};
-
-const defaultCopyButtonLabels: CopyButtonLabels = {
-  copy: "Copy",
-  copied: "Copied",
-  failed: "Couldn't copy",
-};
+const defaultCopyButtonLabels = copyButtonEn.labels;
 
 type CopyButtonProps = Omit<React.ComponentProps<typeof Button>, "value" | "onCopy" | "children"> &
   UseCopyToClipboardOptions & {
@@ -107,7 +122,7 @@ function CopyButton({
   onPress,
   ...props
 }: CopyButtonProps) {
-  const labels = { ...defaultCopyButtonLabels, ...labelsProp };
+  const { labels } = useFmaMessages("copyButton", copyButtonEn, { labels: labelsProp });
   const { status, count, copy } = useCopyToClipboard({ timeout, onCopy, onCopyError });
   const outcome = status === "copied" ? labels.copied : status === "failed" ? labels.failed : "";
 

@@ -1,4 +1,5 @@
 import { Fragment, type ReactNode, useEffect, useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/core/button/button";
 import { Input } from "@/core/input/input";
 import { Label } from "@/core/label/label";
@@ -37,8 +38,10 @@ function FontField({
   value: string | undefined;
   onChange: (value: string | undefined) => void;
 }) {
+  const { t } = useTranslation("themeEditor");
   const id = useId();
-  const { label, utility, catalog, fallback } = FONT_CONTROLS[slot];
+  const { utility, catalog, fallback } = FONT_CONTROLS[slot];
+  const label = t(($) => $.fonts[slot]);
   const fonts = catalog.flatMap((category) => GOOGLE_FONTS[category]);
   const [draft, setDraft] = useState(value ?? "");
   useEffect(() => setDraft(value ?? ""), [value]);
@@ -51,7 +54,7 @@ function FontField({
         {label} <code className="font-mono">({utility})</code>
       </Label>
       <Select
-        aria-label={`${label} font`}
+        aria-label={t(($) => $.fonts.label, { label })}
         selectedKey={selected}
         onSelectionChange={(key) => {
           if (key === DEFAULT_KEY) onChange(undefined);
@@ -67,7 +70,7 @@ function FontField({
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem id={DEFAULT_KEY}>Default (styles.css)</SelectItem>
+          <SelectItem id={DEFAULT_KEY}>{t(($) => $.fonts.default)}</SelectItem>
           {selected === CUSTOM_KEY && <SelectItem id={CUSTOM_KEY}>{family}</SelectItem>}
           <SelectSeparator />
           {fonts.map((font) => (
@@ -79,8 +82,8 @@ function FontField({
       </Select>
       <Input
         id={id}
-        aria-label={`${label} font-family stack`}
-        placeholder="font-family stack, e.g. Inter, sans-serif"
+        aria-label={t(($) => $.fonts.stackLabel, { label })}
+        placeholder={t(($) => $.fonts.stackPlaceholder)}
         className="font-mono text-xs"
         value={draft}
         onChange={(event) => setDraft(event.target.value)}
@@ -100,14 +103,12 @@ export function TypographyPanel({
   theme: Theme;
   edit: (update: (theme: Theme) => Theme) => void;
 }) {
+  const { t } = useTranslation("themeEditor");
   const tracking = Number.parseFloat(theme.letterSpacing ?? "0") || 0;
   const sections: Record<TypographySetting, ReactNode> = {
     fonts: (
-      <Section title="Font family">
-        <p className="text-xs text-muted-foreground">
-          Fonts from the list load here from Google Fonts; in your app the registry item installs
-          them as @fontsource packages. A stack typed by hand isn't installed for you.
-        </p>
+      <Section title={t(($) => $.fonts.family)}>
+        <p className="text-xs text-muted-foreground">{t(($) => $.fonts.note)}</p>
         {(Object.keys(FONT_CONTROLS) as FontSlot[]).map((key) => (
           <FontField
             key={key}
@@ -121,9 +122,9 @@ export function TypographyPanel({
       </Section>
     ),
     letterSpacing: (
-      <Section title="Letter spacing">
+      <Section title={t(($) => $.fonts.letterSpacing)}>
         <SliderField
-          label="Tracking (body)"
+          label={t(($) => $.fonts.tracking)}
           value={tracking}
           min={-0.1}
           max={0.1}
@@ -143,7 +144,7 @@ export function TypographyPanel({
             className="self-start"
             onPress={() => edit((current) => ({ ...current, letterSpacing: undefined }))}
           >
-            Reset to normal
+            {t(($) => $.fonts.resetTracking)}
           </Button>
         )}
       </Section>

@@ -32,7 +32,7 @@ describe.each(componentIds)("src/core/%s", (id) => {
 
 // Libs (src/lib), hooks (src/hooks) and blocks (src/blocks) with metadata are
 // published too. The gate is: valid meta.json, at least one source file, and
-// either unit tests importing them (libs/hooks: tests/**/*.test.ts mentioning
+// either unit tests importing them (libs/hooks: tests/**/*.test.ts(x) mentioning
 // "@/lib/<id>" or "@/hooks/<id>", except type-only modules and the vendored
 // shadcn hook) or, for blocks, a colocated <id>.stories.tsx.
 const UI_ROOT = join(__dirname, "..");
@@ -43,7 +43,7 @@ function readTestSources(dir: string): string {
     .map((entry) => {
       const path = join(dir, entry.name);
       if (entry.isDirectory()) return readTestSources(path);
-      return entry.name.endsWith(".test.ts") ? readFileSync(path, "utf8") : "";
+      return /\.test\.tsx?$/.test(entry.name) ? readFileSync(path, "utf8") : "";
     })
     .join("\n");
 }

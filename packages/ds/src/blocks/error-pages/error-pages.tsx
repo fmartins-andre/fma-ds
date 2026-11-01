@@ -18,6 +18,63 @@ import {
 import { CopyButton } from "@/core/copy-button/copy-button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia } from "@/core/empty/empty";
 import { IconStack } from "@/core/icon-stack/icon-stack";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+type ErrorDetailsLabels = {
+  details: string;
+  copy: string;
+  copied: string;
+  copyFailed: string;
+};
+
+type NotFoundLabels = { code: string; title: string; description: string };
+
+type ForbiddenLabels = NotFoundLabels;
+
+type UnexpectedErrorLabels = Omit<NotFoundLabels, "code"> &
+  ErrorDetailsLabels & {
+    retry: string;
+  };
+
+export type ErrorPagesConfig = {
+  errorDetails: ErrorDetailsLabels;
+  notFound: NotFoundLabels;
+  forbidden: ForbiddenLabels;
+  unexpectedError: UnexpectedErrorLabels;
+};
+
+declare global {
+  interface FmaNamespaces {
+    errorPages: ErrorPagesConfig;
+  }
+}
+
+const errorDetails: ErrorDetailsLabels = {
+  details: "Error details",
+  copy: "Copy details",
+  copied: "Copied",
+  copyFailed: "Couldn't copy",
+};
+
+export const errorPagesEn: DictionaryNamespace<ErrorPagesConfig> = {
+  errorDetails,
+  notFound: {
+    code: "404",
+    title: "Page not found",
+    description: "The page you're looking for doesn't exist or has moved.",
+  },
+  forbidden: {
+    code: "403",
+    title: "Access denied",
+    description: "You don't have permission to view this page. Ask an administrator for access.",
+  },
+  unexpectedError: {
+    title: "Something went wrong",
+    description: "An unexpected error occurred. Try again; if it keeps happening, contact support.",
+    retry: "Try again",
+    ...errorDetails,
+  },
+};
 
 type ErrorPageProps = Omit<React.ComponentProps<"div">, "title"> & {
   /** `page` fills the viewport; `inline` fills the content area of the app's layout. */
@@ -86,20 +143,6 @@ function ErrorPage({
   );
 }
 
-type ErrorDetailsLabels = {
-  details: string;
-  copy: string;
-  copied: string;
-  copyFailed: string;
-};
-
-const defaultErrorDetailsLabels: ErrorDetailsLabels = {
-  details: "Error details",
-  copy: "Copy details",
-  copied: "Copied",
-  copyFailed: "Couldn't copy",
-};
-
 /** The error as text: the stack when there is one (it starts with the message). */
 function formatError(error: unknown) {
   if (error instanceof Error) return error.stack ?? `${error.name}: ${error.message}`;
@@ -124,7 +167,9 @@ function ErrorDetails({
   error: unknown;
   labels?: Partial<ErrorDetailsLabels>;
 }) {
-  const labels = { ...defaultErrorDetailsLabels, ...labelsProp };
+  const { errorDetails: labels } = useFmaMessages("errorPages", errorPagesEn, {
+    errorDetails: labelsProp,
+  });
   const text = formatError(error);
 
   return (
@@ -162,17 +207,11 @@ type PresetProps<Labels> = Omit<ErrorPageProps, "title"> & {
   i18n?: { labels?: Partial<Labels> };
 };
 
-type NotFoundLabels = { code: string; title: string; description: string };
-
-const defaultNotFoundLabels: NotFoundLabels = {
-  code: "404",
-  title: "Page not found",
-  description: "The page you're looking for doesn't exist or has moved.",
-};
-
 /** The page doesn't exist. Pass the way out in `actions` (home, back). */
 function NotFound({ i18n, ...props }: PresetProps<NotFoundLabels>) {
-  const labels = { ...defaultNotFoundLabels, ...i18n?.labels };
+  const { notFound: labels } = useFmaMessages("errorPages", errorPagesEn, {
+    notFound: i18n?.labels,
+  });
   return (
     <ErrorPage
       data-kind="not-found"
@@ -185,17 +224,11 @@ function NotFound({ i18n, ...props }: PresetProps<NotFoundLabels>) {
   );
 }
 
-type ForbiddenLabels = NotFoundLabels;
-
-const defaultForbiddenLabels: ForbiddenLabels = {
-  code: "403",
-  title: "Access denied",
-  description: "You don't have permission to view this page. Ask an administrator for access.",
-};
-
 /** The user can't see this page. */
 function Forbidden({ i18n, ...props }: PresetProps<ForbiddenLabels>) {
-  const labels = { ...defaultForbiddenLabels, ...i18n?.labels };
+  const { forbidden: labels } = useFmaMessages("errorPages", errorPagesEn, {
+    forbidden: i18n?.labels,
+  });
   return (
     <ErrorPage
       data-kind="forbidden"
@@ -207,18 +240,6 @@ function Forbidden({ i18n, ...props }: PresetProps<ForbiddenLabels>) {
     />
   );
 }
-
-type UnexpectedErrorLabels = Omit<NotFoundLabels, "code"> &
-  ErrorDetailsLabels & {
-    retry: string;
-  };
-
-const defaultUnexpectedErrorLabels: UnexpectedErrorLabels = {
-  title: "Something went wrong",
-  description: "An unexpected error occurred. Try again; if it keeps happening, contact support.",
-  retry: "Try again",
-  ...defaultErrorDetailsLabels,
-};
 
 /**
  * An unexpected failure. With `onRetry`, a "Try again" button comes first in
@@ -236,7 +257,9 @@ function UnexpectedError({
   error?: unknown;
   onRetry?: () => void | Promise<void>;
 }) {
-  const labels = { ...defaultUnexpectedErrorLabels, ...i18n?.labels };
+  const { unexpectedError: labels } = useFmaMessages("errorPages", errorPagesEn, {
+    unexpectedError: i18n?.labels,
+  });
   const [isPending, setIsPending] = React.useState(false);
 
   async function retry() {

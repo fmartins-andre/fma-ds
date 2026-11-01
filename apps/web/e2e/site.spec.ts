@@ -117,9 +117,10 @@ test("a component page shows a live preview, its code and the install command", 
 });
 
 test("a block page previews the block in an iframe", async ({ page }) => {
-  await open(page, "/blocks/app-sidebar");
+  // Each story's iframe keeps the network busy: wait for the content, not for idle.
+  await page.goto("/blocks/app-sidebar", { waitUntil: "domcontentloaded" });
   const frame = page.frameLocator('iframe[title$="preview"]').first();
-  await expect(frame.getByText("Acme Inc").first()).toBeVisible();
+  await expect(frame.getByText("Acme Inc").first()).toBeVisible({ timeout: 20_000 });
 });
 
 test("a guide renders from its markdown and reaches llms.txt", async ({ page, request }) => {
@@ -134,6 +135,11 @@ test("a guide renders from its markdown and reaches llms.txt", async ({ page, re
   const llms = await (await request.get("/llms.txt")).text();
   expect(llms).toContain("/docs/compatibility");
   expect(await (await request.get("/llms-full.txt")).text()).toContain("## Guides");
+});
+
+test("the i18n guide opens", async ({ page }) => {
+  await open(page, "/docs/i18n");
+  await expect(page.getByRole("heading", { level: 1, name: "Internationalization" })).toBeVisible();
 });
 
 test("an unknown guide is not found", async ({ request }) => {

@@ -1,6 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-aria-components";
+import { Trans, useTranslation } from "react-i18next";
 import { Badge } from "@/core/badge/badge";
 import { LinkButton } from "@/core/button/button";
 import {
@@ -12,9 +13,9 @@ import {
 } from "@/core/code-block/code-block";
 import { Skeleton } from "@/core/skeleton/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/core/tabs/tabs";
+import { useItemDescription, useStoryDescription, useStoryName } from "../i18n/items";
 import { detailsOf, InlineMarkdown, Markdown, summaryOf } from "./markdown";
 import {
-  categoryTitle,
   type ItemKind,
   installCommand,
   neighbors,
@@ -27,8 +28,7 @@ import {
 } from "./registry";
 import { type DocStories, loadSource, loadStories } from "./stories";
 import { StoryPreview } from "./story-preview";
-
-const KIND_TITLE: Record<ItemKind, string> = { components: "Components", blocks: "Blocks" };
+import { useCategoryTitle } from "./use-categories";
 
 function slug(text: string) {
   return text
@@ -72,10 +72,10 @@ function useSources(item: RegistryItem) {
   return sources?.name === item.name ? sources.files : null;
 }
 
-function H2({ children }: { children: string }) {
+function H2({ id, children }: { id: string; children: string }) {
   return (
     <h2
-      id={slug(children)}
+      id={id}
       className="mt-12 scroll-m-20 border-b pb-2 font-heading text-xl font-semibold tracking-tight"
     >
       {children}
@@ -104,19 +104,20 @@ function Step({
 }
 
 function Installation({ item }: { item: RegistryItem }) {
+  const { t } = useTranslation();
   const sources = useSources(item);
   const npm = (item.dependencies ?? []).map(packageName);
   const registryDeps = item.registryDependencies ?? [];
   let step = 0;
   return (
     <Tabs defaultSelectedKey="cli" className="mt-4 gap-4">
-      <TabsList variant="line" aria-label="Installation method">
+      <TabsList variant="line" aria-label={t(($) => $.item.method)}>
         <TabsTrigger id="cli">CLI</TabsTrigger>
-        <TabsTrigger id="manual">Manual</TabsTrigger>
+        <TabsTrigger id="manual">{t(($) => $.item.manual)}</TabsTrigger>
       </TabsList>
       <TabsContent id="cli">
         <ol className="ml-3.5">
-          <Step index={1} title="Register the @fma-ds namespace in components.json (once)">
+          <Step index={1} title={t(($) => $.item.registerNamespace)}>
             <CodeBlock code={REGISTRIES_SNIPPET} language="json">
               <CodeBlockHeader>
                 <CodeBlockTitle>components.json</CodeBlockTitle>
@@ -124,14 +125,17 @@ function Installation({ item }: { item: RegistryItem }) {
               </CodeBlockHeader>
             </CodeBlock>
           </Step>
-          <Step index={2} title="Add the item">
+          <Step index={2} title={t(($) => $.item.addItem)}>
             <CodeBlock code={installCommand(item.name)} language="bash">
               <CodeBlockCopyButton alwaysVisible />
             </CodeBlock>
             <p className="text-sm text-muted-foreground">
-              Files land in <code className="font-mono">{item.files[0]?.target}</code>
-              {item.files.length > 1 && ` and ${item.files.length - 1} more`}; npm and registry
-              dependencies are installed along with them.
+              <Trans
+                t={t}
+                i18nKey={($) => (item.files.length > 1 ? $.item.filesLandMore : $.item.filesLand)}
+                values={{ target: item.files[0]?.target, count: item.files.length - 1 }}
+                components={{ code: <code className="font-mono" /> }}
+              />
             </p>
           </Step>
         </ol>
@@ -139,14 +143,14 @@ function Installation({ item }: { item: RegistryItem }) {
       <TabsContent id="manual">
         <ol className="ml-3.5">
           {npm.length > 0 && (
-            <Step index={++step} title="Install the npm dependencies">
+            <Step index={++step} title={t(($) => $.item.installNpm)}>
               <CodeBlock code={`pnpm add ${npm.join(" ")}`} language="bash">
                 <CodeBlockCopyButton alwaysVisible />
               </CodeBlock>
             </Step>
           )}
           {registryDeps.length > 0 && (
-            <Step index={++step} title="Add the registry items it builds on">
+            <Step index={++step} title={t(($) => $.item.addRegistry)}>
               <ul className="flex flex-wrap gap-2">
                 {registryDeps.map((dependency) => {
                   const link = registryDependencyLink(dependency);
@@ -165,7 +169,7 @@ function Installation({ item }: { item: RegistryItem }) {
               </ul>
             </Step>
           )}
-          <Step index={++step} title="Copy the source into your project">
+          <Step index={++step} title={t(($) => $.item.copySource)}>
             {item.files.map((file, index) =>
               sources ? (
                 <CodeBlock
@@ -187,11 +191,14 @@ function Installation({ item }: { item: RegistryItem }) {
               ),
             )}
           </Step>
-          <Step index={++step} title="Update the import paths to match your project setup">
+          <Step index={++step} title={t(($) => $.item.updateImports)}>
             <p className="text-sm text-muted-foreground">
-              Sources import siblings as{" "}
-              <code className="font-mono">@/core/&lt;name&gt;/&lt;name&gt;</code>; the CLI rewrites
-              these for you.
+              <Trans
+                t={t}
+                i18nKey={($) => $.item.importsNote}
+                values={{ name: "<name>" }}
+                components={{ code: <code className="font-mono" /> }}
+              />
             </p>
           </Step>
         </ol>
@@ -201,9 +208,13 @@ function Installation({ item }: { item: RegistryItem }) {
 }
 
 function Pager({ kind, name }: { kind: ItemKind; name: string }) {
+  const { t } = useTranslation();
   const { previous, next } = neighbors(kind, name);
   return (
-    <nav aria-label="Pager" className="mt-16 flex items-center justify-between gap-4">
+    <nav
+      aria-label={t(($) => $.item.pager)}
+      className="mt-16 flex items-center justify-between gap-4"
+    >
       {previous ? (
         <LinkButton href={`/${kind}/${previous.name}`}>
           <ArrowLeftIcon data-icon="inline-start" />
@@ -225,9 +236,10 @@ function Pager({ kind, name }: { kind: ItemKind; name: string }) {
 type TocEntry = { title: string; id: string; children?: TocEntry[] };
 
 function Toc({ entries }: { entries: TocEntry[] }) {
+  const { t } = useTranslation();
   return (
     <aside className="sticky top-20 hidden h-[calc(100dvh-6rem)] w-56 shrink-0 overflow-y-auto pb-8 xl:block">
-      <p className="mb-2 text-sm font-medium">On this page</p>
+      <p className="mb-2 text-sm font-medium">{t(($) => $.item.onThisPage)}</p>
       <ul className="flex flex-col gap-1.5 text-sm">
         {entries.map((entry) => (
           <li key={entry.id}>
@@ -256,6 +268,11 @@ function Toc({ entries }: { entries: TocEntry[] }) {
 }
 
 export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem }) {
+  const { t } = useTranslation();
+  const category = useCategoryTitle();
+  const description = useItemDescription()(item);
+  const storyDescription = useStoryDescription();
+  const storyName = useStoryName();
   const loaded = useStories(kind, item.name);
   const stories = loaded?.stories?.stories ?? [];
   const [first, ...rest] = stories;
@@ -268,49 +285,49 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
     shown.add(key);
     return true;
   });
-  const details = detailsOf(item.description);
-  const heading = (title: string): TocEntry => ({ title, id: slug(title) });
+  const details = detailsOf(description);
   const toc: TocEntry[] = [
-    ...(details ? [heading("Overview")] : []),
-    heading("Installation"),
+    ...(details ? [{ title: t(($) => $.item.overview), id: "overview" }] : []),
+    { title: t(($) => $.item.installation), id: "installation" },
     ...(examples.length
       ? [
           {
-            ...heading("Examples"),
+            title: t(($) => $.item.examples),
+            id: "examples",
             children: examples.map((story) => ({
-              title: story.name,
+              title: storyName(story.name),
               id: exampleId(story.exportName),
             })),
           },
         ]
       : []),
-    heading("Dependencies"),
+    { title: t(($) => $.item.dependencies), id: "dependencies" },
   ];
 
   return (
     <div className="flex gap-10">
       <article className="min-w-0 flex-1 pb-12">
         <nav
-          aria-label="Breadcrumb"
+          aria-label={t(($) => $.item.breadcrumb)}
           className="flex items-center gap-1.5 text-sm text-muted-foreground"
         >
           <Link href="/docs" className="hover:text-foreground">
-            Docs
+            {t(($) => $.nav.docs)}
           </Link>
           <span aria-hidden="true">/</span>
           <Link href={`/${kind}`} className="hover:text-foreground">
-            {KIND_TITLE[kind]}
+            {t(($) => $.nav[kind])}
           </Link>
           <span aria-hidden="true">/</span>
           <span className="text-foreground">{item.title}</span>
         </nav>
         <h1 className="mt-3 font-heading text-3xl font-semibold tracking-tight">{item.title}</h1>
         <p className="mt-2 text-base text-pretty text-muted-foreground">
-          <InlineMarkdown text={summaryOf(item.description)} />
+          <InlineMarkdown text={summaryOf(description)} />
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-2">
           {item.categories?.[0] && kind === "components" && (
-            <Badge variant="secondary">{categoryTitle(item.categories[0])}</Badge>
+            <Badge variant="secondary">{category(item.categories[0])}</Badge>
           )}
           <Badge variant="outline">{item.meta.source}</Badge>
           <Badge variant="outline">{item.meta.license}</Badge>
@@ -325,7 +342,7 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
             variant="outline"
             size="sm"
           >
-            Changelog
+            {t(($) => $.item.changelog)}
             <ArrowUpRightIcon data-icon="inline-end" />
           </LinkButton>
           {loaded?.stories && (
@@ -352,34 +369,34 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
           ) : first ? (
             <StoryPreview kind={kind} name={item.name} story={first} />
           ) : (
-            <p className="text-sm text-muted-foreground">No preview available.</p>
+            <p className="text-sm text-muted-foreground">{t(($) => $.item.noPreview)}</p>
           )}
         </div>
 
         {details && (
           <>
-            <H2>Overview</H2>
+            <H2 id="overview">{t(($) => $.item.overview)}</H2>
             <Markdown text={details} className="mt-4 leading-7 text-muted-foreground" />
           </>
         )}
 
-        <H2>Installation</H2>
+        <H2 id="installation">{t(($) => $.item.installation)}</H2>
         <Installation item={item} />
 
         {examples.length > 0 && (
           <>
-            <H2>Examples</H2>
+            <H2 id="examples">{t(($) => $.item.examples)}</H2>
             {examples.map((story) => (
               <section key={story.exportName} className="mt-8">
                 <h3
                   id={exampleId(story.exportName)}
                   className="scroll-m-20 font-heading text-lg font-semibold tracking-tight"
                 >
-                  {story.name}
+                  {storyName(story.name)}
                 </h3>
                 {story.description && (
                   <Markdown
-                    text={story.description}
+                    text={storyDescription(story.description)}
                     className="mt-2 text-sm leading-6 text-muted-foreground"
                   />
                 )}
@@ -389,13 +406,13 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
           </>
         )}
 
-        <H2>Dependencies</H2>
+        <H2 id="dependencies">{t(($) => $.item.dependencies)}</H2>
         <dl className="mt-4 grid gap-4 text-sm sm:grid-cols-2">
           <div>
             <dt className="font-medium">npm</dt>
             <dd className="mt-2 flex flex-wrap gap-1.5">
               {(item.dependencies ?? []).length === 0 && (
-                <span className="text-muted-foreground">None</span>
+                <span className="text-muted-foreground">{t(($) => $.item.none)}</span>
               )}
               {(item.dependencies ?? []).map((dependency) => (
                 <Badge key={dependency} variant="secondary" className="font-mono">
@@ -405,10 +422,10 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
             </dd>
           </div>
           <div>
-            <dt className="font-medium">Registry</dt>
+            <dt className="font-medium">{t(($) => $.item.registry)}</dt>
             <dd className="mt-2 flex flex-wrap gap-1.5">
               {(item.registryDependencies ?? []).length === 0 && (
-                <span className="text-muted-foreground">None</span>
+                <span className="text-muted-foreground">{t(($) => $.item.none)}</span>
               )}
               {(item.registryDependencies ?? []).map((dependency) => {
                 const link = registryDependencyLink(dependency);

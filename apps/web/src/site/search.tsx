@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { BoxIcon, FileTextIcon, LayoutTemplateIcon, SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/core/button/button";
 import {
   Command,
@@ -15,16 +16,26 @@ import { Kbd, KbdGroup } from "@/core/kbd/kbd";
 import { GUIDES } from "../guides";
 import { BLOCKS, COMPONENTS } from "./registry";
 
-const PAGES = [
-  { id: "/docs", title: "Introduction" },
-  ...GUIDES.map((guide) => ({ id: `/docs/${guide.slug}`, title: guide.title })),
-  { id: "/components", title: "Components" },
-  { id: "/blocks", title: "Blocks" },
-  { id: "/themes", title: "Theme editor" },
-];
+const usePages = () => {
+  const { t } = useTranslation();
+  return [
+    { id: "/docs", title: t(($) => $.nav.introduction) },
+    ...GUIDES.map((guide) => ({
+      id: `/docs/${guide.slug}`,
+      title: t(($) => $.guides[guide.slug as keyof typeof $.guides], {
+        defaultValue: guide.title,
+      }),
+    })),
+    { id: "/components", title: t(($) => $.nav.components) },
+    { id: "/blocks", title: t(($) => $.nav.blocks) },
+    { id: "/themes", title: t(($) => $.nav.themeEditor) },
+  ];
+};
 
 /** ⌘K / Ctrl+K search over the pages, components and blocks. */
 export function SiteSearch() {
+  const { t } = useTranslation();
+  const pages = usePages();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -52,7 +63,7 @@ export function SiteSearch() {
         onPress={() => setOpen(true)}
       >
         <SearchIcon />
-        <span className="flex-1 truncate text-left">Search docs...</span>
+        <span className="flex-1 truncate text-left">{t(($) => $.search.button)}</span>
         <KbdGroup className="hidden sm:inline-flex">
           <Kbd>⌘</Kbd>
           <Kbd>K</Kbd>
@@ -61,25 +72,25 @@ export function SiteSearch() {
       <CommandDialog
         open={open}
         onOpenChange={setOpen}
-        title="Search"
-        description="Search the docs, components and blocks"
+        title={t(($) => $.search.title)}
+        description={t(($) => $.search.description)}
       >
         <Command>
-          <CommandInput placeholder="Search components and blocks..." />
+          <CommandInput placeholder={t(($) => $.search.placeholder)} />
           <CommandList
-            aria-label="Results"
+            aria-label={t(($) => $.search.results)}
             onAction={(key) => go(String(key))}
-            renderEmptyState={() => <CommandEmpty>No results found.</CommandEmpty>}
+            renderEmptyState={() => <CommandEmpty>{t(($) => $.search.empty)}</CommandEmpty>}
           >
-            <CommandGroup heading="Pages">
-              {PAGES.map((page) => (
+            <CommandGroup heading={t(($) => $.search.pages)}>
+              {pages.map((page) => (
                 <CommandItem key={page.id} id={page.id} textValue={page.title}>
                   <FileTextIcon />
                   {page.title}
                 </CommandItem>
               ))}
             </CommandGroup>
-            <CommandGroup heading="Components">
+            <CommandGroup heading={t(($) => $.nav.components)}>
               {COMPONENTS.map((item) => (
                 <CommandItem key={item.name} id={`/components/${item.name}`} textValue={item.title}>
                   <BoxIcon />
@@ -87,7 +98,7 @@ export function SiteSearch() {
                 </CommandItem>
               ))}
             </CommandGroup>
-            <CommandGroup heading="Blocks">
+            <CommandGroup heading={t(($) => $.nav.blocks)}>
               {BLOCKS.map((item) => (
                 <CommandItem key={item.name} id={`/blocks/${item.name}`} textValue={item.title}>
                   <LayoutTemplateIcon />

@@ -8,6 +8,8 @@ import { makeStableMaskitoOptions, type StableMaskitoOptions } from "./stable-ma
 
 const PLACEHOLDER_BY_MODE = {
   "dd/mm/yyyy": "__/__/____",
+  "mm/dd/yyyy": "__/__/____",
+  "yyyy/mm/dd": "____/__/__",
   "mm/yyyy": "__/____",
   // Card expiry. The two-digit year is read as 20yy.
   "mm/yy": "__/__",
@@ -19,39 +21,24 @@ export type DateMaskMode = keyof typeof PLACEHOLDER_BY_MODE;
 export function dateMaskRemover(
   value: string | null | undefined,
   mode: DateMaskMode = "dd/mm/yyyy",
+  separator = "/",
 ): string {
   if (!value?.length) return "";
 
-  const trimmed = value.trim();
-
-  if (mode === "yyyy") {
-    const match = trimmed.match(/^(\d{4})$/);
-    if (!match) return "";
-    return match[1];
-  }
-
-  if (mode === "mm/yy") {
-    const match = trimmed.match(/^(\d{2})\/(\d{2})$/);
-    if (!match) return "";
-    const [, mm, yy] = match;
-    return `20${yy}-${mm}`;
-  }
-
-  if (mode === "mm/yyyy") {
-    const match = trimmed.match(/^(\d{2})\/(\d{4})$/);
-    if (!match) return "";
-    const [, mm, yyyy] = match;
-    return `${yyyy}-${mm}`;
-  }
-
-  const match = trimmed.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  const fields = mode.split("/");
+  const pattern = fields.map((field) => `(\\d{${field.length}})`).join(`\\${separator}`);
+  const match = value.trim().match(new RegExp(`^${pattern}$`));
   if (!match) return "";
-  const [, dd, mm, yyyy] = match;
-  return `${yyyy}-${mm}-${dd}`;
+
+  const part = (field: string) => (fields.includes(field) ? match[fields.indexOf(field) + 1] : "");
+  // A two-digit year only exists in "mm/yy", the card expiry.
+  const year = part("yyyy") || `20${part("yy")}`;
+  return [year, part("mm"), part("dd")].filter(Boolean).join("-");
 }
 
 type DateMaskOptionsProps = Partial<Pick<MaskitoDateParams, "min" | "max">> & {
   mode?: DateMaskMode;
+  separator?: string;
 };
 
 const defaultOptions = {
@@ -70,7 +57,7 @@ export const createDateMaskOptions: (options?: DateMaskOptionsProps) => MaskitoO
   };
   const generatedOptions = maskitoDate(validOptions);
   const { plugins: datePlaceholderPlugins, ...datePlaceholderOptions } = maskitoWithPlaceholder(
-    PLACEHOLDER_BY_MODE[mode],
+    PLACEHOLDER_BY_MODE[mode].replaceAll("/", validOptions.separator ?? "/"),
     true,
   );
 

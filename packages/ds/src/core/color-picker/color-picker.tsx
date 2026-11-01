@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "cn";
 import {
   type Color,
@@ -68,6 +70,72 @@ import {
   passingRanges,
   passingRegion,
 } from "@/lib/color-contrast";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+/** Every text the picker shows or announces, so it can be translated. */
+type ColorPickerLabels = {
+  lightness: string;
+  chroma: string;
+  hue: string;
+  saturation: string;
+  brightness: string;
+  red: string;
+  green: string;
+  blue: string;
+  alpha: string;
+  /** The OKLCH area (chroma × lightness). */
+  oklchArea: string;
+  /** The HSB area (saturation × brightness). */
+  hsbArea: string;
+  pickColor: string;
+  swatches: string;
+  format: string;
+  hex: string;
+  copy: string;
+  copied: string;
+  copyFailed: string;
+  eyeDropper: string;
+  /** The contrast fix buttons. */
+  fix: (level: "AA" | "AAA") => string;
+  /** The level for 3:1, enough for large text only. */
+  largeText: string;
+  fail: string;
+};
+
+export type ColorPickerConfig = { labels: ColorPickerLabels };
+
+declare global {
+  interface FmaNamespaces {
+    colorPicker: ColorPickerConfig;
+  }
+}
+
+export const colorPickerEn: DictionaryNamespace<ColorPickerConfig> = {
+  labels: {
+    lightness: "Lightness",
+    chroma: "Chroma",
+    hue: "Hue",
+    saturation: "Saturation",
+    brightness: "Brightness",
+    red: "Red",
+    green: "Green",
+    blue: "Blue",
+    alpha: "Alpha",
+    oklchArea: "Chroma and lightness",
+    hsbArea: "Saturation and brightness",
+    pickColor: "Pick color",
+    swatches: "Preset colors",
+    format: "Color format",
+    hex: "Hex",
+    copy: "Copy color",
+    copied: "Copied",
+    copyFailed: "Couldn't copy",
+    eyeDropper: "Pick a color from the screen",
+    fix: (level) => `Fix to ${level}`,
+    largeText: "AA large",
+    fail: "Fail",
+  },
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                 Color state                                */
@@ -299,58 +367,7 @@ const swatchName = (swatch: Swatch) => (typeof swatch === "string" ? swatch : sw
 /*                                   Context                                  */
 /* -------------------------------------------------------------------------- */
 
-/** Every text the picker shows or announces, so it can be translated. */
-interface ColorPickerLabels {
-  lightness: string;
-  chroma: string;
-  hue: string;
-  saturation: string;
-  brightness: string;
-  red: string;
-  green: string;
-  blue: string;
-  alpha: string;
-  /** The OKLCH area (chroma × lightness). */
-  oklchArea: string;
-  /** The HSB area (saturation × brightness). */
-  hsbArea: string;
-  swatches: string;
-  format: string;
-  hex: string;
-  copy: string;
-  copied: string;
-  copyFailed: string;
-  eyeDropper: string;
-  /** The contrast fix buttons. */
-  fix: (level: "AA" | "AAA") => string;
-  /** The level for 3:1, enough for large text only. */
-  largeText: string;
-  fail: string;
-}
-
-const DEFAULT_COLOR_PICKER_LABELS: ColorPickerLabels = {
-  lightness: "Lightness",
-  chroma: "Chroma",
-  hue: "Hue",
-  saturation: "Saturation",
-  brightness: "Brightness",
-  red: "Red",
-  green: "Green",
-  blue: "Blue",
-  alpha: "Alpha",
-  oklchArea: "Chroma and lightness",
-  hsbArea: "Saturation and brightness",
-  swatches: "Preset colors",
-  format: "Color format",
-  hex: "Hex",
-  copy: "Copy color",
-  copied: "Copied",
-  copyFailed: "Couldn't copy",
-  eyeDropper: "Pick a color from the screen",
-  fix: (level) => `Fix to ${level}`,
-  largeText: "AA large",
-  fail: "Fail",
-};
+const DEFAULT_COLOR_PICKER_LABELS = colorPickerEn.labels;
 
 interface ColorPickerContextValue {
   state: ColorState;
@@ -443,7 +460,7 @@ function ColorPickerProvider({
   contrastWith,
   swatches,
   swatchColumns,
-  label = "Pick color",
+  label: labelProp,
   labels,
   isDisabled = false,
   isInvalid = false,
@@ -496,7 +513,9 @@ function ColorPickerProvider({
     return () => owner.removeEventListener("reset", onReset);
   }, [name, form]);
 
-  const mergedLabels = useMemo(() => ({ ...DEFAULT_COLOR_PICKER_LABELS, ...labels }), [labels]);
+  const overrides = useMemo(() => ({ labels }), [labels]);
+  const { labels: mergedLabels } = useFmaMessages("colorPicker", colorPickerEn, overrides);
+  const label = labelProp ?? mergedLabels.pickColor;
 
   const [openState, setOpenState] = useState(defaultOpen);
   const setOpen = useCallback(

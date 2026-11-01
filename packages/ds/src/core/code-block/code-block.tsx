@@ -44,6 +44,26 @@ import {
   stripNotationComments,
   toPlainLines,
 } from "@/lib/code-block-highlight";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+
+export type CodeBlockLabels = {
+  copy: string;
+  /** Without these, the copy button's own texts apply. */
+  copied?: string;
+  failed?: string;
+};
+
+export type CodeBlockConfig = { labels: CodeBlockLabels };
+
+declare global {
+  interface FmaNamespaces {
+    codeBlock: CodeBlockConfig;
+  }
+}
+
+export const codeBlockEn: DictionaryNamespace<CodeBlockConfig> = {
+  labels: { copy: "Copy code" },
+};
 
 // Bundlers replace process.env.NODE_ENV at build time; declared here so
 // consumers don't need @types/node just for this check.
@@ -1692,7 +1712,7 @@ export type CodeBlockCopyButtonProps = {
   onCopy?: (value: string) => void;
   onCopyError?: (error: unknown) => void;
   /** Accessible name and announced outcomes, for localisation. */
-  labels?: { copy?: string; copied?: string; failed?: string };
+  labels?: Partial<CodeBlockLabels>;
   /** `pinned` floats over the surface; `inline` sits in a header. */
   position?: "auto" | "pinned" | "inline";
   alwaysVisible?: boolean;
@@ -1721,6 +1741,7 @@ function CodeBlockCopyButton({
   ...props
 }: CodeBlockCopyButtonProps) {
   const inHeader = useContext(CodeBlockHeaderContext);
+  const { labels: merged } = useFmaMessages("codeBlock", codeBlockEn, { labels });
 
   const resolvedPosition = position === "auto" ? (inHeader ? "inline" : "pinned") : position;
 
@@ -1748,9 +1769,9 @@ function CodeBlockCopyButton({
       onCopy={onCopy}
       onCopyError={onCopyError}
       labels={{
-        copy: labels?.copy ?? "Copy code",
-        ...(labels?.copied && { copied: labels.copied }),
-        ...(labels?.failed && { failed: labels.failed }),
+        copy: merged.copy,
+        ...(merged.copied && { copied: merged.copied }),
+        ...(merged.failed && { failed: merged.failed }),
       }}
       variant={variant}
       size={resolvedSize}
