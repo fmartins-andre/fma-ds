@@ -386,7 +386,8 @@ export const Phases: Story = {
     await userEvent.click(canvas.getByRole("button", { name: "Cancelar recebimento #1042" }));
     await body.findByRole("dialog", { name: "Cancelar recebimento #1042" });
     await userEvent.click(body.getByRole("button", { name: "Cancelar recebimento" }));
-    await expect(body.getByText("Confirme que entendeu para continuar.")).toBeVisible();
+    const required = body.getByText("Confirme que entendeu para continuar.");
+    await waitFor(() => expect(required).toBeVisible());
     await expect(body.getByRole("checkbox")).toHaveFocus();
 
     await userEvent.click(body.getByRole("checkbox"));
@@ -397,7 +398,7 @@ export const Phases: Story = {
     await expect(status()).toHaveTextContent("Cancelando o recebimento.");
     await expect(body.getByRole("listitem", { current: "step" })).toBeVisible();
 
-    await body.findByRole("dialog", { name: "Recebimento cancelado" }, { timeout: 3000 });
+    await body.findByRole("dialog", { name: "Recebimento cancelado" });
     await expect(status()).toHaveTextContent("Recebimento cancelado.");
     await userEvent.click(body.getByRole("button", { name: "Concluir" }));
     await waitFor(() => expect(body.queryByRole("dialog")).not.toBeInTheDocument());
@@ -407,9 +408,10 @@ export const Phases: Story = {
     await userEvent.click(canvas.getByRole("button", { name: "Cancelar recebimento #0987" }));
     await userEvent.click(await body.findByRole("checkbox"));
     await userEvent.click(body.getByRole("button", { name: "Cancelar recebimento" }));
-    await body.findByRole("dialog", { name: "Não foi possível cancelar" }, { timeout: 3000 });
+    await body.findByRole("dialog", { name: "Não foi possível cancelar" });
     await expect(status()).toHaveTextContent(/prazo para cancelar/);
-    await expect(body.getByRole("link", { name: "Pedir estorno ao suporte" })).toBeVisible();
+    const refund = body.getByRole("link", { name: "Pedir estorno ao suporte" });
+    await waitFor(() => expect(refund).toBeVisible());
     await userEvent.click(body.getByRole("button", { name: "Fechar" }));
     await waitFor(() => expect(body.queryByRole("dialog")).not.toBeInTheDocument());
     await expect(canvas.getByRole("button", { name: "Cancelar recebimento #0987" })).toBeVisible();

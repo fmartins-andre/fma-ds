@@ -95,11 +95,13 @@ function Menubar({ className, ...props }: ToolbarProps) {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
       if (!(event.target instanceof Element)) return;
-      // Only from the menu itself: submenus use these keys to open and close.
+      // Only from the menu itself: submenus use these keys to open and close. While a
+      // switch moves focus (see focusOpenMenu) the key lands on the body and still counts.
       const surface = event.target.closest(
         "[data-slot=menubar-content], [data-slot=dropdown-menu-sub-content]",
       );
-      if (surface?.getAttribute("data-slot") !== "menubar-content") return;
+      const inTransit = switchedBy.current !== null && event.target === document.body;
+      if (!inTransit && surface?.getAttribute("data-slot") !== "menubar-content") return;
       const forward = (event.key === "ArrowRight") === (direction === "ltr");
       if (forward && event.target.closest("[aria-haspopup]")) return;
       const list = triggers();

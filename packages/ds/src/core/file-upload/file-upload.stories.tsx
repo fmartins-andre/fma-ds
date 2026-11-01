@@ -169,9 +169,7 @@ export const WithProgress: Story = {
   play: async ({ canvas, canvasElement }) => {
     await userEvent.upload(fileInput(canvasElement), fakeFile("relatorio.pdf"));
     await expect(canvas.getByRole("progressbar", { name: "Enviando relatorio.pdf" })).toBeVisible();
-    await waitFor(() => expect(canvas.getByText("Enviado")).toBeInTheDocument(), {
-      timeout: 3000,
-    });
+    await waitFor(() => expect(canvas.getByText("Enviado")).toBeInTheDocument());
     await expect(canvas.queryByRole("progressbar")).not.toBeInTheDocument();
   },
 };

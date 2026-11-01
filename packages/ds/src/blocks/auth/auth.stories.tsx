@@ -686,7 +686,7 @@ export const ShouldResendAfterCooldown: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("button", { name: "Resend code in 0:01" })).toBeDisabled();
-    const button = await canvas.findByRole("button", { name: "Resend code" }, { timeout: 2500 });
+    const button = await canvas.findByRole("button", { name: "Resend code" });
     await userEvent.click(button);
     await waitFor(() =>
       expect(canvas.getByRole("button", { name: "Resend code in 0:01" })).toBeDisabled(),

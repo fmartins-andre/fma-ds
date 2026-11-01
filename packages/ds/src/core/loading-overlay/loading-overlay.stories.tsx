@@ -68,8 +68,6 @@ export const Screen: Story = {
     const dialog = await body.findByRole("dialog", { name: "Alterando status do cliente…" });
     await userEvent.keyboard("{Escape}");
     await expect(dialog).toBeInTheDocument();
-    await waitFor(() => expect(body.queryByRole("dialog")).not.toBeInTheDocument(), {
-      timeout: 3000,
-    });
+    await waitFor(() => expect(body.queryByRole("dialog")).not.toBeInTheDocument());
   },
 };

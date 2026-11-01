@@ -182,6 +182,19 @@ function pointTo(el: Element) {
   lastHovered = el;
 }
 
+// After a layout Chrome fires real pointer events for wherever the runner's mouse rests, at
+// any moment, and one of them cancels the open delay of a synthetic hover for good.
+function ignoreRealPointer() {
+  const ignore = (event: Event) => {
+    if (event.isTrusted) event.stopImmediatePropagation();
+  };
+  const types = ["pointerover", "pointerout", "pointermove"];
+  for (const type of types) window.addEventListener(type, ignore, true);
+  return () => {
+    for (const type of types) window.removeEventListener(type, ignore, true);
+  };
+}
+
 /**
  * With `openOnHover`, resting on a trigger opens a non-modal dropdown that
  * leaves focus alone and closes when the pointer leaves; moving to another
@@ -189,11 +202,8 @@ function pointTo(el: Element) {
  */
 export const OpenOnHover: Story = {
   args: { openOnHover: true },
+  beforeEach: ignoreRealPointer,
   play: async ({ canvas }) => {
-    // Park the runner's real pointer first, so a late pointerover from it
-    // doesn't end the synthetic hovers below.
-    await userEvent.hover(canvas.getByRole("link", { name: "Overview" }));
-    await new Promise((resolve) => setTimeout(resolve, 50));
     lastHovered = null;
     const docs = canvas.getByRole("button", { name: "Documentation" });
     const company = canvas.getByRole("button", { name: "Company" });
