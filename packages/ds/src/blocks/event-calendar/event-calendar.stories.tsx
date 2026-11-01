@@ -14,7 +14,8 @@ import {
 } from "@/core/select/select";
 import { Switch } from "@/core/switch/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/core/tabs/tabs";
-import { FmaI18nProvider } from "@/lib/i18n/i18n";
+import { FmaI18nProvider, matchLocale, useFmaLocale } from "@/lib/i18n/i18n";
+import { useStoryLocale } from "../../../.storybook/pin-locale";
 import { EventCalendar } from "./event-calendar";
 import { EventCalendarContent } from "./event-calendar-content";
 import type { EventCalendarI18nOverrides } from "./event-calendar-i18n";
@@ -85,7 +86,7 @@ const BUSY_DAY: CalendarEvent[] = Array.from({ length: 6 }, (_, i) => ({
 // The wall clock and language the fixed week is asserted in. A decorator, so
 // the docs examples don't carry them: an app uses the viewer's own.
 const withFixedClock: Decorator = (Story, { args }) => (
-  <Story args={{ timeZone: "UTC", locale: "en-US", ...args }} />
+  <Story args={{ timeZone: "UTC", locale: useStoryLocale("en-US"), ...args }} />
 );
 
 const componentMeta = {
@@ -638,7 +639,8 @@ type Settings = {
   snapDuration: number;
   eventTooltip: boolean;
   showDayAddButton: boolean;
-  locale: string;
+  /** Picked in the demo; until then, the provider's language. */
+  locale?: string;
   timeZone: string;
 };
 
@@ -652,7 +654,6 @@ const DEFAULT_SETTINGS: Settings = {
   snapDuration: 15,
   eventTooltip: false,
   showDayAddButton: false,
-  locale: "en-US",
   timeZone: "UTC",
 };
 
@@ -712,13 +713,16 @@ function SettingsDemo() {
   const [settings, setSettings] = React.useState<Settings>(DEFAULT_SETTINGS);
   const [view, setView] = React.useState<CalendarView>("week");
   const patch = (partial: Partial<Settings>) => setSettings((old) => ({ ...old, ...partial }));
-  const locale = LOCALES.find((entry) => entry.id === settings.locale) ?? LOCALES[0];
+  const providerLocale = useFmaLocale()?.locale ?? "en-US";
+  const ids = LOCALES.map(({ id }) => id);
+  const localeId = settings.locale ?? matchLocale(providerLocale, ids) ?? "en-US";
+  const locale = LOCALES.find((entry) => entry.id === localeId) ?? LOCALES[0];
   const isTimeGrid = view !== "month" && view !== "agenda";
   const hours = (values: number[]) =>
     values.map((hour) => ({ id: hour, label: `${String(hour).padStart(2, "0")}:00` }));
 
   return (
-    <I18nProvider locale={settings.locale}>
+    <I18nProvider locale={localeId}>
       <div dir={locale?.dir} className="flex h-[680px] w-[1000px] flex-col rounded-lg border">
         <EventCalendar
           defaultEvents={EVENTS}
@@ -726,7 +730,7 @@ function SettingsDemo() {
           onViewChange={setView}
           defaultDate={TODAY}
           resources={TEAM}
-          locale={settings.locale}
+          locale={localeId}
           i18n={locale?.i18n}
           timeZone={settings.timeZone}
           viewSettings={settings.viewSettings}
@@ -862,7 +866,7 @@ function SettingsDemo() {
                     <TabsContent id="region" className="flex flex-col gap-3">
                       <SettingSelect
                         label="Language"
-                        value={settings.locale}
+                        value={localeId}
                         options={LOCALES.map(({ id, label }) => ({ id, label }))}
                         onChange={(value) => patch({ locale: value })}
                       />

@@ -1,7 +1,7 @@
 import { CalendarDate } from "@internationalized/date";
-import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
-import { I18nProvider, type RangeValue } from "react-aria-components";
+import type { RangeValue } from "react-aria-components";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Badge } from "@/core/badge/badge";
 import { DateInput } from "@/core/date-field/date-field";
@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/core/select/select";
 import { ToggleGroupItem } from "@/core/toggle-group/toggle-group";
+import { pinLocale } from "../../../.storybook/pin-locale";
 import {
   type FilterChip,
   FilterChips,
@@ -33,11 +34,7 @@ import {
 } from "./filter-toolbar";
 import meta from "./meta.json";
 
-const withPtBR: Decorator = (Story) => (
-  <I18nProvider locale="pt-BR">
-    <Story />
-  </I18nProvider>
-);
+const withPtBR = pinLocale("pt-BR");
 
 const componentMeta = {
   title: "blocks/FilterToolbar",

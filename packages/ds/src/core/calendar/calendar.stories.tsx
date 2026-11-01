@@ -3,6 +3,7 @@ import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
 import { type DateValue, I18nProvider, type RangeValue } from "react-aria-components";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+import { pinLocale } from "../../../.storybook/pin-locale";
 import { Calendar, RangeCalendar } from "./calendar";
 import meta from "./meta.json";
 
@@ -72,11 +73,7 @@ const componentMeta = {
   decorators: [
     withSelectedValue,
     // Pinned so labels/assertions don't depend on the browser's locale.
-    (Story) => (
-      <I18nProvider locale="en-US">
-        <Story />
-      </I18nProvider>
-    ),
+    pinLocale("en-US"),
   ],
   argTypes: {
     captionLayout: { control: "select", options: ["grid", "label", "dropdown"] },

@@ -6,6 +6,7 @@ import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { DateInput } from "@/core/date-field/date-field";
 import { InputGroup, InputGroupAddon } from "@/core/input-group/input-group";
 import { Label } from "@/core/label/label";
+import { pinLocale } from "../../../.storybook/pin-locale";
 import { DatePicker, DatePickerContent, DatePickerTrigger, DateRangePicker } from "./date-picker";
 import meta from "./meta.json";
 
@@ -73,11 +74,7 @@ const componentMeta = {
   decorators: [
     withSelectedValue,
     // Pinned so segment order/labels don't depend on the browser's locale.
-    (Story) => (
-      <I18nProvider locale="en-US">
-        <Story />
-      </I18nProvider>
-    ),
+    pinLocale("en-US"),
   ],
   argTypes: {
     granularity: { control: "radio", options: ["day", "month", "year"] },

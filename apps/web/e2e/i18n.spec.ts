@@ -70,6 +70,17 @@ test.describe("Portuguese content", () => {
     await expect(page).toHaveTitle("Badge · fma-ds");
   });
 
+  test("stories follow the site's language", async ({ page }) => {
+    await open(page, "/components/calendar");
+    await expect(
+      page.getByRole("main").getByRole("button", { name: "Anterior" }).first(),
+    ).toBeVisible();
+
+    await open(page, "/blocks/event-calendar");
+    const frame = page.frameLocator('iframe[title^="Prévia"]').first();
+    await expect(frame.getByText(/de março de 2026/).first()).toBeVisible();
+  });
+
   test("the theme editor's demos are in Portuguese", async ({ page }) => {
     await open(page, "/themes");
     await expect(page.getByText("Crie uma conta")).toBeVisible();

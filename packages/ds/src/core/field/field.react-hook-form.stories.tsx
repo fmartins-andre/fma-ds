@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarDate, type DateValue } from "@internationalized/date";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { I18nProvider } from "react-aria-components";
 import { Controller, useForm } from "react-hook-form";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import * as z from "zod";
@@ -9,6 +8,7 @@ import { Button } from "@/core/button/button";
 import { DatePicker } from "@/core/date-picker/date-picker";
 import { Input } from "@/core/input/input";
 import { MaskedInput } from "@/core/masked-input/masked-input";
+import { pinLocale } from "../../../.storybook/pin-locale";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "./field";
 
 const schema = z.object({
@@ -97,13 +97,7 @@ const componentMeta = {
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <I18nProvider locale="en-US">
-        <Story />
-      </I18nProvider>
-    ),
-  ],
+  decorators: [pinLocale("en-US")],
   args: { onSubmit: fn() },
 } satisfies Meta<typeof ProfileForm>;
 
