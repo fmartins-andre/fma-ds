@@ -60,11 +60,11 @@
       "sidebar-ring": "oklch(0.489 0 0)",
       "shadow-2xs": "0px 2px 0px 0px oklch(0.321 0 0 / 1%)",
       "shadow-xs": "0px 2px 0px 0px oklch(0.321 0 0 / 1%)",
-      "shadow-sm": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 1px 2px -1px oklch(0.321 0 0 / 1%)",
-      "shadow-md": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 2px 4px -1px oklch(0.321 0 0 / 1%)",
-      "shadow-lg": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 4px 6px -1px oklch(0.321 0 0 / 1%)",
-      "shadow-xl": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 8px 10px -1px oklch(0.321 0 0 / 1%)",
-      "shadow-2xl": "0px 2px 0px 0px oklch(0.321 0 0 / 4%)",
+      "shadow-sm": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 2px 0px 0px oklch(0.321 0 0 / 1%)",
+      "shadow-md": "0px 5px 0px 0px oklch(0.321 0 0 / 2%), 0px 3px 0px 0px oklch(0.321 0 0 / 2%)",
+      "shadow-lg": "0px 11px 0px 0px oklch(0.321 0 0 / 2%), 0px 5px 0px 0px oklch(0.321 0 0 / 2%)",
+      "shadow-xl": "0px 21px 0px 0px oklch(0.321 0 0 / 3%), 0px 9px 0px 0px oklch(0.321 0 0 / 3%)",
+      "shadow-2xl": "0px 26px 0px 0px oklch(0.321 0 0 / 3%), 0px 13px 0px 0px oklch(0.321 0 0 / 3%)",
       "radius": "0.35rem"
     },
     "dark": {
@@ -112,11 +112,11 @@
       "sidebar-ring": "oklch(0.706 0 0)",
       "shadow-2xs": "0px 2px 0px 0px oklch(0.321 0 0 / 1%)",
       "shadow-xs": "0px 2px 0px 0px oklch(0.321 0 0 / 1%)",
-      "shadow-sm": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 1px 2px -1px oklch(0.321 0 0 / 1%)",
-      "shadow-md": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 2px 4px -1px oklch(0.321 0 0 / 1%)",
-      "shadow-lg": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 4px 6px -1px oklch(0.321 0 0 / 1%)",
-      "shadow-xl": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 8px 10px -1px oklch(0.321 0 0 / 1%)",
-      "shadow-2xl": "0px 2px 0px 0px oklch(0.321 0 0 / 4%)"
+      "shadow-sm": "0px 2px 0px 0px oklch(0.321 0 0 / 1%), 0px 2px 0px 0px oklch(0.321 0 0 / 1%)",
+      "shadow-md": "0px 5px 0px 0px oklch(0.321 0 0 / 2%), 0px 3px 0px 0px oklch(0.321 0 0 / 2%)",
+      "shadow-lg": "0px 11px 0px 0px oklch(0.321 0 0 / 2%), 0px 5px 0px 0px oklch(0.321 0 0 / 2%)",
+      "shadow-xl": "0px 21px 0px 0px oklch(0.321 0 0 / 3%), 0px 9px 0px 0px oklch(0.321 0 0 / 3%)",
+      "shadow-2xl": "0px 26px 0px 0px oklch(0.321 0 0 / 3%), 0px 13px 0px 0px oklch(0.321 0 0 / 3%)"
     }
   },
   "css": {
@@ -156,7 +156,7 @@
         "offsetY": "2px"
       }
     },
-    "contentHash": "50ec598a08a0"
+    "contentHash": "31b4bc8036fd"
   },
   "categories": [
     "theme"

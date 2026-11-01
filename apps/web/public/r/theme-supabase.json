@@ -60,13 +60,13 @@
       "sidebar-accent-foreground": "oklch(0.243 0 0)",
       "sidebar-border": "oklch(0.904 0 0)",
       "sidebar-ring": "oklch(0.835 0.13 160.908)",
-      "shadow-2xs": "0px 1px 3px 0px oklch(0 0 0 / 9%)",
-      "shadow-xs": "0px 1px 3px 0px oklch(0 0 0 / 9%)",
+      "shadow-2xs": "0px 1px 1px 0px oklch(0 0 0 / 9%)",
+      "shadow-xs": "0px 1px 2px 0px oklch(0 0 0 / 9%)",
       "shadow-sm": "0px 1px 3px 0px oklch(0 0 0 / 17%), 0px 1px 2px -1px oklch(0 0 0 / 17%)",
-      "shadow-md": "0px 1px 3px 0px oklch(0 0 0 / 17%), 0px 2px 4px -1px oklch(0 0 0 / 17%)",
-      "shadow-lg": "0px 1px 3px 0px oklch(0 0 0 / 17%), 0px 4px 6px -1px oklch(0 0 0 / 17%)",
-      "shadow-xl": "0px 1px 3px 0px oklch(0 0 0 / 17%), 0px 8px 10px -1px oklch(0 0 0 / 17%)",
-      "shadow-2xl": "0px 1px 3px 0px oklch(0 0 0 / 43%)",
+      "shadow-md": "0px 4px 6px -1px oklch(0 0 0 / 21%), 0px 2px 4px -2px oklch(0 0 0 / 21%)",
+      "shadow-lg": "0px 10px 15px -3px oklch(0 0 0 / 26%), 0px 4px 6px -4px oklch(0 0 0 / 26%)",
+      "shadow-xl": "0px 20px 25px -5px oklch(0 0 0 / 30%), 0px 8px 10px -6px oklch(0 0 0 / 30%)",
+      "shadow-2xl": "0px 25px 50px -12px oklch(0 0 0 / 34%), 0px 12px 14px -8px oklch(0 0 0 / 34%)",
       "radius": "0.5rem",
       "tracking-normal": "0.025em"
     },
@@ -113,13 +113,13 @@
       "sidebar-accent-foreground": "oklch(0.985 0 0)",
       "sidebar-border": "oklch(0.281 0 0)",
       "sidebar-ring": "oklch(0.8 0.182 151.711)",
-      "shadow-2xs": "0px 1px 3px 0px oklch(0 0 0 / 9%)",
-      "shadow-xs": "0px 1px 3px 0px oklch(0 0 0 / 9%)",
+      "shadow-2xs": "0px 1px 1px 0px oklch(0 0 0 / 9%)",
+      "shadow-xs": "0px 1px 2px 0px oklch(0 0 0 / 9%)",
       "shadow-sm": "0px 1px 3px 0px oklch(0 0 0 / 17%), 0px 1px 2px -1px oklch(0 0 0 / 17%)",
-      "shadow-md": "0px 1px 3px 0px oklch(0 0 0 / 17%), 0px 2px 4px -1px oklch(0 0 0 / 17%)",
-      "shadow-lg": "0px 1px 3px 0px oklch(0 0 0 / 17%), 0px 4px 6px -1px oklch(0 0 0 / 17%)",
-      "shadow-xl": "0px 1px 3px 0px oklch(0 0 0 / 17%), 0px 8px 10px -1px oklch(0 0 0 / 17%)",
-      "shadow-2xl": "0px 1px 3px 0px oklch(0 0 0 / 43%)"
+      "shadow-md": "0px 4px 6px -1px oklch(0 0 0 / 21%), 0px 2px 4px -2px oklch(0 0 0 / 21%)",
+      "shadow-lg": "0px 10px 15px -3px oklch(0 0 0 / 26%), 0px 4px 6px -4px oklch(0 0 0 / 26%)",
+      "shadow-xl": "0px 20px 25px -5px oklch(0 0 0 / 30%), 0px 8px 10px -6px oklch(0 0 0 / 30%)",
+      "shadow-2xl": "0px 25px 50px -12px oklch(0 0 0 / 34%), 0px 12px 14px -8px oklch(0 0 0 / 34%)"
     }
   },
   "css": {
@@ -160,7 +160,7 @@
         "offsetY": "1px"
       }
     },
-    "contentHash": "7868e6fd17de"
+    "contentHash": "e9f6143e0e36"
   },
   "categories": [
     "theme"

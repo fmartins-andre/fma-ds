@@ -58,13 +58,13 @@
       "sidebar-accent-foreground": "oklch(0.301 0.057 282.418)",
       "sidebar-border": "oklch(0.911 0.022 285.962)",
       "sidebar-ring": "oklch(0.542 0.179 288.033)",
-      "shadow-2xs": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 6%)",
-      "shadow-xs": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 6%)",
-      "shadow-sm": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 1px 2px -1px oklch(0.316 0.067 281.836 / 12%)",
-      "shadow-md": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 2px 4px -1px oklch(0.316 0.067 281.836 / 12%)",
-      "shadow-lg": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 4px 6px -1px oklch(0.316 0.067 281.836 / 12%)",
-      "shadow-xl": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 8px 10px -1px oklch(0.316 0.067 281.836 / 12%)",
-      "shadow-2xl": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 30%)",
+      "shadow-2xs": "0px 4px 3.33px 0px oklch(0.316 0.067 281.836 / 6%)",
+      "shadow-xs": "0px 4px 6.67px 0px oklch(0.316 0.067 281.836 / 6%)",
+      "shadow-sm": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 4px 6.67px -1px oklch(0.316 0.067 281.836 / 12%)",
+      "shadow-md": "0px 7px 13px -1px oklch(0.316 0.067 281.836 / 15%), 0px 5px 11px -2px oklch(0.316 0.067 281.836 / 15%)",
+      "shadow-lg": "0px 13px 22px -3px oklch(0.316 0.067 281.836 / 18%), 0px 7px 13px -4px oklch(0.316 0.067 281.836 / 18%)",
+      "shadow-xl": "0px 23px 32px -5px oklch(0.316 0.067 281.836 / 21%), 0px 11px 17px -6px oklch(0.316 0.067 281.836 / 21%)",
+      "shadow-2xl": "0px 28px 57px -12px oklch(0.316 0.067 281.836 / 24%), 0px 15px 21px -8px oklch(0.316 0.067 281.836 / 24%)",
       "radius": "0.5rem"
     },
     "dark": {
@@ -110,13 +110,13 @@
       "sidebar-accent-foreground": "oklch(0.918 0.026 285.883)",
       "sidebar-border": "oklch(0.326 0.06 282.583)",
       "sidebar-ring": "oklch(0.716 0.16 290.396)",
-      "shadow-2xs": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 6%)",
-      "shadow-xs": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 6%)",
-      "shadow-sm": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 1px 2px -1px oklch(0.316 0.067 281.836 / 12%)",
-      "shadow-md": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 2px 4px -1px oklch(0.316 0.067 281.836 / 12%)",
-      "shadow-lg": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 4px 6px -1px oklch(0.316 0.067 281.836 / 12%)",
-      "shadow-xl": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 8px 10px -1px oklch(0.316 0.067 281.836 / 12%)",
-      "shadow-2xl": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 30%)"
+      "shadow-2xs": "0px 4px 3.33px 0px oklch(0.316 0.067 281.836 / 6%)",
+      "shadow-xs": "0px 4px 6.67px 0px oklch(0.316 0.067 281.836 / 6%)",
+      "shadow-sm": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 4px 6.67px -1px oklch(0.316 0.067 281.836 / 12%)",
+      "shadow-md": "0px 7px 13px -1px oklch(0.316 0.067 281.836 / 15%), 0px 5px 11px -2px oklch(0.316 0.067 281.836 / 15%)",
+      "shadow-lg": "0px 13px 22px -3px oklch(0.316 0.067 281.836 / 18%), 0px 7px 13px -4px oklch(0.316 0.067 281.836 / 18%)",
+      "shadow-xl": "0px 23px 32px -5px oklch(0.316 0.067 281.836 / 21%), 0px 11px 17px -6px oklch(0.316 0.067 281.836 / 21%)",
+      "shadow-2xl": "0px 28px 57px -12px oklch(0.316 0.067 281.836 / 24%), 0px 15px 21px -8px oklch(0.316 0.067 281.836 / 24%)"
     }
   },
   "css": {
@@ -156,7 +156,7 @@
         "offsetY": "4px"
       }
     },
-    "contentHash": "8e5928034702"
+    "contentHash": "789a39db3f28"
   },
   "categories": [
     "theme"

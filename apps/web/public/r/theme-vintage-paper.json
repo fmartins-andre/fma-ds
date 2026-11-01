@@ -59,13 +59,13 @@
       "sidebar-accent-foreground": "oklch(0.376 0.022 64.343)",
       "sidebar-border": "oklch(0.861 0.032 84.588)",
       "sidebar-ring": "oklch(0.618 0.078 65.544)",
-      "shadow-2xs": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 6%)",
-      "shadow-xs": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 6%)",
-      "shadow-sm": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 1px 2px -1px oklch(0.325 0.015 63.479 / 12%)",
-      "shadow-md": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 2px 4px -1px oklch(0.325 0.015 63.479 / 12%)",
-      "shadow-lg": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 4px 6px -1px oklch(0.325 0.015 63.479 / 12%)",
-      "shadow-xl": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 8px 10px -1px oklch(0.325 0.015 63.479 / 12%)",
-      "shadow-2xl": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 30%)",
+      "shadow-2xs": "2px 3px 1.67px 0px oklch(0.325 0.015 63.479 / 6%)",
+      "shadow-xs": "2px 3px 3.33px 0px oklch(0.325 0.015 63.479 / 6%)",
+      "shadow-sm": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 3px 3.33px -1px oklch(0.325 0.015 63.479 / 12%)",
+      "shadow-md": "2px 6px 8px -1px oklch(0.325 0.015 63.479 / 15%), 2px 4px 6px -2px oklch(0.325 0.015 63.479 / 15%)",
+      "shadow-lg": "2px 12px 17px -3px oklch(0.325 0.015 63.479 / 18%), 2px 6px 8px -4px oklch(0.325 0.015 63.479 / 18%)",
+      "shadow-xl": "2px 22px 27px -5px oklch(0.325 0.015 63.479 / 21%), 2px 10px 12px -6px oklch(0.325 0.015 63.479 / 21%)",
+      "shadow-2xl": "2px 27px 52px -12px oklch(0.325 0.015 63.479 / 24%), 2px 14px 16px -8px oklch(0.325 0.015 63.479 / 24%)",
       "radius": "0.25rem"
     },
     "dark": {
@@ -111,13 +111,13 @@
       "sidebar-accent-foreground": "oklch(0.924 0.019 83.064)",
       "sidebar-border": "oklch(0.38 0.018 57.128)",
       "sidebar-ring": "oklch(0.726 0.058 66.697)",
-      "shadow-2xs": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 6%)",
-      "shadow-xs": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 6%)",
-      "shadow-sm": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 1px 2px -1px oklch(0.325 0.015 63.479 / 12%)",
-      "shadow-md": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 2px 4px -1px oklch(0.325 0.015 63.479 / 12%)",
-      "shadow-lg": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 4px 6px -1px oklch(0.325 0.015 63.479 / 12%)",
-      "shadow-xl": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 8px 10px -1px oklch(0.325 0.015 63.479 / 12%)",
-      "shadow-2xl": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 30%)"
+      "shadow-2xs": "2px 3px 1.67px 0px oklch(0.325 0.015 63.479 / 6%)",
+      "shadow-xs": "2px 3px 3.33px 0px oklch(0.325 0.015 63.479 / 6%)",
+      "shadow-sm": "2px 3px 5px 0px oklch(0.325 0.015 63.479 / 12%), 2px 3px 3.33px -1px oklch(0.325 0.015 63.479 / 12%)",
+      "shadow-md": "2px 6px 8px -1px oklch(0.325 0.015 63.479 / 15%), 2px 4px 6px -2px oklch(0.325 0.015 63.479 / 15%)",
+      "shadow-lg": "2px 12px 17px -3px oklch(0.325 0.015 63.479 / 18%), 2px 6px 8px -4px oklch(0.325 0.015 63.479 / 18%)",
+      "shadow-xl": "2px 22px 27px -5px oklch(0.325 0.015 63.479 / 21%), 2px 10px 12px -6px oklch(0.325 0.015 63.479 / 21%)",
+      "shadow-2xl": "2px 27px 52px -12px oklch(0.325 0.015 63.479 / 24%), 2px 14px 16px -8px oklch(0.325 0.015 63.479 / 24%)"
     }
   },
   "css": {
@@ -159,7 +159,7 @@
         "offsetY": "3px"
       }
     },
-    "contentHash": "75d349aa4e4b"
+    "contentHash": "78fc0e3e0a68"
   },
   "categories": [
     "theme"

@@ -59,11 +59,11 @@
       "sidebar-ring": "oklch(0.709 0 0)",
       "shadow-2xs": "0px 1px 0px 0px oklch(0 0 0 / 0%)",
       "shadow-xs": "0px 1px 0px 0px oklch(0 0 0 / 0%)",
-      "shadow-sm": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 1px 2px -1px oklch(0 0 0 / 0%)",
-      "shadow-md": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 2px 4px -1px oklch(0 0 0 / 0%)",
-      "shadow-lg": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 4px 6px -1px oklch(0 0 0 / 0%)",
-      "shadow-xl": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 8px 10px -1px oklch(0 0 0 / 0%)",
-      "shadow-2xl": "0px 1px 0px 0px oklch(0 0 0 / 0%)",
+      "shadow-sm": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 1px 0px 0px oklch(0 0 0 / 0%)",
+      "shadow-md": "0px 4px 0px 0px oklch(0 0 0 / 0%), 0px 2px 0px 0px oklch(0 0 0 / 0%)",
+      "shadow-lg": "0px 10px 0px 0px oklch(0 0 0 / 0%), 0px 4px 0px 0px oklch(0 0 0 / 0%)",
+      "shadow-xl": "0px 20px 0px 0px oklch(0 0 0 / 0%), 0px 8px 0px 0px oklch(0 0 0 / 0%)",
+      "shadow-2xl": "0px 25px 0px 0px oklch(0 0 0 / 0%), 0px 12px 0px 0px oklch(0 0 0 / 0%)",
       "radius": "0rem"
     },
     "dark": {
@@ -111,11 +111,11 @@
       "sidebar-ring": "oklch(0.439 0 0)",
       "shadow-2xs": "0px 1px 0px 0px oklch(0 0 0 / 0%)",
       "shadow-xs": "0px 1px 0px 0px oklch(0 0 0 / 0%)",
-      "shadow-sm": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 1px 2px -1px oklch(0 0 0 / 0%)",
-      "shadow-md": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 2px 4px -1px oklch(0 0 0 / 0%)",
-      "shadow-lg": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 4px 6px -1px oklch(0 0 0 / 0%)",
-      "shadow-xl": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 8px 10px -1px oklch(0 0 0 / 0%)",
-      "shadow-2xl": "0px 1px 0px 0px oklch(0 0 0 / 0%)"
+      "shadow-sm": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 1px 0px 0px oklch(0 0 0 / 0%)",
+      "shadow-md": "0px 4px 0px 0px oklch(0 0 0 / 0%), 0px 2px 0px 0px oklch(0 0 0 / 0%)",
+      "shadow-lg": "0px 10px 0px 0px oklch(0 0 0 / 0%), 0px 4px 0px 0px oklch(0 0 0 / 0%)",
+      "shadow-xl": "0px 20px 0px 0px oklch(0 0 0 / 0%), 0px 8px 0px 0px oklch(0 0 0 / 0%)",
+      "shadow-2xl": "0px 25px 0px 0px oklch(0 0 0 / 0%), 0px 12px 0px 0px oklch(0 0 0 / 0%)"
     }
   },
   "css": {
@@ -151,7 +151,7 @@
         "offsetY": "1px"
       }
     },
-    "contentHash": "fc049daae33f"
+    "contentHash": "03a30e4768d5"
   },
   "categories": [
     "theme"
