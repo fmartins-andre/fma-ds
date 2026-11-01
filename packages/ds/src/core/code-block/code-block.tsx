@@ -27,19 +27,24 @@ import { Button } from "@/core/button/button";
 import { CopyButton } from "@/core/copy-button/copy-button";
 import type {
   CodeBlockDiffSpec,
+  CodeBlockHighlightOptions,
   CodeBlockLevelSpec,
   CodeBlockLine,
   CodeBlockLineActionsRender,
   CodeBlockLineSpec,
+  CodeBlockLineState,
+  CodeBlockPatchFile,
   CodeBlockThemes,
   CodeBlockToken,
   CodeBlockTransformer,
   CodeBlockWordSpec,
 } from "@/lib/code-block-highlight";
 import {
+  ansiToLines,
   highlightCode,
   markdownCodeProps,
   markdownFences,
+  parseUnifiedDiff,
   resolveCodeBlockLanguage,
   stripNotationComments,
   toPlainLines,
@@ -2089,13 +2094,10 @@ export type {
   CodeBlockToken,
   CodeBlockTransformer,
   CodeBlockWordSpec,
-} from "@/lib/code-block-highlight";
-export {
-  ansiToLines,
-  parseUnifiedDiff,
-} from "@/lib/code-block-highlight";
+};
 /* Re-exported so a consumer wires an AI transcript from one import path. */
 export {
+  ansiToLines,
   CodeBlock,
   CodeBlockContent,
   CodeBlockCopyButton,
@@ -2108,6 +2110,7 @@ export {
   CodeBlockWrapToggle,
   markdownCodeProps,
   markdownFences,
+  parseUnifiedDiff,
   useCodeBlockConfig,
   useCodeBlockFolding,
   useCodeBlockSelection,

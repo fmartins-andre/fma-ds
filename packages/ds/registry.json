@@ -717,7 +717,7 @@
           "shiki",
           "ai"
         ],
-        "contentHash": "9b7a5ad1c270"
+        "contentHash": "3b5018a4cb7b"
       }
     },
     {
@@ -845,6 +845,9 @@
       "dependencies": [
         "culori@^4.0.2"
       ],
+      "devDependencies": [
+        "@types/culori@^4.0.1"
+      ],
       "meta": {
         "status": "stable",
         "source": "original",
@@ -889,6 +892,9 @@
         "culori@^4.0.2",
         "lucide-react@^1.61.0",
         "react-aria-components@^1.22.1"
+      ],
+      "devDependencies": [
+        "@types/culori@^4.0.1"
       ],
       "meta": {
         "status": "stable",

@@ -7,6 +7,9 @@
   "dependencies": [
     "culori@^4.0.2"
   ],
+  "devDependencies": [
+    "@types/culori@^4.0.1"
+  ],
   "files": [
     {
       "path": "src/lib/color-contrast.ts",

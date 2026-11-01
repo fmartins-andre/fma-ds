@@ -64,7 +64,7 @@ apps/web/           → TanStack Start; serve public/r/<nome>.json (GERADO — n
 ## Dev container
 
 O ambiente de desenvolvimento esperado é o dev container em `.devcontainer/`. Provavelmente
-você está rodando dentro dele (`/workspaces/design-system`, usuário `node`).
+você está rodando dentro dele (`/workspaces/fma-ds`, usuário `node`).
 
 - **Imagem**: `mcr.microsoft.com/devcontainers/typescript-node:4-24-trixie` (Node 24, Debian
   trixie). Feature `github-cli` (comando `gh`; autenticar com `gh auth login`). pnpm vem do
@@ -156,12 +156,14 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    `detectRegistryDependencies` em `scripts/gen-registry-json.ts`). Não as declare à mão.
    Toda dependência npm importada por um componente precisa estar em
    `packages/ds/package.json#dependencies` (verificado por `tests/registry-dependencies.test.ts`).
+   O `@types/<dep>` que estiver em `devDependencies` vai junto, como `devDependencies` do item.
 5. **Imports nos componentes**: `cn` vem do pacote npm `cn` (`import { cn } from "cn"`);
    `src/lib/utils.ts` é só re-export. Outros componentes do registro via
    `@/core/<outro>/<outro>` ou `../<outro>/<outro>`. Libs em pasta são importadas por um
    arquivo (`@/lib/date-fns-compat/index`), nunca pela pasta: o CLI do shadcn só reescreve
    imports que nomeiam arquivos, e pelo nome, não pelo caminho: arquivo importado por alias precisa
-   de nome único no registro (`tests/registry-import-names.test.ts`). Variantes com
+   de nome único no registro, e `export ... from "@/..."` não é reescrito: importe e exporte em
+   separado (`tests/registry-import-names.test.ts`). Variantes com
    `class-variance-authority`.
    Ícones de `lucide-react`.
 6. **API react-aria**: os componentes seguem a API do react-aria-components, não a do Radix
