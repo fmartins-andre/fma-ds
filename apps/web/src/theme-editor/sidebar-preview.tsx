@@ -106,9 +106,18 @@ export function SidebarPreview() {
                     icon={<HomeIcon />}
                     isActive
                   />
-                  <AppSidebarItem title={t(($) => $.sidebar.models)} icon={<BotIcon />} isActive>
+                  <AppSidebarItem
+                    title={t(($) => $.sidebar.models)}
+                    icon={<BotIcon />}
+                    badge={{ label: t(($) => $.sidebar.new), variant: "outline" }}
+                    isActive
+                  >
                     <AppSidebarSubItem title="Genesis" href="/models/genesis" />
-                    <AppSidebarSubItem title="Explorer" href="/models/explorer" />
+                    <AppSidebarSubItem
+                      title="Explorer"
+                      href="/models/explorer"
+                      badge={{ label: t(($) => $.sidebar.beta), variant: "ghost" }}
+                    />
                   </AppSidebarItem>
                   <AppSidebarItem
                     title={t(($) => $.sidebar.docs)}
@@ -118,10 +127,12 @@ export function SidebarPreview() {
                     <AppSidebarSubItem
                       title={t(($) => $.sidebar.introduction)}
                       href="/docs/intro"
+                      badge={{ label: t(($) => $.sidebar.trial), variant: "primary" }}
                     />
                     <AppSidebarSubItem
                       title={t(($) => $.sidebar.changelog)}
                       href="/docs/changelog"
+                      badge={{ label: t(($) => $.sidebar.pro), variant: "invert" }}
                     />
                   </AppSidebarItem>
                   <AppSidebarItem title={t(($) => $.sidebar.settings)} icon={<Settings2Icon />}>
@@ -140,11 +151,13 @@ export function SidebarPreview() {
                     title={t(($) => $.sidebar.design)}
                     href="/projects/design"
                     icon={<FrameIcon />}
+                    badge={{ label: t(($) => $.sidebar.trial), variant: "primary" }}
                   />
                   <AppSidebarItem
                     title={t(($) => $.sidebar.travel)}
                     href="/projects/travel"
                     icon={<MapIcon />}
+                    badge={{ label: t(($) => $.sidebar.pro), variant: "invert" }}
                   />
                 </AppSidebarSection>
               </SidebarContent>
