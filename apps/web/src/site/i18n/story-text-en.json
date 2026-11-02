@@ -15,6 +15,7 @@
   "Pro": "Pro",
   "Novo": "New",
   "Beta": "Beta",
+  "Trial": "Trial",
   "IA": "AI",
   "Cancelado": "Cancelled",
   "Pendente": "Pending",
@@ -1005,5 +1006,9 @@
   "日間": "日間",
   "月": "月",
   "終日": "終日",
-  "週": "週"
+  "週": "週",
+  "Upgrade": "Upgrade",
+  "Workspace": "Workspace",
+  "Quantum": "Quantum",
+  "Admin": "Admin"
 }

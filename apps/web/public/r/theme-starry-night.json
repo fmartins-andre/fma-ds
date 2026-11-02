@@ -94,7 +94,7 @@
       "chart-5": "oklch(0.528 0.12 357.113)",
       "sidebar": "oklch(0.27 0.041 281.304)",
       "sidebar-foreground": "oklch(0.937 0.013 266.697)",
-      "sidebar-primary": "oklch(0.481 0.118 263.376)",
+      "sidebar-primary": "oklch(0.505 0.118 263.376)",
       "sidebar-primary-foreground": "oklch(0.91 0.144 95.112)",
       "sidebar-accent": "oklch(0.91 0.144 95.112)",
       "sidebar-accent-foreground": "oklch(0.27 0.041 281.304)",
@@ -115,7 +115,7 @@
       "gold",
       "serif"
     ],
-    "contentHash": "05d5bca938e3"
+    "contentHash": "a105489b6a43"
   },
   "categories": [
     "theme"

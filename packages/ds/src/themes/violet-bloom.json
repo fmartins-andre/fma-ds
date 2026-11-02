@@ -111,7 +111,7 @@
     "chart-5": "oklch(0.706 0 0)",
     "sidebar": "oklch(0.201 0.004 286.04)",
     "sidebar-foreground": "oklch(0.955 0 0)",
-    "sidebar-primary": "oklch(0.613 0.229 291.744)",
+    "sidebar-primary": "oklch(0.588 0.229 291.744)",
     "sidebar-primary-foreground": "oklch(1 0 0)",
     "sidebar-accent": "oklch(0.294 0.013 272.931)",
     "sidebar-accent-foreground": "oklch(0.613 0.229 291.744)",

@@ -14,13 +14,34 @@ import {
 import { useState } from "react";
 import { RouterProvider } from "react-aria-components";
 import { Trans, useTranslation } from "react-i18next";
-import { AppSidebar, type AppSidebarData } from "@/blocks/app-sidebar/app-sidebar";
+import {
+  AppSidebar,
+  AppSidebarItem,
+  AppSidebarSection,
+  AppSidebarSubItem,
+  AppSidebarTeam,
+  AppSidebarTeamSwitcher,
+  AppSidebarUser,
+} from "@/blocks/app-sidebar/app-sidebar";
 import { Badge } from "@/core/badge/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/core/card/card";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/core/sidebar/sidebar";
+import { DropdownMenuItem, DropdownMenuSeparator } from "@/core/dropdown-menu/dropdown-menu";
+import {
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/core/sidebar/sidebar";
 import { ToggleGroup, ToggleGroupItem } from "@/core/toggle-group/toggle-group";
 
 type Variant = "sidebar" | "floating" | "inset";
+
+const TEAMS = [
+  { name: "Acme Inc", plan: "Enterprise", logo: <GalleryVerticalEndIcon className="size-4" /> },
+  { name: "Acme Corp.", plan: "Startup", logo: <BuildingIcon className="size-4" /> },
+];
 
 // Links only move a "current page" marker; nothing leaves the editor.
 function useFakeRouter() {
@@ -32,58 +53,7 @@ export function SidebarPreview() {
   const [variant, setVariant] = useState<Variant>("sidebar");
   const { path, navigate } = useFakeRouter();
   const { t } = useTranslation("showcase");
-  const data: AppSidebarData = {
-    user: { name: "Ada Lovelace", email: "ada@example.com", avatar: "" },
-    teams: [
-      { name: "Acme Inc", plan: "Enterprise", logo: <GalleryVerticalEndIcon className="size-4" /> },
-      { name: "Acme Corp.", plan: "Startup", logo: <BuildingIcon className="size-4" /> },
-    ],
-    nav: [
-      {
-        title: t(($) => $.sidebar.platform),
-        items: [
-          { title: t(($) => $.sidebar.home), url: "/home", icon: <HomeIcon />, isActive: true },
-          {
-            title: t(($) => $.sidebar.models),
-            url: "/models",
-            icon: <BotIcon />,
-            isActive: true,
-            items: [
-              { title: "Genesis", url: "/models/genesis" },
-              { title: "Explorer", url: "/models/explorer" },
-            ],
-          },
-          {
-            title: t(($) => $.sidebar.docs),
-            url: "/docs",
-            icon: <BookOpenIcon />,
-            variant: "dropdown",
-            items: [
-              { title: t(($) => $.sidebar.introduction), url: "/docs/intro" },
-              { title: t(($) => $.sidebar.changelog), url: "/docs/changelog" },
-            ],
-          },
-          {
-            title: t(($) => $.sidebar.settings),
-            url: "/settings",
-            icon: <Settings2Icon />,
-            items: [
-              { title: t(($) => $.sidebar.general), url: "/settings/general" },
-              { title: t(($) => $.sidebar.billing), url: "/settings/billing" },
-            ],
-          },
-        ],
-      },
-      {
-        title: t(($) => $.sidebar.projects),
-        items: [
-          { title: t(($) => $.sidebar.design), url: "/projects/design", icon: <FrameIcon /> },
-          { title: t(($) => $.sidebar.travel), url: "/projects/travel", icon: <MapIcon /> },
-        ],
-      },
-    ],
-  };
-
+  const [team, setTeam] = useState(TEAMS[0] ?? { name: "", plan: "", logo: null });
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -120,7 +90,85 @@ export function SidebarPreview() {
       <div className="relative h-[620px] transform-gpu overflow-hidden rounded-xl border [&_[data-slot=sidebar-container]]:absolute! [&_[data-slot=sidebar-container]]:h-full!">
         <RouterProvider navigate={navigate}>
           <SidebarProvider className="h-full min-h-0">
-            <AppSidebar data={data} variant={variant} />
+            <AppSidebar variant={variant}>
+              <SidebarHeader>
+                <AppSidebarTeamSwitcher activeTeam={team}>
+                  {TEAMS.map((item) => (
+                    <AppSidebarTeam key={item.name} {...item} onAction={() => setTeam(item)} />
+                  ))}
+                </AppSidebarTeamSwitcher>
+              </SidebarHeader>
+              <SidebarContent>
+                <AppSidebarSection title={t(($) => $.sidebar.platform)}>
+                  <AppSidebarItem
+                    title={t(($) => $.sidebar.home)}
+                    href="/home"
+                    icon={<HomeIcon />}
+                    isActive
+                  />
+                  <AppSidebarItem
+                    title={t(($) => $.sidebar.models)}
+                    icon={<BotIcon />}
+                    badge={{ label: t(($) => $.sidebar.new), variant: "outline" }}
+                    isActive
+                  >
+                    <AppSidebarSubItem title="Genesis" href="/models/genesis" />
+                    <AppSidebarSubItem
+                      title="Explorer"
+                      href="/models/explorer"
+                      badge={{ label: t(($) => $.sidebar.beta), variant: "ghost" }}
+                    />
+                  </AppSidebarItem>
+                  <AppSidebarItem
+                    title={t(($) => $.sidebar.docs)}
+                    icon={<BookOpenIcon />}
+                    variant="dropdown"
+                  >
+                    <AppSidebarSubItem
+                      title={t(($) => $.sidebar.introduction)}
+                      href="/docs/intro"
+                      badge={{ label: t(($) => $.sidebar.trial), variant: "primary" }}
+                    />
+                    <AppSidebarSubItem
+                      title={t(($) => $.sidebar.changelog)}
+                      href="/docs/changelog"
+                      badge={{ label: t(($) => $.sidebar.pro), variant: "invert" }}
+                    />
+                  </AppSidebarItem>
+                  <AppSidebarItem title={t(($) => $.sidebar.settings)} icon={<Settings2Icon />}>
+                    <AppSidebarSubItem
+                      title={t(($) => $.sidebar.general)}
+                      href="/settings/general"
+                    />
+                    <AppSidebarSubItem
+                      title={t(($) => $.sidebar.billing)}
+                      href="/settings/billing"
+                    />
+                  </AppSidebarItem>
+                </AppSidebarSection>
+                <AppSidebarSection title={t(($) => $.sidebar.projects)}>
+                  <AppSidebarItem
+                    title={t(($) => $.sidebar.design)}
+                    href="/projects/design"
+                    icon={<FrameIcon />}
+                    badge={{ label: t(($) => $.sidebar.trial), variant: "primary" }}
+                  />
+                  <AppSidebarItem
+                    title={t(($) => $.sidebar.travel)}
+                    href="/projects/travel"
+                    icon={<MapIcon />}
+                    badge={{ label: t(($) => $.sidebar.pro), variant: "invert" }}
+                  />
+                </AppSidebarSection>
+              </SidebarContent>
+              <SidebarFooter>
+                <AppSidebarUser name="Ada Lovelace" email="ada@example.com">
+                  <DropdownMenuItem href="/account">{t(($) => $.sidebar.account)}</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem href="/logout">{t(($) => $.sidebar.logout)}</DropdownMenuItem>
+                </AppSidebarUser>
+              </SidebarFooter>
+            </AppSidebar>
             <SidebarInset className="min-w-0">
               <header className="flex h-12 items-center gap-2 border-b px-4">
                 <SidebarTrigger />

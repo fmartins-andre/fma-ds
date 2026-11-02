@@ -53,7 +53,7 @@
       "chart-5": "oklch(0.726 0.058 66.697)",
       "sidebar": "oklch(0.924 0.019 83.064)",
       "sidebar-foreground": "oklch(0.376 0.022 64.343)",
-      "sidebar-primary": "oklch(0.618 0.078 65.544)",
+      "sidebar-primary": "oklch(0.568 0.078 65.544)",
       "sidebar-primary-foreground": "oklch(1 0 0)",
       "sidebar-accent": "oklch(0.835 0.043 88.806)",
       "sidebar-accent-foreground": "oklch(0.376 0.022 64.343)",
@@ -159,7 +159,7 @@
         "offsetY": "3px"
       }
     },
-    "contentHash": "78fc0e3e0a68"
+    "contentHash": "72ab93977b80"
   },
   "categories": [
     "theme"

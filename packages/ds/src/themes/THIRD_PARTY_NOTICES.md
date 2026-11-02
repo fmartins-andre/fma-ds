@@ -6,7 +6,8 @@ presets (`utils/theme-presets.ts`), © tweakcn contributors, licensed under the 
 
 Changes made here: colors converted to oklch; tweakcn's `destructive-foreground` (text on solid
 destructive) replaced by this repo's meaning (text on a destructive tint) and derived from
-`destructive`; `info`, `success`, `warning` and `invert` tokens added; settings equal to
+`destructive`; `info`, `success`, `warning` and `invert` tokens added; `sidebar-primary` and its foreground
+adjusted where the pair fell short of AA or got lost on the sidebar; settings equal to
 tweakcn's defaults (system fonts, 0.25rem spacing, 0em tracking, default shadow) dropped so the
 theme leaves them alone.
 

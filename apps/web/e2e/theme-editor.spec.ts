@@ -249,3 +249,13 @@ test("previews the app-sidebar block inside its frame", async ({ page }) => {
   await expect(page.getByText("/models/genesis")).toBeVisible();
   await expect(page).toHaveURL(/\/themes/);
 });
+
+test("previews the app-sidebar badges in the sidebar and in a menu", async ({ page }) => {
+  await openEditor(page, "cosmic-night");
+  await page.getByRole("tab", { name: "Sidebar" }).click();
+  const sidebar = page.locator("[data-slot=sidebar-container]");
+  await expect(sidebar.locator("[data-slot=badge]")).toHaveText(["New", "Beta", "Trial", "Pro"]);
+
+  await sidebar.getByRole("button", { name: "Docs" }).click();
+  await expect(page.getByRole("menu").locator("[data-slot=badge]")).toHaveText(["Trial", "Pro"]);
+});

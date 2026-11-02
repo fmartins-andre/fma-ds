@@ -1,3 +1,4 @@
+import { appSidebarPtBR } from "@/blocks/app-sidebar/app-sidebar-i18n/app-sidebar-pt-BR";
 import { authPtBR } from "@/blocks/auth/auth-i18n/auth-pt-BR";
 import { collectionFieldPtBR } from "@/blocks/collection-field/collection-field-i18n/collection-field-pt-BR";
 import { errorPagesPtBR } from "@/blocks/error-pages/error-pages-i18n/error-pages-pt-BR";
@@ -39,6 +40,7 @@ import { useFileUploadPtBR } from "@/hooks/use-file-upload-i18n/use-file-upload-
 import { maskedInputPtBR } from "@/hooks/use-mask-i18n/use-mask-pt-BR";
 
 const ptBR = {
+  appSidebar: appSidebarPtBR,
   auth: authPtBR,
   breadcrumb: breadcrumbPtBR,
   calendar: calendarPtBR,

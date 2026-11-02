@@ -142,6 +142,12 @@ export const showcase = {
     note: "Tabs use muted for the list and background for the selected tab.",
   },
   sidebar: {
+    new: "New",
+    beta: "Beta",
+    trial: "Trial",
+    pro: "Pro",
+    account: "Account",
+    logout: "Log out",
     lead: "The <code>app-sidebar</code> block, styled by the <code>--sidebar-*</code> tokens.",
     variant: "Sidebar variant",
     sidebar: "Sidebar",
