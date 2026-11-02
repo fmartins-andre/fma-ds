@@ -43,14 +43,12 @@ const TEAMS_DATA: AppSidebarData = {
 
 const REPORTS: AppSidebarItemProps = {
   title: "Reports",
-  href: "/reports",
   icon: <ChartColumnIcon />,
   access: "blocked",
   badge: { label: "No access", icon: <LockIcon /> },
 };
 const AUDIT: AppSidebarItemProps = {
   title: "Audit",
-  href: "/audit",
   icon: <ShieldCheckIcon />,
   access: "blocked",
   badge: { label: "Coming soon" },
@@ -103,6 +101,7 @@ function AppShell({ defaultOpen, children }: { defaultOpen?: boolean; children: 
 }
 
 const navigate = fn();
+const onPress = fn();
 
 const componentMeta = {
   title: "blocks/AppSidebar",
@@ -796,5 +795,133 @@ export const ShouldUpdateSubItemTitleInOpenMenu: Story = {
       await within(menu).findByRole("menuitem", { name: "Inbox (1)" }),
     ).toBeInTheDocument();
     await userEvent.keyboard("{Escape}");
+  },
+};
+
+function MarkAsReadExample({ data }: { data: AppSidebarData }) {
+  const [unread, setUnread] = React.useState(3);
+  return (
+    <AppShell>
+      <AppSidebar data={data}>
+        <AppSidebarSection title="Workspace">
+          <AppSidebarItem
+            title="Mark all as read"
+            icon={<ScrollTextIcon />}
+            badge={{ label: String(unread), tone: "info" }}
+            onPress={() => setUnread(0)}
+          />
+        </AppSidebarSection>
+      </AppSidebar>
+    </AppShell>
+  );
+}
+
+/** `onPress` runs a function instead of going somewhere; `href` is only for links. */
+export const Actions: Story = {
+  render: (args) => <MarkAsReadExample data={args.data} />,
+  play: async ({ canvas }) => {
+    navigate.mockClear();
+    await userEvent.click(canvas.getByRole("button", { name: "Mark all as read 3" }));
+    await expect(canvas.getByRole("button", { name: "Mark all as read 0" })).toBeInTheDocument();
+    await expect(navigate).not.toHaveBeenCalled();
+  },
+};
+
+export const ShouldRunGatedItemAction: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <AppShell>
+      <AppSidebar {...args}>
+        <AppSidebarSection title="Workspace">
+          <AppSidebarItem
+            title="Automations"
+            access="gated"
+            badge={{ label: "Upgrade" }}
+            onPress={onPress}
+          />
+        </AppSidebarSection>
+      </AppSidebar>
+    </AppShell>
+  ),
+  play: async ({ canvas }) => {
+    onPress.mockClear();
+    await userEvent.click(canvas.getByRole("button", { name: "Automations Upgrade" }));
+    await expect(onPress).toHaveBeenCalledOnce();
+  },
+};
+
+export const ShouldNotRunBlockedItemAction: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <AppShell>
+      <AppSidebar {...args}>
+        <AppSidebarSection title="Workspace">
+          <AppSidebarItem
+            title="Automations"
+            access="blocked"
+            badge={{ label: "No access" }}
+            onPress={onPress}
+          />
+          <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
+            <AppSidebarSubItem
+              title="Quantum"
+              access="blocked"
+              badge={{ label: "Coming soon" }}
+              onPress={onPress}
+            />
+          </AppSidebarItem>
+        </AppSidebarSection>
+      </AppSidebar>
+    </AppShell>
+  ),
+  play: async ({ canvas }) => {
+    onPress.mockClear();
+    await userEvent.click(canvas.getByRole("button", { name: "Automations No access" }));
+    await userEvent.click(canvas.getByRole("button", { name: "Quantum Coming soon" }));
+    await expect(onPress).not.toHaveBeenCalled();
+  },
+};
+
+export const ShouldRunSubItemAction: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <AppShell>
+      <AppSidebar {...args}>
+        <AppSidebarSection title="Workspace">
+          <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
+            <AppSidebarSubItem title="Refresh" onPress={onPress} />
+          </AppSidebarItem>
+        </AppSidebarSection>
+      </AppSidebar>
+    </AppShell>
+  ),
+  play: async ({ canvas }) => {
+    onPress.mockClear();
+    await userEvent.click(canvas.getByRole("button", { name: "Refresh" }));
+    await expect(onPress).toHaveBeenCalledOnce();
+  },
+};
+
+export const ShouldRunDropdownItemAction: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <AppShell>
+      <AppSidebar {...args}>
+        <AppSidebarSection title="Workspace">
+          <AppSidebarItem title="Docs" icon={<BookOpenIcon />} variant="dropdown">
+            <AppSidebarSubItem title="Refresh" onPress={onPress} />
+          </AppSidebarItem>
+        </AppSidebarSection>
+      </AppSidebar>
+    </AppShell>
+  ),
+  play: async ({ canvas }) => {
+    onPress.mockClear();
+    navigate.mockClear();
+    await userEvent.click(canvas.getByRole("button", { name: "Docs" }));
+    const menu = await body().findByRole("menu", { name: "Docs" });
+    await userEvent.click(within(menu).getByRole("menuitem", { name: "Refresh" }));
+    await expect(onPress).toHaveBeenCalledOnce();
+    await expect(navigate).not.toHaveBeenCalled();
   },
 };

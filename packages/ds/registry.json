@@ -107,7 +107,7 @@
       "name": "app-sidebar",
       "type": "registry:block",
       "title": "App Sidebar",
-      "description": "An app-shell sidebar block, collapsible to icons: a team switcher (or a static logo), navigation sections and a user menu.\n\n`data` holds the user and the teams or logo. The menus are `children`, composed from `AppSidebarSection`, `AppSidebarItem` and `AppSidebarSubItem`. Render it inside a `SidebarProvider`.\n\n- **Sub-items**: expand inline (`variant=\"collapse\"`) or open a menu (`\"dropdown\"`, and always while collapsed to icons).\n- **Links**: react-aria `Link`s; wrap the app in `RouterProvider` for client-side routing.\n- **Menus**: `onTeamChange`, `onAddTeam` and `onUserAction` handle them.\n- **Access**: `access` is what an item does (`granted`, `blocked`, `gated`), `badge` says why, with the app's own text, and `external` opens it in a new tab. To hide an item, don't render it. `gated` is informative only: the item links to `href`, and the app must guard that route.\n- **Empty parents**: an item or section with no children isn't rendered. That's counted on direct children, so `{can && <Item />}` works, but a wrapper of yours that returns `null` still counts as one.",
+      "description": "An app-shell sidebar block, collapsible to icons: a team switcher (or a static logo), navigation sections and a user menu.\n\n`data` holds the user and the teams or logo. The menus are `children`, composed from `AppSidebarSection`, `AppSidebarItem` and `AppSidebarSubItem`. Render it inside a `SidebarProvider`.\n\n- **Sub-items**: expand inline (`variant=\"collapse\"`) or open a menu (`\"dropdown\"`, and always while collapsed to icons).\n- **Targets**: `href` is a link, to an app route or any URL, which `external` opens in a new tab; wrap the app in `RouterProvider` for client-side routing. `onPress` runs a function instead.\n- **Menus**: `onTeamChange`, `onAddTeam` and `onUserAction` handle them.\n- **Access**: `access` is what an item does (`granted`, `blocked`, `gated`), `badge` says why, with the app's own text, and `external` opens it in a new tab. To hide an item, don't render it. `gated` is informative only: the item follows its target, and the app must guard that route.\n- **Empty parents**: an item or section with no children isn't rendered. That's counted on direct children, so `{can && <Item />}` works, but a wrapper of yours that returns `null` still counts as one.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -172,7 +172,7 @@
           "navigation",
           "app-shell"
         ],
-        "contentHash": "17c0ccde7c96"
+        "contentHash": "43d464ddc435"
       }
     },
     {

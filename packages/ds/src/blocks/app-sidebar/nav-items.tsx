@@ -62,7 +62,7 @@ export function AppSidebarSection({ title, children }: AppSidebarSectionProps) {
 
 /**
  * With `children`, a `granted` item opens its sub-items, and isn't rendered without any. Any other
- * access ignores them: a `gated` item links to `href`, and a `blocked` one goes nowhere.
+ * access ignores them: a `gated` item follows its target, and a `blocked` one goes nowhere.
  */
 export function AppSidebarItem(props: AppSidebarItemProps) {
   const { isMobile, state } = useSidebar();
@@ -70,9 +70,7 @@ export function AppSidebarItem(props: AppSidebarItemProps) {
 
   const isGranted = (props.access ?? "granted") === "granted";
   // JSX passes `children` even when the only child is `undefined`: that's an empty parent.
-  if (!isGranted || (!("children" in props) && props.href !== undefined)) {
-    return <LeafItem {...props} />;
-  }
+  if (!isGranted || !("children" in props)) return <LeafItem {...props} />;
   if (isEmpty(props.children)) return null;
   // Icon-only sidebars have no room for inline sub-items.
   const variant = isIconCollapsed ? "dropdown" : (props.variant ?? "collapse");
@@ -83,19 +81,29 @@ export function AppSidebarItem(props: AppSidebarItemProps) {
   );
 }
 
-function LeafItem({ title, href, icon, isActive, external, access, badge }: AppSidebarItemProps) {
+function LeafItem({
+  title,
+  href,
+  onPress,
+  icon,
+  isActive,
+  external,
+  access,
+  badge,
+}: AppSidebarItemProps) {
   const externalLabel = React.useContext(ExternalLabelContext);
   const isBlocked = access === "blocked";
   const isCurrent = isActive && !isBlocked;
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
-        href={href ?? ""}
+        {...(href === undefined
+          ? { onPress }
+          : { href, ...externalLinkProps({ external, access }) })}
         isInactive={isBlocked}
         isActive={isCurrent}
         aria-current={isCurrent ? "page" : undefined}
         tooltip={itemLabel({ title, badge })}
-        {...externalLinkProps({ external, access })}
       >
         {icon}
         <span className="truncate">{title}</span>
@@ -176,6 +184,7 @@ function DropdownItem({
 export function AppSidebarSubItem({
   title,
   href,
+  onPress,
   icon,
   external,
   access,
@@ -202,10 +211,11 @@ export function AppSidebarSubItem({
     return (
       <SidebarMenuSubItem>
         <SidebarMenuSubButton
-          href={href}
+          {...(href === undefined
+            ? { onPress }
+            : { href, ...externalLinkProps({ external, access }) })}
           isInactive={isBlocked}
           className="w-full"
-          {...externalLinkProps({ external, access })}
         >
           {content}
         </SidebarMenuSubButton>
@@ -224,6 +234,7 @@ export function AppSidebarSubItem({
   ) : (
     <DropdownMenuItem
       href={href}
+      onAction={onPress}
       textValue={itemLabel({ title, badge })}
       {...externalLinkProps({ external, access })}
     >

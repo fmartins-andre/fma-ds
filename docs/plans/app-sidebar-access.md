@@ -7,7 +7,12 @@
 >   incompatível no bloco, que vai na descrição do PR.
 > - `access` passa a ter três valores: `granted`, `blocked` e `gated`. **`hidden` sai**: ocultar é JSX
 >   condicional na aplicação (`{can("x") && <AppSidebarItem ... />}`), e `visibleNav` deixa de existir.
-> - `url` vira `href`, como nos componentes da core. É opcional só em pai `granted`, que não navega; `access`, `badge`, `external`, `variant`, `icon` e `isActive` viram props, e o tipo mantém
+> - O destino de um item é `href` **ou** `onPress`, e o tipo impede os dois: `href` para rota interna ou
+>   URL externa, `external` só com `href`, e `onPress` para uma função, que vira botão e, no menu,
+>   `onAction`. `gated` aceita os dois, então pode abrir a ativação em um modal. `blocked` não exige
+>   destino e aceita os dois sem usá-los, para `access={can ? "granted" : "blocked"}` compilar. Pai
+>   `granted` também não exige, e ignora `href` e `onPress`, porque só expande.
+> - `url` vira `href`, como nos componentes da core; `access`, `badge`, `external`, `variant`, `icon` e `isActive` viram props, e o tipo mantém
 >   `badge` obrigatório em `blocked` e `gated`.
 > - `badge` continua sendo a prop `{ label, tone, icon }`, sem componente próprio. Assim o tooltip
 >   recolhido sempre tem o texto, e a ordem título, badge e seta não depende de quem compõe.
