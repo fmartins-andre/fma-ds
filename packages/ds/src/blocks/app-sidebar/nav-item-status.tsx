@@ -2,7 +2,7 @@ import { cn } from "cn";
 import { ExternalLinkIcon } from "lucide-react";
 import { Badge } from "@/core/badge/badge";
 import { externalLinkProps } from "./nav-access";
-import type { AppSidebarItemBadge, AppSidebarNavItem, AppSidebarNavSubItem } from "./types";
+import type { AppSidebarItemAccess, AppSidebarItemBadge } from "./types";
 
 // A sidebar can be as strong as the primary color, so a badge can't use the page's tints: each tone
 // is a pair that reads on any sidebar. `tests/app-sidebar-badge-contrast.test.ts` measures them.
@@ -34,9 +34,11 @@ export const TONE_DOT = {
 } as const;
 
 type NavItemStatusProps = {
-  item: AppSidebarNavItem | AppSidebarNavSubItem;
+  access?: AppSidebarItemAccess["access"];
+  badge?: AppSidebarItemBadge;
+  external?: boolean;
   /** Read after the title on an external link. */
-  externalLabel: string;
+  externalLabel?: string;
   /** Marks the item with a dot while the sidebar is collapsed to icons. */
   withDot?: boolean;
   /** Rendered in a menu, on the popover instead of the sidebar. */
@@ -48,17 +50,18 @@ type NavItemStatusProps = {
  * badge leaves the page when the sidebar collapses, and it would take the reason with it.
  */
 export function NavItemStatus({
-  item,
+  access,
+  badge,
+  external,
   externalLabel,
   withDot = false,
   inMenu = false,
 }: NavItemStatusProps) {
-  const { badge } = item;
-  const isExternal = externalLinkProps(item).target !== undefined;
+  const isExternal = externalLinkProps({ external, access }).target !== undefined;
   if (!badge && !isExternal) return null;
 
   const tone: NonNullable<AppSidebarItemBadge["tone"]> =
-    badge?.tone ?? (item.access === "gated" ? "primary" : "neutral");
+    badge?.tone ?? (access === "gated" ? "primary" : "neutral");
   return (
     <>
       {badge && <span className="sr-only">{` ${badge.label}`}</span>}

@@ -20,116 +20,74 @@ import {
 import { RouterProvider } from "react-aria-components";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/core/sidebar/sidebar";
-import { AppSidebar, type AppSidebarData } from "./app-sidebar";
+import {
+  AppSidebar,
+  type AppSidebarData,
+  AppSidebarItem,
+  type AppSidebarItemProps,
+  AppSidebarSection,
+  AppSidebarSubItem,
+} from "./app-sidebar";
 import meta from "./meta.json";
-
-const NAV: AppSidebarData["nav"] = [
-  {
-    title: "Platform",
-    items: [
-      { title: "Home", url: "/home", icon: <HomeIcon />, isActive: true },
-      {
-        title: "Models",
-        url: "/models",
-        icon: <BotIcon />,
-        isActive: true,
-        items: [
-          { title: "Genesis", url: "/models/genesis" },
-          { title: "Explorer", url: "/models/explorer" },
-        ],
-      },
-      {
-        title: "Docs",
-        url: "/docs",
-        icon: <BookOpenIcon />,
-        variant: "dropdown",
-        items: [
-          { title: "Introduction", url: "/docs/intro" },
-          { title: "Changelog", url: "/docs/changelog" },
-        ],
-      },
-      {
-        title: "Settings",
-        url: "/settings",
-        icon: <Settings2Icon />,
-        items: [
-          { title: "General", url: "/settings/general" },
-          { title: "Billing", url: "/settings/billing" },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Projects",
-    items: [{ title: "Design Engineering", url: "/projects/design", icon: <FrameIcon /> }],
-  },
-];
 
 const USER = { name: "Ada Lovelace", email: "ada@example.com", avatar: "" };
 
 const TEAMS_DATA: AppSidebarData = {
   user: USER,
-  nav: NAV,
   teams: [
     { name: "Acme Inc", plan: "Enterprise", logo: <GalleryVerticalEndIcon className="size-4" /> },
     { name: "Acme Corp.", plan: "Startup", logo: <BuildingIcon className="size-4" /> },
   ],
 };
 
-type NavItem = AppSidebarData["nav"][number]["items"][number];
-
-const REPORTS: NavItem = {
+const REPORTS: AppSidebarItemProps = {
   title: "Reports",
-  url: "/reports",
+  href: "/reports",
   icon: <ChartColumnIcon />,
   access: "blocked",
   badge: { label: "No access", icon: <LockIcon /> },
 };
-const AUDIT: NavItem = {
+const AUDIT: AppSidebarItemProps = {
   title: "Audit",
-  url: "/audit",
+  href: "/audit",
   icon: <ShieldCheckIcon />,
   access: "blocked",
   badge: { label: "Coming soon" },
   isActive: true,
 };
-const AUTOMATIONS: NavItem = {
+const AUTOMATIONS: AppSidebarItemProps = {
   title: "Automations",
-  url: "/automations",
+  href: "/automations",
   icon: <WorkflowIcon />,
   access: "gated",
   badge: { label: "Upgrade", icon: <SparklesIcon /> },
 };
-const INVOICES: NavItem = {
+const INVOICES: AppSidebarItemProps = {
   title: "Invoices",
-  url: "/invoices",
+  href: "/invoices",
   icon: <ReceiptIcon />,
   access: "gated",
   badge: { label: "Payment due", tone: "warning", icon: <TriangleAlertIcon /> },
 };
-const CHANGELOG: NavItem = {
+const CHANGELOG: AppSidebarItemProps = {
   title: "Changelog",
-  url: "/changelog",
+  href: "/changelog",
   icon: <ScrollTextIcon />,
   badge: { label: "New", tone: "info" },
 };
-const HELP: NavItem = {
+const HELP: AppSidebarItemProps = {
   title: "Help",
-  url: "https://example.com/help",
+  href: "https://example.com/help",
   icon: <CircleHelpIcon />,
   external: true,
 };
-const INTERNAL: NavItem = {
-  title: "Internal",
-  url: "/internal",
-  icon: <FrameIcon />,
-  access: "hidden",
-};
 
-const withItems = (...items: NavItem[]): AppSidebarData => ({
-  ...TEAMS_DATA,
-  nav: [{ title: "Workspace", items }],
-});
+const MODEL_SUB_ITEMS = (
+  <>
+    <AppSidebarSubItem title="Genesis" href="/models/genesis" />
+    <AppSidebarSubItem title="Explorer" href="/models/explorer" />
+  </>
+);
 
 const navigate = fn();
 
@@ -149,20 +107,42 @@ const componentMeta = {
   },
   // The router only lets the play functions assert on navigation; an app has its own.
   decorators: [
-    (Story) => (
+    (Story, { parameters }) => (
       <RouterProvider navigate={navigate}>
-        <Story />
+        <SidebarProvider
+          defaultOpen={parameters.sidebarDefaultOpen ?? true}
+          className="h-[560px] min-h-0"
+        >
+          <Story />
+          <SidebarInset className="p-4">
+            <SidebarTrigger />
+            <p className="mt-4 text-sm text-muted-foreground">Page content goes here.</p>
+          </SidebarInset>
+        </SidebarProvider>
       </RouterProvider>
     ),
   ],
   render: (args) => (
-    <SidebarProvider className="h-[560px] min-h-0">
-      <AppSidebar {...args} />
-      <SidebarInset className="p-4">
-        <SidebarTrigger />
-        <p className="mt-4 text-sm text-muted-foreground">Page content goes here.</p>
-      </SidebarInset>
-    </SidebarProvider>
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Platform">
+        <AppSidebarItem title="Home" href="/home" icon={<HomeIcon />} isActive />
+        <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
+          <AppSidebarSubItem title="Genesis" href="/models/genesis" />
+          <AppSidebarSubItem title="Explorer" href="/models/explorer" />
+        </AppSidebarItem>
+        <AppSidebarItem title="Docs" icon={<BookOpenIcon />} variant="dropdown">
+          <AppSidebarSubItem title="Introduction" href="/docs/intro" />
+          <AppSidebarSubItem title="Changelog" href="/docs/changelog" />
+        </AppSidebarItem>
+        <AppSidebarItem title="Settings" icon={<Settings2Icon />}>
+          <AppSidebarSubItem title="General" href="/settings/general" />
+          <AppSidebarSubItem title="Billing" href="/settings/billing" />
+        </AppSidebarItem>
+      </AppSidebarSection>
+      <AppSidebarSection title="Projects">
+        <AppSidebarItem title="Design Engineering" href="/projects/design" icon={<FrameIcon />} />
+      </AppSidebarSection>
+    </AppSidebar>
   ),
 } satisfies Meta<typeof AppSidebar>;
 
@@ -257,7 +237,6 @@ export const WithLogo: Story = {
   args: {
     data: {
       user: USER,
-      nav: NAV,
       logo: {
         full: <span className="text-base font-semibold">fma-ds</span>,
         collapsed: <span className="text-base font-semibold">f</span>,
@@ -272,34 +251,109 @@ export const WithLogo: Story = {
 
 /** `blocked` keeps the item visible and focusable, but it goes nowhere; the badge says why. */
 export const Blocked: Story = {
-  args: { data: withItems(REPORTS, AUDIT) },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...REPORTS} />
+        <AppSidebarItem {...AUDIT} />
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
 };
 
-/** `gated` is a normal link: point `url` at the page that resolves it, and guard that route. */
+/** `gated` is a normal link: point `href` at the page that resolves it, and guard that route. */
 export const Gated: Story = {
-  args: { data: withItems(AUTOMATIONS, INVOICES) },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...AUTOMATIONS} />
+        <AppSidebarItem {...INVOICES} />
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
 };
 
 /** A `badge` alone doesn't change what the item does. */
 export const Badges: Story = {
-  args: {
-    data: withItems(CHANGELOG, {
-      title: "Assistant",
-      url: "/assistant",
-      icon: <BotIcon />,
-      badge: { label: "Beta" },
-    }),
-  },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...CHANGELOG} />
+        <AppSidebarItem
+          title="Assistant"
+          href="/assistant"
+          icon={<BotIcon />}
+          badge={{ label: "Beta" }}
+        />
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
 };
 
 /** `external` opens the link in a new tab and says so. */
 export const ExternalLink: Story = {
-  args: { data: withItems(HELP) },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...HELP} />
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
+};
+
+/** Collapsed to icons, a dot marks the item and the tooltip gives the reason. */
+export const CollapsedAccess: Story = {
+  parameters: { sidebarDefaultOpen: false },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...REPORTS} />
+        <AppSidebarItem {...AUDIT} />
+        <AppSidebarItem {...AUTOMATIONS} />
+        <AppSidebarItem {...INVOICES} />
+        <AppSidebarItem {...CHANGELOG} />
+        <AppSidebarItem {...HELP} />
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
+};
+
+/** Only a `granted` parent opens its sub-items, and each of them has its own state. */
+export const AccessCombinations: Story = {
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem
+          title="Models"
+          icon={<BotIcon />}
+          isActive
+          badge={{ label: "New", tone: "info" }}
+        >
+          <AppSidebarSubItem title="Genesis" href="/models/genesis" />
+          <AppSidebarSubItem
+            title="Quantum"
+            href="/models/quantum"
+            access="blocked"
+            badge={{ label: "Coming soon" }}
+          />
+          <AppSidebarSubItem
+            title="Explorer"
+            href="/models/explorer"
+            access="gated"
+            badge={{ label: "Upgrade" }}
+          />
+        </AppSidebarItem>
+        <AppSidebarItem {...AUTOMATIONS}>{MODEL_SUB_ITEMS}</AppSidebarItem>
+        <AppSidebarItem {...REPORTS}>{MODEL_SUB_ITEMS}</AppSidebarItem>
+        <AppSidebarItem {...HELP} />
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
 };
 
 export const ShouldNotNavigateBlockedItem: Story = {
+  ...Blocked,
   tags: ["!autodocs"],
-  args: { data: withItems(REPORTS, AUDIT) },
   play: async ({ canvas }) => {
     navigate.mockClear();
     const reports = canvas.getByRole("button", { name: "Reports No access" });
@@ -307,7 +361,7 @@ export const ShouldNotNavigateBlockedItem: Story = {
     await userEvent.click(reports);
     await expect(navigate).not.toHaveBeenCalled();
 
-    // A page you can't open isn't the current one, even if the data says so.
+    // A page you can't open isn't the current one, even if the app says so.
     const audit = canvas.getByRole("button", { name: "Audit Coming soon" });
     await expect(audit).not.toHaveAttribute("aria-current");
     await expect(audit).toHaveAttribute("data-active", "false");
@@ -315,8 +369,8 @@ export const ShouldNotNavigateBlockedItem: Story = {
 };
 
 export const ShouldNavigateGatedItem: Story = {
+  ...Gated,
   tags: ["!autodocs"],
-  args: { data: withItems(AUTOMATIONS) },
   play: async ({ canvas }) => {
     navigate.mockClear();
     await userEvent.click(canvas.getByRole("link", { name: "Automations Upgrade" }));
@@ -324,18 +378,66 @@ export const ShouldNavigateGatedItem: Story = {
   },
 };
 
-export const ShouldHideHiddenItem: Story = {
+const isAllowed = false as boolean;
+
+export const ShouldSkipConditionalItems: Story = {
   tags: ["!autodocs"],
-  args: { data: withItems(CHANGELOG, INTERNAL) },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...CHANGELOG} />
+        {isAllowed && <AppSidebarItem title="Internal" href="/internal" />}
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     await expect(canvas.getByRole("link", { name: "Changelog New" })).toBeInTheDocument();
     await expect(canvas.queryByText("Internal")).toBeNull();
   },
 };
 
-export const ShouldOpenExternalLink: Story = {
+export const ShouldDropEmptyParent: Story = {
   tags: ["!autodocs"],
-  args: { data: withItems(HELP) },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...CHANGELOG} />
+        <AppSidebarItem title="Models" icon={<BotIcon />}>
+          {isAllowed && <AppSidebarSubItem title="Genesis" href="/models/genesis" />}
+        </AppSidebarItem>
+        <AppSidebarItem title="Docs" icon={<BookOpenIcon />}>
+          {isAllowed ? <AppSidebarSubItem title="Intro" href="/docs/intro" /> : undefined}
+        </AppSidebarItem>
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.queryByText("Models")).toBeNull();
+    await expect(canvas.queryByText("Docs")).toBeNull();
+  },
+};
+
+export const ShouldDropEmptySection: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...CHANGELOG} />
+      </AppSidebarSection>
+      <AppSidebarSection title="Admin">
+        {isAllowed && <AppSidebarItem title="Internal" href="/internal" />}
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Workspace")).toBeInTheDocument();
+    await expect(canvas.queryByText("Admin")).toBeNull();
+  },
+};
+
+export const ShouldOpenExternalLink: Story = {
+  ...ExternalLink,
+  tags: ["!autodocs"],
   play: async ({ canvas }) => {
     navigate.mockClear();
     const help = canvas.getByRole("link", { name: "Help opens in new tab" });
@@ -348,25 +450,27 @@ export const ShouldOpenExternalLink: Story = {
   },
 };
 
+const blockedSubItem = (
+  <AppSidebarSubItem
+    title="Quantum"
+    href="/models/quantum"
+    access="blocked"
+    badge={{ label: "Coming soon" }}
+  />
+);
+
 export const ShouldShowBlockedSubItem: Story = {
   tags: ["!autodocs"],
-  args: {
-    data: withItems({
-      title: "Models",
-      url: "/models",
-      icon: <BotIcon />,
-      isActive: true,
-      items: [
-        { title: "Genesis", url: "/models/genesis" },
-        {
-          title: "Quantum",
-          url: "/models/quantum",
-          access: "blocked",
-          badge: { label: "Coming soon" },
-        },
-      ],
-    }),
-  },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
+          <AppSidebarSubItem title="Genesis" href="/models/genesis" />
+          {blockedSubItem}
+        </AppSidebarItem>
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     navigate.mockClear();
     const quantum = canvas.getByRole("button", { name: "Quantum Coming soon" });
@@ -376,61 +480,15 @@ export const ShouldShowBlockedSubItem: Story = {
   },
 };
 
-const PARENT_ITEMS = [
-  { title: "Genesis", url: "/models/genesis" },
-  { title: "Explorer", url: "/models/explorer" },
-];
-
-/** Collapsed to icons, a dot marks the item and the tooltip gives the reason. */
-export const CollapsedAccess: Story = {
-  args: { data: withItems(REPORTS, AUDIT, AUTOMATIONS, INVOICES, CHANGELOG, HELP) },
-  render: (args) => (
-    <SidebarProvider defaultOpen={false} className="h-[560px] min-h-0">
-      <AppSidebar {...args} />
-      <SidebarInset className="p-4">
-        <SidebarTrigger />
-        <p className="mt-4 text-sm text-muted-foreground">Page content goes here.</p>
-      </SidebarInset>
-    </SidebarProvider>
-  ),
-};
-
-/** Only a `granted` parent opens its sub-items, and each of them has its own state. */
-export const AccessCombinations: Story = {
-  args: {
-    data: withItems(
-      {
-        title: "Models",
-        url: "/models",
-        icon: <BotIcon />,
-        isActive: true,
-        badge: { label: "New", tone: "info" },
-        items: [
-          { title: "Genesis", url: "/models/genesis" },
-          {
-            title: "Quantum",
-            url: "/models/quantum",
-            access: "blocked",
-            badge: { label: "Coming soon" },
-          },
-          {
-            title: "Explorer",
-            url: "/models/explorer",
-            access: "gated",
-            badge: { label: "Upgrade" },
-          },
-        ],
-      },
-      { ...AUTOMATIONS, items: PARENT_ITEMS },
-      { ...REPORTS, items: PARENT_ITEMS },
-      HELP,
-    ),
-  },
-};
-
 export const ShouldNotExpandGatedParent: Story = {
   tags: ["!autodocs"],
-  args: { data: withItems({ ...AUTOMATIONS, items: PARENT_ITEMS }) },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...AUTOMATIONS}>{MODEL_SUB_ITEMS}</AppSidebarItem>
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     navigate.mockClear();
     await userEvent.click(canvas.getByRole("link", { name: "Automations Upgrade" }));
@@ -440,9 +498,8 @@ export const ShouldNotExpandGatedParent: Story = {
 };
 
 export const ShouldNotOpenGatedParentWhileCollapsed: Story = {
-  tags: ["!autodocs"],
-  args: { data: withItems({ ...AUTOMATIONS, items: PARENT_ITEMS }) },
-  render: CollapsedAccess.render,
+  ...ShouldNotExpandGatedParent,
+  parameters: { sidebarDefaultOpen: false },
   play: async ({ canvas }) => {
     navigate.mockClear();
     await userEvent.click(canvas.getByRole("link", { name: "Automations Upgrade" }));
@@ -453,7 +510,13 @@ export const ShouldNotOpenGatedParentWhileCollapsed: Story = {
 
 export const ShouldNotExpandBlockedParent: Story = {
   tags: ["!autodocs"],
-  args: { data: withItems({ ...REPORTS, items: PARENT_ITEMS }) },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...REPORTS}>{MODEL_SUB_ITEMS}</AppSidebarItem>
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     const reports = canvas.getByRole("button", { name: "Reports No access" });
     await expect(reports).not.toHaveAttribute("aria-expanded");
@@ -464,15 +527,15 @@ export const ShouldNotExpandBlockedParent: Story = {
 
 export const ShouldExpandGrantedParentWithBadge: Story = {
   tags: ["!autodocs"],
-  args: {
-    data: withItems({
-      title: "Models",
-      url: "/models",
-      icon: <BotIcon />,
-      badge: { label: "New", tone: "info" },
-      items: PARENT_ITEMS,
-    }),
-  },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem title="Models" icon={<BotIcon />} badge={{ label: "New", tone: "info" }}>
+          {MODEL_SUB_ITEMS}
+        </AppSidebarItem>
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     const models = canvas.getByRole("button", { name: "Models New" });
     await expect(models).toHaveAttribute("aria-expanded", "false");
@@ -491,18 +554,21 @@ export const ShouldExpandGrantedParentWithBadge: Story = {
 
 export const ShouldReachBlockedDropdownItem: Story = {
   tags: ["!autodocs"],
-  args: {
-    data: withItems({
-      title: "Docs",
-      url: "/docs",
-      icon: <BookOpenIcon />,
-      variant: "dropdown",
-      items: [
-        { title: "Introduction", url: "/docs/intro" },
-        { title: "Audit", url: "/docs/audit", access: "blocked", badge: { label: "Coming soon" } },
-      ],
-    }),
-  },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem title="Docs" icon={<BookOpenIcon />} variant="dropdown">
+          <AppSidebarSubItem title="Introduction" href="/docs/intro" />
+          <AppSidebarSubItem
+            title="Audit"
+            href="/docs/audit"
+            access="blocked"
+            badge={{ label: "Coming soon" }}
+          />
+        </AppSidebarItem>
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     navigate.mockClear();
     await userEvent.click(canvas.getByRole("button", { name: "Docs" }));
@@ -525,8 +591,14 @@ export const ShouldReachBlockedDropdownItem: Story = {
 
 export const ShouldShowReasonInCollapsedTooltip: Story = {
   tags: ["!autodocs"],
-  args: { data: withItems(REPORTS) },
-  render: CollapsedAccess.render,
+  parameters: { sidebarDefaultOpen: false },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...REPORTS} />
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     const reports = canvas.getByRole("button", { name: "Reports No access" });
     for (let tabs = 0; tabs < 10 && document.activeElement !== reports; tabs++) {
@@ -539,15 +611,15 @@ export const ShouldShowReasonInCollapsedTooltip: Story = {
 
 export const ShouldSizeExternalSubItemIcon: Story = {
   tags: ["!autodocs"],
-  args: {
-    data: withItems({
-      title: "Models",
-      url: "/models",
-      icon: <BotIcon />,
-      isActive: true,
-      items: [{ title: "Help", url: "https://example.com/help", external: true }],
-    }),
-  },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
+          <AppSidebarSubItem title="Help" href="https://example.com/help" external />
+        </AppSidebarItem>
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     const help = canvas.getByRole("link", { name: "Help opens in new tab" });
     const icon = help.querySelector("svg");
@@ -558,15 +630,15 @@ export const ShouldSizeExternalSubItemIcon: Story = {
 
 export const ShouldNotAnnounceExternalOnExpandableParent: Story = {
   tags: ["!autodocs"],
-  args: {
-    data: withItems({
-      title: "Models",
-      url: "/models",
-      icon: <BotIcon />,
-      external: true,
-      items: PARENT_ITEMS,
-    }),
-  },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem title="Models" href="/models" icon={<BotIcon />} external>
+          {MODEL_SUB_ITEMS}
+        </AppSidebarItem>
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     await expect(canvas.getByRole("button", { name: "Models" })).toBeInTheDocument();
   },
@@ -574,15 +646,15 @@ export const ShouldNotAnnounceExternalOnExpandableParent: Story = {
 
 export const ShouldOpenExternalDropdownItem: Story = {
   tags: ["!autodocs"],
-  args: {
-    data: withItems({
-      title: "Docs",
-      url: "/docs",
-      icon: <BookOpenIcon />,
-      variant: "dropdown",
-      items: [{ title: "Help", url: "https://example.com/help", external: true }],
-    }),
-  },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem title="Docs" icon={<BookOpenIcon />} variant="dropdown">
+          <AppSidebarSubItem title="Help" href="https://example.com/help" external />
+        </AppSidebarItem>
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Docs" }));
     const menu = await body().findByRole("menu", { name: "Docs" });
@@ -595,25 +667,16 @@ export const ShouldOpenExternalDropdownItem: Story = {
 
 export const ShouldAlignSubItemsWithParent: Story = {
   tags: ["!autodocs"],
-  args: {
-    data: withItems(
-      {
-        title: "Models",
-        url: "/models",
-        icon: <BotIcon />,
-        isActive: true,
-        items: [
-          {
-            title: "Quantum",
-            url: "/models/quantum",
-            access: "blocked",
-            badge: { label: "Coming soon" },
-          },
-        ],
-      },
-      AUTOMATIONS,
-    ),
-  },
+  render: (args) => (
+    <AppSidebar {...args}>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
+          {blockedSubItem}
+        </AppSidebarItem>
+        <AppSidebarItem {...AUTOMATIONS} />
+      </AppSidebarSection>
+    </AppSidebar>
+  ),
   play: async ({ canvas }) => {
     const right = (element: Element) => element.getBoundingClientRect().right;
     const parent = canvas.getByRole("button", { name: "Models" });

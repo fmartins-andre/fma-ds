@@ -1,8 +1,9 @@
 import type * as React from "react";
 
 /**
- * Data contract for the `app-sidebar` block: adding or removing a team,
- * section, item or sub-item is a change to this data, not to the block.
+ * Contract of the `app-sidebar` block: teams and the user are data, and the
+ * menus are composed from `AppSidebarSection`, `AppSidebarItem` and
+ * `AppSidebarSubItem`.
  */
 
 export type AppSidebarUser = {
@@ -40,56 +41,57 @@ export type AppSidebarItemBadge = {
 };
 
 /**
- * What the item does; `badge` says why.
+ * What the item does; `badge` says why. To hide an item, don't render it.
  * - `granted` (default): a normal link.
- * - `hidden`: not rendered.
  * - `blocked`: visible and focusable, goes nowhere. Requires a badge with the reason.
- * - `gated`: a normal link to `url`, which the app points at the page that resolves it (activate,
+ * - `gated`: a normal link to `href`, which the app points at the page that resolves it (activate,
  *   upgrade, pay). Informative only: the app must guard the route.
  */
 export type AppSidebarItemAccess =
   | { access?: "granted"; badge?: AppSidebarItemBadge }
-  | { access: "hidden"; badge?: never }
   | { access: "blocked" | "gated"; badge: AppSidebarItemBadge };
+
+export type AppSidebarSectionProps = {
+  title: string;
+  children?: React.ReactNode;
+};
 
 /**
  * Links are react-aria `Link`s: wrap the app in react-aria's `RouterProvider`
  * to route them client-side. `external` opens one in a new tab instead.
  */
-export type AppSidebarNavSubItem = {
+export type AppSidebarSubItemProps = {
   title: string;
-  url: string;
+  href: string;
   icon?: React.ReactNode;
   external?: boolean;
 } & AppSidebarItemAccess;
 
 /**
- * `variant` picks how an item with sub-items opens: `"collapse"` (default)
- * expands them inline, `"dropdown"` opens a menu beside the item. While the
- * sidebar is collapsed to icons every item uses the dropdown.
+ * `variant` picks how a `granted` item opens its `children`: `"collapse"` (default) expands them
+ * inline, `"dropdown"` opens a menu beside the item. While the sidebar is collapsed to icons every
+ * item uses the dropdown. Only that item, which doesn't navigate, can leave out `href`.
  */
-export type AppSidebarNavItem = {
+export type AppSidebarItemProps = {
   title: string;
-  url: string;
   icon?: React.ReactNode;
   /** Marks the current page and starts a collapse item expanded. */
   isActive?: boolean;
   external?: boolean;
   variant?: "collapse" | "dropdown";
-  /** Only a `granted` item opens them; any other access renders it as a plain item. */
-  items?: AppSidebarNavSubItem[];
-} & AppSidebarItemAccess;
-
-/** A sidebar section, rendered as a `SidebarGroup`. */
-export type AppSidebarNavSection = {
-  title: string;
-  items: AppSidebarNavItem[];
-};
+} & AppSidebarItemAccess &
+  (
+    | { href: string; children?: React.ReactNode }
+    | { href?: undefined; access?: "granted"; children: React.ReactNode }
+  );
 
 export type AppSidebarData = {
   user: AppSidebarUser;
-  nav: AppSidebarNavSection[];
 } & AppSidebarBranding;
+
+export type AppSidebarConfig = {
+  labels: { opensInNewTab: string };
+};
 
 /** Ids of the entries in the user menu, passed to `onUserAction`. */
 export type AppSidebarUserAction = "upgrade" | "account" | "billing" | "notifications" | "logout";

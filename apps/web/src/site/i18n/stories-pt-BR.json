@@ -287,7 +287,7 @@
   "`foldable` folds by indentation; nested regions keep their state under a folded parent.": "`foldable` dobra por indentação; regiões aninhadas mantêm seu estado sob um pai dobrado.",
   "`footerContent` renders footer rows (`<tfoot>`), here a count spanning the columns.": "`footerContent` renderiza linhas de rodapé (`<tfoot>`), aqui uma contagem que cobre as colunas.",
   "`full` makes the tile circular.": "`full` deixa o bloco circular.",
-  "`gated` is a normal link: point `url` at the page that resolves it, and guard that route.": "`gated` é um link normal: aponte `url` para a página que resolve a situação e proteja essa rota.",
+  "`gated` is a normal link: point `href` at the page that resolves it, and guard that route.": "`gated` é um link normal: aponte `href` para a página que resolve a situação e proteja essa rota.",
   "`getFileType` resolves a name, path, URL or MIME type; `getFileTypeCategory` gives the family.": "`getFileType` resolve um nome, caminho, URL ou tipo MIME; `getFileTypeCategory` dá a família.",
   "`highlight={false}` renders plain text and never loads shiki.": "`highlight={false}` renderiza texto simples e nunca carrega o shiki.",
   "`hourCycle={12}` lists 12, 01 to 11 for the half of the day on screen and adds an AM/PM column.": "`hourCycle={12}` lista 12 e de 01 a 11 para a metade do dia na tela e adiciona uma coluna AM/PM.",

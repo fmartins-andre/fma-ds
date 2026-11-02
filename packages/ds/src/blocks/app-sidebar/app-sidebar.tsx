@@ -8,26 +8,16 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/core/sidebar/sidebar";
-import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
-import { visibleNav } from "./nav-access";
-import { NavSection } from "./nav-section";
+import { useFmaMessages } from "@/lib/i18n/i18n";
+import { appSidebarEn, ExternalLabelContext } from "./nav-items";
 import { NavUser } from "./nav-user";
 import { TeamSwitcher } from "./team-switcher";
-import type { AppSidebarData, AppSidebarTeam, AppSidebarUserAction } from "./types";
-
-type AppSidebarConfig = {
-  labels: { opensInNewTab: string };
-};
-
-declare global {
-  interface FmaNamespaces {
-    appSidebar: AppSidebarConfig;
-  }
-}
-
-export const appSidebarEn: DictionaryNamespace<AppSidebarConfig> = {
-  labels: { opensInNewTab: "opens in new tab" },
-};
+import type {
+  AppSidebarConfig,
+  AppSidebarData,
+  AppSidebarTeam,
+  AppSidebarUserAction,
+} from "./types";
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   data: AppSidebarData;
@@ -40,8 +30,8 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 
 /**
  * App-shell sidebar (shadcn "sidebar-07"): collapsible to icons, with a team
- * switcher or logo, one section per `data.nav` entry and a user menu.
- * Render it inside a `SidebarProvider`.
+ * switcher or logo, the menus composed in `children` and a user menu. Render it
+ * inside a `SidebarProvider`.
  */
 export function AppSidebar({
   data,
@@ -49,6 +39,7 @@ export function AppSidebar({
   onAddTeam,
   onUserAction,
   i18n,
+  children,
   ...props
 }: AppSidebarProps) {
   const { labels } = useFmaMessages("appSidebar", appSidebarEn, i18n);
@@ -63,9 +54,9 @@ export function AppSidebar({
         />
       </SidebarHeader>
       <SidebarContent>
-        {visibleNav(data.nav).map((section) => (
-          <NavSection key={section.title} section={section} externalLabel={labels.opensInNewTab} />
-        ))}
+        <ExternalLabelContext.Provider value={labels.opensInNewTab}>
+          {children}
+        </ExternalLabelContext.Provider>
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} onAction={onUserAction} />
@@ -75,5 +66,6 @@ export function AppSidebar({
   );
 }
 
+export { AppSidebarItem, AppSidebarSection, AppSidebarSubItem, appSidebarEn } from "./nav-items";
 export type * from "./types";
 export type { AppSidebarProps };
