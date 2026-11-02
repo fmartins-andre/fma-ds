@@ -357,3 +357,16 @@ export const Long = {};
     });
   });
 });
+
+describe("app-sidebar examples", () => {
+  const file = readFileSync(join(SRC, "blocks/app-sidebar/app-sidebar.stories.tsx"), "utf8");
+  const snippets = storySnippets(file, "app-sidebar", "blocks");
+
+  it.each(Object.entries(snippets))("%s renders inside a SidebarProvider", (_name, code) => {
+    expect(code).toContain("<SidebarProvider");
+  });
+
+  it("shows the collapsed example collapsed", () => {
+    expect(snippets.CollapsedAccess).toContain("defaultOpen={false}");
+  });
+});

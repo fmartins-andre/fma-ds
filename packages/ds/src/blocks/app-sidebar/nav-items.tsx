@@ -69,7 +69,8 @@ export function AppSidebarItem(props: AppSidebarItemProps) {
   const isIconCollapsed = state === "collapsed" && !isMobile;
 
   const isGranted = (props.access ?? "granted") === "granted";
-  if (!isGranted || (props.children === undefined && props.href !== undefined)) {
+  // JSX passes `children` even when the only child is `undefined`: that's an empty parent.
+  if (!isGranted || (!("children" in props) && props.href !== undefined)) {
     return <LeafItem {...props} />;
   }
   if (isEmpty(props.children)) return null;
@@ -214,7 +215,6 @@ export function AppSidebarSubItem({
   // A disabled menu item can't take focus, and the reason would be out of reach.
   return isBlocked ? (
     <DropdownMenuItem
-      id={title}
       textValue={itemLabel({ title, badge })}
       shouldCloseOnSelect={false}
       className="text-muted-foreground"
@@ -223,7 +223,6 @@ export function AppSidebarSubItem({
     </DropdownMenuItem>
   ) : (
     <DropdownMenuItem
-      id={title}
       href={href}
       textValue={itemLabel({ title, badge })}
       {...externalLinkProps({ external, access })}
