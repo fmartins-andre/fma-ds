@@ -3,10 +3,19 @@ import {
   BookOpenIcon,
   BotIcon,
   BuildingIcon,
+  ChartColumnIcon,
+  CircleHelpIcon,
   FrameIcon,
   GalleryVerticalEndIcon,
   HomeIcon,
+  LockIcon,
+  ReceiptIcon,
+  ScrollTextIcon,
   Settings2Icon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  TriangleAlertIcon,
+  WorkflowIcon,
 } from "lucide-react";
 import { RouterProvider } from "react-aria-components";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
@@ -66,6 +75,61 @@ const TEAMS_DATA: AppSidebarData = {
     { name: "Acme Corp.", plan: "Startup", logo: <BuildingIcon className="size-4" /> },
   ],
 };
+
+type NavItem = AppSidebarData["nav"][number]["items"][number];
+
+const REPORTS: NavItem = {
+  title: "Reports",
+  url: "/reports",
+  icon: <ChartColumnIcon />,
+  access: "blocked",
+  badge: { label: "No access", icon: <LockIcon /> },
+};
+const AUDIT: NavItem = {
+  title: "Audit",
+  url: "/audit",
+  icon: <ShieldCheckIcon />,
+  access: "blocked",
+  badge: { label: "Coming soon" },
+  isActive: true,
+};
+const AUTOMATIONS: NavItem = {
+  title: "Automations",
+  url: "/automations",
+  icon: <WorkflowIcon />,
+  access: "gated",
+  badge: { label: "Upgrade", icon: <SparklesIcon /> },
+};
+const INVOICES: NavItem = {
+  title: "Invoices",
+  url: "/invoices",
+  icon: <ReceiptIcon />,
+  access: "gated",
+  badge: { label: "Payment due", tone: "warning", icon: <TriangleAlertIcon /> },
+};
+const CHANGELOG: NavItem = {
+  title: "Changelog",
+  url: "/changelog",
+  icon: <ScrollTextIcon />,
+  badge: { label: "New", tone: "info" },
+};
+const HELP: NavItem = {
+  title: "Help",
+  url: "https://example.com/help",
+  icon: <CircleHelpIcon />,
+  external: true,
+};
+const INTERNAL: NavItem = {
+  title: "Internal",
+  url: "/internal",
+  icon: <FrameIcon />,
+  access: "hidden",
+};
+
+const withItems = (...items: NavItem[]): AppSidebarData => ({
+  ...TEAMS_DATA,
+  nav: [{ title: "Workspace", items }],
+});
 
 const navigate = fn();
 
@@ -203,5 +267,111 @@ export const WithLogo: Story = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText("fma-ds")).toBeVisible();
     await expect(canvas.queryByRole("button", { name: /^Team:/ })).toBeNull();
+  },
+};
+
+/** `blocked` keeps the item visible and focusable, but it goes nowhere; the badge says why. */
+export const Blocked: Story = {
+  args: { data: withItems(REPORTS, AUDIT) },
+};
+
+/** `gated` is a normal link: point `url` at the page that resolves it, and guard that route. */
+export const Gated: Story = {
+  args: { data: withItems(AUTOMATIONS, INVOICES) },
+};
+
+/** A `badge` alone doesn't change what the item does. */
+export const Badges: Story = {
+  args: {
+    data: withItems(CHANGELOG, {
+      title: "Assistant",
+      url: "/assistant",
+      icon: <BotIcon />,
+      badge: { label: "Beta" },
+    }),
+  },
+};
+
+/** `external` opens the link in a new tab and says so. */
+export const ExternalLink: Story = {
+  args: { data: withItems(HELP) },
+};
+
+export const ShouldNotNavigateBlockedItem: Story = {
+  tags: ["!autodocs"],
+  args: { data: withItems(REPORTS, AUDIT) },
+  play: async ({ canvas }) => {
+    navigate.mockClear();
+    const reports = canvas.getByRole("button", { name: "Reports No access" });
+    await expect(reports).toHaveAttribute("aria-disabled", "true");
+    await userEvent.click(reports);
+    await expect(navigate).not.toHaveBeenCalled();
+
+    // A page you can't open isn't the current one, even if the data says so.
+    const audit = canvas.getByRole("button", { name: "Audit Coming soon" });
+    await expect(audit).not.toHaveAttribute("aria-current");
+    await expect(audit).toHaveAttribute("data-active", "false");
+  },
+};
+
+export const ShouldNavigateGatedItem: Story = {
+  tags: ["!autodocs"],
+  args: { data: withItems(AUTOMATIONS) },
+  play: async ({ canvas }) => {
+    navigate.mockClear();
+    await userEvent.click(canvas.getByRole("link", { name: "Automations Upgrade" }));
+    await expect(navigate).toHaveBeenLastCalledWith("/automations", undefined);
+  },
+};
+
+export const ShouldHideHiddenItem: Story = {
+  tags: ["!autodocs"],
+  args: { data: withItems(CHANGELOG, INTERNAL) },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("link", { name: "Changelog New" })).toBeInTheDocument();
+    await expect(canvas.queryByText("Internal")).toBeNull();
+  },
+};
+
+export const ShouldOpenExternalLink: Story = {
+  tags: ["!autodocs"],
+  args: { data: withItems(HELP) },
+  play: async ({ canvas }) => {
+    navigate.mockClear();
+    const help = canvas.getByRole("link", { name: "Help opens in new tab" });
+    await expect(help).toHaveAttribute("target", "_blank");
+    await expect(help).toHaveAttribute("rel", "noopener noreferrer");
+    // Stay on the page: the browser would open a real tab.
+    help.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    await userEvent.click(help);
+    await expect(navigate).not.toHaveBeenCalled();
+  },
+};
+
+export const ShouldShowBlockedSubItem: Story = {
+  tags: ["!autodocs"],
+  args: {
+    data: withItems({
+      title: "Models",
+      url: "/models",
+      icon: <BotIcon />,
+      isActive: true,
+      items: [
+        { title: "Genesis", url: "/models/genesis" },
+        {
+          title: "Quantum",
+          url: "/models/quantum",
+          access: "blocked",
+          badge: { label: "Coming soon" },
+        },
+      ],
+    }),
+  },
+  play: async ({ canvas }) => {
+    navigate.mockClear();
+    const quantum = canvas.getByRole("button", { name: "Quantum Coming soon" });
+    await expect(quantum).toHaveAttribute("aria-disabled", "true");
+    await userEvent.click(quantum);
+    await expect(navigate).not.toHaveBeenCalled();
   },
 };

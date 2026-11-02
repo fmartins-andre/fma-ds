@@ -124,6 +124,11 @@
           "type": "registry:component"
         },
         {
+          "path": "src/blocks/app-sidebar/nav-item-status.tsx",
+          "target": "components/fma-ds/app-sidebar/nav-item-status.tsx",
+          "type": "registry:component"
+        },
+        {
           "path": "src/blocks/app-sidebar/nav-section.tsx",
           "target": "components/fma-ds/app-sidebar/nav-section.tsx",
           "type": "registry:component"
@@ -146,9 +151,11 @@
       ],
       "registryDependencies": [
         "@fma-ds/sidebar",
+        "@fma-ds/badge",
         "@fma-ds/collapsible",
         "@fma-ds/dropdown-menu",
-        "@fma-ds/avatar"
+        "@fma-ds/avatar",
+        "@fma-ds/i18n"
       ],
       "dependencies": [
         "lucide-react@^1.61.0"
@@ -164,7 +171,7 @@
           "navigation",
           "app-shell"
         ],
-        "contentHash": "807856168cb9"
+        "contentHash": "c8f39370ab06"
       }
     },
     {
@@ -2385,6 +2392,11 @@
           "type": "registry:lib"
         },
         {
+          "path": "src/blocks/app-sidebar/app-sidebar-i18n/app-sidebar-pt-BR.ts",
+          "target": "components/fma-ds/app-sidebar/app-sidebar-i18n/app-sidebar-pt-BR.ts",
+          "type": "registry:lib"
+        },
+        {
           "path": "src/blocks/auth/auth-i18n/auth-pt-BR.ts",
           "target": "components/fma-ds/auth/auth-i18n/auth-pt-BR.ts",
           "type": "registry:lib"
@@ -2483,7 +2495,7 @@
           "locale",
           "pt-BR"
         ],
-        "contentHash": "805c44d8c603"
+        "contentHash": "c84bd033a5b5"
       }
     },
     {

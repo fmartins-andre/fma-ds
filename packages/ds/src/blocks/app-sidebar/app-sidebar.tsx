@@ -8,10 +8,26 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/core/sidebar/sidebar";
+import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+import { visibleNav } from "./nav-access";
 import { NavSection } from "./nav-section";
 import { NavUser } from "./nav-user";
 import { TeamSwitcher } from "./team-switcher";
 import type { AppSidebarData, AppSidebarTeam, AppSidebarUserAction } from "./types";
+
+type AppSidebarConfig = {
+  labels: { opensInNewTab: string };
+};
+
+declare global {
+  interface FmaNamespaces {
+    appSidebar: AppSidebarConfig;
+  }
+}
+
+export const appSidebarEn: DictionaryNamespace<AppSidebarConfig> = {
+  labels: { opensInNewTab: "opens in new tab" },
+};
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   data: AppSidebarData;
@@ -19,6 +35,7 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   /** Shows an "Add team" entry in the team switcher. */
   onAddTeam?: () => void;
   onUserAction?: (action: AppSidebarUserAction) => void;
+  i18n?: Partial<AppSidebarConfig>;
 };
 
 /**
@@ -31,8 +48,10 @@ export function AppSidebar({
   onTeamChange,
   onAddTeam,
   onUserAction,
+  i18n,
   ...props
 }: AppSidebarProps) {
+  const { labels } = useFmaMessages("appSidebar", appSidebarEn, i18n);
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -44,8 +63,8 @@ export function AppSidebar({
         />
       </SidebarHeader>
       <SidebarContent>
-        {data.nav.map((section) => (
-          <NavSection key={section.title} section={section} />
+        {visibleNav(data.nav).map((section) => (
+          <NavSection key={section.title} section={section} externalLabel={labels.opensInNewTab} />
         ))}
       </SidebarContent>
       <SidebarFooter>

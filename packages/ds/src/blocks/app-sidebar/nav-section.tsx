@@ -20,9 +20,17 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/core/sidebar/sidebar";
+import { externalLinkProps, itemLabel } from "./nav-access";
+import { NavItemStatus } from "./nav-item-status";
 import type { AppSidebarNavItem, AppSidebarNavSection } from "./types";
 
-export function NavSection({ section }: { section: AppSidebarNavSection }) {
+export function NavSection({
+  section,
+  externalLabel,
+}: {
+  section: AppSidebarNavSection;
+  externalLabel: string;
+}) {
   const { isMobile, state } = useSidebar();
   const isIconCollapsed = state === "collapsed" && !isMobile;
 
@@ -32,16 +40,21 @@ export function NavSection({ section }: { section: AppSidebarNavSection }) {
       <SidebarMenu>
         {section.items.map((item) => {
           if (!item.items?.length) {
+            const isBlocked = item.access === "blocked";
+            const isActive = item.isActive && !isBlocked;
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   href={item.url}
-                  isActive={item.isActive}
-                  aria-current={item.isActive ? "page" : undefined}
-                  tooltip={item.title}
+                  isInactive={isBlocked}
+                  isActive={isActive}
+                  aria-current={isActive ? "page" : undefined}
+                  tooltip={itemLabel(item)}
+                  {...externalLinkProps(item)}
                 >
                   {item.icon}
-                  <span>{item.title}</span>
+                  <span className="truncate">{item.title}</span>
+                  <NavItemStatus item={item} externalLabel={externalLabel} withDot />
                 </SidebarMenuButton>
               </SidebarMenuItem>
             );
@@ -51,7 +64,7 @@ export function NavSection({ section }: { section: AppSidebarNavSection }) {
           return variant === "dropdown" ? (
             <DropdownItem key={item.title} item={item} withLabel={isIconCollapsed} />
           ) : (
-            <CollapseItem key={item.title} item={item} />
+            <CollapseItem key={item.title} item={item} externalLabel={externalLabel} />
           );
         })}
       </SidebarMenu>
@@ -59,7 +72,7 @@ export function NavSection({ section }: { section: AppSidebarNavSection }) {
   );
 }
 
-function CollapseItem({ item }: { item: AppSidebarNavItem }) {
+function CollapseItem({ item, externalLabel }: { item: AppSidebarNavItem; externalLabel: string }) {
   return (
     <SidebarMenuItem>
       <Collapsible defaultExpanded={item.isActive} className="group/collapsible">
@@ -75,9 +88,15 @@ function CollapseItem({ item }: { item: AppSidebarNavItem }) {
           <SidebarMenuSub>
             {item.items?.map((subItem) => (
               <SidebarMenuSubItem key={subItem.title}>
-                <SidebarMenuSubButton href={subItem.url} className="w-full">
+                <SidebarMenuSubButton
+                  href={subItem.url}
+                  isInactive={subItem.access === "blocked"}
+                  className="w-full"
+                  {...externalLinkProps(subItem)}
+                >
                   {subItem.icon}
-                  <span>{subItem.title}</span>
+                  <span className="truncate">{subItem.title}</span>
+                  <NavItemStatus item={subItem} externalLabel={externalLabel} />
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
             ))}
