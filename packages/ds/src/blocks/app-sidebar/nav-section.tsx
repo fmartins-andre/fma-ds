@@ -20,7 +20,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/core/sidebar/sidebar";
-import { externalLinkProps, itemLabel } from "./nav-access";
+import { externalLinkProps, isExpandable, itemLabel } from "./nav-access";
 import { NavItemStatus } from "./nav-item-status";
 import type { AppSidebarNavItem, AppSidebarNavSection } from "./types";
 
@@ -39,7 +39,7 @@ export function NavSection({
       <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
       <SidebarMenu>
         {section.items.map((item) => {
-          if (!item.items?.length) {
+          if (!isExpandable(item)) {
             const isBlocked = item.access === "blocked";
             const isActive = item.isActive && !isBlocked;
             return (
@@ -62,7 +62,12 @@ export function NavSection({
           // Icon-only sidebars have no room for inline sub-items.
           const variant = isIconCollapsed ? "dropdown" : (item.variant ?? "collapse");
           return variant === "dropdown" ? (
-            <DropdownItem key={item.title} item={item} withLabel={isIconCollapsed} />
+            <DropdownItem
+              key={item.title}
+              item={item}
+              withLabel={isIconCollapsed}
+              externalLabel={externalLabel}
+            />
           ) : (
             <CollapseItem key={item.title} item={item} externalLabel={externalLabel} />
           );
@@ -76,12 +81,13 @@ function CollapseItem({ item, externalLabel }: { item: AppSidebarNavItem; extern
   return (
     <SidebarMenuItem>
       <Collapsible defaultExpanded={item.isActive} className="group/collapsible">
-        <SidebarMenuButton slot="trigger" tooltip={item.title}>
+        <SidebarMenuButton slot="trigger" tooltip={itemLabel(item)}>
           {item.icon}
-          <span>{item.title}</span>
+          <span className="truncate">{item.title}</span>
+          <NavItemStatus item={item} externalLabel={externalLabel} withDot />
           <ChevronRightIcon
             aria-hidden="true"
-            className="ml-auto transition-transform duration-200 group-data-expanded/collapsible:rotate-90"
+            className="ml-auto shrink-0 transition-transform duration-200 group-data-expanded/collapsible:rotate-90"
           />
         </SidebarMenuButton>
         <CollapsibleContent>
@@ -107,18 +113,27 @@ function CollapseItem({ item, externalLabel }: { item: AppSidebarNavItem; extern
   );
 }
 
-function DropdownItem({ item, withLabel }: { item: AppSidebarNavItem; withLabel: boolean }) {
+function DropdownItem({
+  item,
+  withLabel,
+  externalLabel,
+}: {
+  item: AppSidebarNavItem;
+  withLabel: boolean;
+  externalLabel: string;
+}) {
   const { isMobile } = useSidebar();
   return (
     <SidebarMenuItem>
       <DropdownMenuTrigger>
         <SidebarMenuButton
-          tooltip={item.title}
+          tooltip={itemLabel(item)}
           className="aria-expanded:bg-sidebar-accent aria-expanded:text-sidebar-accent-foreground"
         >
           {item.icon}
-          <span>{item.title}</span>
-          <MoreHorizontalIcon aria-hidden="true" className="ml-auto" />
+          <span className="truncate">{item.title}</span>
+          <NavItemStatus item={item} externalLabel={externalLabel} withDot />
+          <MoreHorizontalIcon aria-hidden="true" className="ml-auto shrink-0" />
         </SidebarMenuButton>
         <DropdownMenu
           aria-label={item.title}
@@ -131,12 +146,37 @@ function DropdownItem({ item, withLabel }: { item: AppSidebarNavItem; withLabel:
               <DropdownMenuSeparator />
             </>
           )}
-          {item.items?.map((subItem) => (
-            <DropdownMenuItem key={subItem.title} id={subItem.title} href={subItem.url}>
-              {subItem.icon}
-              <span>{subItem.title}</span>
-            </DropdownMenuItem>
-          ))}
+          {item.items?.map((subItem) => {
+            const content = (
+              <>
+                {subItem.icon}
+                <span className="truncate">{subItem.title}</span>
+                <NavItemStatus item={subItem} externalLabel={externalLabel} />
+              </>
+            );
+            // A disabled menu item can't take focus, and the reason would be out of reach.
+            return subItem.access === "blocked" ? (
+              <DropdownMenuItem
+                key={subItem.title}
+                id={subItem.title}
+                textValue={itemLabel(subItem)}
+                shouldCloseOnSelect={false}
+                className="text-muted-foreground"
+              >
+                {content}
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem
+                key={subItem.title}
+                id={subItem.title}
+                href={subItem.url}
+                textValue={itemLabel(subItem)}
+                {...externalLinkProps(subItem)}
+              >
+                {content}
+              </DropdownMenuItem>
+            );
+          })}
         </DropdownMenu>
       </DropdownMenuTrigger>
     </SidebarMenuItem>

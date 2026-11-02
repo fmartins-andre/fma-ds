@@ -375,3 +375,152 @@ export const ShouldShowBlockedSubItem: Story = {
     await expect(navigate).not.toHaveBeenCalled();
   },
 };
+
+const PARENT_ITEMS = [
+  { title: "Genesis", url: "/models/genesis" },
+  { title: "Explorer", url: "/models/explorer" },
+];
+
+/** Collapsed to icons, a dot marks the item and the tooltip gives the reason. */
+export const CollapsedAccess: Story = {
+  args: { data: withItems(REPORTS, AUDIT, AUTOMATIONS, INVOICES, CHANGELOG, HELP) },
+  render: (args) => (
+    <SidebarProvider defaultOpen={false} className="h-[560px] min-h-0">
+      <AppSidebar {...args} />
+      <SidebarInset className="p-4">
+        <SidebarTrigger />
+        <p className="mt-4 text-sm text-muted-foreground">Page content goes here.</p>
+      </SidebarInset>
+    </SidebarProvider>
+  ),
+};
+
+/** Only a `granted` parent opens its sub-items, and each of them has its own state. */
+export const AccessCombinations: Story = {
+  args: {
+    data: withItems(
+      {
+        title: "Models",
+        url: "/models",
+        icon: <BotIcon />,
+        isActive: true,
+        badge: { label: "New", tone: "info" },
+        items: [
+          { title: "Genesis", url: "/models/genesis" },
+          {
+            title: "Quantum",
+            url: "/models/quantum",
+            access: "blocked",
+            badge: { label: "Coming soon" },
+          },
+          {
+            title: "Explorer",
+            url: "/models/explorer",
+            access: "gated",
+            badge: { label: "Upgrade" },
+          },
+        ],
+      },
+      { ...AUTOMATIONS, items: PARENT_ITEMS },
+      { ...REPORTS, items: PARENT_ITEMS },
+      HELP,
+    ),
+  },
+};
+
+export const ShouldNotExpandGatedParent: Story = {
+  tags: ["!autodocs"],
+  args: { data: withItems({ ...AUTOMATIONS, items: PARENT_ITEMS }) },
+  play: async ({ canvas }) => {
+    navigate.mockClear();
+    await userEvent.click(canvas.getByRole("link", { name: "Automations Upgrade" }));
+    await expect(navigate).toHaveBeenLastCalledWith("/automations", undefined);
+    await expect(canvas.queryByText("Genesis")).toBeNull();
+  },
+};
+
+export const ShouldNotOpenGatedParentWhileCollapsed: Story = {
+  tags: ["!autodocs"],
+  args: { data: withItems({ ...AUTOMATIONS, items: PARENT_ITEMS }) },
+  render: CollapsedAccess.render,
+  play: async ({ canvas }) => {
+    navigate.mockClear();
+    await userEvent.click(canvas.getByRole("link", { name: "Automations Upgrade" }));
+    await expect(navigate).toHaveBeenLastCalledWith("/automations", undefined);
+    await expect(body().queryByRole("menu")).toBeNull();
+  },
+};
+
+export const ShouldNotExpandBlockedParent: Story = {
+  tags: ["!autodocs"],
+  args: { data: withItems({ ...REPORTS, items: PARENT_ITEMS }) },
+  play: async ({ canvas }) => {
+    const reports = canvas.getByRole("button", { name: "Reports No access" });
+    await expect(reports).not.toHaveAttribute("aria-expanded");
+    await userEvent.click(reports);
+    await expect(canvas.queryByText("Genesis")).toBeNull();
+  },
+};
+
+export const ShouldExpandGrantedParentWithBadge: Story = {
+  tags: ["!autodocs"],
+  args: {
+    data: withItems({
+      title: "Models",
+      url: "/models",
+      icon: <BotIcon />,
+      badge: { label: "New", tone: "info" },
+      items: PARENT_ITEMS,
+    }),
+  },
+  play: async ({ canvas }) => {
+    const models = canvas.getByRole("button", { name: "Models New" });
+    await expect(models).toHaveAttribute("aria-expanded", "false");
+    await userEvent.click(models);
+    await expect(models).toHaveAttribute("aria-expanded", "true");
+  },
+};
+
+export const ShouldReachBlockedDropdownItem: Story = {
+  tags: ["!autodocs"],
+  args: {
+    data: withItems({
+      title: "Docs",
+      url: "/docs",
+      icon: <BookOpenIcon />,
+      variant: "dropdown",
+      items: [
+        { title: "Introduction", url: "/docs/intro" },
+        { title: "Audit", url: "/docs/audit", access: "blocked", badge: { label: "Coming soon" } },
+      ],
+    }),
+  },
+  play: async ({ canvas }) => {
+    navigate.mockClear();
+    await userEvent.click(canvas.getByRole("button", { name: "Docs" }));
+    const menu = await body().findByRole("menu", { name: "Docs" });
+    const audit = within(menu).getByRole("menuitem", { name: "Audit Coming soon" });
+    await expect(audit).not.toHaveAttribute("href");
+    await userEvent.keyboard("{ArrowDown}");
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(audit).toHaveFocus();
+    await userEvent.keyboard("{Enter}");
+    await expect(navigate).not.toHaveBeenCalled();
+    await expect(menu).toBeInTheDocument();
+    await userEvent.keyboard("{Escape}");
+  },
+};
+
+export const ShouldShowReasonInCollapsedTooltip: Story = {
+  tags: ["!autodocs"],
+  args: { data: withItems(REPORTS) },
+  render: CollapsedAccess.render,
+  play: async ({ canvas }) => {
+    const reports = canvas.getByRole("button", { name: "Reports No access" });
+    for (let tabs = 0; tabs < 10 && document.activeElement !== reports; tabs++) {
+      await userEvent.tab();
+    }
+    await expect(reports).toHaveFocus();
+    await expect(await body().findByRole("tooltip")).toHaveTextContent("Reports, No access");
+  },
+};
