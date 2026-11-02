@@ -66,13 +66,13 @@ const INVOICES: AppSidebarItemProps = {
   href: "/invoices",
   icon: <ReceiptIcon />,
   access: "gated",
-  badge: { label: "Payment due", tone: "warning", icon: <TriangleAlertIcon /> },
+  badge: { label: "Payment due", icon: <TriangleAlertIcon /> },
 };
 const CHANGELOG: AppSidebarItemProps = {
   title: "Changelog",
   href: "/changelog",
   icon: <ScrollTextIcon />,
-  badge: { label: "New", tone: "info" },
+  badge: { label: "New" },
 };
 const HELP: AppSidebarItemProps = {
   title: "Help",
@@ -293,12 +293,36 @@ export const Badges: Story = {
             title="Assistant"
             href="/assistant"
             icon={<BotIcon />}
-            badge={{ label: "Beta" }}
+            badge={{ label: "Beta", variant: "text" }}
           />
         </AppSidebarSection>
       </AppSidebar>
     </AppShell>
   ),
+};
+
+export const ShouldFollowItemColor: Story = {
+  ...Badges,
+  tags: ["!autodocs"],
+  play: async ({ canvas }) => {
+    const item = canvas.getByRole("link", { name: "Assistant Beta" });
+    const badge = within(item).getByText("Beta", { ignore: ".sr-only" });
+    // `userEvent.hover` doesn't reach CSS `:hover`, so set what it would change.
+    item.style.color = "rgb(1, 2, 3)";
+    await waitFor(() => expect(getComputedStyle(badge).color).toBe("rgb(1, 2, 3)"));
+    item.style.color = "";
+  },
+};
+
+export const ShouldKeepBlockedReasonLegible: Story = {
+  ...Blocked,
+  tags: ["!autodocs"],
+  play: async ({ canvas }) => {
+    const item = canvas.getByRole("button", { name: "Audit Coming soon" });
+    const title = within(item).getByText("Audit");
+    const badge = within(item).getByText("Coming soon", { ignore: ".sr-only" });
+    await expect(getComputedStyle(badge).color).not.toBe(getComputedStyle(title).color);
+  },
 };
 
 /** `external` opens the link in a new tab and says so. */
@@ -338,12 +362,7 @@ export const AccessCombinations: Story = {
     <AppShell>
       <AppSidebar {...args}>
         <AppSidebarSection title="Workspace">
-          <AppSidebarItem
-            title="Models"
-            icon={<BotIcon />}
-            isActive
-            badge={{ label: "New", tone: "info" }}
-          >
+          <AppSidebarItem title="Models" icon={<BotIcon />} isActive badge={{ label: "New" }}>
             <AppSidebarSubItem title="Genesis" href="/models/genesis" />
             <AppSidebarSubItem
               title="Quantum"
@@ -572,7 +591,7 @@ export const ShouldExpandGrantedParentWithBadge: Story = {
     <AppShell>
       <AppSidebar {...args}>
         <AppSidebarSection title="Workspace">
-          <AppSidebarItem title="Models" icon={<BotIcon />} badge={{ label: "New", tone: "info" }}>
+          <AppSidebarItem title="Models" icon={<BotIcon />} badge={{ label: "New" }}>
             {MODEL_SUB_ITEMS}
           </AppSidebarItem>
         </AppSidebarSection>
@@ -607,7 +626,7 @@ export const ShouldReachBlockedDropdownItem: Story = {
               title="Audit"
               href="/docs/audit"
               access="blocked"
-              badge={{ label: "Coming soon" }}
+              badge={{ label: "Coming soon", variant: "outlined" }}
             />
           </AppSidebarItem>
         </AppSidebarSection>
@@ -807,7 +826,7 @@ function MarkAsReadExample({ data }: { data: AppSidebarData }) {
           <AppSidebarItem
             title="Mark all as read"
             icon={<ScrollTextIcon />}
-            badge={{ label: String(unread), tone: "info" }}
+            badge={{ label: String(unread) }}
             onPress={() => setUnread(0)}
           />
         </AppSidebarSection>

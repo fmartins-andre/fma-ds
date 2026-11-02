@@ -1,7 +1,11 @@
 // A sidebar can be as strong as the primary color, so a badge can't lean on the page's tokens:
-// every tone has to read on the sidebar of every theme.
+// every variant has to read on the sidebar of every theme.
 import { describe, expect, it } from "vitest";
-import { TONE_BADGE, TONE_DOT, TONE_MENU_BADGE } from "@/blocks/app-sidebar/nav-item-status";
+import {
+  VARIANT_BADGE,
+  VARIANT_DOT,
+  VARIANT_MENU_BADGE,
+} from "@/blocks/app-sidebar/nav-item-status";
 import { CONTRAST_AA, CONTRAST_AA_LARGE, contrastRatio } from "@/lib/color-contrast";
 import { THEMES } from "@/themes";
 
@@ -20,23 +24,34 @@ function token(classes: string, prefix: "bg" | "text" | "ring") {
 }
 
 describe.each(modes)("app-sidebar badges on %s", (_name, tokens) => {
-  it.each(Object.entries(TONE_BADGE))("%s text reads on its surface", (_tone, classes) => {
-    const surface = tokens[token(classes, "bg")] ?? "";
-    expect(contrastRatio(tokens[token(classes, "text")] ?? "", surface)).toBeGreaterThan(
-      CONTRAST_AA,
-    );
+  const ratio = (text = "", surface = "") =>
+    contrastRatio(tokens[text] ?? "", tokens[surface] ?? "");
+
+  it.each(["outlined", "contained"] as const)("%s text reads on its surface", (variant) => {
+    const classes = VARIANT_BADGE[variant];
+    expect(ratio(token(classes, "text"), token(classes, "bg"))).toBeGreaterThan(CONTRAST_AA);
+  });
+
+  // `text` has no surface: it follows the item, so it reads like the item's own title does.
+  it("text reads on the sidebar and on a hovered item", () => {
+    expect(ratio("sidebar-foreground", "sidebar")).toBeGreaterThan(CONTRAST_AA);
+    expect(ratio("sidebar-accent-foreground", "sidebar-accent")).toBeGreaterThan(CONTRAST_AA_LARGE);
   });
 
   // A menu opens on the popover, far from the sidebar's colors.
-  it.each(Object.entries(TONE_MENU_BADGE))("%s text reads in a menu", (_tone, classes) => {
-    const surface = tokens[token(classes, "bg")] ?? "";
-    expect(contrastRatio(tokens[token(classes, "text")] ?? "", surface)).toBeGreaterThan(
-      CONTRAST_AA,
-    );
+  it.each(["outlined", "contained"] as const)("%s text reads in a menu", (variant) => {
+    const classes = VARIANT_MENU_BADGE[variant];
+    expect(ratio(token(classes, "text"), token(classes, "bg"))).toBeGreaterThan(CONTRAST_AA);
   });
 
-  it.each(Object.entries(TONE_DOT))("%s dot stands out from the sidebar", (_tone, classes) => {
-    const ring = tokens[token(classes, "ring")] ?? "";
-    expect(contrastRatio(ring, tokens.sidebar ?? "")).toBeGreaterThan(CONTRAST_AA_LARGE);
+  it("text reads in a menu", () => {
+    expect(ratio(token(VARIANT_MENU_BADGE.text, "text"), "popover")).toBeGreaterThan(CONTRAST_AA);
   });
+
+  it.each(Object.entries(VARIANT_DOT))(
+    "%s dot stands out from the sidebar",
+    (_variant, classes) => {
+      expect(ratio(token(classes, "ring"), "sidebar")).toBeGreaterThan(CONTRAST_AA_LARGE);
+    },
+  );
 });

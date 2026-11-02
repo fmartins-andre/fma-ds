@@ -14,7 +14,11 @@
 >   `granted` também não exige, e ignora `href` e `onPress`, porque só expande.
 > - `url` vira `href`, como nos componentes da core; `access`, `badge`, `external`, `variant`, `icon` e `isActive` viram props, e o tipo mantém
 >   `badge` obrigatório em `blocked` e `gated`.
-> - `badge` continua sendo a prop `{ label, tone, icon }`, sem componente próprio. Assim o tooltip
+> - `tone` sai: `badge` tem `variant`, `text` (sem fundo nem borda, segue a cor do item), `outlined`
+>   (borda) ou `contained` (fundo invertido da sidebar). Padrão: `contained` em `gated`, `text` em
+>   `blocked`, `outlined` nos demais. O ponto recolhido é cheio em `contained` e vazado nos outros. Onde
+>   este texto fala de tom, valem essas variantes; não há mais cor de alerta.
+> - `badge` continua sendo a prop `{ label, variant, icon }`, sem componente próprio. Assim o tooltip
 >   recolhido sempre tem o texto, e a ordem título, badge e seta não depende de quem compõe.
 > - Item com filhos sem nenhum filho visível não renderiza; o mesmo vale para seção vazia. A contagem
 >   usa `Children.toArray`, então enxerga `{false}` e `.map()` vazio, **mas não** um wrapper que retorna

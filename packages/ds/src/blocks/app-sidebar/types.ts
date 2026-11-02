@@ -35,8 +35,11 @@ export type AppSidebarBranding =
 /** The text comes from the app, like `title`. */
 export type AppSidebarItemBadge = {
   label: string;
-  /** Colors the badge and, while collapsed to icons, the dot on the item. */
-  tone?: "neutral" | "primary" | "success" | "info" | "warning";
+  /**
+   * `text` has no surface and follows the item's color, `outlined` has a border and `contained`
+   * inverts the sidebar. Defaults to `contained` on `gated`, `text` on `blocked`, or `outlined`.
+   */
+  variant?: "text" | "outlined" | "contained";
   icon?: React.ReactNode;
 };
 

@@ -4,34 +4,31 @@ import { Badge } from "@/core/badge/badge";
 import { externalLinkProps } from "./nav-access";
 import type { AppSidebarItemAccess, AppSidebarItemBadge } from "./types";
 
-// A sidebar can be as strong as the primary color, so a badge can't use the page's tints: each tone
-// is a pair that reads on any sidebar. `tests/app-sidebar-badge-contrast.test.ts` measures them.
-export const TONE_BADGE = {
-  neutral: "border-sidebar-border bg-sidebar text-sidebar-foreground",
-  primary: "bg-sidebar-foreground text-sidebar",
-  success: "border-success/30 bg-background text-success-foreground",
-  info: "border-info/30 bg-background text-info-foreground",
-  warning: "border-warning/30 bg-background text-warning-foreground",
+// A sidebar can be as strong as the primary color, so a badge can't use the page's tints: each
+// variant reads on any sidebar. `tests/app-sidebar-badge-contrast.test.ts` measures them. `text` has
+// no surface of its own, so it follows the item, which also turns it on hover.
+export const VARIANT_BADGE = {
+  text: "border-transparent px-0",
+  outlined: "border-sidebar-border bg-sidebar text-sidebar-foreground",
+  contained: "bg-sidebar-foreground text-sidebar",
 } as const;
 
 // A menu opens on the popover, so the sidebar's colors don't apply there. A focused item recolors
-// its content, but a badge has its own surface: `!` and `**:text-inherit!` keep its text.
-export const TONE_MENU_BADGE = {
-  neutral: "border-border bg-popover text-popover-foreground!",
-  primary: "border-primary bg-popover text-popover-foreground!",
-  success: "border-success/30 bg-background text-success-foreground!",
-  info: "border-info/30 bg-background text-info-foreground!",
-  warning: "border-warning/30 bg-background text-warning-foreground!",
+// its content, but a badge with a surface keeps its text: that's `!` and `**:text-inherit!`.
+export const VARIANT_MENU_BADGE = {
+  text: "border-transparent px-0 text-popover-foreground",
+  outlined: "border-border bg-popover text-popover-foreground!",
+  contained: "bg-popover-foreground text-popover!",
 } as const;
 
-// The ring keeps a dot visible on a sidebar close to its color.
-export const TONE_DOT = {
-  neutral: "bg-sidebar ring-1 ring-sidebar-foreground",
-  primary: "bg-sidebar-foreground ring-1 ring-sidebar-foreground",
-  success: "bg-success ring-1 ring-sidebar-foreground",
-  info: "bg-info ring-1 ring-sidebar-foreground",
-  warning: "bg-warning ring-1 ring-sidebar-foreground",
+// The ring keeps a dot visible on any sidebar.
+export const VARIANT_DOT = {
+  text: "bg-sidebar ring-1 ring-sidebar-foreground",
+  outlined: "bg-sidebar ring-1 ring-sidebar-foreground",
+  contained: "bg-sidebar-foreground ring-1 ring-sidebar-foreground",
 } as const;
+
+const DEFAULT_VARIANT = { granted: "outlined", blocked: "text", gated: "contained" } as const;
 
 type NavItemStatusProps = {
   access?: AppSidebarItemAccess["access"];
@@ -60,8 +57,7 @@ export function NavItemStatus({
   const isExternal = externalLinkProps({ external, access }).target !== undefined;
   if (!badge && !isExternal) return null;
 
-  const tone: NonNullable<AppSidebarItemBadge["tone"]> =
-    badge?.tone ?? (access === "gated" ? "primary" : "neutral");
+  const variant = badge?.variant ?? DEFAULT_VARIANT[access ?? "granted"];
   return (
     <>
       {badge && <span className="sr-only">{` ${badge.label}`}</span>}
@@ -75,7 +71,9 @@ export function NavItemStatus({
             variant={null}
             size="xs"
             className={cn(
-              inMenu ? [TONE_MENU_BADGE[tone], "**:text-inherit!"] : TONE_BADGE[tone],
+              inMenu ? [VARIANT_MENU_BADGE[variant], "**:text-inherit!"] : VARIANT_BADGE[variant],
+              // A blocked item dims its title, but the reason has to stay legible.
+              !inMenu && access === "blocked" && "text-sidebar-foreground",
               "[&_svg]:size-2.5!",
             )}
           >
@@ -90,7 +88,7 @@ export function NavItemStatus({
           aria-hidden="true"
           className={cn(
             "absolute top-1 right-1 hidden size-1.5 rounded-full group-data-[collapsible=icon]:block",
-            TONE_DOT[tone],
+            VARIANT_DOT[variant],
           )}
         />
       )}
