@@ -53,7 +53,7 @@
       "chart-5": "oklch(0.379 0.138 265.522)",
       "sidebar": "oklch(0.985 0.002 247.839)",
       "sidebar-foreground": "oklch(0.321 0 0)",
-      "sidebar-primary": "oklch(0.623 0.188 259.815)",
+      "sidebar-primary": "oklch(0.568 0.188 259.815)",
       "sidebar-primary-foreground": "oklch(1 0 0)",
       "sidebar-accent": "oklch(0.951 0.025 236.824)",
       "sidebar-accent-foreground": "oklch(0.379 0.138 265.522)",
@@ -98,7 +98,7 @@
       "chart-5": "oklch(0.424 0.181 265.638)",
       "sidebar": "oklch(0.205 0 0)",
       "sidebar-foreground": "oklch(0.922 0 0)",
-      "sidebar-primary": "oklch(0.623 0.188 259.815)",
+      "sidebar-primary": "oklch(0.568 0.188 259.815)",
       "sidebar-primary-foreground": "oklch(1 0 0)",
       "sidebar-accent": "oklch(0.379 0.138 265.522)",
       "sidebar-accent-foreground": "oklch(0.882 0.057 254.128)",
@@ -129,7 +129,7 @@
       "minimal",
       "sans"
     ],
-    "contentHash": "62c46e1d76f9"
+    "contentHash": "4f87e1ebd080"
   },
   "categories": [
     "theme"

@@ -326,7 +326,19 @@ export const Badges: Story = {
           title="Assistant"
           href="/assistant"
           icon={<BotIcon />}
-          badge={{ label: "Beta", variant: "text" }}
+          badge={{ label: "Beta", variant: "ghost" }}
+        />
+        <AppSidebarItem
+          title="Billing"
+          href="/billing"
+          icon={<ReceiptIcon />}
+          badge={{ label: "Trial", variant: "primary" }}
+        />
+        <AppSidebarItem
+          title="Reports"
+          href="/reports"
+          icon={<ChartColumnIcon />}
+          badge={{ label: "Pro", variant: "invert" }}
         />
       </AppSidebarSection>
     </AppShell>
@@ -346,7 +358,7 @@ export const ShouldFollowItemColor: Story = {
   },
 };
 
-export const ShouldKeepContainedBlockedReasonLegible: Story = {
+export const ShouldKeepInvertBlockedReasonLegible: Story = {
   tags: ["!autodocs"],
   render: () => (
     <AppShell>
@@ -354,7 +366,7 @@ export const ShouldKeepContainedBlockedReasonLegible: Story = {
         <AppSidebarItem
           title="Audit"
           access="blocked"
-          badge={{ label: "Coming soon", variant: "contained" }}
+          badge={{ label: "Coming soon", variant: "invert" }}
         />
       </AppSidebarSection>
     </AppShell>
@@ -655,7 +667,7 @@ export const ShouldReachBlockedDropdownItem: Story = {
             title="Audit"
             href="/docs/audit"
             access="blocked"
-            badge={{ label: "Coming soon", variant: "outlined" }}
+            badge={{ label: "Coming soon", variant: "outline" }}
           />
         </AppSidebarItem>
       </AppSidebarSection>

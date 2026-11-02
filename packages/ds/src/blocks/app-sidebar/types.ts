@@ -44,10 +44,11 @@ export type AppSidebarUserProps = {
 export type AppSidebarItemBadge = {
   label: string;
   /**
-   * `text` has no surface and follows the item's color, `outlined` has a border and `contained`
-   * inverts the sidebar. Defaults to `contained` on `gated`, `text` on `blocked`, or `outlined`.
+   * `ghost` has no surface and follows the item's color, `outline` has a border, `primary` uses the
+   * sidebar's primary color and `invert` inverts the sidebar. Defaults to `invert` on `gated`,
+   * `ghost` on `blocked`, or `outline`.
    */
-  variant?: "text" | "outlined" | "contained";
+  variant?: "ghost" | "outline" | "primary" | "invert";
   icon?: React.ReactNode;
 };
 

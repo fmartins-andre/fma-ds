@@ -66,7 +66,7 @@
     "chart-5": "oklch(0.432 0.086 166.913)",
     "sidebar": "oklch(0.951 0.025 236.824)",
     "sidebar-foreground": "oklch(0.373 0.031 259.733)",
-    "sidebar-primary": "oklch(0.643 0.192 149.579)",
+    "sidebar-primary": "oklch(0.548 0.152 149.579)",
     "sidebar-primary-foreground": "oklch(1 0 0)",
     "sidebar-accent": "oklch(0.95 0.051 163.051)",
     "sidebar-accent-foreground": "oklch(0.373 0.031 259.733)",

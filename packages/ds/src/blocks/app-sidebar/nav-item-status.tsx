@@ -5,30 +5,33 @@ import { externalLinkProps } from "./nav-access";
 import type { AppSidebarItemAccess, AppSidebarItemBadge } from "./types";
 
 // A sidebar can be as strong as the primary color, so a badge can't use the page's tints: each
-// variant reads on any sidebar. `tests/app-sidebar-badge-contrast.test.ts` measures them. `text` has
-// no surface of its own, so it follows the item, which also turns it on hover.
+// variant reads on any sidebar. `tests/app-sidebar-badge-contrast.test.ts` measures them. `ghost`
+// has no surface of its own, so it follows the item, which also turns it on hover.
 export const VARIANT_BADGE = {
-  text: "border-transparent px-0",
-  outlined: "border-sidebar-foreground bg-sidebar text-sidebar-foreground",
-  contained: "bg-sidebar-foreground text-sidebar",
+  ghost: "border-transparent px-0",
+  outline: "border-sidebar-foreground bg-sidebar text-sidebar-foreground",
+  primary: "bg-sidebar-primary text-sidebar-primary-foreground",
+  invert: "bg-sidebar-foreground text-sidebar",
 } as const;
 
 // A menu opens on the popover, so the sidebar's colors don't apply there. A focused item recolors
 // its content, but a badge with a surface keeps its text: that's `!` and `**:text-inherit!`.
 export const VARIANT_MENU_BADGE = {
-  text: "border-transparent px-0 text-popover-foreground",
-  outlined: "border-popover-foreground bg-popover text-popover-foreground!",
-  contained: "bg-popover-foreground text-popover!",
+  ghost: "border-transparent px-0 text-popover-foreground",
+  outline: "border-popover-foreground bg-popover text-popover-foreground!",
+  primary: "bg-sidebar-primary text-sidebar-primary-foreground!",
+  invert: "bg-popover-foreground text-popover!",
 } as const;
 
 // The ring keeps a dot visible on any sidebar.
 export const VARIANT_DOT = {
-  text: "bg-sidebar ring-1 ring-sidebar-foreground",
-  outlined: "bg-sidebar ring-1 ring-sidebar-foreground",
-  contained: "bg-sidebar-foreground ring-1 ring-sidebar-foreground",
+  ghost: "bg-sidebar ring-1 ring-sidebar-foreground",
+  outline: "bg-sidebar ring-1 ring-sidebar-foreground",
+  primary: "bg-sidebar-primary ring-1 ring-sidebar-foreground",
+  invert: "bg-sidebar-foreground ring-1 ring-sidebar-foreground",
 } as const;
 
-const DEFAULT_VARIANT = { granted: "outlined", blocked: "text", gated: "contained" } as const;
+const DEFAULT_VARIANT = { granted: "outline", blocked: "ghost", gated: "invert" } as const;
 
 type NavItemStatusProps = {
   access?: AppSidebarItemAccess["access"];
@@ -73,7 +76,7 @@ export function NavItemStatus({
             className={cn(
               inMenu ? [VARIANT_MENU_BADGE[variant], "**:text-inherit!"] : VARIANT_BADGE[variant],
               // A blocked item dims its title, but the reason has to stay legible.
-              !inMenu && variant === "text" && access === "blocked" && "text-sidebar-foreground",
+              !inMenu && variant === "ghost" && access === "blocked" && "text-sidebar-foreground",
               "[&_svg]:size-2.5!",
             )}
           >

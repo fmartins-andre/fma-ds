@@ -89,7 +89,7 @@
       "chart-5": "oklch(0.924 0.053 67.086)",
       "sidebar": "oklch(0.21 0.006 285.885)",
       "sidebar-foreground": "oklch(0.967 0.001 286.375)",
-      "sidebar-primary": "oklch(0.488 0.217 264.376)",
+      "sidebar-primary": "oklch(0.525 0.217 264.376)",
       "sidebar-primary-foreground": "oklch(1 0 0)",
       "sidebar-accent": "oklch(0.274 0.005 286.033)",
       "sidebar-accent-foreground": "oklch(0.967 0.001 286.375)",
@@ -105,7 +105,7 @@
       "brown",
       "warm"
     ],
-    "contentHash": "d54fc65d0aa0"
+    "contentHash": "28653dadc9b0"
   },
   "categories": [
     "theme"
