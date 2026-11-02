@@ -3933,7 +3933,7 @@
       "name": "sidebar",
       "type": "registry:ui",
       "title": "Sidebar",
-      "description": "A collapsible application sidebar with a mobile drawer fallback, a Cmd/Ctrl+B keyboard shortcut, and composable header/content/footer/menu slots.",
+      "description": "A collapsible application sidebar with a mobile drawer fallback, a Cmd/Ctrl+B keyboard shortcut, and composable header/content/footer/menu slots.\n\n`isInactive` on `SidebarMenuButton` and `SidebarMenuSubButton` keeps an item visible and focusable, but it goes nowhere.",
       "author": "@fma-ds/ds",
       "categories": [
         "navigation"
@@ -3970,7 +3970,7 @@
           "layout",
           "react-aria"
         ],
-        "contentHash": "c6e8339c0b21"
+        "contentHash": "88006da74cfc"
       }
     },
     {

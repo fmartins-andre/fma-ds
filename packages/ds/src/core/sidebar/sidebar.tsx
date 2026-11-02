@@ -460,8 +460,22 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
+// Unlike `isDisabled`, an inactive item stays focusable and hoverable, so its tooltip and reason
+// can be reached. It dims through color, so a badge inside keeps its own.
+const SIDEBAR_INACTIVE =
+  "data-inactive:pointer-events-auto data-inactive:text-sidebar-foreground/50 data-inactive:opacity-100 data-inactive:hover:bg-transparent data-inactive:hover:text-sidebar-foreground/50 data-inactive:active:bg-transparent data-inactive:active:text-sidebar-foreground/50 data-inactive:[&>svg]:text-sidebar-foreground/50";
+
+const inactiveButtonProps = (props: SidebarButtonProps): SidebarButtonProps => {
+  const { href, target, rel, onPress, ...buttonProps } = props as LinkProps;
+  return {
+    ...buttonProps,
+    "aria-disabled": true,
+    "data-inactive": true,
+  } as ButtonProps & { href?: never };
+};
+
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button group/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-expanded:hover:bg-sidebar-accent aria-expanded:hover:text-sidebar-accent-foreground data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate",
+  `${SIDEBAR_INACTIVE} peer/menu-button group/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-expanded:hover:bg-sidebar-accent aria-expanded:hover:text-sidebar-accent-foreground data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate`,
   {
     variants: {
       variant: {
@@ -484,16 +498,20 @@ const sidebarMenuButtonVariants = cva(
 
 function SidebarMenuButton({
   isActive = false,
+  isInactive = false,
   variant = "default",
   size = "default",
   tooltip,
   className,
-  ...props
+  ...buttonProps
 }: SidebarButtonProps & {
   isActive?: boolean;
+  /** Visible and focusable, but goes nowhere. */
+  isInactive?: boolean;
   tooltip?: string | React.ComponentProps<typeof Tooltip>;
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const { isMobile, state } = useSidebar();
+  const props = isInactive ? inactiveButtonProps(buttonProps) : buttonProps;
   const comp =
     props.href !== undefined ? (
       <LinkPrimitive
@@ -630,12 +648,16 @@ function SidebarMenuSubItem({ className, ...props }: React.ComponentProps<"li">)
 function SidebarMenuSubButton({
   size = "md",
   isActive = false,
+  isInactive = false,
   className,
-  ...props
+  ...buttonProps
 }: SidebarButtonProps & {
   size?: "sm" | "md";
   isActive?: boolean;
+  /** Visible and focusable, but goes nowhere. */
+  isInactive?: boolean;
 }) {
+  const props = isInactive ? inactiveButtonProps(buttonProps) : buttonProps;
   return props.href !== undefined ? (
     <LinkPrimitive
       data-slot="sidebar-menu-sub-button"
@@ -643,6 +665,7 @@ function SidebarMenuSubButton({
       data-size={size}
       data-active={isActive}
       className={cn(
+        SIDEBAR_INACTIVE,
         "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground ring-sidebar-ring outline-hidden group-data-[collapsible=icon]:hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[size=md]:text-sm data-[size=sm]:text-xs data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
         className,
       )}
@@ -655,6 +678,7 @@ function SidebarMenuSubButton({
       data-size={size}
       data-active={isActive}
       className={cn(
+        SIDEBAR_INACTIVE,
         "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground ring-sidebar-ring outline-hidden group-data-[collapsible=icon]:hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[size=md]:text-sm data-[size=sm]:text-xs data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
         className,
       )}
