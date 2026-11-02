@@ -5,7 +5,7 @@ import type {
   AppSidebarNavSection,
 } from "./types";
 
-export function isExpandable(item: AppSidebarNavItem) {
+export function isExpandable(item: Pick<AppSidebarNavItem, "access" | "items">) {
   return Boolean(item.items?.length) && (item.access ?? "granted") === "granted";
 }
 
@@ -28,14 +28,17 @@ export function itemLabel({ title, badge }: { title: string; badge?: AppSidebarI
   return badge ? `${title}, ${badge.label}` : title;
 }
 
+/** A blocked item goes nowhere, and a parent that expands is a button, not a link. */
 export function externalLinkProps({
   external,
   access,
+  items,
 }: {
   external?: boolean;
   access?: AppSidebarItemAccess["access"];
+  items?: AppSidebarNavItem["items"];
 }) {
-  return external && access !== "blocked"
+  return external && access !== "blocked" && !isExpandable({ access, items })
     ? ({ target: "_blank", rel: "noopener noreferrer" } as const)
     : {};
 }

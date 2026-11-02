@@ -70,19 +70,17 @@ describe("visibleNav", () => {
 
 describe("isExpandable", () => {
   it("expands a parent that is granted or has no access", () => {
-    expect(isExpandable({ title: "P", url: "/p", items: [child] })).toBe(true);
-    expect(isExpandable({ title: "P", url: "/p", access: "granted", items: [child] })).toBe(true);
+    expect(isExpandable({ items: [child] })).toBe(true);
+    expect(isExpandable({ access: "granted", items: [child] })).toBe(true);
   });
 
   it.each(["blocked", "gated"] as const)("doesn't expand a %s parent", (access) => {
-    expect(isExpandable({ title: "P", url: "/p", access, badge: soon, items: [child] })).toBe(
-      false,
-    );
+    expect(isExpandable({ access, items: [child] })).toBe(false);
   });
 
   it("doesn't expand an item without children", () => {
     expect(isExpandable(home)).toBe(false);
-    expect(isExpandable({ title: "P", url: "/p", items: [] })).toBe(false);
+    expect(isExpandable({ items: [] })).toBe(false);
   });
 });
 
@@ -106,6 +104,17 @@ describe("externalLinkProps", () => {
 
   it("leaves internal links alone", () => {
     expect(externalLinkProps({})).toEqual({});
+  });
+
+  it("ignores external on a parent that expands, which isn't a link", () => {
+    expect(externalLinkProps({ external: true, items: [child] })).toEqual({});
+  });
+
+  it("keeps external on a gated parent, which is a link", () => {
+    expect(externalLinkProps({ external: true, access: "gated", items: [child] })).toEqual({
+      target: "_blank",
+      rel: "noopener noreferrer",
+    });
   });
 
   it("ignores external on a blocked item", () => {

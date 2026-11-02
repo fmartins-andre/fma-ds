@@ -22,7 +22,7 @@ decide o estado e os textos; o bloco só os exibe.
 | Sem provider, hook ou gate de rota | A aplicação decide e encapsula a lib de permissões dela |
 | Comportamento (`access`) e aparência (`badge`) são campos separados | Um item pode ser "novo" e estar bloqueado; a aplicação escolhe o que mostrar |
 | Texto dos badges é livre e sempre vem da aplicação | `title` e seções já vêm dela; o adapter da aplicação centraliza as traduções |
-| `tone` fechado, não a `variant` do `Badge` | Precisa gerar também o ponto do modo recolhido, e mantém a sidebar coesa |
+| `tone` fechado, não a `variant` do `Badge` | Precisa gerar o ponto do modo recolhido e funcionar sobre qualquer sidebar |
 | `blocked` e `gated` exigem `badge` no tipo | Todo item restrito precisa de motivo; o erro aparece na compilação |
 | `isInactive` na `core/sidebar`; contrato no bloco | O mecanismo serve à composição; a composição não herda domínio de negócio |
 | `gated` não muda o destino | Navega para `item.url`, e a aplicação escolhe a rota e o que ela mostra |
@@ -83,9 +83,19 @@ function reportsAccess(snapshot: AccessSnapshot, t: TFunction) {
 | `blocked` | Sim | Sim | Nada | Ícone e título atenuados; badge legível | `neutral` |
 | `gated` | Sim | Sim | Navega para `url` | Normal | `primary` |
 
-`tone` mapeia para o `Badge`: `muted`, `primary-light`, `success-light`, `info-light` e
-`warning-light`. O ponto usa `bg-muted-foreground`, `bg-primary`, `bg-success`, `bg-info` e
-`bg-warning`.
+Uma sidebar pode ser tão forte quanto `primary`, então o badge não usa os tons de página do `Badge`.
+Cada tom é um par de tokens que funciona em qualquer tema, medido por
+`tests/app-sidebar-badge-contrast.test.ts`:
+
+| `tone` | Na sidebar | No menu (`popover`) |
+| --- | --- | --- |
+| `neutral` | `bg-sidebar`, `text-sidebar-foreground`, contorno `sidebar-border` | `bg-popover`, `text-popover-foreground` |
+| `primary` | Invertido: `bg-sidebar-foreground`, `text-sidebar` | `bg-popover`, `text-popover-foreground`, contorno `primary` |
+| Status | `bg-background`, `text-<status>-foreground`, contorno `<status>/30` | Igual |
+
+O ponto do modo recolhido tem anel `ring-sidebar-foreground`, que o mantém visível mesmo quando a cor
+do status não contrasta com a sidebar. Seu preenchimento é `sidebar` (`neutral`), `sidebar-foreground`
+(`primary`) ou a cor do status.
 
 ### Hierarquia
 
@@ -135,7 +145,8 @@ function reportsAccess(snapshot: AccessSnapshot, t: TFunction) {
 ### Bloco `app-sidebar`
 
 - `nav-access.ts`: função pura que remove `hidden`, pais sem filhos visíveis e seções vazias.
-- `nav-item-status.tsx`: `tone` → `Badge`, ponto e `sr-only`. Usa `Badge` da core, sem novo visual.
+- `nav-item-status.tsx`: `tone` → `Badge`, ponto e `sr-only`. Usa `Badge` da core com `variant={null}` e
+  as classes próprias de cada tom.
 - `nav-section.tsx`: pai que não é `granted` renderiza como item simples, então o estado só é tratado
   em item simples e subitem.
 - `app-sidebar.tsx`: aplica `nav-access` e aceita `i18n`.

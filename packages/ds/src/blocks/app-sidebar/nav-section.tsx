@@ -151,7 +151,7 @@ function DropdownItem({
               <>
                 {subItem.icon}
                 <span className="truncate">{subItem.title}</span>
-                <NavItemStatus item={subItem} externalLabel={externalLabel} />
+                <NavItemStatus item={subItem} externalLabel={externalLabel} inMenu />
               </>
             );
             // A disabled menu item can't take focus, and the reason would be out of reach.

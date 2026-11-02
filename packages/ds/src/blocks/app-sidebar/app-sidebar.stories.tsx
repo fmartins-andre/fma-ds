@@ -509,9 +509,13 @@ export const ShouldReachBlockedDropdownItem: Story = {
     const menu = await body().findByRole("menu", { name: "Docs" });
     const audit = within(menu).getByRole("menuitem", { name: "Audit Coming soon" });
     await expect(audit).not.toHaveAttribute("href");
+    const badge = within(audit).getByText("Coming soon", { ignore: ".sr-only" });
+    const color = getComputedStyle(badge).color;
     await userEvent.keyboard("{ArrowDown}");
     await userEvent.keyboard("{ArrowDown}");
     await expect(audit).toHaveFocus();
+    // A focused item recolors its content; the badge keeps its own surface, so also its text.
+    await expect(getComputedStyle(badge).color).toBe(color);
     await userEvent.keyboard("{Enter}");
     await expect(navigate).not.toHaveBeenCalled();
     await expect(menu).toBeInTheDocument();
@@ -530,5 +534,61 @@ export const ShouldShowReasonInCollapsedTooltip: Story = {
     }
     await expect(reports).toHaveFocus();
     await expect(await body().findByRole("tooltip")).toHaveTextContent("Reports, No access");
+  },
+};
+
+export const ShouldSizeExternalSubItemIcon: Story = {
+  tags: ["!autodocs"],
+  args: {
+    data: withItems({
+      title: "Models",
+      url: "/models",
+      icon: <BotIcon />,
+      isActive: true,
+      items: [{ title: "Help", url: "https://example.com/help", external: true }],
+    }),
+  },
+  play: async ({ canvas }) => {
+    const help = canvas.getByRole("link", { name: "Help opens in new tab" });
+    const icon = help.querySelector("svg");
+    if (!icon) throw new Error("No external icon");
+    await expect(icon.getBoundingClientRect().width).toBe(16);
+  },
+};
+
+export const ShouldNotAnnounceExternalOnExpandableParent: Story = {
+  tags: ["!autodocs"],
+  args: {
+    data: withItems({
+      title: "Models",
+      url: "/models",
+      icon: <BotIcon />,
+      external: true,
+      items: PARENT_ITEMS,
+    }),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: "Models" })).toBeInTheDocument();
+  },
+};
+
+export const ShouldOpenExternalDropdownItem: Story = {
+  tags: ["!autodocs"],
+  args: {
+    data: withItems({
+      title: "Docs",
+      url: "/docs",
+      icon: <BookOpenIcon />,
+      variant: "dropdown",
+      items: [{ title: "Help", url: "https://example.com/help", external: true }],
+    }),
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Docs" }));
+    const menu = await body().findByRole("menu", { name: "Docs" });
+    const help = within(menu).getByRole("menuitem", { name: "Help opens in new tab" });
+    await expect(help).toHaveAttribute("target", "_blank");
+    await expect(help).toHaveAttribute("rel", "noopener noreferrer");
+    await userEvent.keyboard("{Escape}");
   },
 };
