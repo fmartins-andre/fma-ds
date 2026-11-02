@@ -9,7 +9,7 @@ import type { AppSidebarItemAccess, AppSidebarItemBadge } from "./types";
 // no surface of its own, so it follows the item, which also turns it on hover.
 export const VARIANT_BADGE = {
   text: "border-transparent px-0",
-  outlined: "border-sidebar-border bg-sidebar text-sidebar-foreground",
+  outlined: "border-sidebar-foreground bg-sidebar text-sidebar-foreground",
   contained: "bg-sidebar-foreground text-sidebar",
 } as const;
 
@@ -17,7 +17,7 @@ export const VARIANT_BADGE = {
 // its content, but a badge with a surface keeps its text: that's `!` and `**:text-inherit!`.
 export const VARIANT_MENU_BADGE = {
   text: "border-transparent px-0 text-popover-foreground",
-  outlined: "border-border bg-popover text-popover-foreground!",
+  outlined: "border-popover-foreground bg-popover text-popover-foreground!",
   contained: "bg-popover-foreground text-popover!",
 } as const;
 

@@ -17,7 +17,7 @@ const modes = THEMES.flatMap((theme) => [
 ]);
 
 /** The token behind a class, like `bg-sidebar` => `sidebar`, ignoring alpha and variants. */
-function token(classes: string, prefix: "bg" | "text" | "ring") {
+function token(classes: string, prefix: "bg" | "text" | "ring" | "border") {
   const match = classes.match(new RegExp(`(?:^|\\s)${prefix}-([a-z-]+)`));
   if (!match?.[1]) throw new Error(`No ${prefix} class in "${classes}"`);
   return match[1];
@@ -30,6 +30,16 @@ describe.each(modes)("app-sidebar badges on %s", (_name, tokens) => {
   it.each(["outlined", "contained"] as const)("%s text reads on its surface", (variant) => {
     const classes = VARIANT_BADGE[variant];
     expect(ratio(token(classes, "text"), token(classes, "bg"))).toBeGreaterThan(CONTRAST_AA);
+  });
+
+  it("outlined border stands out from the sidebar", () => {
+    const classes = VARIANT_BADGE.outlined;
+    expect(ratio(token(classes, "border"), "sidebar")).toBeGreaterThan(CONTRAST_AA_LARGE);
+  });
+
+  it("outlined border stands out in a menu", () => {
+    const classes = VARIANT_MENU_BADGE.outlined;
+    expect(ratio(token(classes, "border"), "popover")).toBeGreaterThan(CONTRAST_AA_LARGE);
   });
 
   // `text` has no surface: it follows the item, so it reads like the item's own title does.
