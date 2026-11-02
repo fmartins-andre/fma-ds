@@ -31,15 +31,37 @@ export type AppSidebarBranding =
   | { teams: AppSidebarTeam[]; logo?: never }
   | { teams?: never; logo: AppSidebarLogo };
 
+/** The text comes from the app, like `title`. */
+export type AppSidebarItemBadge = {
+  label: string;
+  /** Colors the badge and, while collapsed to icons, the dot on the item. */
+  tone?: "neutral" | "primary" | "success" | "info" | "warning";
+  icon?: React.ReactNode;
+};
+
+/**
+ * What the item does; `badge` says why.
+ * - `granted` (default): a normal link.
+ * - `hidden`: not rendered.
+ * - `blocked`: visible and focusable, goes nowhere. Requires a badge with the reason.
+ * - `gated`: a normal link to `url`, which the app points at the page that resolves it (activate,
+ *   upgrade, pay). Informative only: the app must guard the route.
+ */
+export type AppSidebarItemAccess =
+  | { access?: "granted"; badge?: AppSidebarItemBadge }
+  | { access: "hidden"; badge?: never }
+  | { access: "blocked" | "gated"; badge: AppSidebarItemBadge };
+
 /**
  * Links are react-aria `Link`s: wrap the app in react-aria's `RouterProvider`
- * to route them client-side.
+ * to route them client-side. `external` opens one in a new tab instead.
  */
 export type AppSidebarNavSubItem = {
   title: string;
   url: string;
   icon?: React.ReactNode;
-};
+  external?: boolean;
+} & AppSidebarItemAccess;
 
 /**
  * `variant` picks how an item with sub-items opens: `"collapse"` (default)
@@ -52,9 +74,11 @@ export type AppSidebarNavItem = {
   icon?: React.ReactNode;
   /** Marks the current page and starts a collapse item expanded. */
   isActive?: boolean;
+  external?: boolean;
   variant?: "collapse" | "dropdown";
+  /** Only a `granted` item opens them; any other access renders it as a plain item. */
   items?: AppSidebarNavSubItem[];
-};
+} & AppSidebarItemAccess;
 
 /** A sidebar section, rendered as a `SidebarGroup`. */
 export type AppSidebarNavSection = {

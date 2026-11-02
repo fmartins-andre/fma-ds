@@ -119,6 +119,11 @@
           "type": "registry:component"
         },
         {
+          "path": "src/blocks/app-sidebar/nav-access.ts",
+          "target": "components/fma-ds/app-sidebar/nav-access.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "src/blocks/app-sidebar/nav-section.tsx",
           "target": "components/fma-ds/app-sidebar/nav-section.tsx",
           "type": "registry:component"
@@ -159,7 +164,7 @@
           "navigation",
           "app-shell"
         ],
-        "contentHash": "82b8fa20f3f9"
+        "contentHash": "807856168cb9"
       }
     },
     {
