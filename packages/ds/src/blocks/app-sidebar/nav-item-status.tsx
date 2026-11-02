@@ -81,7 +81,9 @@ export function NavItemStatus({
             {badge.label}
           </Badge>
         )}
-        {isExternal && <ExternalLinkIcon className="size-4" />}
+        {isExternal && (
+          <ExternalLinkIcon className="size-2.5! opacity-60 transition-opacity in-[a:focus]:opacity-100 in-[a:hover]:opacity-100" />
+        )}
       </span>
       {badge && withDot && (
         <span

@@ -691,7 +691,12 @@ export const ShouldSizeExternalSubItemIcon: Story = {
     const help = canvas.getByRole("link", { name: "Help opens in new tab" });
     const icon = help.querySelector("svg");
     if (!icon) throw new Error("No external icon");
-    await expect(icon.getBoundingClientRect().width).toBe(16);
+    await expect(icon.getBoundingClientRect().width).toBe(10);
+
+    // Dimmed until the link is reached; hover shares the rule, which `userEvent` can't trigger.
+    await expect(getComputedStyle(icon).opacity).toBe("0.6");
+    help.focus();
+    await waitFor(() => expect(getComputedStyle(icon).opacity).toBe("1"));
   },
 };
 
