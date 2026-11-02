@@ -389,3 +389,114 @@ largura de celular. Confira título longo com badge longo: o título trunca, o b
 git add packages/ds/src/blocks/app-sidebar apps/web/src/site/i18n packages/ds/registry.json apps/web/public/r
 git commit -m "docs(ui): document the app-sidebar access states"
 ```
+
+---
+
+## Fase 2: menus por composição
+
+Revisão no topo da [spec](app-sidebar-access.md). As Tarefas 1 a 5 já estão feitas. Vale a seção
+"Restrições globais", e o Foco de revisão continua coberto pelas stories reescritas.
+
+### Tarefa 6: subcomponentes no lugar de `data.nav`
+
+**Arquivos:**
+- Criar: `packages/ds/src/blocks/app-sidebar/nav-items.tsx`
+- Remover: `packages/ds/src/blocks/app-sidebar/nav-section.tsx`
+- Modificar: `types.ts`, `nav-access.ts`, `nav-item-status.tsx`, `app-sidebar.tsx`
+- Modificar: `app-sidebar.stories.tsx`, `packages/ds/tests/app-sidebar-nav-access.test.ts`
+
+**Interfaces:**
+- Produz, em `types.ts`: `AppSidebarData = { user: AppSidebarUser } & AppSidebarBranding`,
+  `AppSidebarItemAccess` sem `hidden`, `AppSidebarSectionProps`, `AppSidebarItemProps` e
+  `AppSidebarSubItemProps`. Saem `AppSidebarNavItem`, `AppSidebarNavSubItem` e `AppSidebarNavSection`.
+- `AppSidebarItemProps`: `{ title; icon?; isActive?; external?; variant?; }`, mais
+  `AppSidebarItemAccess`, mais `{ href: string; children?: undefined } | { href?: string; children: ReactNode }`.
+- Produz, em `nav-items.tsx`: `AppSidebarSection`, `AppSidebarItem`, `AppSidebarSubItem`, reexportados
+  por `app-sidebar.tsx` com `export { ... } from "./nav-items"`.
+- Produz, em `nav-access.ts`: `itemLabel` (igual) e
+  `externalLinkProps({ external, access, isExpandable })`. Saem `visibleNav` e `isExpandable`.
+- `AppSidebar` perde `externalLabel` por prop: `AppSidebarItem` e `AppSidebarSubItem` leem
+  `useFmaMessages("appSidebar", appSidebarEn)` por um contexto do bloco com `i18n`, e o namespace passa
+  para `nav-items.tsx`. `AppSidebar` continua aceitando `i18n`.
+
+- [ ] **Passo 1: reescrever as stories, que falham**
+
+Cada story passa a ter `render` com a composição real, e `SidebarProvider`, `SidebarInset` e
+`SidebarTrigger` vão para `decorators`. Mantenha os mesmos nomes e `play`, com estas mudanças:
+
+- `ShouldHideHiddenItem` vira `ShouldSkipConditionalItems`: `{false && <AppSidebarItem />}` não aparece.
+- Novas: `ShouldDropEmptyParent` e `ShouldDropEmptySection`.
+- `AUTOMATIONS`, `REPORTS` e demais constantes viram props espalhadas (`<AppSidebarItem {...REPORTS} />`).
+
+- [ ] **Passo 2: confirmar a falha**
+
+Rode: `pnpm --filter @fma-ds/ds exec vitest run --project storybook src/blocks/app-sidebar`
+Esperado: FALHA, porque `AppSidebarItem` ainda não existe.
+
+- [ ] **Passo 3: ajustar os testes de `nav-access`**
+
+Remova `visibleNav` e `isExpandable`; `externalLinkProps` testa `isExpandable: true`.
+
+- [ ] **Passo 4: implementar `nav-items.tsx` e os tipos**
+
+Mova a lógica de `nav-section.tsx`:
+
+- `AppSidebarSection`: `SidebarGroup` e `SidebarMenu`, ou `null` sem filhos.
+- `AppSidebarItem`: decide expansível com `children !== undefined && (access ?? "granted") === "granted"`.
+  Expansível sem filhos em `Children.toArray` retorna `null`. Não expansível renderiza como item simples.
+- `AppSidebarSubItem`: contexto `"collapse" | "menu"`, com padrão `"collapse"`. `DropdownItem` envolve
+  `DropdownMenu` no provider com `"menu"`.
+
+- [ ] **Passo 5: confirmar que passa**
+
+Rode os comandos de Storybook do Passo 2 e, em unit, `tests/app-sidebar-nav-access.test.ts`,
+`tests/app-sidebar-badge-contrast.test.ts` e `tests/i18n-coverage.test.ts`.
+Esperado: PASSAM.
+
+- [ ] **Passo 6: fazer commit**
+
+```bash
+pnpm --filter @fma-ds/ds build
+git add packages/ds/src/blocks/app-sidebar packages/ds/tests packages/ds/registry.json apps/web/public/r
+git commit -m "refactor(ui)!: compose the app-sidebar menus from sub-components"
+```
+
+### Tarefa 7: editor de temas, documentação e verificação
+
+**Arquivos:**
+- Modificar: `apps/web/src/theme-editor/sidebar-preview.tsx`
+- Modificar: `packages/ds/src/blocks/app-sidebar/meta.json`
+- Modificar: `apps/web/src/site/i18n/items-pt-BR.json` e os dicionários `story-*`
+
+- [ ] **Passo 1: migrar `sidebar-preview.tsx`**
+
+Troque `data.nav` pela composição, com o mesmo conteúdo.
+
+- [ ] **Passo 2: atualizar `meta.json` e `items-pt-BR.json`**
+
+Descreva `AppSidebarSection`, `AppSidebarItem` e `AppSidebarSubItem`, e o limite da contagem de filhos.
+
+- [ ] **Passo 3: alinhar os dicionários**
+
+Rode: `pnpm --filter @fma-ds/ds exec vitest run --project unit tests/site-translations.test.ts`
+Esperado: PASSA depois de remover os textos perdidos (como "Internal") e incluir os novos.
+
+- [ ] **Passo 4: verificar tudo**
+
+```bash
+pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build && pnpm --filter @fma-ds/ds test:storybook && pnpm --filter web test:e2e
+```
+
+Esperado: tudo PASSA. `test:e2e` entra porque o editor de temas mudou.
+
+- [ ] **Passo 5: conferir no browser**
+
+Veja `/themes` e as stories de acesso, expandidas e recolhidas, no tema padrão e no cobalt.
+
+- [ ] **Passo 6: fazer commit**
+
+```bash
+git add apps/web/src packages/ds/src/blocks/app-sidebar packages/ds/registry.json apps/web/public/r docs/plans
+git commit -m "docs(ui): document the composed app-sidebar menus"
+```
+

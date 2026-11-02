@@ -1,5 +1,26 @@
 # Plano: estados de acesso nos itens do `app-sidebar`
 
+> **Desenho revisado em 2026-11-02** (decisão do usuário). Onde este texto divergir, vale isto:
+>
+> - Os menus são **composição, não dados**: `data.nav` sai, e `AppSidebar` recebe os menus como
+>   `children`, com `AppSidebarSection`, `AppSidebarItem` e `AppSidebarSubItem`. É uma mudança
+>   incompatível no bloco, que vai na descrição do PR.
+> - `access` passa a ter três valores: `granted`, `blocked` e `gated`. **`hidden` sai**: ocultar é JSX
+>   condicional na aplicação (`{can("x") && <AppSidebarItem ... />}`), e `visibleNav` deixa de existir.
+> - `url` vira `href`, como nos componentes da core. É opcional só em pai `granted`, que não navega; `access`, `badge`, `external`, `variant`, `icon` e `isActive` viram props, e o tipo mantém
+>   `badge` obrigatório em `blocked` e `gated`.
+> - `badge` continua sendo a prop `{ label, tone, icon }`, sem componente próprio. Assim o tooltip
+>   recolhido sempre tem o texto, e a ordem título, badge e seta não depende de quem compõe.
+> - Item com filhos sem nenhum filho visível não renderiza; o mesmo vale para seção vazia. A contagem
+>   usa `Children.toArray`, então enxerga `{false}` e `.map()` vazio, **mas não** um wrapper que retorna
+>   `null` nem um Fragment vazio. Limitação documentada, sem código para contorná-la.
+> - `AppSidebarSubItem` escolhe o primitivo por contexto: `SidebarMenuSubButton` no colapsável,
+>   `DropdownMenuItem` no menu, inclusive no modo recolhido. Validado em story descartável no
+>   `Menu` do react-aria, com filhos condicionais, wrapper, `.map()`, teclado e navegação.
+> - Hierarquia: pai `blocked` ou `gated` ignora `children`. Continua valendo que só pai `granted`
+>   expande, e que cada subitem tem estado próprio.
+> - Continuam como estão: `isInactive`, `NavItemStatus`, tons e contraste, textos e acessibilidade.
+
 Issue: #3. Desenho combinado em 2026-11-02.
 
 Objetivo: o `app-sidebar` representa como cada item se comporta para o usuário (normal, oculto,
