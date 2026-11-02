@@ -113,6 +113,14 @@ export type AppSidebarItemProps = {
       onPress?: undefined;
       children: React.ReactNode;
     }
+  | {
+      access: "granted" | "blocked";
+      badge: AppSidebarItemBadge;
+      href?: undefined;
+      external?: undefined;
+      onPress?: undefined;
+      children: React.ReactNode;
+    }
 );
 
 export type AppSidebarConfig = {

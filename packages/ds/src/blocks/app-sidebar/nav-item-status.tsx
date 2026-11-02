@@ -73,7 +73,7 @@ export function NavItemStatus({
             className={cn(
               inMenu ? [VARIANT_MENU_BADGE[variant], "**:text-inherit!"] : VARIANT_BADGE[variant],
               // A blocked item dims its title, but the reason has to stay legible.
-              !inMenu && access === "blocked" && "text-sidebar-foreground",
+              !inMenu && variant === "text" && access === "blocked" && "text-sidebar-foreground",
               "[&_svg]:size-2.5!",
             )}
           >

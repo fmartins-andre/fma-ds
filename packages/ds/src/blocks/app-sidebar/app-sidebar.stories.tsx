@@ -346,6 +346,26 @@ export const ShouldFollowItemColor: Story = {
   },
 };
 
+export const ShouldKeepContainedBlockedReasonLegible: Story = {
+  tags: ["!autodocs"],
+  render: () => (
+    <AppShell>
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem
+          title="Audit"
+          access="blocked"
+          badge={{ label: "Coming soon", variant: "contained" }}
+        />
+      </AppSidebarSection>
+    </AppShell>
+  ),
+  play: async ({ canvas }) => {
+    const item = canvas.getByRole("button", { name: "Audit Coming soon" });
+    const style = getComputedStyle(within(item).getByText("Coming soon", { ignore: ".sr-only" }));
+    await expect(style.color).not.toBe(style.backgroundColor);
+  },
+};
+
 export const ShouldKeepBlockedReasonLegible: Story = {
   ...Blocked,
   tags: ["!autodocs"],

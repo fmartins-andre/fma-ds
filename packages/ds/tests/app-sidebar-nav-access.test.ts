@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import type { AppSidebarProps } from "@/blocks/app-sidebar/app-sidebar";
 import { externalLinkProps, itemLabel } from "@/blocks/app-sidebar/nav-access";
 import type { AppSidebarItemProps } from "@/blocks/app-sidebar/types";
 
@@ -6,6 +7,7 @@ const soon = { label: "Coming soon" };
 
 // Checked by `tsc`: an item goes somewhere or runs something, never both.
 const go = () => {};
+const can = false as boolean;
 const contract: AppSidebarItemProps[] = [
   { title: "Link", href: "/link" },
   { title: "Action", onPress: go },
@@ -13,6 +15,9 @@ const contract: AppSidebarItemProps[] = [
   { title: "Blocked", access: "blocked", badge: soon },
   { title: "Blocked link", access: "blocked", badge: soon, href: "/link", onPress: go },
   { title: "Parent", children: null },
+  { title: "Dynamic parent", access: can ? "granted" : "blocked", badge: soon, children: null },
+  { title: "Dynamic link", access: can ? "granted" : "blocked", badge: soon, href: "/link" },
+  { title: "Dynamic action", access: can ? "granted" : "blocked", badge: soon, onPress: go },
   // @ts-expect-error both a link and an action
   { title: "Both", href: "/link", onPress: go },
   // @ts-expect-error neither a link, an action nor children
@@ -23,8 +28,11 @@ const contract: AppSidebarItemProps[] = [
   { title: "External", external: true, onPress: go },
 ];
 
+const partialLabels: NonNullable<AppSidebarProps["i18n"]> = { labels: { team: "Time" } };
+
 it("has its item contract checked by tsc", () => {
-  expect(contract).toHaveLength(10);
+  expect(contract).toHaveLength(13);
+  expect(partialLabels.labels?.team).toBe("Time");
 });
 
 describe("itemLabel", () => {

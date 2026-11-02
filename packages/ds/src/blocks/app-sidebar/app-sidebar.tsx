@@ -2,12 +2,12 @@
 
 import type * as React from "react";
 import { Sidebar, SidebarRail } from "@/core/sidebar/sidebar";
-import { useFmaMessages } from "@/lib/i18n/i18n";
+import { type NamespaceOverrides, useFmaMessages } from "@/lib/i18n/i18n";
 import { AppSidebarLabelsContext, appSidebarEn } from "./app-sidebar-labels";
 import type { AppSidebarConfig } from "./types";
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-  i18n?: Partial<AppSidebarConfig>;
+  i18n?: NamespaceOverrides<AppSidebarConfig>;
 };
 
 /**
