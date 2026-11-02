@@ -592,3 +592,36 @@ export const ShouldOpenExternalDropdownItem: Story = {
     await userEvent.keyboard("{Escape}");
   },
 };
+
+export const ShouldAlignSubItemsWithParent: Story = {
+  tags: ["!autodocs"],
+  args: {
+    data: withItems(
+      {
+        title: "Models",
+        url: "/models",
+        icon: <BotIcon />,
+        isActive: true,
+        items: [
+          {
+            title: "Quantum",
+            url: "/models/quantum",
+            access: "blocked",
+            badge: { label: "Coming soon" },
+          },
+        ],
+      },
+      AUTOMATIONS,
+    ),
+  },
+  play: async ({ canvas }) => {
+    const right = (element: Element) => element.getBoundingClientRect().right;
+    const parent = canvas.getByRole("button", { name: "Models" });
+    const subItem = canvas.getByRole("button", { name: "Quantum Coming soon" });
+    const item = canvas.getByRole("link", { name: "Automations Upgrade" });
+    await expect(right(subItem)).toBe(right(parent));
+    await expect(right(within(subItem).getByText("Coming soon", { ignore: ".sr-only" }))).toBe(
+      right(within(item).getByText("Upgrade", { ignore: ".sr-only" })),
+    );
+  },
+};

@@ -91,7 +91,7 @@ function CollapseItem({ item, externalLabel }: { item: AppSidebarNavItem; extern
           />
         </SidebarMenuButton>
         <CollapsibleContent>
-          <SidebarMenuSub>
+          <SidebarMenuSub className="mr-0 pr-0">
             {item.items?.map((subItem) => (
               <SidebarMenuSubItem key={subItem.title}>
                 <SidebarMenuSubButton

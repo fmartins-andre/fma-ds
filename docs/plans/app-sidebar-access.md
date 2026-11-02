@@ -117,6 +117,8 @@ do status não contrasta com a sidebar. Seu preenchimento é `sidebar` (`neutral
 
 - **Expandida e mobile:** ícone, título, badge e, em itens com subitens, a seta. O título trunca; o
   badge, não.
+- **Subitens:** o bloco tira o recuo direito de `SidebarMenuSub`, então subitens e badges terminam na
+  mesma linha dos itens de cima. O padrão da `core/sidebar` não muda.
 - **Recolhida:** o badge some e um ponto com a cor do `tone` aparece sobre o ícone. O tooltip mostra
   `${title}, ${badge.label}`.
 - **Link externo:** `target="_blank"`, `rel="noopener noreferrer"`, ícone `ExternalLinkIcon` e o texto
