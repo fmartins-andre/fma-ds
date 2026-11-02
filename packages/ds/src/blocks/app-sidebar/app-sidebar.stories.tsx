@@ -476,6 +476,14 @@ export const ShouldExpandGrantedParentWithBadge: Story = {
   play: async ({ canvas }) => {
     const models = canvas.getByRole("button", { name: "Models New" });
     await expect(models).toHaveAttribute("aria-expanded", "false");
+
+    // The badge sits right next to the chevron, not halfway along the row.
+    const badge = within(models).getByText("New", { ignore: ".sr-only" });
+    const chevron = models.querySelector("svg:last-child");
+    if (!chevron) throw new Error("No chevron");
+    const gap = chevron.getBoundingClientRect().left - badge.getBoundingClientRect().right;
+    await expect(gap).toBeLessThanOrEqual(8);
+
     await userEvent.click(models);
     await expect(models).toHaveAttribute("aria-expanded", "true");
   },

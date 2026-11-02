@@ -1406,5 +1406,18 @@
   "日間": "日間",
   "月": "月",
   "終日": "終日",
-  "週": "週"
+  "週": "週",
+  "Plans": "Planos",
+  "Reports": "Relatórios",
+  "No access": "Sem acesso",
+  "Audit": "Auditoria",
+  "Coming soon": "Em breve",
+  "Automations": "Automações",
+  "Upgrade": "Upgrade",
+  "Payment due": "Pagamento pendente",
+  "New": "Novo",
+  "Help": "Ajuda",
+  "Internal": "Interno",
+  "Workspace": "Workspace",
+  "Quantum": "Quantum"
 }

@@ -83,7 +83,7 @@ function CollapseItem({ item, externalLabel }: { item: AppSidebarNavItem; extern
       <Collapsible defaultExpanded={item.isActive} className="group/collapsible">
         <SidebarMenuButton slot="trigger" tooltip={itemLabel(item)}>
           {item.icon}
-          <span className="truncate">{item.title}</span>
+          <span className="flex-1 truncate">{item.title}</span>
           <NavItemStatus item={item} externalLabel={externalLabel} withDot />
           <ChevronRightIcon
             aria-hidden="true"
@@ -131,7 +131,7 @@ function DropdownItem({
           className="aria-expanded:bg-sidebar-accent aria-expanded:text-sidebar-accent-foreground"
         >
           {item.icon}
-          <span className="truncate">{item.title}</span>
+          <span className="flex-1 truncate">{item.title}</span>
           <NavItemStatus item={item} externalLabel={externalLabel} withDot />
           <MoreHorizontalIcon aria-hidden="true" className="ml-auto shrink-0" />
         </SidebarMenuButton>
