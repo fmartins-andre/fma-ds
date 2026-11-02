@@ -10,6 +10,15 @@ const carouselEn = { labels: { next: "Next slide", previous: "Previous slide" } 
 const ptBR = { carousel: { labels: { next: "Próximo" } } };
 
 const later = <T,>(value: T) => new Promise<T>((resolve) => setTimeout(() => resolve(value), 10));
+/** A promise the test settles, so it can look at the fallback however slow the machine is. */
+function deferred<T>() {
+  let resolve: (value: T) => void = () => {};
+  const promise = new Promise<T>((done) => {
+    resolve = done;
+  });
+  return { promise, resolve };
+}
+
 // React holds a fallback on screen for a while before it reveals the content.
 const settle = () => act(() => new Promise((resolve) => setTimeout(resolve, 400)));
 
@@ -51,7 +60,8 @@ describe("FmaI18nProvider while a pack loads", () => {
   });
 
   it("shows its fallback, not the one above it", async () => {
-    const locales = { "pt-BR": () => later({ default: ptBR }) };
+    const pack = deferred<{ default: typeof ptBR }>();
+    const locales = { "pt-BR": () => pack.promise };
     const container = await render(
       <Suspense fallback="above">
         <FmaI18nProvider locale="pt-BR" locales={locales} fallback="loading">
@@ -60,18 +70,21 @@ describe("FmaI18nProvider while a pack loads", () => {
       </Suspense>,
     );
     expect(container.textContent).toBe("loading");
+    pack.resolve({ default: ptBR });
     await settle();
     expect(container.textContent).toBe("Próximo");
   });
 
   it("catches what suspends inside it unless a closer boundary does", async () => {
-    const Page = lazy(() => later({ default: Text }));
+    const page = deferred<{ default: typeof Text }>();
+    const Page = lazy(() => page.promise);
     const container = await render(
       <FmaI18nProvider fallback="loading">
         <Page />
       </FmaI18nProvider>,
     );
     expect(container.textContent).toBe("loading");
+    page.resolve({ default: Text });
     await settle();
     expect(container.textContent).toBe("Next slide");
   });
