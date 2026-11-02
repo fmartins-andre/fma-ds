@@ -2,6 +2,12 @@
 
 > **Desenho revisado em 2026-11-02** (decisão do usuário). Onde este texto divergir, vale isto:
 >
+> - O bloco inteiro é composição: `data`, `onTeamChange`, `onAddTeam` e `onUserAction` saem. Dentro de
+>   `AppSidebar` vão `SidebarHeader`, `SidebarContent` e `SidebarFooter` da core, com
+>   `AppSidebarTeamSwitcher` (com `AppSidebarTeam`), `AppSidebarLogo` e `AppSidebarUser`. A equipe ativa é
+>   controlada pela aplicação, os itens do menu do usuário são dela (`DropdownMenuItem`), e o atalho
+>   `⌘1`, que nunca foi implementado, sai. O que é atômico segue em props (`name`, `email`, `avatar`,
+>   `plan`, `logo`). O namespace `appSidebar` ganha `team`, `teams` e `account`.
 > - Os menus são **composição, não dados**: `data.nav` sai, e `AppSidebar` recebe os menus como
 >   `children`, com `AppSidebarSection`, `AppSidebarItem` e `AppSidebarSubItem`. É uma mudança
 >   incompatível no bloco, que vai na descrição do PR.

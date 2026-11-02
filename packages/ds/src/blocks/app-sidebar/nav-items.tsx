@@ -21,28 +21,10 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/core/sidebar/sidebar";
-import type { DictionaryNamespace } from "@/lib/i18n/i18n";
+import { AppSidebarLabelsContext } from "./app-sidebar-labels";
 import { externalLinkProps, itemLabel } from "./nav-access";
 import { NavItemStatus } from "./nav-item-status";
-import type {
-  AppSidebarConfig,
-  AppSidebarItemProps,
-  AppSidebarSectionProps,
-  AppSidebarSubItemProps,
-} from "./types";
-
-declare global {
-  interface FmaNamespaces {
-    appSidebar: AppSidebarConfig;
-  }
-}
-
-export const appSidebarEn: DictionaryNamespace<AppSidebarConfig> = {
-  labels: { opensInNewTab: "opens in new tab" },
-};
-
-/** Read after the title on an external link; `AppSidebar` provides the active language's. */
-export const ExternalLabelContext = React.createContext(appSidebarEn.labels.opensInNewTab);
+import type { AppSidebarItemProps, AppSidebarSectionProps, AppSidebarSubItemProps } from "./types";
 
 /** A sub-item's parent decides what it renders as: a sidebar row, or a menu item. */
 const SubItemPlacementContext = React.createContext<"sidebar" | "menu">("sidebar");
@@ -91,7 +73,7 @@ function LeafItem({
   access,
   badge,
 }: AppSidebarItemProps) {
-  const externalLabel = React.useContext(ExternalLabelContext);
+  const { opensInNewTab: externalLabel } = React.useContext(AppSidebarLabelsContext);
   const isBlocked = access === "blocked";
   const isCurrent = isActive && !isBlocked;
   return (
@@ -191,7 +173,7 @@ export function AppSidebarSubItem({
   badge,
 }: AppSidebarSubItemProps) {
   const placement = React.useContext(SubItemPlacementContext);
-  const externalLabel = React.useContext(ExternalLabelContext);
+  const { opensInNewTab: externalLabel } = React.useContext(AppSidebarLabelsContext);
   const isBlocked = access === "blocked";
   const inMenu = placement === "menu";
   const content = (

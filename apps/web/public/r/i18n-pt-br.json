@@ -149,7 +149,7 @@
     },
     {
       "path": "src/blocks/app-sidebar/app-sidebar-i18n/app-sidebar-pt-BR.ts",
-      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const appSidebarPtBR = defineFmaNamespace(\"appSidebar\", {\n  labels: { opensInNewTab: \"abre em nova aba\" },\n});\n",
+      "content": "import { defineFmaNamespace } from \"@/lib/i18n/i18n\";\n\nexport const appSidebarPtBR = defineFmaNamespace(\"appSidebar\", {\n  labels: {\n    opensInNewTab: \"abre em nova aba\",\n    team: \"Equipe\",\n    teams: \"Equipes\",\n    account: \"Conta\",\n  },\n});\n",
       "type": "registry:lib",
       "target": "components/fma-ds/app-sidebar/app-sidebar-i18n/app-sidebar-pt-BR.ts"
     },
@@ -265,7 +265,7 @@
       "locale",
       "pt-BR"
     ],
-    "contentHash": "c84bd033a5b5"
+    "contentHash": "7add62e31e42"
   },
   "categories": [
     "utils"

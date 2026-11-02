@@ -1,36 +1,44 @@
 import type * as React from "react";
 
 /**
- * Contract of the `app-sidebar` block: teams and the user are data, and the
- * menus are composed from `AppSidebarSection`, `AppSidebarItem` and
- * `AppSidebarSubItem`.
+ * Contract of the `app-sidebar` block: it's composed, so these are the props of
+ * its parts. What's atomic stays a prop; what the app lists goes in `children`.
  */
 
-export type AppSidebarUser = {
-  name: string;
-  email: string;
-  avatar: string;
-};
-
-export type AppSidebarTeam = {
+export type AppSidebarTeamSummary = {
   name: string;
   logo: React.ReactNode;
   plan: string;
+};
+
+export type AppSidebarTeamSwitcherProps = {
+  activeTeam: AppSidebarTeamSummary;
+  children?: React.ReactNode;
+};
+
+export type AppSidebarTeamProps = {
+  name: string;
+  logo: React.ReactNode;
+  /** Unused here, so a team's whole object can be spread on it. */
+  plan?: string;
+  onAction?: () => void;
 };
 
 /**
  * `full` shows while the sidebar is expanded (and on mobile); `collapsed`
  * while it's retracted to icons. Swapped with CSS only.
  */
-export type AppSidebarLogo = {
+export type AppSidebarLogoProps = {
   full: React.ReactNode;
   collapsed: React.ReactNode;
 };
 
-/** Either a team switcher or a static logo fills the header. */
-export type AppSidebarBranding =
-  | { teams: AppSidebarTeam[]; logo?: never }
-  | { teams?: never; logo: AppSidebarLogo };
+export type AppSidebarUserProps = {
+  name: string;
+  email: string;
+  avatar?: string;
+  children?: React.ReactNode;
+};
 
 /** The text comes from the app, like `title`. */
 export type AppSidebarItemBadge = {
@@ -107,13 +115,6 @@ export type AppSidebarItemProps = {
     }
 );
 
-export type AppSidebarData = {
-  user: AppSidebarUser;
-} & AppSidebarBranding;
-
 export type AppSidebarConfig = {
-  labels: { opensInNewTab: string };
+  labels: { opensInNewTab: string; team: string; teams: string; account: string };
 };
-
-/** Ids of the entries in the user menu, passed to `onUserAction`. */
-export type AppSidebarUserAction = "upgrade" | "account" | "billing" | "notifications" | "logout";

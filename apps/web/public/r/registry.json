@@ -107,12 +107,17 @@
       "name": "app-sidebar",
       "type": "registry:block",
       "title": "App Sidebar",
-      "description": "An app-shell sidebar block, collapsible to icons: a team switcher (or a static logo), navigation sections and a user menu.\n\n`data` holds the user and the teams or logo. The menus are `children`, composed from `AppSidebarSection`, `AppSidebarItem` and `AppSidebarSubItem`. Render it inside a `SidebarProvider`.\n\n- **Sub-items**: expand inline (`variant=\"collapse\"`) or open a menu (`\"dropdown\"`, and always while collapsed to icons).\n- **Targets**: `href` is a link, to an app route or any URL, which `external` opens in a new tab; wrap the app in `RouterProvider` for client-side routing. `onPress` runs a function instead.\n- **Menus**: `onTeamChange`, `onAddTeam` and `onUserAction` handle them.\n- **Access**: `access` is what an item does (`granted`, `blocked`, `gated`), `badge` says why, with the app's own text, as `text`, `outlined` or `contained`, and `external` opens it in a new tab. To hide an item, don't render it. `gated` is informative only: the item follows its target, and the app must guard that route.\n- **Empty parents**: an item or section with no children isn't rendered. That's counted on direct children, so `{can && <Item />}` works, but a wrapper of yours that returns `null` still counts as one.",
+      "description": "An app-shell sidebar block, collapsible to icons, composed from parts. Render it inside a `SidebarProvider`.\n\nInside `AppSidebar`, use the core's `SidebarHeader`, `SidebarContent` and `SidebarFooter`, with:\n\n- **Header**: `AppSidebarTeamSwitcher` with `AppSidebarTeam`, or `AppSidebarLogo`. The app holds `activeTeam`.\n- **Content**: `AppSidebarSection`, `AppSidebarItem` and `AppSidebarSubItem`.\n- **Footer**: `AppSidebarUser`, with the menu's entries as `DropdownMenuItem`s.\n\nDetails:\n\n\n- **Sub-items**: expand inline (`variant=\"collapse\"`) or open a menu (`\"dropdown\"`, and always while collapsed to icons).\n- **Targets**: `href` is a link, to an app route or any URL, which `external` opens in a new tab; wrap the app in `RouterProvider` for client-side routing. `onPress` runs a function instead.\n- **Access**: `access` is what an item does (`granted`, `blocked`, `gated`), `badge` says why, with the app's own text, as `text`, `outlined` or `contained`, and `external` opens it in a new tab. To hide an item, don't render it. `gated` is informative only: the item follows its target, and the app must guard that route.\n- **Empty parents**: an item or section with no children isn't rendered. That's counted on direct children, so `{can && <Item />}` works, but a wrapper of yours that returns `null` still counts as one.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
       ],
       "files": [
+        {
+          "path": "src/blocks/app-sidebar/app-sidebar-labels.ts",
+          "target": "components/fma-ds/app-sidebar/app-sidebar-labels.ts",
+          "type": "registry:component"
+        },
         {
           "path": "src/blocks/app-sidebar/app-sidebar.tsx",
           "target": "components/fma-ds/app-sidebar/app-sidebar.tsx",
@@ -172,7 +177,7 @@
           "navigation",
           "app-shell"
         ],
-        "contentHash": "c5494a3b4391"
+        "contentHash": "49b107d3a749"
       }
     },
     {
@@ -2496,7 +2501,7 @@
           "locale",
           "pt-BR"
         ],
-        "contentHash": "c84bd033a5b5"
+        "contentHash": "7add62e31e42"
       }
     },
     {

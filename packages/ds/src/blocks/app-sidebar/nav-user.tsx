@@ -1,18 +1,11 @@
 "use client";
 
-import {
-  BadgeCheckIcon,
-  BellIcon,
-  ChevronsUpDownIcon,
-  CreditCardIcon,
-  LogOutIcon,
-  SparklesIcon,
-} from "lucide-react";
+import { ChevronsUpDownIcon } from "lucide-react";
+import * as React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/core/avatar/avatar";
 import {
   DropdownMenu,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -23,7 +16,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/core/sidebar/sidebar";
-import type { AppSidebarUser, AppSidebarUserAction } from "./types";
+import { AppSidebarLabelsContext } from "./app-sidebar-labels";
+import type { AppSidebarUserProps } from "./types";
 
 function initials(name: string) {
   return name
@@ -33,76 +27,49 @@ function initials(name: string) {
     .join("");
 }
 
-function UserSummary({ user }: { user: AppSidebarUser }) {
+function UserSummary({ name, email, avatar }: Omit<AppSidebarUserProps, "children">) {
   return (
     <>
       <Avatar>
-        {user.avatar && <AvatarImage src={user.avatar} alt="" />}
-        <AvatarFallback>{initials(user.name)}</AvatarFallback>
+        {avatar && <AvatarImage src={avatar} alt="" />}
+        <AvatarFallback>{initials(name)}</AvatarFallback>
       </Avatar>
       <div className="grid flex-1 text-left text-sm leading-tight">
-        <span className="truncate font-medium">{user.name}</span>
-        <span className="truncate text-xs">{user.email}</span>
+        <span className="truncate font-medium">{name}</span>
+        <span className="truncate text-xs">{email}</span>
       </div>
     </>
   );
 }
 
-export function NavUser({
-  user,
-  onAction,
-}: {
-  user: AppSidebarUser;
-  onAction?: (action: AppSidebarUserAction) => void;
-}) {
+/** The account in the footer: pass the menu's entries as `children`. */
+export function AppSidebarUser({ name, email, avatar, children }: AppSidebarUserProps) {
   const { isMobile } = useSidebar();
+  const labels = React.useContext(AppSidebarLabelsContext);
+  const summary = <UserSummary name={name} email={email} avatar={avatar} />;
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenuTrigger>
           <SidebarMenuButton
             size="lg"
-            aria-label={`Account: ${user.name}`}
+            aria-label={`${labels.account}: ${name}`}
             className="aria-expanded:bg-sidebar-accent aria-expanded:text-sidebar-accent-foreground"
           >
-            <UserSummary user={user} />
+            {summary}
             <ChevronsUpDownIcon aria-hidden="true" className="ml-auto size-4" />
           </SidebarMenuButton>
           <DropdownMenu
             placement={isMobile ? "bottom end" : "end bottom"}
             className="w-fit min-w-56"
-            onAction={(key) => onAction?.(key as AppSidebarUserAction)}
           >
             <DropdownMenuGroup>
               <DropdownMenuLabel className="flex items-center gap-2 px-1 py-1.5 font-normal text-foreground">
-                <UserSummary user={user} />
+                {summary}
               </DropdownMenuLabel>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem id="upgrade" textValue="Upgrade to Pro">
-              <SparklesIcon aria-hidden="true" />
-              Upgrade to Pro
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem id="account" textValue="Account">
-                <BadgeCheckIcon aria-hidden="true" />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem id="billing" textValue="Billing">
-                <CreditCardIcon aria-hidden="true" />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem id="notifications" textValue="Notifications">
-                <BellIcon aria-hidden="true" />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem id="logout" textValue="Log out">
-              <LogOutIcon aria-hidden="true" />
-              Log out
-            </DropdownMenuItem>
+            {children}
           </DropdownMenu>
         </DropdownMenuTrigger>
       </SidebarMenuItem>

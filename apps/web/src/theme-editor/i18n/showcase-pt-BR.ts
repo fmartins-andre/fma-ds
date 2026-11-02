@@ -144,6 +144,8 @@ export const showcasePtBR = {
     note: "As abas usam muted na lista e background na aba selecionada.",
   },
   sidebar: {
+    account: "Conta",
+    logout: "Sair",
     lead: "O bloco <code>app-sidebar</code>, estilizado pelos tokens <code>--sidebar-*</code>.",
     variant: "Variante da barra lateral",
     sidebar: "Barra lateral",
