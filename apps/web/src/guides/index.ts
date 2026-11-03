@@ -16,6 +16,9 @@ export const GUIDES: Guide[] = [
   { slug: "offline", title: "Offline and privacy" },
   { slug: "touch", title: "Touch" },
   { slug: "i18n", title: "Internationalization" },
+  { slug: "forms", title: "Form fields" },
+  { slug: "table-columns", title: "Table column widths" },
+  { slug: "tabs", title: "Tabs and sub-pages" },
   { slug: "updating", title: "Updating items" },
   { slug: "contributing", title: "Contributing" },
 ];
