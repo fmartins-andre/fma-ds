@@ -4275,7 +4275,7 @@
       "name": "tab-nav",
       "type": "registry:ui",
       "title": "Tab Nav",
-      "description": "Navigation between the pages of an area that looks like tabs: a `<nav>` of react-aria links where the current page carries `aria-current=\"page\"`.\n\nUnlike `Tabs` there are no panels — each item is a route — so use it for sub-pages and `Tabs` for in-page views.\n\n- **`variant`**: matches the tab styles — `default` (segmented on `muted`, the current page raised) or `line` (underlined).\n- **Current item**: when `isCurrent` is set or its `href` matches `TabNav`'s `currentHref` (exactly, or with `matchPrefix` also on sub-paths).\n- **`TabNavItem`**: takes an icon before its label; **`TabNavSeparator`** divides groups.\n- **Overflow**: when items don't fit, the strip scrolls sideways and keeps the current page in view.\n\nWrap the app in react-aria's `RouterProvider` for client routing.",
+      "description": "Navigation between the pages of an area that looks like tabs: a `<nav>` of react-aria links where the current page carries `aria-current=\"page\"`.\n\nUnlike `Tabs` there are no panels — each item is a route — so use it for sub-pages and `Tabs` for in-page views.\n\n- **`variant`**: matches the tab styles — `default` (segmented on `muted`, the current page raised), `line` (underlined) or `primary` (segmented on the primary color, for an area's main sections).\n- **Current item**: when `isCurrent` is set or its `href` matches `TabNav`'s `currentHref` (exactly, or with `matchPrefix` also on sub-paths).\n- **`TabNavItem`**: takes an icon before its label; **`TabNavSeparator`** divides groups.\n- **Overflow**: when items don't fit, the strip scrolls sideways and keeps the current page in view.\n\nWrap the app in react-aria's `RouterProvider` for client routing.",
       "author": "@fma-ds/ds",
       "categories": [
         "navigation"
@@ -4302,7 +4302,7 @@
           "routing",
           "react-aria"
         ],
-        "contentHash": "52832920fc1b"
+        "contentHash": "95fe7a1ca147"
       }
     },
     {
@@ -4341,7 +4341,7 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",
-      "description": "A tab list and its panels for switching between related views, with default and line visual variants, horizontal or vertical orientation.",
+      "description": "A tab list and its panels for switching between related views, with default, line and primary visual variants, horizontal or vertical orientation.",
       "author": "@fma-ds/ds",
       "categories": [
         "navigation"
@@ -4367,7 +4367,7 @@
           "disclosure",
           "react-aria"
         ],
-        "contentHash": "604995a8a7d9"
+        "contentHash": "d09f9de81b6d"
       }
     },
     {

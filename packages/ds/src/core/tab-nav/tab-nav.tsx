@@ -5,7 +5,7 @@ import { cn } from "cn";
 import * as React from "react";
 import { Link, type LinkProps } from "react-aria-components";
 
-type TabNavVariant = "default" | "line";
+type TabNavVariant = "default" | "line" | "primary";
 
 const TabNavContext = React.createContext<{ variant: TabNavVariant; currentHref?: string }>({
   variant: "default",
@@ -16,6 +16,7 @@ const tabNavListVariants = cva("inline-flex w-max items-center text-muted-foregr
     variant: {
       default: "h-8 rounded-lg bg-muted p-[3px]",
       line: "h-9 gap-1",
+      primary: "h-8 gap-1 rounded-lg bg-primary px-1.5 py-[3px]",
     },
   },
   defaultVariants: { variant: "default" },
@@ -128,6 +129,8 @@ function TabNavItem({
           // line: the current page is underlined
           "after:absolute after:inset-x-1 after:bottom-0 after:h-0.5 after:rounded-full after:bg-foreground after:opacity-0 after:transition-opacity group-data-[variant=line]/tab-nav:aria-[current=page]:after:opacity-100",
           "aria-[current=page]:text-foreground",
+          // primary: on the primary color, the current page is a raised segment in the primary text
+          "group-data-[variant=primary]/tab-nav:px-4 group-data-[variant=primary]/tab-nav:text-primary-foreground/80 group-data-[variant=primary]/tab-nav:hover:text-primary-foreground group-data-[variant=primary]/tab-nav:aria-[current=page]:bg-background group-data-[variant=primary]/tab-nav:aria-[current=page]:text-primary group-data-[variant=primary]/tab-nav:aria-[current=page]:shadow-sm group-data-[variant=primary]/tab-nav:aria-[current=page]:hover:text-primary dark:group-data-[variant=primary]/tab-nav:text-primary-foreground/80 dark:group-data-[variant=primary]/tab-nav:hover:text-primary-foreground dark:group-data-[variant=primary]/tab-nav:aria-[current=page]:text-primary",
           className,
         )}
         {...props}

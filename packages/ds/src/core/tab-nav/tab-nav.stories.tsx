@@ -38,7 +38,7 @@ const componentMeta = {
     docs: { description: { component: meta.description } },
   },
   argTypes: {
-    variant: { control: "radio", options: ["default", "line"] },
+    variant: { control: "radio", options: ["default", "line", "primary"] },
   },
   args: { "aria-label": "Contratos" },
   decorators: [withRouter("/contratos/comprar")],
@@ -75,6 +75,27 @@ export const Line: Story = {
       <TabNavItem href="/contratos">Contratos adquiridos</TabNavItem>
     </TabNav>
   ),
+};
+
+/** On the primary color, for the main sections of an area; the current page is a raised segment. */
+export const Primary: Story = {
+  args: { variant: "primary" },
+  render: (args) => (
+    <TabNav {...args}>
+      <TabNavItem href="/contratos/comprar">Comprar contrato</TabNavItem>
+      <TabNavItem href="/contratos">Contratos adquiridos</TabNavItem>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const nav = within(canvasElement).getByRole("navigation", { name: "Contratos" });
+    const current = within(nav).getByRole("link", { name: "Comprar contrato" });
+    const other = within(nav).getByRole("link", { name: "Contratos adquiridos" });
+    // the current page reads in the primary color over the background; the others over the primary
+    const list = current.closest("ul");
+    if (!list) throw new Error();
+    await expect(getComputedStyle(current).color).toBe(getComputedStyle(list).backgroundColor);
+    await expect(getComputedStyle(current).color).not.toBe(getComputedStyle(other).color);
+  },
 };
 
 /**
