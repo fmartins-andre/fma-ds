@@ -96,6 +96,58 @@ type Story = StoryObj<typeof componentMeta>;
 
 export const Default: Story = {};
 
+/**
+ * Children can be a function of `{ close }`, to close the dialog when an
+ * action finishes instead of right away, like saving.
+ */
+export const CloseFromAnAction: Story = {
+  render: () => {
+    const [isSaving, setIsSaving] = React.useState(false);
+    const save = async (close: () => void) => {
+      setIsSaving(true);
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      setIsSaving(false);
+      close();
+    };
+
+    return (
+      <DialogTrigger>
+        <Button variant="outline">Rename</Button>
+        <Dialog>
+          {({ close }) => (
+            <>
+              <DialogHeader>
+                <DialogTitle>Rename project</DialogTitle>
+                <DialogDescription>The dialog closes once the new name is saved.</DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose>Cancel</DialogClose>
+                <Button isPending={isSaving} onPress={() => save(close)}>
+                  {isSaving && <Spinner data-icon="inline-start" />}
+                  Save
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </Dialog>
+      </DialogTrigger>
+    );
+  },
+};
+
+export const ShouldCloseFromAnAction: Story = {
+  ...CloseFromAnAction,
+  tags: ["!autodocs"],
+  play: async ({ canvasElement }) => {
+    const canvasBody = within(canvasElement.ownerDocument.body);
+    await userEvent.click(await canvasBody.findByRole("button", { name: "Rename" }));
+    expect(await canvasBody.findByRole("dialog")).toBeInTheDocument();
+    await userEvent.click(canvasBody.getByRole("button", { name: "Save" }));
+    await expect(canvasBody.getByRole("dialog")).toBeInTheDocument();
+    await waitFor(() => expect(canvasBody.queryByRole("dialog")).not.toBeInTheDocument());
+  },
+};
+
 export const NoCloseButton: Story = {
   args: { showCloseButton: false },
 };

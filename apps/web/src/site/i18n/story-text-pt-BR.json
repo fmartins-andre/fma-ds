@@ -1451,5 +1451,8 @@
   "Competência": "Competência",
   "Faturas": "Faturas",
   "Clients": "Clientes",
-  "Acme Inc.": "Acme Inc."
+  "Acme Inc.": "Acme Inc.",
+  "Rename": "Renomear",
+  "Rename project": "Renomear projeto",
+  "The dialog closes once the new name is saved.": "O diálogo fecha quando o novo nome é salvo."
 }

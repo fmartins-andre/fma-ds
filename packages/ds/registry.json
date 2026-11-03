@@ -1533,7 +1533,7 @@
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
-      "description": "A modal window layered over the page, requiring explicit action (or Escape) to dismiss. Pair with react-aria-components' DialogTrigger to wire up the trigger and open state.\n\n`DialogFooter sticky` keeps the footer at the bottom while a long dialog scrolls, flush with the dialog's edge and on an opaque surface.",
+      "description": "A modal window layered over the page, requiring explicit action (or Escape) to dismiss. Pair with react-aria-components' DialogTrigger to wire up the trigger and open state.\n\nChildren can be a function of `{ close }`, to close the dialog when an action finishes.\n\n`DialogFooter sticky` keeps the footer at the bottom while a long dialog scrolls, flush with the dialog's edge and on an opaque surface.",
       "author": "@fma-ds/ds",
       "categories": [
         "overlay"
@@ -1563,7 +1563,7 @@
           "modal",
           "overlay"
         ],
-        "contentHash": "23d8a2597ded"
+        "contentHash": "dc80e535c4cf"
       }
     },
     {
