@@ -124,7 +124,8 @@ type NotificationItemProps = NotificationHandlers & {
   className?: string;
   /**
    * The parts (`NotificationItemMedia`, `NotificationItemContent`,
-   * `NotificationItemTitle`, `NotificationItemMessage`, `NotificationItemDate`,
+   * `NotificationItemHeader`, `NotificationItemTitle`, `NotificationItemStatus`,
+   * `NotificationItemMessage`, `NotificationItemDate`,
    * `NotificationItemActions`), to restyle, reorder or add to them. Without
    * it, all of them in that order.
    */
@@ -181,7 +182,10 @@ function NotificationItem({
           <>
             <NotificationItemMedia />
             <NotificationItemContent>
-              <NotificationItemTitle />
+              <NotificationItemHeader>
+                <NotificationItemTitle />
+                <NotificationItemStatus />
+              </NotificationItemHeader>
               <NotificationItemMessage />
               <NotificationItemDate />
             </NotificationItemContent>
@@ -248,10 +252,25 @@ function NotificationItemContent({ className, ...props }: React.ComponentProps<"
   );
 }
 
+/** The title row: the title, with the status pushed to the end in a card. */
+function NotificationItemHeader({ className, ...props }: React.ComponentProps<"div">) {
+  const { variant } = useNotificationItem("NotificationItemHeader");
+  return (
+    <div
+      data-slot="notification-header"
+      className={cn(
+        "flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1",
+        variant === "card" && "justify-between",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
 /**
- * The title (a link when the notification has `href`) and its read state:
- * a badge in a card, read out only in the compact variant. `children` replaces
- * the title's text.
+ * The title, a link when the notification has `href` (calling `onOpen`).
+ * `children` replaces its text.
  */
 function NotificationItemTitle({
   className,
@@ -260,51 +279,56 @@ function NotificationItemTitle({
   className?: string;
   children?: React.ReactNode;
 }) {
-  const { notification, variant, labels, titleId, onOpen } =
-    useNotificationItem("NotificationItemTitle");
+  const { notification, variant, titleId, onOpen } = useNotificationItem("NotificationItemTitle");
   const { title, href } = notification;
   const isRead = notification.isRead ?? false;
-  const isCard = variant === "card";
   const text = children ?? title;
 
   return (
-    <div
+    <span
+      id={titleId}
+      data-slot="notification-title"
       className={cn(
-        "flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1",
-        isCard && "justify-between",
+        "min-w-0 leading-snug",
+        variant === "card" ? "text-base" : "text-sm",
+        isRead ? "text-muted-foreground" : "font-medium",
         className,
       )}
     >
-      <span
-        id={titleId}
-        data-slot="notification-title"
-        className={cn(
-          "min-w-0 leading-snug",
-          isCard ? "text-base" : "text-sm",
-          isRead ? "text-muted-foreground" : "font-medium",
-        )}
-      >
-        {href ? (
-          <Link
-            href={href}
-            onPress={() => onOpen?.(notification)}
-            className="rounded-sm underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-          >
-            {text}
-          </Link>
-        ) : (
-          text
-        )}
-      </span>
-      {isCard ? (
-        <Badge variant={isRead ? "muted-dot" : "primary-dot"}>
-          {isRead ? labels.read : labels.unread}
-        </Badge>
+      {href ? (
+        <Link
+          href={href}
+          onPress={() => onOpen?.(notification)}
+          className="rounded-sm underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          {text}
+        </Link>
       ) : (
-        !isRead && <span className="sr-only">{labels.unread}</span>
+        text
       )}
-    </div>
+    </span>
   );
+}
+
+/**
+ * Read or unread: a badge in a card; in the compact variant only read out
+ * (the dot shows it).
+ */
+function NotificationItemStatus({ className }: { className?: string }) {
+  const { notification, variant, labels } = useNotificationItem("NotificationItemStatus");
+  const isRead = notification.isRead ?? false;
+  if (variant === "card") {
+    return (
+      <Badge
+        data-slot="notification-status"
+        variant={isRead ? "muted-dot" : "primary-dot"}
+        className={className}
+      >
+        {isRead ? labels.read : labels.unread}
+      </Badge>
+    );
+  }
+  return isRead ? null : <span className="sr-only">{labels.unread}</span>;
 }
 
 /** The message (or `children`); clamped to two lines in the compact variant. */
@@ -649,8 +673,10 @@ export {
   NotificationItemActions,
   NotificationItemContent,
   NotificationItemDate,
+  NotificationItemHeader,
   NotificationItemMedia,
   NotificationItemMessage,
+  NotificationItemStatus,
   NotificationItemTitle,
   NotificationList,
   NotificationMenu,
