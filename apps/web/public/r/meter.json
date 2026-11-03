@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "meter",
+  "title": "Meter",
+  "author": "@fma-ds/ds",
+  "description": "A horizontal gauge for a quantity within a known range (storage, seats, quota), announced as a meter rather than a task's progress. `warningAt` and `criticalAt` tint the fill as it nears the limit; `--meter-fill` and `--meter-track` recolor it.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1",
+    "cn@^0.5.0",
+    "react-aria-components@^1.22.1"
+  ],
+  "files": [
+    {
+      "path": "src/core/meter/meter.tsx",
+      "content": "import { cva } from \"class-variance-authority\";\nimport { cn } from \"cn\";\nimport * as React from \"react\";\nimport {\n  Label as LabelPrimitive,\n  type LabelProps,\n  Meter as MeterPrimitive,\n  type MeterProps as MeterPrimitiveProps,\n} from \"react-aria-components\";\n\n// Thresholds on the fill follow the idea of Intent UI's meter (MIT), rebuilt on this registry's tokens.\n\ntype MeterLevel = \"normal\" | \"warning\" | \"critical\";\n\ntype MeterContextValue = {\n  percentage: number;\n  valueText?: string;\n  level: MeterLevel;\n};\n\nconst MeterContext = React.createContext<MeterContextValue | null>(null);\n\nfunction useMeter() {\n  const context = React.useContext(MeterContext);\n  if (!context) {\n    throw new Error(\"useMeter must be used within a Meter.\");\n  }\n\n  return context;\n}\n\nfunction levelOf(percentage: number, warningAt?: number, criticalAt?: number): MeterLevel {\n  if (criticalAt != null && percentage >= criticalAt) return \"critical\";\n  if (warningAt != null && percentage >= warningAt) return \"warning\";\n  return \"normal\";\n}\n\nfunction MeterContent({ children, ...value }: MeterContextValue & { children?: React.ReactNode }) {\n  const { percentage, valueText, level } = value;\n  const context = React.useMemo(\n    () => ({ percentage, valueText, level }),\n    [percentage, valueText, level],\n  );\n\n  return (\n    <MeterContext value={context}>\n      {children}\n      <MeterTrack>\n        <MeterIndicator />\n      </MeterTrack>\n    </MeterContext>\n  );\n}\n\n/**\n * A quantity within a known range (storage, seats, quota). Not a task's progress: that's\n * `Progress`. `warningAt` / `criticalAt` are percentages that tint the fill as it nears the limit.\n */\nfunction Meter({\n  className,\n  children,\n  warningAt,\n  criticalAt,\n  ...props\n}: Omit<MeterPrimitiveProps, \"children\" | \"className\"> & {\n  children?: React.ReactNode;\n  className?: string;\n  /** Percentage (0–100) from which the fill turns `warning`. */\n  warningAt?: number;\n  /** Percentage (0–100) from which the fill turns `destructive`. */\n  criticalAt?: number;\n}) {\n  return (\n    <MeterPrimitive data-slot=\"meter\" className={cn(\"flex flex-wrap gap-3\", className)} {...props}>\n      {({ percentage, valueText }) => {\n        const level = levelOf(percentage, warningAt, criticalAt);\n        return (\n          <MeterContent percentage={percentage} valueText={valueText} level={level}>\n            {children}\n          </MeterContent>\n        );\n      }}\n    </MeterPrimitive>\n  );\n}\n\nfunction MeterTrack({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      className={cn(\n        \"relative flex h-1 w-full items-center overflow-x-hidden rounded-full bg-(--meter-track,var(--color-muted))\",\n        className,\n      )}\n      data-slot=\"meter-track\"\n      {...props}\n    />\n  );\n}\n\nconst indicatorVariants = cva(\"h-full transition-all motion-reduce:transition-none\", {\n  variants: {\n    level: {\n      normal: \"bg-(--meter-fill,var(--color-primary))\",\n      warning: \"bg-warning\",\n      critical: \"bg-destructive\",\n    },\n  },\n});\n\nfunction MeterIndicator({ className, style, ...props }: React.ComponentProps<\"span\">) {\n  const { percentage, level } = useMeter();\n\n  return (\n    <span\n      data-slot=\"meter-indicator\"\n      data-level={level}\n      className={cn(indicatorVariants({ level }), className)}\n      style={{ ...style, width: `${percentage}%` }}\n      {...props}\n    />\n  );\n}\n\nfunction MeterLabel({ className, ...props }: LabelProps) {\n  return (\n    <LabelPrimitive\n      className={cn(\"text-sm font-medium\", className)}\n      data-slot=\"meter-label\"\n      {...props}\n    />\n  );\n}\n\nfunction MeterValue({\n  className,\n  children,\n  ...props\n}: Omit<React.ComponentProps<\"span\">, \"children\"> & {\n  children?: (value: string) => React.ReactNode;\n}) {\n  const { valueText } = useMeter();\n  return (\n    <span\n      className={cn(\"ml-auto text-sm text-muted-foreground tabular-nums\", className)}\n      data-slot=\"meter-value\"\n      {...props}\n    >\n      {children && valueText != null ? children(valueText) : valueText}\n    </span>\n  );\n}\n\nexport { Meter, MeterIndicator, MeterLabel, MeterTrack, MeterValue };\n",
+      "type": "registry:component",
+      "target": "components/fma-ds/meter.tsx"
+    }
+  ],
+  "meta": {
+    "status": "stable",
+    "source": "original",
+    "license": "MIT",
+    "tags": [
+      "data-display",
+      "usage",
+      "quota",
+      "react-aria"
+    ],
+    "contentHash": "80a148085512"
+  },
+  "categories": [
+    "data-display"
+  ],
+  "type": "registry:ui"
+}
