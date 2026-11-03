@@ -22,6 +22,7 @@ import { RouterProvider } from "react-aria-components";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { AppShell, AppShellHeader, AppShellMain } from "@/blocks/app-shell/app-shell";
 import { DropdownMenuItem, DropdownMenuSeparator } from "@/core/dropdown-menu/dropdown-menu";
+import { Meter, MeterLabel, MeterValue } from "@/core/meter/meter";
 import { SidebarContent, SidebarFooter, SidebarHeader } from "@/core/sidebar/sidebar";
 import {
   AppSidebar,
@@ -104,10 +105,12 @@ function TeamSwitcher() {
 function SidebarInShell({
   defaultOpen,
   header = <TeamSwitcher />,
+  footer,
   children,
 }: {
   defaultOpen?: boolean;
   header?: React.ReactNode;
+  footer?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
@@ -120,6 +123,7 @@ function SidebarInShell({
           <SidebarHeader>{header}</SidebarHeader>
           <SidebarContent>{children}</SidebarContent>
           <SidebarFooter>
+            {footer}
             <AppSidebarUser name="Ada Lovelace" email="ada@example.com">
               <DropdownMenuItem href="/account">Account</DropdownMenuItem>
               <DropdownMenuItem href="/billing">Billing</DropdownMenuItem>
@@ -289,6 +293,49 @@ export const WithLogo: Story = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText("fma-ds")).toBeVisible();
     await expect(canvas.queryByRole("button", { name: /^Team:/ })).toBeNull();
+  },
+};
+
+/**
+ * Plan usage above the user: the app composes `Meter`s in the footer and hides the card when
+ * the sidebar collapses to icons.
+ */
+export const PlanUsage: Story = {
+  render: () => (
+    <SidebarInShell
+      footer={
+        <div className="flex flex-col gap-3 rounded-lg bg-sidebar-accent p-3 text-sidebar-accent-foreground [--meter-track:var(--color-sidebar)] group-data-[collapsible=icon]:hidden">
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold">Pro plan</span>
+            <span className="text-xs opacity-80">Renews on November 10</span>
+          </div>
+          <Meter value={280} maxValue={400} valueLabel="280 of 400" warningAt={80} criticalAt={95}>
+            <MeterLabel className="text-xs">Invoices</MeterLabel>
+            <MeterValue className="text-xs text-sidebar-accent-foreground" />
+          </Meter>
+          <Meter value={9} maxValue={10} valueLabel="9 of 10" warningAt={80} criticalAt={95}>
+            <MeterLabel className="text-xs">Certificates</MeterLabel>
+            <MeterValue className="text-xs text-sidebar-accent-foreground" />
+          </Meter>
+        </div>
+      }
+    >
+      <AppSidebarSection title="Workspace">
+        <AppSidebarItem {...CHANGELOG} />
+      </AppSidebarSection>
+    </SidebarInShell>
+  ),
+  play: async ({ canvasElement, canvas }) => {
+    const invoices = canvas.getByRole("meter", { name: "Invoices" });
+    await expect(invoices).toHaveAttribute("aria-valuetext", "280 of 400");
+    await expect(invoices).toBeVisible();
+
+    const trigger = canvasElement.querySelector<HTMLElement>("[data-slot=sidebar-trigger]");
+    if (!trigger) throw new Error("No sidebar trigger");
+    await userEvent.click(trigger);
+    await waitFor(() => expect(invoices).not.toBeVisible());
+    // Leave the sidebar expanded for the next story.
+    await userEvent.click(trigger);
   },
 };
 

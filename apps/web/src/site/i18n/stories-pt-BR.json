@@ -363,5 +363,10 @@
   "The brand area on the theme's primary color, the same as the main buttons: in Cobalt, blue instead of the green brand.": "A área de marca na cor primária do tema, a mesma dos botões principais: no Cobalt, azul em vez do verde da marca.",
   "A list page in the app's frame: stat cards that filter by status, a search and quick filters on a card, and the table spanning the card's edges with its pagination.": "Uma página de lista na moldura do app: cartões de totais que filtram por situação, busca e filtros rápidos num cartão, e a tabela de borda a borda do cartão com a paginação.",
   "A record page in the app's frame: tabs under the title and an edit form on a card.": "Uma página de registro na moldura do app: abas abaixo do título e um formulário de edição num cartão.",
-  "A purchase page in the app's frame: tabs beside the title and a sticky order summary.": "Uma página de compra na moldura do app: abas ao lado do título e um resumo do pedido fixo."
+  "A purchase page in the app's frame: tabs beside the title and a sticky order summary.": "Uma página de compra na moldura do app: abas ao lado do título e um resumo do pedido fixo.",
+  "MeterLabel names the quantity; MeterValue shows it.": "MeterLabel nomeia a quantidade; MeterValue a mostra.",
+  "`maxValue` sets the limit and `valueLabel` says it in the app's words.": "`maxValue` define o limite e `valueLabel` o diz com as palavras do app.",
+  "`warningAt` and `criticalAt` are percentages: the fill turns amber, then red.": "`warningAt` e `criticalAt` são percentuais: o preenchimento fica âmbar e depois vermelho.",
+  "`--meter-fill` and `--meter-track` recolor it, e.g. on a sidebar or a brand surface.": "`--meter-fill` e `--meter-track` mudam as cores, por exemplo numa sidebar ou numa superfície da marca.",
+  "Plan usage above the user: the app composes `Meter`s in the footer and hides the card when the sidebar collapses to icons.": "Uso do plano acima do usuário: o app compõe `Meter`s no rodapé e esconde o cartão quando a sidebar recolhe para ícones."
 }
