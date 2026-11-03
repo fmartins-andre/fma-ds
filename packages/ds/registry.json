@@ -3291,7 +3291,7 @@
       "name": "page-header",
       "type": "registry:block",
       "title": "Page Header",
-      "description": "The top of a page, composed from parts: breadcrumbs, the title with its description and actions, and an optional sub-page nav.\n\n- **`PageHeaderBreadcrumbs`**: an `items` trail whose last entry is the current page.\n- **`PageHeaderContent`**: heading on one side, actions on the other, stacked on narrow screens.\n- **`PageHeaderHeading`**: `PageHeaderTitle` (the `<h1>`, with an `isLoading` skeleton) and `PageHeaderDescription`. Anything that belongs beside the title, like a status select, goes inside it too.\n- **`PageHeaderActions`**: buttons that stretch on mobile.\n- **`PageHeaderNav`**: an area's sub-pages, usually a `TabNav`.\n\nWrap the app in react-aria's `RouterProvider` so breadcrumb and tab links route client-side.",
+      "description": "The top of a page, composed from parts: breadcrumbs, the title with its description and actions, and an optional sub-page nav.\n\n`sticky` keeps it at the top while the page scrolls, on a translucent, blurred surface that fades into the content. It stops at `--sticky-offset` (below a top bar) and spans `--page-gutter`, the page's padding; both default to 0, and an `AppShell` sets them. `density=\"compact\"` gives it a smaller title and tighter spacing.\n\n- **`PageHeaderBreadcrumbs`**: an `items` trail whose last entry is the current page.\n- **`PageHeaderContent`**: heading on one side, actions on the other; the actions drop below only when they don't fit beside the heading.\n- **`PageHeaderHeading`**: `PageHeaderTitle` (the `<h1>`, with an `isLoading` skeleton) and `PageHeaderDescription`. Anything that belongs beside the title, like a status select, goes inside it too.\n- **`PageHeaderActions`**: buttons that stretch on mobile.\n- **`PageHeaderNav`**: an area's sub-pages, usually a `TabNav`.\n\nWrap the app in react-aria's `RouterProvider` so breadcrumb and tab links route client-side.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -3322,7 +3322,7 @@
           "breadcrumb",
           "navigation"
         ],
-        "contentHash": "ccba63bfc22e"
+        "contentHash": "320450fb30f1"
       }
     },
     {
