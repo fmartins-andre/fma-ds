@@ -77,7 +77,12 @@ function PlanBuilder({
         <div data-slot="plan-builder-resources" className="flex min-w-0 flex-col gap-4">
           {children}
         </div>
-        <div data-slot="plan-builder-summary" aria-busy={isCalculating || undefined}>
+        <div
+          data-slot="plan-builder-summary"
+          aria-busy={isCalculating || undefined}
+          // Spans the row, so the OrderSummary inside has room to stick while the resources scroll.
+          className="lg:self-stretch"
+        >
           {summary}
         </div>
       </div>
