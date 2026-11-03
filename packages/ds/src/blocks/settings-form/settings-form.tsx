@@ -42,8 +42,6 @@ type SettingsFormContextValue = {
   isDirty: boolean;
   isPending: boolean;
   onReset?: () => void;
-  /** Without `isDirty`, Discard is a native reset button. */
-  isDetected: boolean;
   labels: SettingsFormLabels;
 };
 
@@ -56,123 +54,34 @@ function useSettingsForm() {
 }
 
 type SettingsFormProps = Omit<React.ComponentProps<typeof Form>, "onReset"> & {
-  /**
-   * Whether anything changed since the last save; enables Save and Discard.
-   * Leave it out for uncontrolled fields: the form compares its data with the
-   * data it started with.
-   */
+  /** Whether anything changed since the last save; enables Save and Discard. */
   isDirty?: boolean;
   /** While saving: Save shows a spinner and both actions wait. */
   isPending?: boolean;
-  /**
-   * Shows a Discard button that calls it (restore the saved values here).
-   * Without `isDirty`, Discard is always there and resets the fields to their
-   * default values; this is then called after that reset.
-   */
+  /** Shows a Discard button that calls it (restore the saved values here). */
   onReset?: () => void;
   i18n?: SettingsFormI18n;
 };
 
-/** The form's data as a string, to compare with the data it started with. */
-function serializeForm(form: HTMLFormElement) {
-  return JSON.stringify(
-    [...new FormData(form)].map(([name, value]) => [
-      name,
-      typeof value === "string" ? value : value.name,
-    ]),
-  );
-}
-
-// Events that can change a field: typing, picking (react-aria's pickers live in a
-// portal, but React events still reach the form) and keys. The check waits a frame
-// so the field's own state is in the DOM.
-const CHANGE_EVENTS = [
-  "onInputCapture",
-  "onChangeCapture",
-  "onClickCapture",
-  "onKeyUpCapture",
-] as const;
-
-/**
- * Without `isDirty`, compares the form's data with the data it had on mount.
- * Fields need a `name` to count; after saving, remount the form (a new `key`)
- * so the saved values become its defaults.
- */
-function useDetectedDirty(isEnabled: boolean) {
-  const formRef = React.useRef<HTMLFormElement | null>(null);
-  const initial = React.useRef<string | null>(null);
-  const frame = React.useRef(0);
-  const [isDirty, setIsDirty] = React.useState(false);
-
-  React.useEffect(() => {
-    if (isEnabled && formRef.current) initial.current = serializeForm(formRef.current);
-    return () => cancelAnimationFrame(frame.current);
-  }, [isEnabled]);
-
-  const check = React.useCallback(() => {
-    if (!isEnabled) return;
-    cancelAnimationFrame(frame.current);
-    frame.current = requestAnimationFrame(() => {
-      const form = formRef.current;
-      if (form && initial.current !== null) setIsDirty(serializeForm(form) !== initial.current);
-    });
-  }, [isEnabled]);
-
-  return { formRef, isDirty, check };
-}
-
 /**
  * A long edit form split into sections, saved as a whole. The state stays in
  * the app (react-hook-form's `formState.isDirty`, a mutation's `isPending`);
- * the form only shows it. Without `isDirty`, the form works it out by itself
- * for uncontrolled fields. Put `SettingsSection`s inside and end with a
+ * the form only shows it. Put `SettingsSection`s inside and end with a
  * `SettingsFormFooter`.
  */
 function SettingsForm({
-  isDirty: isDirtyProp,
+  isDirty = false,
   isPending = false,
   onReset,
   i18n,
   className,
-  ref,
   ...props
 }: SettingsFormProps) {
   const { labels } = useFmaMessages("settingsForm", settingsFormEn, i18n);
-  const isDetected = isDirtyProp === undefined;
-  const detected = useDetectedDirty(isDetected);
-  const isDirty = isDetected ? detected.isDirty : isDirtyProp;
   const context = React.useMemo(
-    () => ({ isDirty, isPending, onReset, isDetected, labels }),
-    [isDirty, isPending, onReset, isDetected, labels],
+    () => ({ isDirty, isPending, onReset, labels }),
+    [isDirty, isPending, onReset, labels],
   );
-
-  const { formRef, check } = detected;
-  const setRef = React.useCallback(
-    (node: HTMLFormElement | null) => {
-      formRef.current = node;
-      if (typeof ref === "function") ref(node);
-      else if (ref) ref.current = node;
-    },
-    [formRef, ref],
-  );
-
-  // react-aria's Form passes every DOM prop to the <form>, though its type lists
-  // only some of them.
-  type Handler = (event: React.SyntheticEvent) => void;
-  const detectionProps: Record<string, Handler> = {};
-  if (isDetected) {
-    for (const name of CHANGE_EVENTS) {
-      const own = (props as Record<string, unknown>)[name] as Handler | undefined;
-      detectionProps[name] = (event) => {
-        own?.(event);
-        check();
-      };
-    }
-    detectionProps.onReset = () => {
-      check();
-      onReset?.();
-    };
-  }
 
   return (
     <SettingsFormContext.Provider value={context}>
@@ -180,9 +89,7 @@ function SettingsForm({
         data-slot="settings-form"
         aria-busy={isPending || undefined}
         className={cn("@container/settings-form flex w-full min-w-0 flex-col", className)}
-        ref={setRef}
         {...props}
-        {...detectionProps}
       />
     </SettingsFormContext.Provider>
   );
@@ -244,8 +151,7 @@ function SettingsSection({
 
 /**
  * The save bar, stuck to the bottom of the viewport while the form scrolls:
- * the save state (announced politely), Discard when the form has `onReset`
- * or works out `isDirty` by itself,
+ * the save state (announced politely), Discard when the form has `onReset`,
  * and Save. `children` go before the buttons (a "last saved" note, a help link).
  */
 function SettingsFormFooter({
@@ -260,7 +166,7 @@ function SettingsFormFooter({
    */
   framed?: boolean;
 }) {
-  const { isDirty, isPending, onReset, isDetected, labels } = useSettingsForm();
+  const { isDirty, isPending, onReset, labels } = useSettingsForm();
   const status = isPending ? labels.saving : isDirty ? labels.unsaved : labels.saved;
 
   return (
@@ -283,16 +189,10 @@ function SettingsFormFooter({
       </p>
       {children}
       <div className="ml-auto flex items-center gap-2">
-        {isDetected ? (
-          <Button variant="outline" type="reset" isDisabled={!isDirty || isPending}>
+        {onReset && (
+          <Button variant="outline" isDisabled={!isDirty || isPending} onPress={onReset}>
             {labels.discard}
           </Button>
-        ) : (
-          onReset && (
-            <Button variant="outline" isDisabled={!isDirty || isPending} onPress={onReset}>
-              {labels.discard}
-            </Button>
-          )
         )}
         <Button type="submit" isDisabled={!isDirty} isPending={isPending}>
           {isPending && <Spinner data-icon="inline-start" aria-hidden="true" />}
