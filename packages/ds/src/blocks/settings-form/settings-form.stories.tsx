@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { TextField } from "react-aria-components";
 import { expect, userEvent, waitFor, within } from "storybook/test";
+import { Card, CardContent, CardFooter } from "@/core/card/card";
 import { Field, FieldContent, FieldDescription } from "@/core/field/field";
 import { Input } from "@/core/input/input";
 import { Label } from "@/core/label/label";
@@ -210,5 +211,70 @@ export const WithoutDiscard: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.queryByRole("button", { name: "Descartar" })).not.toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: "Salvar alterações" })).toBeEnabled();
+  },
+};
+
+/**
+ * The form on a page's card: the `SettingsForm` goes around the `Card`, so the buttons stay in
+ * the form, and the save bar goes in the card's sticky `CardFooter`, without its own bar
+ * (`framed={false}`).
+ */
+export const InACard: Story = {
+  render: () => {
+    const [saved, setSaved] = useState(SAVED_COMPANY);
+    const [values, setValues] = useState(SAVED_COMPANY);
+    const [isPending, setIsPending] = useState(false);
+    const isDirty = JSON.stringify(values) !== JSON.stringify(saved);
+
+    return (
+      <SettingsForm
+        i18n={PT_BR}
+        isDirty={isDirty}
+        isPending={isPending}
+        onReset={() => setValues(saved)}
+        onSubmit={async (event) => {
+          event.preventDefault();
+          setIsPending(true);
+          setSaved(await saveCompany(values));
+          setIsPending(false);
+        }}
+        className="max-w-4xl"
+      >
+        <Card>
+          <CardContent>
+            <SettingsSection title="Dados da empresa">
+              <TextField
+                value={values.tradeName}
+                onChange={(tradeName) => setValues({ ...values, tradeName })}
+                className="flex flex-col gap-2"
+              >
+                <Label>Nome fantasia</Label>
+                <Input />
+              </TextField>
+            </SettingsSection>
+          </CardContent>
+          <CardFooter sticky>
+            <SettingsFormFooter framed={false} />
+          </CardFooter>
+        </Card>
+      </SettingsForm>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const card = canvasElement.querySelector<HTMLElement>("[data-slot=card]");
+    const footer = canvasElement.querySelector<HTMLElement>("[data-slot=card-footer]");
+    if (!card || !footer) throw new Error();
+    await expect(footer).toHaveAttribute("data-sticky", "true");
+    await expect(getComputedStyle(footer).position).toBe("sticky");
+    // The card lets the footer stick, and the footer closes the card.
+    await expect(getComputedStyle(card).overflow).toBe("visible");
+    await expect(Math.round(footer.getBoundingClientRect().bottom)).toBe(
+      Math.round(card.getBoundingClientRect().bottom),
+    );
+
+    await userEvent.type(canvas.getByRole("textbox", { name: "Nome fantasia" }), " ME");
+    await userEvent.click(canvas.getByRole("button", { name: "Salvar alterações" }));
+    await waitFor(() => expect(canvas.getByRole("status")).toHaveTextContent("Nenhuma alteração"));
   },
 };
