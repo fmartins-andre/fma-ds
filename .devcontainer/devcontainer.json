@@ -1,8 +1,15 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
-  "name": "Node.js & TypeScript",
+  "name": "fma-ds",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:4-24-trixie",
+
+  "runArgs": [
+    "--name",
+    "dev-${localWorkspaceFolderBasename}",
+    "--label",
+    "fma-ds.role=devcontainer"
+  ],
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
