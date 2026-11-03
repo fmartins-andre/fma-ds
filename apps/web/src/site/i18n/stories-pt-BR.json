@@ -345,6 +345,7 @@
   "size=\"sm\" tightens the spacing scale for denser layouts.": "size=\"sm\" reduz a escala de espaçamento para layouts mais densos.",
   "variant=\"destructive\" for errors or warnings.": "variant=\"destructive\" para erros ou avisos.",
   "variant=\"separator\" draws rules on both sides, e.g. a date divider.": "variant=\"separator\" desenha linhas dos dois lados, como um divisor de datas.",
+  "`bleed` drops the content's side padding, so a list or a table spans the card's edges; `bleed=\"end\"` also closes the card with it, without the card's bottom padding.": "`bleed` tira o padding lateral do conteúdo, para uma lista ou uma tabela ir de borda a borda do card; `bleed=\"end\"` também fecha o card com ele, sem o padding de baixo do card.",
   "In a dialog: the Cancel button goes in the footer, before Back.": "Em um diálogo: o botão Cancelar vai no rodapé, antes de Voltar.",
   "`DataGridRowActions` puts a row's actions behind a menu button. Pressing it doesn't trigger `onRowClick`; with no actions left (inactive users here) the menu says so.": "`DataGridRowActions` coloca as ações de uma linha atrás de um botão de menu. Pressioná-lo não dispara `onRowClick`; sem ações restantes (usuários inativos aqui), o menu avisa."
 }
