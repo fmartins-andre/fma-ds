@@ -357,5 +357,6 @@
   "In a dialog: the footer goes in the dialog's sticky `DialogFooter`, without its own separator (`framed={false}`), and the Cancel button goes in it, before Back.": "Em um diálogo: o rodapé vai no `DialogFooter` fixo do diálogo, sem o separador próprio (`framed={false}`), e o botão Cancelar vai nele, antes de Voltar.",
   "The form on a page's card: the `SettingsForm` goes around the `Card`, so the buttons stay in the form, and the save bar goes in the card's sticky `CardFooter`, without its own bar (`framed={false}`).": "O formulário no card de uma página: o `SettingsForm` fica em volta do `Card`, para os botões continuarem no formulário, e a barra de salvar vai no `CardFooter` fixo do card, sem a barra própria (`framed={false}`).",
   "Inside a taller row, give it a height and center it: classes in `className` win over the orientation's defaults.": "Numa linha mais alta, dê uma altura e centralize: as classes em `className` vencem os padrões da orientação.",
-  "The brand area on the theme's primary color, the same as the main buttons.": "A área de marca na cor primária do tema, a mesma dos botões principais."
+  "The brand area on the theme's primary color, the same as the main buttons.": "A área de marca na cor primária do tema, a mesma dos botões principais.",
+  "A stripe in the tone's color on the card's leading edge. The tone sets `--stat-icon` on the card, so a border class can reuse it.": "Uma faixa na cor do tom na borda inicial do cartão. O tom define `--stat-icon` no cartão, então uma classe de borda pode reaproveitá-la."
 }

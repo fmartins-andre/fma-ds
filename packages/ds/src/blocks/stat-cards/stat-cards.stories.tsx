@@ -90,6 +90,38 @@ export const Default: Story = {
 };
 
 /**
+ * A stripe in the tone's color on the card's leading edge. The tone sets
+ * `--stat-icon` on the card, so a border class can reuse it.
+ */
+export const ToneStripe: Story = {
+  render: () => (
+    <StatGrid i18n={ptBR} className="max-w-4xl">
+      <StatCard className="border-s-4 border-s-(--stat-icon)">
+        <StatLabel>Total de pedidos</StatLabel>
+        <StatValue>1.284</StatValue>
+        <StatIcon>
+          <FileTextIcon />
+        </StatIcon>
+      </StatCard>
+      <StatCard tone="success" className="border-s-4 border-s-(--stat-icon)">
+        <StatLabel>Pedidos validados</StatLabel>
+        <StatValue>1.197</StatValue>
+        <StatIcon>
+          <CircleCheckIcon />
+        </StatIcon>
+      </StatCard>
+      <StatCard tone="destructive" className="border-s-4 border-s-(--stat-icon)">
+        <StatLabel>Pedidos cancelados</StatLabel>
+        <StatValue>87</StatValue>
+        <StatIcon>
+          <CircleXIcon />
+        </StatIcon>
+      </StatCard>
+    </StatGrid>
+  ),
+};
+
+/**
  * While the totals load, each value shows a skeleton; a metric not offered
  * yet shows "—", with the reason in the description.
  */
