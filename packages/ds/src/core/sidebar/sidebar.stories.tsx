@@ -158,3 +158,43 @@ export const InactiveItem: Story = {
     await expect(navigate).not.toHaveBeenCalled();
   },
 };
+
+/**
+ * Wide content (a table) scrolls inside the inset instead of widening the page. The table is
+ * wider than the room beside the sidebar but narrower than the whole provider: that's when the
+ * inset's `min-width: auto` pushed the page sideways.
+ */
+export const ShouldKeepWideContentInsideTheInset: Story = {
+  tags: ["!autodocs"],
+  render: () => (
+    <SidebarProvider className="h-64 w-[720px] min-h-0" data-testid="provider">
+      <Sidebar collapsible="none">
+        <SidebarContent />
+      </Sidebar>
+      <SidebarInset className="p-4">
+        <div className="flex flex-col">
+          <div className="overflow-x-auto" data-testid="scroller">
+            <table className="table-fixed" style={{ width: 600 }}>
+              <colgroup>
+                <col style={{ width: 300 }} />
+                <col style={{ width: 300 }} />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>Wide column</td>
+                  <td>Another wide column</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  ),
+  play: async ({ canvas }) => {
+    const provider = canvas.getByTestId("provider");
+    const scroller = canvas.getByTestId("scroller");
+    await expect(provider.scrollWidth).toBe(provider.clientWidth);
+    await expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+  },
+};
