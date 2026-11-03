@@ -42,8 +42,9 @@ type SettingsFormContextValue = {
   isDirty: boolean;
   isPending: boolean;
   onReset?: () => void;
-  /** Without `isDirty`, Discard is a native reset button. */
+  /** Without `isDirty`, Discard remounts the fields instead of calling `onReset`. */
   isDetected: boolean;
+  discard: () => void;
   labels: SettingsFormLabels;
 };
 
@@ -66,8 +67,8 @@ type SettingsFormProps = Omit<React.ComponentProps<typeof Form>, "onReset"> & {
   isPending?: boolean;
   /**
    * Shows a Discard button that calls it (restore the saved values here).
-   * Without `isDirty`, Discard is always there and resets the fields to their
-   * default values; this is then called after that reset.
+   * Without `isDirty`, Discard is always there and puts the fields back to
+   * their default values; this is then called after that.
    */
   onReset?: () => void;
   i18n?: SettingsFormI18n;
@@ -97,17 +98,25 @@ const CHANGE_EVENTS = [
  * Without `isDirty`, compares the form's data with the data it had on mount.
  * Fields need a `name` to count; after saving, remount the form (a new `key`)
  * so the saved values become its defaults.
+ *
+ * Discard remounts the fields rather than resetting the form: a native reset
+ * empties the hidden <select> of a react-aria Select that wasn't changed, and
+ * React doesn't put its value back, so the form would submit it empty.
  */
 function useDetectedDirty(isEnabled: boolean) {
   const formRef = React.useRef<HTMLFormElement | null>(null);
   const initial = React.useRef<string | null>(null);
   const frame = React.useRef(0);
   const [isDirty, setIsDirty] = React.useState(false);
+  const [fieldsKey, setFieldsKey] = React.useState(0);
 
+  // Taken again after Discard remounts the fields: they hold their defaults then, and
+  // generated names (a react-aria group without `name`) change with the remount.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: fieldsKey marks a remount
   React.useEffect(() => {
     if (isEnabled && formRef.current) initial.current = serializeForm(formRef.current);
     return () => cancelAnimationFrame(frame.current);
-  }, [isEnabled]);
+  }, [isEnabled, fieldsKey]);
 
   const check = React.useCallback(() => {
     if (!isEnabled) return;
@@ -118,7 +127,13 @@ function useDetectedDirty(isEnabled: boolean) {
     });
   }, [isEnabled]);
 
-  return { formRef, isDirty, check };
+  const discard = React.useCallback(() => {
+    cancelAnimationFrame(frame.current);
+    setFieldsKey((key) => key + 1);
+    setIsDirty(false);
+  }, []);
+
+  return { formRef, isDirty, check, fieldsKey, discard };
 }
 
 /**
@@ -135,18 +150,23 @@ function SettingsForm({
   i18n,
   className,
   ref,
+  children,
   ...props
 }: SettingsFormProps) {
   const { labels } = useFmaMessages("settingsForm", settingsFormEn, i18n);
   const isDetected = isDirtyProp === undefined;
   const detected = useDetectedDirty(isDetected);
   const isDirty = isDetected ? detected.isDirty : isDirtyProp;
+  const { formRef, check, fieldsKey, discard: remountFields } = detected;
+  const discard = React.useCallback(() => {
+    remountFields();
+    onReset?.();
+  }, [remountFields, onReset]);
   const context = React.useMemo(
-    () => ({ isDirty, isPending, onReset, isDetected, labels }),
-    [isDirty, isPending, onReset, isDetected, labels],
+    () => ({ isDirty, isPending, onReset, isDetected, discard, labels }),
+    [isDirty, isPending, onReset, isDetected, discard, labels],
   );
 
-  const { formRef, check } = detected;
   const setRef = React.useCallback(
     (node: HTMLFormElement | null) => {
       formRef.current = node;
@@ -168,10 +188,6 @@ function SettingsForm({
         check();
       };
     }
-    detectionProps.onReset = () => {
-      check();
-      onReset?.();
-    };
   }
 
   return (
@@ -183,7 +199,9 @@ function SettingsForm({
         ref={setRef}
         {...props}
         {...detectionProps}
-      />
+      >
+        <React.Fragment key={fieldsKey}>{children}</React.Fragment>
+      </Form>
     </SettingsFormContext.Provider>
   );
 }
@@ -260,7 +278,7 @@ function SettingsFormFooter({
    */
   framed?: boolean;
 }) {
-  const { isDirty, isPending, onReset, isDetected, labels } = useSettingsForm();
+  const { isDirty, isPending, onReset, isDetected, discard, labels } = useSettingsForm();
   const status = isPending ? labels.saving : isDirty ? labels.unsaved : labels.saved;
 
   return (
@@ -284,7 +302,7 @@ function SettingsFormFooter({
       {children}
       <div className="ml-auto flex items-center gap-2">
         {isDetected ? (
-          <Button variant="outline" type="reset" isDisabled={!isDirty || isPending}>
+          <Button variant="outline" isDisabled={!isDirty || isPending} onPress={discard}>
             {labels.discard}
           </Button>
         ) : (

@@ -288,7 +288,8 @@ export const ShouldDetectChangesInUncontrolledFields: Story = {
     const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
     const status = () => canvas.getByRole("status");
-    const name = canvas.getByRole("textbox", { name: "Nome de exibição" });
+    // Discard remounts the fields, so look them up each time.
+    const name = () => canvas.getByRole("textbox", { name: "Nome de exibição" });
     const summary = canvas.getByRole("switch", { name: "Resumo semanal" });
     await expect(status()).toHaveTextContent("Nenhuma alteração");
     await expect(canvas.getByRole("button", { name: "Descartar" })).toBeDisabled();
@@ -304,21 +305,37 @@ export const ShouldDetectChangesInUncontrolledFields: Story = {
     await userEvent.click(await body.findByRole("option", { name: "Manaus (GMT-4)" }));
     await waitFor(() => expect(status()).toHaveTextContent("Há alterações não salvas"));
 
-    await userEvent.type(name, " Lima");
+    await userEvent.type(name(), " Lima");
     await userEvent.click(canvas.getByRole("button", { name: "Descartar" }));
     await waitFor(() => expect(status()).toHaveTextContent("Nenhuma alteração"));
-    await expect(name).toHaveValue("Ana Souza");
+    await expect(name()).toHaveValue("Ana Souza");
     await expect(canvas.getByRole("button", { name: /Fuso horário/ })).toHaveTextContent(
       "Brasília (GMT-3)",
     );
 
-    await userEvent.type(name, " Lima");
+    await userEvent.type(name(), " Lima");
     await userEvent.click(canvas.getByRole("button", { name: "Salvar alterações" }));
     await expect(status()).toHaveTextContent("Salvando…");
     await waitFor(() => expect(status()).toHaveTextContent("Nenhuma alteração"));
     await expect(canvas.getByRole("textbox", { name: "Nome de exibição" })).toHaveValue(
       "Ana Souza Lima",
     );
+
+    // Discarding with a Select left alone keeps its value, also in the submitted data.
+    await userEvent.click(canvas.getByRole("switch", { name: "Resumo semanal" }));
+    await waitFor(() => expect(status()).toHaveTextContent("Há alterações não salvas"));
+    await userEvent.click(canvas.getByRole("button", { name: "Descartar" }));
+    await waitFor(() => expect(status()).toHaveTextContent("Nenhuma alteração"));
+    const form = canvasElement.querySelector("form");
+    if (!form) throw new Error();
+    await expect(new FormData(form).get("timezone")).toBe("America/Sao_Paulo");
+    await expect(canvas.getByRole("switch", { name: "Resumo semanal" })).toBeChecked();
+
+    // After Discard, a change and its undo still compare against the defaults.
+    await userEvent.click(canvas.getByRole("switch", { name: "Resumo semanal" }));
+    await waitFor(() => expect(status()).toHaveTextContent("Há alterações não salvas"));
+    await userEvent.click(canvas.getByRole("switch", { name: "Resumo semanal" }));
+    await waitFor(() => expect(status()).toHaveTextContent("Nenhuma alteração"));
   },
 };
 
