@@ -941,6 +941,7 @@
         "@fma-ds/input-group",
         "@fma-ds/popover",
         "@fma-ds/select",
+        "@fma-ds/slider",
         "@fma-ds/color-contrast",
         "@fma-ds/i18n"
       ],
@@ -965,7 +966,7 @@
           "oklch",
           "react-aria"
         ],
-        "contentHash": "6d934718e221"
+        "contentHash": "ac25a1d2526f"
       }
     },
     {
@@ -4099,7 +4100,7 @@
           "input",
           "react-aria"
         ],
-        "contentHash": "6f26de56ae09"
+        "contentHash": "e0b9cbd91e2b"
       }
     },
     {

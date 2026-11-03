@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, spyOn, userEvent, waitFor, within } from "storybook/test";
+import { SliderValue } from "@/core/slider/slider";
 import { FmaI18nProvider } from "@/lib/i18n/i18n";
 import {
   ColorPicker,
@@ -10,9 +11,13 @@ import {
   ColorPickerEyeDropper,
   ColorPickerFixContrast,
   ColorPickerInput,
+  ColorPickerInputField,
+  ColorPickerInputSwatch,
   ColorPickerPanel,
   ColorPickerPreview,
   ColorPickerSlider,
+  ColorPickerSliderLabel,
+  ColorPickerSliderTrack,
   ColorPickerSwatch,
   ColorPickerSwatches,
   ColorPickerTrigger,
@@ -249,7 +254,7 @@ export const ChannelMixer: Story = {
     docs: {
       description: {
         story:
-          "Parts work inline too, with no popover. Each slider takes a channel and a `colorSpace` (here RGB and HSB); with `contrastWith` every track hatches the part that fails AA against it.",
+          "Parts work inline too, with no popover. Each slider takes a channel and a `colorSpace` (here RGB and HSB); with `contrastWith` every track hatches the part that fails AA against it. Alone, a `ColorPickerSlider` is just the track; here it's composed with `ColorPickerSliderLabel`, the Slider's `SliderValue` and `ColorPickerSliderTrack`.",
       },
     },
   },
@@ -259,11 +264,23 @@ export const ChannelMixer: Story = {
       <div className="flex w-72 flex-col gap-3">
         <ColorPicker value={value} onChange={setValue} contrastWith={args.contrastWith}>
           <ColorPickerPreview />
-          {(["red", "green", "blue"] as const).map((channel) => (
-            <ColorPickerSlider key={channel} channel={channel} colorSpace="rgb" showLabel />
+          {(
+            [
+              ["red", "rgb"],
+              ["green", "rgb"],
+              ["blue", "rgb"],
+              ["saturation", "hsb"],
+              ["brightness", "hsb"],
+            ] as const
+          ).map(([channel, colorSpace]) => (
+            <ColorPickerSlider key={channel} channel={channel} colorSpace={colorSpace}>
+              <div className="flex items-center justify-between">
+                <ColorPickerSliderLabel />
+                <SliderValue className="font-mono text-xs" />
+              </div>
+              <ColorPickerSliderTrack />
+            </ColorPickerSlider>
           ))}
-          <ColorPickerSlider channel="saturation" colorSpace="hsb" showLabel />
-          <ColorPickerSlider channel="brightness" colorSpace="hsb" showLabel />
         </ColorPicker>
         <code className="text-xs">{value}</code>
       </div>
@@ -426,6 +443,39 @@ export const ColorInput: Story = {
   },
 };
 
+export const ComposedInput: Story = {
+  args: { value: "#f97316", format: "hex", label: "Accent" },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Give `ColorPickerInput` the parts to style or reorder them: here the swatch sits at the end and the field's text is smaller. Props for the `<input>` go on `ColorPickerInputField`.",
+      },
+    },
+  },
+  render: function Render(args) {
+    const [value, setValue] = useState(args.value);
+    return (
+      <div className="flex w-56 flex-col gap-3">
+        <ColorPicker value={value} onChange={setValue} format={args.format} label={args.label}>
+          <ColorPickerInput>
+            <ColorPickerInputField aria-label="Accent" className="text-xs" />
+            <ColorPickerInputSwatch align="inline-end" />
+          </ColorPickerInput>
+          <ColorPickerContent />
+        </ColorPicker>
+        <code className="text-xs">{value}</code>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const field = canvas.getByRole("textbox", { name: "Accent" });
+    await userEvent.clear(field);
+    await userEvent.type(field, "#22c55e{Enter}");
+    await waitFor(() => expect(canvas.getByText("#22c55e")).toBeInTheDocument());
+  },
+};
 export const RecentColors: Story = {
   args: { value: "oklch(0.6 0.15 160)" },
   parameters: {
