@@ -1,5 +1,5 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
-import { FileTextIcon, ReceiptIcon, ShieldAlertIcon } from "lucide-react";
+import { ArchiveIcon, FileTextIcon, ReceiptIcon, ShieldAlertIcon } from "lucide-react";
 import * as React from "react";
 import { RouterProvider } from "react-aria-components";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
@@ -19,6 +19,14 @@ import meta from "./meta.json";
 import {
   type NotificationData,
   type NotificationI18n,
+  NotificationItem,
+  NotificationItemAction,
+  NotificationItemActions,
+  NotificationItemContent,
+  NotificationItemDate,
+  NotificationItemMedia,
+  NotificationItemMessage,
+  NotificationItemTitle,
   NotificationList,
   NotificationMenu,
 } from "./notification-center";
@@ -297,6 +305,57 @@ export const Page: Story = {
     await userEvent.click(markFirst as HTMLElement);
     await waitFor(() => expect(within(list).getAllByText("Não lida")).toHaveLength(1));
     await expect(within(list).getAllByText("Lida")).toHaveLength(2);
+  },
+};
+
+/**
+ * Items composed from their parts: `children` on the list renders each one.
+ * Here the media is an icon tile per kind, the date sits above the title and
+ * an "Archive" action joins read/delete. The list's handlers still apply.
+ */
+export const ComposedItems: Story = {
+  parameters: { layout: "padded" },
+  render: function ComposedItemsExample() {
+    const { notifications, markAsRead, remove } = useNotifications(initialNotifications);
+    return (
+      <NotificationList
+        notifications={notifications}
+        onMarkAsRead={markAsRead}
+        onDelete={remove}
+        i18n={ptBR}
+        className="w-full max-w-3xl"
+      >
+        {(notification) => (
+          <NotificationItem notification={notification}>
+            <NotificationItemMedia>
+              <IconTile>
+                <ReceiptIcon />
+              </IconTile>
+            </NotificationItemMedia>
+            <NotificationItemContent>
+              <NotificationItemDate />
+              <NotificationItemTitle />
+              <NotificationItemMessage />
+            </NotificationItemContent>
+            <NotificationItemActions>
+              <NotificationItemAction label="Arquivar" onPress={() => remove(notification.id)}>
+                <ArchiveIcon />
+              </NotificationItemAction>
+            </NotificationItemActions>
+          </NotificationItem>
+        )}
+      </NotificationList>
+    );
+  },
+  play: async ({ canvas }) => {
+    const list = canvas.getByRole("list", { name: "Notificações" });
+    await expect(within(list).getAllByRole("listitem")).toHaveLength(3);
+    const [archiveFirst] = canvas.getAllByRole("button", { name: "Arquivar" });
+    await userEvent.click(archiveFirst as HTMLElement);
+    await waitFor(() => expect(within(list).getAllByRole("listitem")).toHaveLength(2));
+    const [markFirst] = canvas.getAllByRole("button", { name: "Marcar como lida" });
+    await userEvent.click(markFirst as HTMLElement);
+    await waitFor(() => expect(within(list).getAllByText("Lida")).toHaveLength(2));
   },
 };
 

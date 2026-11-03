@@ -9,8 +9,14 @@ import {
   PricingPeriod,
   PricingPeriodOption,
   PricingPlan,
+  PricingPlanBadge,
+  PricingPlanDescription,
   PricingPlanFeature,
+  PricingPlanFeatures,
   PricingPlanGroup,
+  PricingPlanHeader,
+  PricingPlanName,
+  PricingPlanPrice,
   PricingPlans,
   type PricingPlansI18n,
 } from "./pricing-plans";
@@ -119,22 +125,25 @@ export const Default: Story = {
           </PricingPeriod>
           <PricingPlanGroup aria-label="Plano" value={planId} onChange={setPlanId}>
             {PLANS.map((item) => (
-              <PricingPlan
-                key={item.id}
-                value={item.id}
-                name={item.name}
-                description={item.description}
-                badge={item.isFeatured ? "Mais popular" : undefined}
-                isFeatured={item.isFeatured}
-                price={brl(isAnnual ? item.annual : item.monthly)}
-                period="/mês"
-                priceNote={isAnnual ? `${brl(item.annual * 12)} por ano` : "Sem fidelidade"}
-              >
-                {item.features.map((feature) => (
-                  <PricingPlanFeature key={feature.label} isIncluded={feature.isIncluded}>
-                    {feature.label}
-                  </PricingPlanFeature>
-                ))}
+              <PricingPlan key={item.id} value={item.id} isFeatured={item.isFeatured}>
+                <PricingPlanHeader>
+                  <PricingPlanName>{item.name}</PricingPlanName>
+                  {item.isFeatured && <PricingPlanBadge>Mais popular</PricingPlanBadge>}
+                  <PricingPlanDescription>{item.description}</PricingPlanDescription>
+                </PricingPlanHeader>
+                <PricingPlanPrice
+                  period="/mês"
+                  note={isAnnual ? `${brl(item.annual * 12)} por ano` : "Sem fidelidade"}
+                >
+                  {brl(isAnnual ? item.annual : item.monthly)}
+                </PricingPlanPrice>
+                <PricingPlanFeatures>
+                  {item.features.map((feature) => (
+                    <PricingPlanFeature key={feature.label} isIncluded={feature.isIncluded}>
+                      {feature.label}
+                    </PricingPlanFeature>
+                  ))}
+                </PricingPlanFeatures>
               </PricingPlan>
             ))}
           </PricingPlanGroup>

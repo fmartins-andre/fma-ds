@@ -91,25 +91,283 @@ type NotificationHandlers = {
   onOpen?: (notification: NotificationData) => void;
 };
 
+type NotificationVariant = "compact" | "card";
+
+/** What `NotificationMenu` and `NotificationList` hand to the items they render. */
+type NotificationListContextValue = NotificationHandlers & {
+  variant: NotificationVariant;
+  i18n?: NotificationI18n;
+};
+
+const NotificationListContext = React.createContext<NotificationListContextValue | null>(null);
+
+type NotificationItemContextValue = NotificationHandlers & {
+  notification: NotificationData;
+  variant: NotificationVariant;
+  labels: NotificationLabels;
+  titleId: string;
+};
+
+const NotificationItemContext = React.createContext<NotificationItemContextValue | null>(null);
+
+function useNotificationItem(part: string) {
+  const context = React.useContext(NotificationItemContext);
+  if (!context) throw new Error(`${part} must be used within NotificationItem`);
+  return context;
+}
+
+type NotificationItemProps = NotificationHandlers & {
+  notification: NotificationData;
+  /** Defaults to the list's: `compact` in `NotificationMenu`, `card` in `NotificationList`. */
+  variant?: NotificationVariant;
+  i18n?: NotificationI18n;
+  className?: string;
+  /**
+   * The parts (`NotificationItemMedia`, `NotificationItemContent`,
+   * `NotificationItemTitle`, `NotificationItemMessage`, `NotificationItemDate`,
+   * `NotificationItemActions`), to restyle, reorder or add to them. Without
+   * it, all of them in that order.
+   */
+  children?: React.ReactNode;
+};
+
+/**
+ * One notification: unread dot (or icon), title (a link when it has `href`),
+ * message, date and the read/delete actions. `variant="card"` is the roomier
+ * page layout, with a status badge and the full message. Inside a
+ * `NotificationMenu` or `NotificationList` it takes their handlers.
+ */
+function NotificationItem({
+  notification,
+  variant: variantProp,
+  i18n: i18nProp,
+  onMarkAsRead,
+  onDelete,
+  onOpen,
+  className,
+  children,
+}: NotificationItemProps) {
+  const list = React.useContext(NotificationListContext);
+  const labels = useNotificationLabels(i18nProp ?? list?.i18n);
+  const titleId = React.useId();
+  const variant = variantProp ?? list?.variant ?? "compact";
+  const isRead = notification.isRead ?? false;
+
+  return (
+    <NotificationItemContext.Provider
+      value={{
+        notification,
+        variant,
+        labels,
+        titleId,
+        onMarkAsRead: onMarkAsRead ?? list?.onMarkAsRead,
+        onDelete: onDelete ?? list?.onDelete,
+        onOpen: onOpen ?? list?.onOpen,
+      }}
+    >
+      <li
+        data-slot="notification-item"
+        data-variant={variant}
+        data-read={isRead || undefined}
+        className={cn(
+          "flex min-w-0 items-start gap-3",
+          variant === "card"
+            ? "rounded-xl border bg-card p-4 text-card-foreground"
+            : "rounded-lg p-2",
+          className,
+        )}
+      >
+        {children ?? (
+          <>
+            <NotificationItemMedia />
+            <NotificationItemContent>
+              <NotificationItemTitle />
+              <NotificationItemMessage />
+              <NotificationItemDate />
+            </NotificationItemContent>
+            <NotificationItemActions />
+          </>
+        )}
+      </li>
+    </NotificationItemContext.Provider>
+  );
+}
+
+/**
+ * The notification's `icon` (or `children`, e.g. an `Avatar`) with the unread
+ * dot on its corner; without either, just the dot.
+ */
+function NotificationItemMedia({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+}) {
+  const { notification, variant } = useNotificationItem("NotificationItemMedia");
+  const media = children ?? notification.icon;
+  const isRead = notification.isRead ?? false;
+
+  if (!media) {
+    return (
+      <span
+        data-slot="notification-dot"
+        aria-hidden="true"
+        className={cn("mt-1.5 size-2 shrink-0 rounded-full", !isRead && "bg-primary", className)}
+      />
+    );
+  }
+  return (
+    <span
+      data-slot="notification-media"
+      aria-hidden="true"
+      className={cn("relative shrink-0", className)}
+    >
+      {media}
+      {!isRead && (
+        <span
+          data-slot="notification-dot"
+          className={cn(
+            "absolute -top-0.5 -right-0.5 size-2 rounded-full bg-primary ring-2",
+            variant === "card" ? "ring-card" : "ring-popover",
+          )}
+        />
+      )}
+    </span>
+  );
+}
+
+/** The column holding the title, message and date. */
+function NotificationItemContent({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="notification-content"
+      className={cn("flex min-w-0 flex-1 flex-col gap-1", className)}
+      {...props}
+    />
+  );
+}
+
+/**
+ * The title (a link when the notification has `href`) and its read state:
+ * a badge in a card, read out only in the compact variant. `children` replaces
+ * the title's text.
+ */
+function NotificationItemTitle({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+}) {
+  const { notification, variant, labels, titleId, onOpen } =
+    useNotificationItem("NotificationItemTitle");
+  const { title, href } = notification;
+  const isRead = notification.isRead ?? false;
+  const isCard = variant === "card";
+  const text = children ?? title;
+
+  return (
+    <div
+      className={cn(
+        "flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1",
+        isCard && "justify-between",
+        className,
+      )}
+    >
+      <span
+        id={titleId}
+        data-slot="notification-title"
+        className={cn(
+          "min-w-0 leading-snug",
+          isCard ? "text-base" : "text-sm",
+          isRead ? "text-muted-foreground" : "font-medium",
+        )}
+      >
+        {href ? (
+          <Link
+            href={href}
+            onPress={() => onOpen?.(notification)}
+            className="rounded-sm underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {text}
+          </Link>
+        ) : (
+          text
+        )}
+      </span>
+      {isCard ? (
+        <Badge variant={isRead ? "muted-dot" : "primary-dot"}>
+          {isRead ? labels.read : labels.unread}
+        </Badge>
+      ) : (
+        !isRead && <span className="sr-only">{labels.unread}</span>
+      )}
+    </div>
+  );
+}
+
+/** The message (or `children`); clamped to two lines in the compact variant. */
+function NotificationItemMessage({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+}) {
+  const { notification, variant } = useNotificationItem("NotificationItemMessage");
+  const message = children ?? notification.message;
+  if (!message) return null;
+  return (
+    <div
+      data-slot="notification-message"
+      className={cn(
+        "text-sm text-muted-foreground",
+        variant !== "card" && "line-clamp-2",
+        className,
+      )}
+    >
+      {message}
+    </div>
+  );
+}
+
+/** The date, formatted by the `formatDate` label. */
+function NotificationItemDate({ className }: { className?: string }) {
+  const { notification, labels } = useNotificationItem("NotificationItemDate");
+  const { locale } = useLocale();
+  const { date } = notification;
+  if (!date) return null;
+  return (
+    <time
+      dateTime={date.toISOString()}
+      data-slot="notification-date"
+      className={cn("text-xs text-muted-foreground", className)}
+    >
+      {labels.formatDate(date, locale)}
+    </time>
+  );
+}
+
 /** An icon button with its label in a tooltip, tied to the notification's title. */
-function NotificationAction({
+function NotificationItemAction({
   label,
-  describedBy,
   onPress,
   children,
 }: {
   label: string;
-  describedBy: string;
   onPress: () => void;
+  /** The icon. */
   children: React.ReactNode;
 }) {
+  const { titleId } = useNotificationItem("NotificationItemAction");
   return (
     <TooltipTrigger>
       <Button
         variant="ghost"
         size="icon-sm"
         aria-label={label}
-        aria-describedby={describedBy}
+        aria-describedby={titleId}
         onPress={onPress}
       >
         {children}
@@ -120,134 +378,39 @@ function NotificationAction({
 }
 
 /**
- * One notification: unread dot (or icon), title (a link when it has `href`),
- * message, date and the read/delete actions. `variant="card"` is the roomier
- * page layout, with a status badge and the full message.
+ * "Mark as read" (while unread) and "Delete", for the handlers given.
+ * `children` adds more `NotificationItemAction`s before them.
  */
-function NotificationItem({
-  notification,
-  variant = "compact",
-  i18n,
-  onMarkAsRead,
-  onDelete,
-  onOpen,
+function NotificationItemActions({
   className,
-}: NotificationHandlers & {
-  notification: NotificationData;
-  variant?: "compact" | "card";
-  i18n?: NotificationI18n;
+  children,
+}: {
   className?: string;
+  children?: React.ReactNode;
 }) {
-  const labels = useNotificationLabels(i18n);
-  const { locale } = useLocale();
-  const titleId = React.useId();
-  const { id, title, message, date, isRead = false, href, icon } = notification;
-  const isCard = variant === "card";
+  const { notification, labels, onMarkAsRead, onDelete } =
+    useNotificationItem("NotificationItemActions");
+  const { id } = notification;
+  const isRead = notification.isRead ?? false;
+  if (!children && !onDelete && !(onMarkAsRead && !isRead)) return null;
 
   return (
-    <li
-      data-slot="notification-item"
-      data-variant={variant}
-      data-read={isRead || undefined}
-      className={cn(
-        "flex min-w-0 items-start gap-3",
-        isCard ? "rounded-xl border bg-card p-4 text-card-foreground" : "rounded-lg p-2",
-        className,
-      )}
+    <div
+      data-slot="notification-actions"
+      className={cn("-my-1 flex shrink-0 items-center", className)}
     >
-      {icon ? (
-        <span data-slot="notification-media" aria-hidden="true" className="relative shrink-0">
-          {icon}
-          {!isRead && (
-            <span
-              data-slot="notification-dot"
-              className={cn(
-                "absolute -top-0.5 -right-0.5 size-2 rounded-full bg-primary ring-2",
-                isCard ? "ring-card" : "ring-popover",
-              )}
-            />
-          )}
-        </span>
-      ) : (
-        <span
-          data-slot="notification-dot"
-          aria-hidden="true"
-          className={cn("mt-1.5 size-2 shrink-0 rounded-full", !isRead && "bg-primary")}
-        />
+      {children}
+      {onMarkAsRead && !isRead && (
+        <NotificationItemAction label={labels.markAsRead} onPress={() => onMarkAsRead(id)}>
+          <CheckIcon />
+        </NotificationItemAction>
       )}
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <div
-          className={cn(
-            "flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1",
-            isCard && "justify-between",
-          )}
-        >
-          <span
-            id={titleId}
-            data-slot="notification-title"
-            className={cn(
-              "min-w-0 leading-snug",
-              isCard ? "text-base" : "text-sm",
-              isRead ? "text-muted-foreground" : "font-medium",
-            )}
-          >
-            {href ? (
-              <Link
-                href={href}
-                onPress={() => onOpen?.(notification)}
-                className="rounded-sm underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                {title}
-              </Link>
-            ) : (
-              title
-            )}
-          </span>
-          {isCard ? (
-            <Badge variant={isRead ? "muted-dot" : "primary-dot"}>
-              {isRead ? labels.read : labels.unread}
-            </Badge>
-          ) : (
-            !isRead && <span className="sr-only">{labels.unread}</span>
-          )}
-        </div>
-        {message && (
-          <div
-            data-slot="notification-message"
-            className={cn("text-sm text-muted-foreground", !isCard && "line-clamp-2")}
-          >
-            {message}
-          </div>
-        )}
-        {date && (
-          <time dateTime={date.toISOString()} className="text-xs text-muted-foreground">
-            {labels.formatDate(date, locale)}
-          </time>
-        )}
-      </div>
-      {(onMarkAsRead || onDelete) && (
-        <div data-slot="notification-actions" className="-my-1 flex shrink-0 items-center">
-          {onMarkAsRead && !isRead && (
-            <NotificationAction
-              label={labels.markAsRead}
-              describedBy={titleId}
-              onPress={() => onMarkAsRead(id)}
-            >
-              <CheckIcon />
-            </NotificationAction>
-          )}
-          {onDelete && (
-            <NotificationAction
-              label={labels.delete}
-              describedBy={titleId}
-              onPress={() => onDelete(id)}
-            >
-              <Trash2Icon />
-            </NotificationAction>
-          )}
-        </div>
+      {onDelete && (
+        <NotificationItemAction label={labels.delete} onPress={() => onDelete(id)}>
+          <Trash2Icon />
+        </NotificationItemAction>
       )}
-    </li>
+    </div>
   );
 }
 
@@ -324,6 +487,8 @@ type NotificationMenuProps = NotificationHandlers & {
   /** `sm` matches a compact top bar, next to `Glance` triggers in `size="sm"`. */
   size?: "default" | "sm";
   className?: string;
+  /** Renders each notification, to compose the `NotificationItem`'s parts. */
+  children?: (notification: NotificationData) => React.ReactNode;
 };
 
 /**
@@ -345,6 +510,7 @@ function NotificationMenu({
   i18n,
   className,
   size = "default",
+  children,
 }: NotificationMenuProps) {
   const labels = useNotificationLabels(i18n);
   const unread = unreadCount ?? notifications.filter((item) => !item.isRead).length;
@@ -378,21 +544,30 @@ function NotificationMenu({
               ) : notifications.length === 0 ? (
                 <NotificationsEmpty labels={labels} className="p-4" />
               ) : (
-                <ul aria-label={labels.title} className="flex flex-col gap-1">
-                  {notifications.map((notification) => (
-                    <NotificationItem
-                      key={notification.id}
-                      notification={notification}
-                      i18n={i18n}
-                      onMarkAsRead={onMarkAsRead}
-                      onDelete={onDelete}
-                      onOpen={(item) => {
-                        onOpen?.(item);
-                        close();
-                      }}
-                    />
-                  ))}
-                </ul>
+                <NotificationListContext.Provider
+                  value={{
+                    variant: "compact",
+                    i18n,
+                    onMarkAsRead,
+                    onDelete,
+                    onOpen: (item) => {
+                      onOpen?.(item);
+                      close();
+                    },
+                  }}
+                >
+                  <ul aria-label={labels.title} className="flex flex-col gap-1">
+                    {notifications.map((notification) => (
+                      <React.Fragment key={notification.id}>
+                        {children ? (
+                          children(notification)
+                        ) : (
+                          <NotificationItem notification={notification} />
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </ul>
+                </NotificationListContext.Provider>
               )}
             </div>
             {viewAllHref && (
@@ -416,6 +591,8 @@ type NotificationListProps = NotificationHandlers & {
   loadingCount?: number;
   i18n?: NotificationI18n;
   className?: string;
+  /** Renders each notification, to compose the `NotificationItem`'s parts. */
+  children?: (notification: NotificationData) => React.ReactNode;
 };
 
 /** Every notification as cards, for a dedicated page; pair it with `Pagination`. */
@@ -428,6 +605,7 @@ function NotificationList({
   onOpen,
   i18n,
   className,
+  children,
 }: NotificationListProps) {
   const labels = useNotificationLabels(i18n);
 
@@ -438,31 +616,42 @@ function NotificationList({
     return <NotificationsEmpty labels={labels} className={cn("border", className)} />;
   }
   return (
-    <ul
-      aria-label={labels.title}
-      data-slot="notification-list"
-      className={cn("flex flex-col gap-3", className)}
+    <NotificationListContext.Provider
+      value={{ variant: "card", i18n, onMarkAsRead, onDelete, onOpen }}
     >
-      {notifications.map((notification) => (
-        <NotificationItem
-          key={notification.id}
-          variant="card"
-          notification={notification}
-          i18n={i18n}
-          onMarkAsRead={onMarkAsRead}
-          onDelete={onDelete}
-          onOpen={onOpen}
-        />
-      ))}
-    </ul>
+      <ul
+        aria-label={labels.title}
+        data-slot="notification-list"
+        className={cn("flex flex-col gap-3", className)}
+      >
+        {notifications.map((notification) => (
+          <React.Fragment key={notification.id}>
+            {children ? children(notification) : <NotificationItem notification={notification} />}
+          </React.Fragment>
+        ))}
+      </ul>
+    </NotificationListContext.Provider>
   );
 }
 
 export type {
   NotificationData,
   NotificationI18n,
+  NotificationItemProps,
   NotificationLabels,
   NotificationListProps,
   NotificationMenuProps,
 };
-export { type defaultNotificationLabels, NotificationItem, NotificationList, NotificationMenu };
+export {
+  type defaultNotificationLabels,
+  NotificationItem,
+  NotificationItemAction,
+  NotificationItemActions,
+  NotificationItemContent,
+  NotificationItemDate,
+  NotificationItemMedia,
+  NotificationItemMessage,
+  NotificationItemTitle,
+  NotificationList,
+  NotificationMenu,
+};
