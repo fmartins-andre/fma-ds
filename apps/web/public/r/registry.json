@@ -104,10 +104,49 @@
       }
     },
     {
+      "name": "app-shell",
+      "type": "registry:block",
+      "title": "App Shell",
+      "description": "The frame of an app's pages, composed from parts: the `AppSidebar`, a top bar and the page.\n\n- **`AppShell`**: takes the `AppSidebar` in `sidebar` and the top bar and page as children. It wraps `SidebarProvider` and `SidebarInset`, so it takes their props (`defaultOpen`, `open`, `onOpenChange`).\n- **`AppShellHeader`**: the top bar, sticky: the sidebar trigger, the page's trail and, at the end, its children (glances, notifications).\n- **`useAppShellBreadcrumbs`**: each page sets its trail, from the app's home down to itself; the last item is the current page.\n- **`AppShellMain`**: the page inside the shell's gutter: a `PageHeader` (usually `sticky` and `density=\"compact\"`), then `AppShellContent`.\n- **`AppShellContent`**: the page's content, a column with `gap-4` between its children. Each child sits on a surface (`Card`, `PanelCard`, a settings form, `PlanBuilder`), except the ones that already are one: a `StatGrid` and a `NotificationList`.\n\nThe parts share measures as CSS variables: `--app-shell-header-h` and `--app-shell-gutter`, handed to a sticky `PageHeader` as `--sticky-offset` and `--page-gutter`. `AppShellMain` measures its sticky `PageHeader` (`--page-header-h`) and sets `--sticky-top`, where other sticky parts stop — an `OrderSummary` stays under both bars.\n\nWrap the app in react-aria's `RouterProvider` so the sidebar, trail and tab links route client-side.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "blocks"
+      ],
+      "files": [
+        {
+          "path": "src/blocks/app-shell/app-shell.tsx",
+          "target": "components/fma-ds/app-shell/app-shell.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "@fma-ds/separator",
+        "@fma-ds/sidebar",
+        "@fma-ds/app-sidebar",
+        "@fma-ds/page-header"
+      ],
+      "dependencies": [
+        "cn@^0.5.0"
+      ],
+      "meta": {
+        "status": "stable",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "block",
+          "layout",
+          "shell",
+          "sidebar",
+          "navigation"
+        ],
+        "contentHash": "9182522105ff"
+      }
+    },
+    {
       "name": "app-sidebar",
       "type": "registry:block",
       "title": "App Sidebar",
-      "description": "An app-shell sidebar block, collapsible to icons, composed from parts. Render it inside a `SidebarProvider`.\n\nInside `AppSidebar`, use the core's `SidebarHeader`, `SidebarContent` and `SidebarFooter`, with:\n\n- **Header**: `AppSidebarTeamSwitcher` with `AppSidebarTeam`, or `AppSidebarLogo`. The app holds `activeTeam`.\n- **Content**: `AppSidebarSection`, `AppSidebarItem` and `AppSidebarSubItem`.\n- **Footer**: `AppSidebarUser`, with the menu's entries as `DropdownMenuItem`s.\n\nDetails:\n\n\n- **Sub-items**: expand inline (`variant=\"collapse\"`) or open a menu (`\"dropdown\"`, and always while collapsed to icons).\n- **Targets**: `href` is a link, to an app route or any URL, which `external` opens in a new tab; wrap the app in `RouterProvider` for client-side routing. `onPress` runs a function instead.\n- **Access**: `access` is what an item does (`granted`, `blocked`, `gated`), `badge` says why, with the app's own text, as `ghost`, `outline`, `primary` or `invert`, and `external` opens it in a new tab. To hide an item, don't render it. `gated` is informative only: the item follows its target, and the app must guard that route.\n- **Empty parents**: an item or section with no children isn't rendered. That's counted on direct children, so `{can && <Item />}` works, but a wrapper of yours that returns `null` still counts as one.",
+      "description": "An app's sidebar, collapsible to icons, composed from parts. It goes in the `sidebar` of an `AppShell`, which brings the provider, the top bar with its trigger and the page.\n\nInside `AppSidebar`, use the core's `SidebarHeader`, `SidebarContent` and `SidebarFooter`, with:\n\n- **Header**: `AppSidebarTeamSwitcher` with `AppSidebarTeam`, or `AppSidebarLogo`. The app holds `activeTeam`.\n- **Content**: `AppSidebarSection`, `AppSidebarItem` and `AppSidebarSubItem`.\n- **Footer**: `AppSidebarUser`, with the menu's entries as `DropdownMenuItem`s.\n\nDetails:\n\n\n- **Sub-items**: expand inline (`variant=\"collapse\"`) or open a menu (`\"dropdown\"`, and always while collapsed to icons).\n- **Targets**: `href` is a link, to an app route or any URL, which `external` opens in a new tab; wrap the app in `RouterProvider` for client-side routing. `onPress` runs a function instead.\n- **Access**: `access` is what an item does (`granted`, `blocked`, `gated`), `badge` says why, with the app's own text, as `ghost`, `outline`, `primary` or `invert`, and `external` opens it in a new tab. To hide an item, don't render it. `gated` is informative only: the item follows its target, and the app must guard that route.\n- **Empty parents**: an item or section with no children isn't rendered. That's counted on direct children, so `{can && <Item />}` works, but a wrapper of yours that returns `null` still counts as one.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"

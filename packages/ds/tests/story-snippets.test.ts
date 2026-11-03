@@ -362,8 +362,10 @@ describe("app-sidebar examples", () => {
   const file = readFileSync(join(SRC, "blocks/app-sidebar/app-sidebar.stories.tsx"), "utf8");
   const snippets = storySnippets(file, "app-sidebar", "blocks");
 
-  it.each(Object.entries(snippets))("%s renders inside a SidebarProvider", (_name, code) => {
-    expect(code).toContain("<SidebarProvider");
+  // The sidebar always lives in the app's frame, so every example shows it in an AppShell.
+  it.each(Object.entries(snippets))("%s renders inside an AppShell", (_name, code) => {
+    expect(code).toContain("<AppShell");
+    expect(code).toContain("<AppShellHeader");
   });
 
   it("shows the collapsed example collapsed", () => {

@@ -20,15 +20,9 @@ import {
 import * as React from "react";
 import { RouterProvider } from "react-aria-components";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+import { AppShell, AppShellHeader, AppShellMain } from "@/blocks/app-shell/app-shell";
 import { DropdownMenuItem, DropdownMenuSeparator } from "@/core/dropdown-menu/dropdown-menu";
-import {
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/core/sidebar/sidebar";
+import { SidebarContent, SidebarFooter, SidebarHeader } from "@/core/sidebar/sidebar";
 import {
   AppSidebar,
   AppSidebarItem,
@@ -107,7 +101,7 @@ function TeamSwitcher() {
   );
 }
 
-function AppShell({
+function SidebarInShell({
   defaultOpen,
   header = <TeamSwitcher />,
   children,
@@ -117,24 +111,30 @@ function AppShell({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider defaultOpen={defaultOpen} className="h-[560px] min-h-0">
-      <AppSidebar>
-        <SidebarHeader>{header}</SidebarHeader>
-        <SidebarContent>{children}</SidebarContent>
-        <SidebarFooter>
-          <AppSidebarUser name="Ada Lovelace" email="ada@example.com">
-            <DropdownMenuItem href="/account">Account</DropdownMenuItem>
-            <DropdownMenuItem href="/billing">Billing</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem href="/logout">Log out</DropdownMenuItem>
-          </AppSidebarUser>
-        </SidebarFooter>
-      </AppSidebar>
-      <SidebarInset className="p-4">
-        <SidebarTrigger />
-        <p className="mt-4 text-sm text-muted-foreground">Page content goes here.</p>
-      </SidebarInset>
-    </SidebarProvider>
+    // The sidebar always lives in the app's frame: the AppShell block.
+    <AppShell
+      defaultOpen={defaultOpen}
+      className="h-[560px] min-h-0"
+      sidebar={
+        <AppSidebar>
+          <SidebarHeader>{header}</SidebarHeader>
+          <SidebarContent>{children}</SidebarContent>
+          <SidebarFooter>
+            <AppSidebarUser name="Ada Lovelace" email="ada@example.com">
+              <DropdownMenuItem href="/account">Account</DropdownMenuItem>
+              <DropdownMenuItem href="/billing">Billing</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem href="/logout">Log out</DropdownMenuItem>
+            </AppSidebarUser>
+          </SidebarFooter>
+        </AppSidebar>
+      }
+    >
+      <AppShellHeader />
+      <AppShellMain>
+        <p className="text-sm text-muted-foreground">Page content goes here.</p>
+      </AppShellMain>
+    </AppShell>
   );
 }
 
@@ -158,7 +158,7 @@ const componentMeta = {
     ),
   ],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Platform">
         <AppSidebarItem title="Home" href="/home" icon={<HomeIcon />} isActive />
         <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
@@ -177,7 +177,7 @@ const componentMeta = {
       <AppSidebarSection title="Projects">
         <AppSidebarItem title="Design Engineering" href="/projects/design" icon={<FrameIcon />} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
 } satisfies Meta<typeof AppSidebar>;
 
@@ -273,7 +273,7 @@ export const CollapsedToIcons: Story = {
 /** Without teams, a static logo fills the header (full, or compact when collapsed). */
 export const WithLogo: Story = {
   render: () => (
-    <AppShell
+    <SidebarInShell
       header={
         <AppSidebarLogo
           full={<span className="text-base font-semibold">fma-ds</span>}
@@ -284,7 +284,7 @@ export const WithLogo: Story = {
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...CHANGELOG} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     await expect(canvas.getByText("fma-ds")).toBeVisible();
@@ -295,31 +295,31 @@ export const WithLogo: Story = {
 /** `blocked` keeps the item visible and focusable, but it goes nowhere; the badge says why. */
 export const Blocked: Story = {
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...REPORTS} />
         <AppSidebarItem {...AUDIT} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
 };
 
 /** `gated` is a normal link: point `href` at the page that resolves it, and guard that route. */
 export const Gated: Story = {
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...AUTOMATIONS} />
         <AppSidebarItem {...INVOICES} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
 };
 
 /** A `badge` alone doesn't change what the item does. */
 export const Badges: Story = {
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...CHANGELOG} />
         <AppSidebarItem
@@ -341,7 +341,7 @@ export const Badges: Story = {
           badge={{ label: "Pro", variant: "invert" }}
         />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
 };
 
@@ -361,7 +361,7 @@ export const ShouldFollowItemColor: Story = {
 export const ShouldKeepInvertBlockedReasonLegible: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem
           title="Audit"
@@ -369,7 +369,7 @@ export const ShouldKeepInvertBlockedReasonLegible: Story = {
           badge={{ label: "Coming soon", variant: "invert" }}
         />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     const item = canvas.getByRole("button", { name: "Audit Coming soon" });
@@ -392,18 +392,18 @@ export const ShouldKeepBlockedReasonLegible: Story = {
 /** `external` opens the link in a new tab and says so. */
 export const ExternalLink: Story = {
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...HELP} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
 };
 
 /** Collapsed to icons, a dot marks the item and the tooltip gives the reason. */
 export const CollapsedAccess: Story = {
   render: () => (
-    <AppShell defaultOpen={false}>
+    <SidebarInShell defaultOpen={false}>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...REPORTS} />
         <AppSidebarItem {...AUDIT} />
@@ -412,14 +412,14 @@ export const CollapsedAccess: Story = {
         <AppSidebarItem {...CHANGELOG} />
         <AppSidebarItem {...HELP} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
 };
 
 /** Only a `granted` parent opens its sub-items, and each of them has its own state. */
 export const AccessCombinations: Story = {
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Models" icon={<BotIcon />} isActive badge={{ label: "New" }}>
           <AppSidebarSubItem title="Genesis" href="/models/genesis" />
@@ -440,7 +440,7 @@ export const AccessCombinations: Story = {
         <AppSidebarItem {...REPORTS}>{MODEL_SUB_ITEMS}</AppSidebarItem>
         <AppSidebarItem {...HELP} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
 };
 
@@ -477,12 +477,12 @@ const flags: { reports?: boolean } = {};
 export const ShouldSkipConditionalItems: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...CHANGELOG} />
         {isAllowed && <AppSidebarItem title="Internal" href="/internal" />}
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     await expect(canvas.getByRole("link", { name: "Changelog New" })).toBeInTheDocument();
@@ -493,7 +493,7 @@ export const ShouldSkipConditionalItems: Story = {
 export const ShouldDropEmptyParent: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...CHANGELOG} />
         <AppSidebarItem title="Models" icon={<BotIcon />}>
@@ -506,7 +506,7 @@ export const ShouldDropEmptyParent: Story = {
           {flags.reports && <AppSidebarSubItem title="Monthly" href="/reports/monthly" />}
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     await expect(canvas.queryByText("Models")).toBeNull();
@@ -518,14 +518,14 @@ export const ShouldDropEmptyParent: Story = {
 export const ShouldDropEmptySection: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...CHANGELOG} />
       </AppSidebarSection>
       <AppSidebarSection title="Admin">
         {isAllowed && <AppSidebarItem title="Internal" href="/internal" />}
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     await expect(canvas.getByText("Workspace")).toBeInTheDocument();
@@ -560,14 +560,14 @@ const blockedSubItem = (
 export const ShouldShowBlockedSubItem: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
           <AppSidebarSubItem title="Genesis" href="/models/genesis" />
           {blockedSubItem}
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     navigate.mockClear();
@@ -581,11 +581,11 @@ export const ShouldShowBlockedSubItem: Story = {
 export const ShouldNotExpandGatedParent: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...AUTOMATIONS}>{MODEL_SUB_ITEMS}</AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     navigate.mockClear();
@@ -598,11 +598,11 @@ export const ShouldNotExpandGatedParent: Story = {
 export const ShouldNotOpenGatedParentWhileCollapsed: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell defaultOpen={false}>
+    <SidebarInShell defaultOpen={false}>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...AUTOMATIONS}>{MODEL_SUB_ITEMS}</AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     navigate.mockClear();
@@ -615,11 +615,11 @@ export const ShouldNotOpenGatedParentWhileCollapsed: Story = {
 export const ShouldNotExpandBlockedParent: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...REPORTS}>{MODEL_SUB_ITEMS}</AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     const reports = canvas.getByRole("button", { name: "Reports No access" });
@@ -632,13 +632,13 @@ export const ShouldNotExpandBlockedParent: Story = {
 export const ShouldExpandGrantedParentWithBadge: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Models" icon={<BotIcon />} badge={{ label: "New" }}>
           {MODEL_SUB_ITEMS}
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     const models = canvas.getByRole("button", { name: "Models New" });
@@ -659,7 +659,7 @@ export const ShouldExpandGrantedParentWithBadge: Story = {
 export const ShouldReachBlockedDropdownItem: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Docs" icon={<BookOpenIcon />} variant="dropdown">
           <AppSidebarSubItem title="Introduction" href="/docs/intro" />
@@ -671,7 +671,7 @@ export const ShouldReachBlockedDropdownItem: Story = {
           />
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     navigate.mockClear();
@@ -696,11 +696,11 @@ export const ShouldReachBlockedDropdownItem: Story = {
 export const ShouldShowReasonInCollapsedTooltip: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell defaultOpen={false}>
+    <SidebarInShell defaultOpen={false}>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...REPORTS} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     const reports = canvas.getByRole("button", { name: "Reports No access" });
@@ -715,13 +715,13 @@ export const ShouldShowReasonInCollapsedTooltip: Story = {
 export const ShouldSizeExternalSubItemIcon: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
           <AppSidebarSubItem title="Help" href="https://example.com/help" external />
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     const help = canvas.getByRole("link", { name: "Help opens in new tab" });
@@ -739,13 +739,13 @@ export const ShouldSizeExternalSubItemIcon: Story = {
 export const ShouldNotAnnounceExternalOnExpandableParent: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Models" href="/models" icon={<BotIcon />} external>
           {MODEL_SUB_ITEMS}
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     await expect(canvas.getByRole("button", { name: "Models" })).toBeInTheDocument();
@@ -755,13 +755,13 @@ export const ShouldNotAnnounceExternalOnExpandableParent: Story = {
 export const ShouldOpenExternalDropdownItem: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Docs" icon={<BookOpenIcon />} variant="dropdown">
           <AppSidebarSubItem title="Help" href="https://example.com/help" external />
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Docs" }));
@@ -776,14 +776,14 @@ export const ShouldOpenExternalDropdownItem: Story = {
 export const ShouldAlignSubItemsWithParent: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
           {blockedSubItem}
         </AppSidebarItem>
         <AppSidebarItem {...AUTOMATIONS} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     const right = (element: Element) => element.getBoundingClientRect().right;
@@ -800,14 +800,14 @@ export const ShouldAlignSubItemsWithParent: Story = {
 export const ShouldAllowRepeatedSubItemTitles: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Docs" icon={<BookOpenIcon />} variant="dropdown">
           <AppSidebarSubItem title="Overview" href="/docs/one" />
           <AppSidebarSubItem title="Overview" href="/docs/two" />
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Docs" }));
@@ -823,13 +823,13 @@ function LiveTitleMenu() {
   const [count, setCount] = React.useState(0);
   updateCount = setCount;
   return (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Docs" icon={<BookOpenIcon />} variant="dropdown">
           <AppSidebarSubItem title={`Inbox (${count})`} href="/inbox" />
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   );
 }
 
@@ -851,7 +851,7 @@ export const ShouldUpdateSubItemTitleInOpenMenu: Story = {
 function MarkAsReadExample() {
   const [unread, setUnread] = React.useState(3);
   return (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem
           title="Mark all as read"
@@ -860,7 +860,7 @@ function MarkAsReadExample() {
           onPress={() => setUnread(0)}
         />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   );
 }
 
@@ -878,7 +878,7 @@ export const Actions: Story = {
 export const ShouldRunGatedItemAction: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem
           title="Automations"
@@ -887,7 +887,7 @@ export const ShouldRunGatedItemAction: Story = {
           onPress={onPress}
         />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     onPress.mockClear();
@@ -899,7 +899,7 @@ export const ShouldRunGatedItemAction: Story = {
 export const ShouldNotRunBlockedItemAction: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem
           title="Automations"
@@ -916,7 +916,7 @@ export const ShouldNotRunBlockedItemAction: Story = {
           />
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     onPress.mockClear();
@@ -929,13 +929,13 @@ export const ShouldNotRunBlockedItemAction: Story = {
 export const ShouldRunSubItemAction: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Models" icon={<BotIcon />} isActive>
           <AppSidebarSubItem title="Refresh" onPress={onPress} />
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     onPress.mockClear();
@@ -947,13 +947,13 @@ export const ShouldRunSubItemAction: Story = {
 export const ShouldRunDropdownItemAction: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell>
+    <SidebarInShell>
       <AppSidebarSection title="Workspace">
         <AppSidebarItem title="Docs" icon={<BookOpenIcon />} variant="dropdown">
           <AppSidebarSubItem title="Refresh" onPress={onPress} />
         </AppSidebarItem>
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     onPress.mockClear();
@@ -969,7 +969,7 @@ export const ShouldRunDropdownItemAction: Story = {
 export const ShouldFollowActiveTeamFromTheApp: Story = {
   tags: ["!autodocs"],
   render: () => (
-    <AppShell
+    <SidebarInShell
       header={
         <AppSidebarTeamSwitcher activeTeam={{ name: "Loaded later", plan: "Pro", logo: null }}>
           <AppSidebarTeam name="Loaded later" logo={null} onAction={onPress} />
@@ -979,7 +979,7 @@ export const ShouldFollowActiveTeamFromTheApp: Story = {
       <AppSidebarSection title="Workspace">
         <AppSidebarItem {...CHANGELOG} />
       </AppSidebarSection>
-    </AppShell>
+    </SidebarInShell>
   ),
   play: async ({ canvas }) => {
     onPress.mockClear();
