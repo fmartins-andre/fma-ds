@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import meta from "./meta.json";
 import { Separator } from "./separator";
 
@@ -41,4 +42,29 @@ export const Vertical: Story = {
       <p className="text-sm">Right</p>
     </div>
   ),
+};
+
+/**
+ * Inside a taller row, give it a height and center it: classes in `className`
+ * win over the orientation's defaults.
+ */
+export const VerticalWithHeight: Story = {
+  render: () => (
+    <div className="flex h-12 items-stretch gap-2 rounded-lg border px-3">
+      <span className="self-center text-sm">Clients</span>
+      <Separator orientation="vertical" className="h-4 self-center" />
+      <span className="self-center text-sm text-muted-foreground">Acme Inc.</span>
+    </div>
+  ),
+};
+
+export const ShouldLetClassNameSetVerticalSize: Story = {
+  ...VerticalWithHeight,
+  tags: ["!autodocs"],
+  play: async ({ canvas }) => {
+    const separator = canvas.getByRole("separator");
+    const style = getComputedStyle(separator);
+    await expect(style.alignSelf).toBe("center");
+    await expect(separator.getBoundingClientRect().height).toBe(16);
+  },
 };

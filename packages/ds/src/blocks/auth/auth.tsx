@@ -29,12 +29,19 @@ export const authEn: DictionaryNamespace<AuthConfig> = {
   },
 };
 
+// On a colored surface the text and the focus ring follow its foreground.
+const SURFACE_CLASSES = {
+  muted: "bg-muted",
+  primary: "bg-primary text-primary-foreground [--ring:var(--primary-foreground)]",
+  brand: brandSurface,
+} as const;
+
 /**
  * The page around a sign-in, sign-up or recovery card: the `logo` on top and
  * the content centered. With `brand`, the page splits in two on wide screens
  * and the brand area (illustration, product message) fills the other half, on
- * a muted surface or, with `brandSurface="brand"`, the theme's brand color;
- * without it, the column sits centered on a muted page.
+ * a muted surface or, with `brandSurface`, the theme's `primary` or `brand`
+ * color; without it, the column sits centered on a muted page.
  */
 function AuthLayout({
   logo,
@@ -46,8 +53,8 @@ function AuthLayout({
 }: React.ComponentProps<"div"> & {
   logo?: React.ReactNode;
   brand?: React.ReactNode;
-  /** The brand area's surface: `muted` (default) or the theme's `brand` color. */
-  brandSurface?: "muted" | "brand";
+  /** The brand area's surface: `muted` (default), or the theme's `primary` or `brand` color. */
+  brandSurface?: "muted" | "primary" | "brand";
 }) {
   return (
     <div
@@ -80,7 +87,7 @@ function AuthLayout({
           data-surface={surface}
           className={cn(
             "relative hidden overflow-hidden lg:flex lg:flex-col",
-            surface === "brand" ? brandSurface : "bg-muted",
+            SURFACE_CLASSES[surface],
           )}
         >
           {brand}

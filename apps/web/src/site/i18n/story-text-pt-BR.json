@@ -1449,5 +1449,13 @@
   "R$ 249,90": "R$ 249,90",
   "Paga": "Paga",
   "Competência": "Competência",
-  "Faturas": "Faturas"
+  "Faturas": "Faturas",
+  "Clients": "Clientes",
+  "Acme Inc.": "Acme Inc.",
+  "Rename": "Renomear",
+  "Rename project": "Renomear projeto",
+  "The dialog closes once the new name is saved.": "O diálogo fecha quando o novo nome é salvo.",
+  "Planos": "Planos",
+  "Seu plano atual e as faturas.": "Seu plano atual e as faturas.",
+  "Seções de planos": "Seções de planos"
 }

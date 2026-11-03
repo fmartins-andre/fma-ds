@@ -87,7 +87,8 @@ function Dialog({
 }: Omit<ModalOverlayPrimitiveProps, "className" | "children"> &
   Pick<React.ComponentProps<typeof ModalPrimitive>, "isDismissable"> & {
     className?: string;
-    children: React.ReactNode;
+    /** Content, or a function of `{ close }` to close the dialog from an action. */
+    children: DialogPrimitiveProps["children"];
     showCloseButton?: boolean;
   }) {
   const { labels } = useFmaMessages("dialog", dialogEn);
@@ -104,12 +105,16 @@ function Dialog({
           data-slot="dialog"
           className="[display:inherit] [gap:inherit] outline-none"
         >
-          {children}
-          {showCloseButton && (
-            <DialogClose variant="ghost" className="absolute top-2 right-2" size="icon-sm">
-              <XIcon />
-              <span className="sr-only">{labels.close}</span>
-            </DialogClose>
+          {(renderProps) => (
+            <>
+              {typeof children === "function" ? children(renderProps) : children}
+              {showCloseButton && (
+                <DialogClose variant="ghost" className="absolute top-2 right-2" size="icon-sm">
+                  <XIcon />
+                  <span className="sr-only">{labels.close}</span>
+                </DialogClose>
+              )}
+            </>
           )}
         </DialogPrimitive>
       </ModalPrimitive>

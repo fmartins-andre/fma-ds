@@ -11,21 +11,21 @@
   "files": [
     {
       "path": "src/core/separator/separator.tsx",
-      "content": "import { cn } from \"cn\";\nimport { Separator as SeparatorPrimitive } from \"react-aria-components\";\n\nfunction Separator({\n  className,\n  orientation = \"horizontal\",\n  ...props\n}: React.ComponentProps<typeof SeparatorPrimitive>) {\n  return (\n    <SeparatorPrimitive\n      data-slot=\"separator\"\n      orientation={orientation}\n      className={cn(\n        \"block shrink-0 border-0 bg-border aria-[orientation=horizontal]:h-px aria-[orientation=horizontal]:w-full aria-[orientation=vertical]:w-px aria-[orientation=vertical]:self-stretch [:is(hr)]:h-px [:is(hr)]:w-full\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Separator };\n",
+      "content": "import { cn } from \"cn\";\nimport { Separator as SeparatorPrimitive } from \"react-aria-components\";\n\n// The orientation picks plain classes instead of aria-[orientation=*] variants:\n// an attribute variant outranks a utility, so a `self-center` or `h-4` passed in\n// `className` would lose to the default and cn() couldn't merge them.\nconst ORIENTATION_CLASSES = {\n  horizontal: \"h-px w-full\",\n  vertical: \"w-px self-stretch\",\n} as const;\n\nfunction Separator({\n  className,\n  orientation = \"horizontal\",\n  ...props\n}: React.ComponentProps<typeof SeparatorPrimitive>) {\n  return (\n    <SeparatorPrimitive\n      data-slot=\"separator\"\n      orientation={orientation}\n      className={cn(\n        \"block shrink-0 border-0 bg-border\",\n        ORIENTATION_CLASSES[orientation],\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Separator };\n",
       "type": "registry:component",
       "target": "components/fma-ds/separator.tsx"
     }
   ],
   "meta": {
     "status": "stable",
-    "source": "shadcn",
+    "source": "customized",
     "license": "MIT",
     "tags": [
       "layout",
       "divider",
       "react-aria"
     ],
-    "contentHash": "cf7194ee7b02"
+    "contentHash": "3cecd37458e9"
   },
   "categories": [
     "layout"
