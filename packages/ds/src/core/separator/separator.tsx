@@ -1,6 +1,14 @@
 import { cn } from "cn";
 import { Separator as SeparatorPrimitive } from "react-aria-components";
 
+// The orientation picks plain classes instead of aria-[orientation=*] variants:
+// an attribute variant outranks a utility, so a `self-center` or `h-4` passed in
+// `className` would lose to the default and cn() couldn't merge them.
+const ORIENTATION_CLASSES = {
+  horizontal: "h-px w-full",
+  vertical: "w-px self-stretch",
+} as const;
+
 function Separator({
   className,
   orientation = "horizontal",
@@ -11,7 +19,8 @@ function Separator({
       data-slot="separator"
       orientation={orientation}
       className={cn(
-        "block shrink-0 border-0 bg-border aria-[orientation=horizontal]:h-px aria-[orientation=horizontal]:w-full aria-[orientation=vertical]:w-px aria-[orientation=vertical]:self-stretch [:is(hr)]:h-px [:is(hr)]:w-full",
+        "block shrink-0 border-0 bg-border",
+        ORIENTATION_CLASSES[orientation],
         className,
       )}
       {...props}

@@ -105,10 +105,7 @@ function AppShellHeader({
       <SidebarTrigger className="-ms-1" />
       {breadcrumbs.length > 0 && (
         <>
-          <Separator
-            orientation="vertical"
-            className="me-2 aria-[orientation=vertical]:h-4 aria-[orientation=vertical]:self-center max-sm:hidden"
-          />
+          <Separator orientation="vertical" className="me-2 h-4 self-center max-sm:hidden" />
           <PageHeaderBreadcrumbs
             items={breadcrumbs}
             aria-label={ariaLabel}

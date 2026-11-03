@@ -139,7 +139,7 @@
           "sidebar",
           "navigation"
         ],
-        "contentHash": "9182522105ff"
+        "contentHash": "1b493d691f15"
       }
     },
     {
@@ -3919,14 +3919,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "layout",
           "divider",
           "react-aria"
         ],
-        "contentHash": "cf7194ee7b02"
+        "contentHash": "3cecd37458e9"
       }
     },
     {
