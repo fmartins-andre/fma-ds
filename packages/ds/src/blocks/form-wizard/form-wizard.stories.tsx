@@ -14,6 +14,7 @@ import {
   Dialog,
   DialogClose,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -227,7 +228,10 @@ export const Default: Story = {
   },
 };
 
-/** In a dialog: the Cancel button goes in the footer, before Back. */
+/**
+ * In a dialog: the footer goes in the dialog's sticky `DialogFooter`, without its own
+ * separator (`framed={false}`), and the Cancel button goes in it, before Back.
+ */
 export const InDialog: Story = {
   render: (args) => (
     <DialogTrigger>
@@ -250,9 +254,11 @@ export const InDialog: Story = {
           <FormWizardStep step={3}>
             <TextInput label="E-mail" type="email" isRequired />
           </FormWizardStep>
-          <FormWizardFooter>
-            <DialogClose variant="ghost">Cancelar</DialogClose>
-          </FormWizardFooter>
+          <DialogFooter sticky>
+            <FormWizardFooter framed={false}>
+              <DialogClose variant="ghost">Cancelar</DialogClose>
+            </FormWizardFooter>
+          </DialogFooter>
         </FormWizard>
       </Dialog>
     </DialogTrigger>
@@ -260,7 +266,16 @@ export const InDialog: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Novo cliente" }));
-    const dialog = within(await within(document.body).findByRole("dialog"));
+    const dialogElement = await within(document.body).findByRole("dialog");
+    const dialog = within(dialogElement);
+    // The wizard's footer is the dialog's footer: flush with its bottom edge.
+    const footer = dialogElement.querySelector<HTMLElement>("[data-slot=dialog-footer]");
+    const content = dialogElement.closest<HTMLElement>("[data-slot=dialog-content]");
+    if (!footer || !content) throw new Error();
+    await expect(footer).toContainElement(dialog.getByRole("button", { name: "Cancelar" }));
+    await expect(Math.round(footer.getBoundingClientRect().bottom)).toBe(
+      Math.round(content.getBoundingClientRect().bottom),
+    );
     await userEvent.type(dialog.getByRole("textbox", { name: /Nome/ }), "Padaria Pão Quente");
     await userEvent.keyboard("{Enter}");
     await waitFor(() =>
@@ -309,5 +324,35 @@ export const ManySteps: Story = {
     await expect(canvas.getByText("Dados pessoais", { selector: "p" })).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Próximo" }));
     await expect(canvas.getByText("Empresa", { selector: "p" })).toBeVisible();
+  },
+};
+
+/** With the titles showing, each one is centered on its step number. */
+export const ShouldCenterStepTitlesOnTheNumbers: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <div className="w-[48rem]">
+      <FormWizard {...args} steps={CLIENT_STEPS}>
+        <FormWizardSteps />
+        <FormWizardStep step={1}>
+          <TextInput label="Nome ou razão social" />
+        </FormWizardStep>
+        <FormWizardFooter />
+      </FormWizard>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const triggers = canvasElement.querySelectorAll<HTMLElement>("[data-slot=stepper-trigger]");
+    await expect(triggers.length).toBe(CLIENT_STEPS.length);
+    for (const trigger of triggers) {
+      const number = trigger.querySelector("[data-slot=stepper-indicator]");
+      const title = trigger.querySelector("[data-slot=stepper-title]");
+      if (!number || !title) throw new Error("missing number or title");
+      const center = (box: DOMRect) => box.top + box.height / 2;
+      await expect(title).toBeVisible();
+      await expect(
+        Math.abs(center(number.getBoundingClientRect()) - center(title.getBoundingClientRect())),
+      ).toBeLessThan(1.5);
+    }
   },
 };
