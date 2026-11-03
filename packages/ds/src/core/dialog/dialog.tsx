@@ -126,17 +126,25 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
 function DialogFooter({
   className,
   showCloseButton = false,
+  sticky = false,
   children,
   ...props
 }: React.ComponentProps<"div"> & {
   showCloseButton?: boolean;
+  /**
+   * Keeps it at the bottom while a long dialog scrolls, on an opaque surface. It
+   * sticks past the dialog's padding, so it stays flush with the dialog's edge.
+   */
+  sticky?: boolean;
 }) {
   const { labels } = useFmaMessages("dialog", dialogEn);
   return (
     <div
       data-slot="dialog-footer"
+      data-sticky={sticky || undefined}
       className={cn(
         "-mx-4 -mb-4 flex flex-col-reverse gap-2 rounded-b-xl border-t bg-muted/50 p-4 sm:flex-row sm:justify-end",
+        sticky && "sticky -bottom-4 z-10 bg-[color-mix(in_oklab,var(--muted)_50%,var(--popover))]",
         className,
       )}
       {...props}
