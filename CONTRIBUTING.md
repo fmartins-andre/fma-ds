@@ -400,16 +400,20 @@ Não use `--no-verify`; corrija a causa.
 
 ## Commits e pull requests
 
-- [Conventional Commits](https://www.conventionalcommits.org) em inglês, atômicos, com escopo
-  quando fizer sentido: `feat(ui): ...`, `fix(web): ...`, `chore(devcontainer): ...`,
-  `test(ui): ...`, `ci: ...`, `docs: ...`.
+- [Conventional Commits](https://www.conventionalcommits.org) em inglês, com escopo quando
+  fizer sentido: `feat(ui): ...`, `fix(web): ...`, `chore(devcontainer): ...`,
+  `test(ui): ...`, `ci: ...`, `docs: ...`. Um lote de trabalho vira um commit (ou poucos) e
+  um PR no fim do lote.
+- Durante o trabalho, `pnpm check:changed` confere só o que mudou desde a `main`: Biome nos
+  arquivos alterados, type-check, a suíte unit e os testes de interação do Storybook dos itens
+  tocados (o CI não roda esses testes).
 - Estilo de código garantido pelo Biome: 2 espaços, aspas duplas, ponto e vírgula, trailing
   commas, largura 100. Rode `pnpm exec biome check --write <arquivos>` para corrigir.
 - Antes de abrir um PR:
 
   ```bash
-  pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build
-  git status   # inclua registry.json / public/r se mudaram
+  pnpm verify   # lint, type-check, build do pacote ds e testes unit
+  git status    # inclua registry.json / public/r se mudaram
   ```
 
 ### PRs empilhados (stacked PRs)

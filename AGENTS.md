@@ -111,6 +111,8 @@ pnpm lint                              # biome check (format + lint)
 pnpm exec biome check --write <files>  # corrige formatação/lint
 pnpm type-check                        # tsc --noEmit em todos os pacotes
 pnpm test                              # vitest --project unit
+pnpm check:changed                     # ciclo rápido: só o que mudou desde a main (ver abaixo)
+pnpm verify                            # gate completo antes do commit: lint, tipos, build, unit
 pnpm build                             # type-check + gera registry.json + public/r
 pnpm --filter @fma-ds/ds build         # build só do pacote ui (regenera o registro)
 pnpm --filter @fma-ds/ds test:storybook  # testes de interação (Playwright/Chromium)
@@ -251,8 +253,10 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
 
 ## Git
 
-- Conventional Commits em inglês, commits atômicos, com escopo quando fizer sentido:
+- Conventional Commits em inglês, com escopo quando fizer sentido:
   `feat(ui): ...`, `fix(web): ...`, `chore: ...`, `test(ui): ...`, `ci: ...`, `docs: ...`.
+  Um lote de trabalho vira um commit (ou poucos, se os assuntos forem bem distintos) e um PR,
+  feitos só no fim do lote; ver "Fluxo de trabalho".
 - `main` é protegida por ruleset: sem push direto/force-push; tudo via PR, com os checks de
   drift do registro e e2e do editor passando antes do merge.
 - Hooks do lefthook: **pre-commit** roda lint → type-check → registry-check;
@@ -269,9 +273,29 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
   `public/r` num rebase: regenere com `pnpm --filter @fma-ds/ds build`, não resolva à mão.
   Detalhes no `CONTRIBUTING.md` ("PRs empilhados").
 
-## Antes de concluir uma tarefa
+## Fluxo de trabalho
+
+Rápido por padrão: o que custa tempo é commit, push e CI, então eles acontecem uma vez por lote.
+
+1. **Branch e lote local.** Um branch a partir da `main`; as correções se acumulam no working
+   tree, sem commit nem push no meio.
+2. **Ciclo rápido a cada mudança**: `pnpm check:changed` (uns 10–25s). Pega os arquivos
+   alterados desde a `main` (commitados, staged, não staged e novos) e roda Biome neles com
+   `--write`, o type-check (que pelo turbo também regenera `registry.json` e `public/r`), a suíte
+   unit e os testes de interação do Storybook **só dos itens tocados** (`src/core/<nome>`,
+   `src/blocks/<nome>`). `--no-stories` pula o Storybook. O CI não roda esses testes de
+   interação: este é o lugar deles.
+3. **Fim do lote**: `pnpm verify`, depois um commit com tudo (inclusive os arquivos gerados), um
+   push e um PR. Os hooks rodam uma vez só.
+4. **Merge sem esperar**: `gh pr merge <n> --merge --auto` mergeia quando o CI passar (exige
+   auto-merge habilitado no repositório). Siga trabalhando no próximo lote enquanto isso; se o
+   CI falhar, corrija no mesmo branch.
+
+Testes mais amplos (Storybook de tudo, `pnpm --filter web test:e2e`) só quando a mudança atinge
+peças compartilhadas (tokens, `styles.css`, `lib/`, componentes muito usados) ou o site/editor.
 
 ```bash
-pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build
-git status   # registry.json / public/r alterados? inclua-os no commit
+pnpm check:changed        # durante o trabalho
+pnpm verify               # antes do commit único
+git status                # registry.json / public/r alterados? inclua-os no commit
 ```

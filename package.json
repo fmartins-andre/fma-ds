@@ -13,6 +13,8 @@
     "clean": "turbo clean",
     "type-check": "turbo type-check",
     "test": "turbo test",
+    "check:changed": "bash scripts/check-changed.sh",
+    "verify": "pnpm lint && pnpm type-check && pnpm --filter @fma-ds/ds build && pnpm test",
     "storybook": "pnpm --filter @fma-ds/ds storybook",
     "build-storybook": "pnpm --filter @fma-ds/ds build-storybook",
     "add:shadcn": "pnpm --filter @fma-ds/ds add:shadcn",
