@@ -141,84 +141,152 @@ function PricingPlanGroup({
 }
 
 type PricingPlanProps = Omit<RadioProps, "children" | "aria-labelledby" | "aria-describedby"> & {
-  name: React.ReactNode;
-  description?: React.ReactNode;
-  /** The price, formatted by the app ("R$ 59,90"). */
-  price: React.ReactNode;
-  /** After the price ("/month"). */
-  period?: React.ReactNode;
-  /** Under the price: the equivalent ("R$ 718,80 per year") or a condition. */
-  priceNote?: React.ReactNode;
-  /** A `Badge` beside the name ("Most popular"). */
-  badge?: React.ReactNode;
   /**
-   * Highlights the plan with a brand glow and a `brand` badge (pass `badge`, so it
-   * isn't color alone). Not a border: the border marks the selected plan.
+   * Highlights the plan with a brand glow and a `brand` badge (add a
+   * `PricingPlanBadge`, so it isn't color alone). Not a border: the border
+   * marks the selected plan.
    */
   isFeatured?: boolean;
-  /** `PricingPlanFeature`s. */
+  /**
+   * The parts: `PricingPlanHeader` (with `PricingPlanName`, `PricingPlanBadge`,
+   * `PricingPlanDescription`), `PricingPlanPrice` and `PricingPlanFeatures`.
+   */
   children?: React.ReactNode;
 };
 
+type PricingPlanContextValue = {
+  nameId: string;
+  priceId: string;
+  badgeId: string;
+  isFeatured: boolean;
+  setHasBadge: (has: boolean) => void;
+};
+
+const PricingPlanContext = React.createContext<PricingPlanContextValue | null>(null);
+
+function usePricingPlan(part: string) {
+  const context = React.useContext(PricingPlanContext);
+  if (!context) throw new Error(`${part} must be used within PricingPlan`);
+  return context;
+}
+
 /**
- * One plan as a card the user selects: name, badge, description, price and
- * the features. The radio is named by the plan's name and described by its
- * price and badge; the features stay readable in the card.
+ * One plan as a card the user selects, built from its parts. The radio is
+ * named by `PricingPlanName` and described by `PricingPlanPrice` and
+ * `PricingPlanBadge`; the features stay readable in the card.
  */
-function PricingPlan({
-  name,
-  description,
-  price,
-  period,
-  priceNote,
-  badge,
-  isFeatured = false,
-  className,
-  children,
-  ...props
-}: PricingPlanProps) {
+function PricingPlan({ isFeatured = false, className, children, ...props }: PricingPlanProps) {
   const id = React.useId();
+  const [hasBadge, setHasBadge] = React.useState(false);
   const nameId = `${id}-name`;
   const priceId = `${id}-price`;
   const badgeId = `${id}-badge`;
 
   return (
-    <RadioCard
-      data-slot="pricing-plan"
-      data-featured={isFeatured || undefined}
-      aria-labelledby={nameId}
-      aria-describedby={badge ? `${priceId} ${badgeId}` : priceId}
-      className={cn("h-full", isFeatured && brandGlow, className)}
+    <PricingPlanContext.Provider value={{ nameId, priceId, badgeId, isFeatured, setHasBadge }}>
+      <RadioCard
+        data-slot="pricing-plan"
+        data-featured={isFeatured || undefined}
+        aria-labelledby={nameId}
+        aria-describedby={hasBadge ? `${priceId} ${badgeId}` : priceId}
+        className={cn("h-full", isFeatured && brandGlow, className)}
+        {...props}
+      >
+        <div className="flex min-w-0 flex-1 flex-col gap-4">{children}</div>
+      </RadioCard>
+    </PricingPlanContext.Provider>
+  );
+}
+
+/** The name with its badge on one line and the description under them. */
+function PricingPlanHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="pricing-plan-header"
+      className={cn("flex flex-wrap items-center gap-x-2 gap-y-1", className)}
       {...props}
+    />
+  );
+}
+
+/** The plan's name; it names the radio. */
+function PricingPlanName({ className, ...props }: React.ComponentProps<"span">) {
+  const { nameId } = usePricingPlan("PricingPlanName");
+  return (
+    <span
+      data-slot="pricing-plan-name"
+      className={cn("text-base font-medium", className)}
+      {...props}
+      id={nameId}
+    />
+  );
+}
+
+/** A `Badge` ("Most popular"), `brand` on a featured plan; read with the price. */
+function PricingPlanBadge(props: Omit<React.ComponentProps<typeof Badge>, "id">) {
+  const { badgeId, isFeatured, setHasBadge } = usePricingPlan("PricingPlanBadge");
+  React.useEffect(() => {
+    setHasBadge(true);
+    return () => setHasBadge(false);
+  }, [setHasBadge]);
+  return (
+    <Badge
+      data-slot="pricing-plan-badge"
+      variant={isFeatured ? "brand" : "default"}
+      {...props}
+      id={badgeId}
+    />
+  );
+}
+
+/** What the plan is for; takes its own line under the name. */
+function PricingPlanDescription({ className, ...props }: React.ComponentProps<"span">) {
+  return (
+    <span
+      data-slot="pricing-plan-description"
+      className={cn("basis-full text-muted-foreground", className)}
+      {...props}
+    />
+  );
+}
+
+/**
+ * The price, formatted by the app ("R$ 59,90"), with its `period` after it
+ * ("/month") and a `note` under it (the equivalent per year, a condition).
+ * It describes the radio.
+ */
+function PricingPlanPrice({
+  period,
+  note,
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"div"> & { period?: React.ReactNode; note?: React.ReactNode }) {
+  const { priceId } = usePricingPlan("PricingPlanPrice");
+  return (
+    <div
+      data-slot="pricing-plan-price"
+      className={cn("flex flex-col gap-0.5", className)}
+      {...props}
+      id={priceId}
     >
-      <div className="flex min-w-0 flex-1 flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span id={nameId} className="text-base font-medium">
-              {name}
-            </span>
-            {badge && (
-              <Badge id={badgeId} variant={isFeatured ? "brand" : "default"}>
-                {badge}
-              </Badge>
-            )}
-          </div>
-          {description && <span className="text-muted-foreground">{description}</span>}
-        </div>
-        <div id={priceId} className="flex flex-col gap-0.5">
-          <span>
-            <span className="text-2xl font-semibold tabular-nums">{price}</span>
-            {period && <span className="text-muted-foreground"> {period}</span>}
-          </span>
-          {priceNote && <span className="text-xs text-muted-foreground">{priceNote}</span>}
-        </div>
-        {children && (
-          <ul data-slot="pricing-plan-features" className="flex flex-col gap-2 border-t pt-4">
-            {children}
-          </ul>
-        )}
-      </div>
-    </RadioCard>
+      <span>
+        <span className="text-2xl font-semibold tabular-nums">{children}</span>
+        {period && <span className="text-muted-foreground"> {period}</span>}
+      </span>
+      {note && <span className="text-xs text-muted-foreground">{note}</span>}
+    </div>
+  );
+}
+
+/** The `PricingPlanFeature`s, under a rule. */
+function PricingPlanFeatures({ className, ...props }: React.ComponentProps<"ul">) {
+  return (
+    <ul
+      data-slot="pricing-plan-features"
+      className={cn("flex flex-col gap-2 border-t pt-4", className)}
+      {...props}
+    />
   );
 }
 
@@ -259,7 +327,13 @@ export {
   PricingPeriod,
   PricingPeriodOption,
   PricingPlan,
+  PricingPlanBadge,
+  PricingPlanDescription,
   PricingPlanFeature,
+  PricingPlanFeatures,
   PricingPlanGroup,
+  PricingPlanHeader,
+  PricingPlanName,
+  PricingPlanPrice,
   PricingPlans,
 };
