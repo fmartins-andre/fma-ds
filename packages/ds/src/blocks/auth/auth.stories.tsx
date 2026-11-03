@@ -66,7 +66,7 @@ function BrandPanel() {
   );
 }
 
-/** The brand area on the theme's brand color: the text follows the surface. */
+/** The brand area on a colored surface: the text follows it. */
 function BrandSurfacePanel() {
   return (
     <div className="flex flex-1 flex-col justify-end gap-3 p-10">
@@ -164,6 +164,27 @@ export const Login: Story = {
 export const BrandSurface: Story = {
   render: () => (
     <AuthLayout logo={<Logo />} brand={<BrandSurfacePanel />} brandSurface="brand">
+      <AuthCard title="Entrar" description="Acesse sua conta com seu e-mail e senha.">
+        <Form className="flex flex-col gap-4">
+          <TextField name="email" type="email" isRequired className="flex flex-col gap-2">
+            <Label>E-mail</Label>
+            <Input autoComplete="email" />
+          </TextField>
+          <TextField name="password" isRequired className="flex flex-col gap-2">
+            <Label>Senha</Label>
+            <PasswordInput autoComplete="current-password" toggleLabel="Mostrar senha" />
+          </TextField>
+          <AuthSubmit>Entrar</AuthSubmit>
+        </Form>
+      </AuthCard>
+    </AuthLayout>
+  ),
+};
+
+/** The brand area on the theme's primary color, the same as the main buttons. */
+export const PrimarySurface: Story = {
+  render: () => (
+    <AuthLayout logo={<Logo />} brand={<BrandSurfacePanel />} brandSurface="primary">
       <AuthCard title="Entrar" description="Acesse sua conta com seu e-mail e senha.">
         <Form className="flex flex-col gap-4">
           <TextField name="email" type="email" isRequired className="flex flex-col gap-2">
