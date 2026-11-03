@@ -359,5 +359,6 @@
   "Inside a taller row, give it a height and center it: classes in `className` win over the orientation's defaults.": "Numa linha mais alta, dê uma altura e centralize: as classes em `className` vencem os padrões da orientação.",
   "The brand area on the theme's primary color, the same as the main buttons.": "A área de marca na cor primária do tema, a mesma dos botões principais.",
   "A stripe in the tone's color on the card's leading edge. The tone sets `--stat-icon` on the card, so a border class can reuse it.": "Uma faixa na cor do tom na borda inicial do cartão. O tom define `--stat-icon` no cartão, então uma classe de borda pode reaproveitá-la.",
-  "Children can be a function of `{ close }`, to close the dialog when an action finishes instead of right away, like saving.": "Os filhos podem ser uma função de `{ close }`, para fechar o diálogo quando uma ação termina em vez de na hora, como ao salvar."
+  "Children can be a function of `{ close }`, to close the dialog when an action finishes instead of right away, like saving.": "Os filhos podem ser uma função de `{ close }`, para fechar o diálogo quando uma ação termina em vez de na hora, como ao salvar.",
+  "With few sections, the tabs sit beside the title, in `PageHeaderActions`, and drop below it only when they don't fit. `primary` marks them as the area's main navigation.": "Com poucas seções, as abas ficam ao lado do título, em `PageHeaderActions`, e só descem quando não cabem. `primary` as marca como a navegação principal da área."
 }

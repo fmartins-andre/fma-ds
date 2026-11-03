@@ -146,6 +146,34 @@ export const WithNavigation: Story = {
   },
 };
 
+/**
+ * With few sections, the tabs sit beside the title, in `PageHeaderActions`,
+ * and drop below it only when they don't fit. `primary` marks them as the
+ * area's main navigation.
+ */
+export const TabsBesideTheTitle: Story = {
+  decorators: [withRouter("/planos")],
+  render: function TabsBesideTheTitleExample() {
+    const currentPath = useCurrentPath();
+    return (
+      <PageHeader>
+        <PageHeaderContent>
+          <PageHeaderHeading>
+            <PageHeaderTitle>Planos</PageHeaderTitle>
+            <PageHeaderDescription>Seu plano atual e as faturas.</PageHeaderDescription>
+          </PageHeaderHeading>
+          <PageHeaderActions>
+            <TabNav aria-label="Seções de planos" currentHref={currentPath} variant="primary">
+              <TabNavItem href="/planos">Planos</TabNavItem>
+              <TabNavItem href="/planos/faturas">Faturas</TabNavItem>
+            </TabNav>
+          </PageHeaderActions>
+        </PageHeaderContent>
+      </PageHeader>
+    );
+  },
+};
+
 /** While the record loads, the title is a skeleton. */
 export const Loading: Story = {
   render: () => (
