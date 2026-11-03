@@ -2489,7 +2489,23 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/i18n"
+        "@fma-ds/i18n",
+        "@fma-ds/app-sidebar",
+        "@fma-ds/auth",
+        "@fma-ds/collection-field",
+        "@fma-ds/error-pages",
+        "@fma-ds/event-calendar",
+        "@fma-ds/filter-toolbar",
+        "@fma-ds/form-wizard",
+        "@fma-ds/notification-center",
+        "@fma-ds/order-summary",
+        "@fma-ds/page-header",
+        "@fma-ds/panel-card",
+        "@fma-ds/payment-card",
+        "@fma-ds/plan-builder",
+        "@fma-ds/pricing-plans",
+        "@fma-ds/settings-form",
+        "@fma-ds/stat-cards"
       ],
       "dependencies": [],
       "meta": {

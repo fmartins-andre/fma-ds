@@ -86,6 +86,18 @@ describe("detectRegistryDependencies", () => {
       "use-mobile",
     ]);
   });
+
+  it("finds a block another block builds on, by its folder", () => {
+    const source = `
+      import { PageHeaderBreadcrumbs } from "@/blocks/page-header/page-header";
+      import type { AppSidebar } from "@/blocks/app-sidebar/app-sidebar";
+      import { useAppShell } from "./app-shell-context";
+    `;
+    expect(detectRegistryDependencies(source, "app-shell").sort()).toEqual([
+      "app-sidebar",
+      "page-header",
+    ]);
+  });
 });
 
 // Built from the real sources: everything installs under "fma-ds" folders and

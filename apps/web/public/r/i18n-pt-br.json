@@ -6,7 +6,23 @@
   "description": "Every registry item in Brazilian Portuguese, for `FmaI18nProvider`.\n\n- **Use**: `<FmaI18nProvider locale=\"pt-BR\" locales={{ \"pt-BR\": ptBR }}>`, or a loader to fetch it on demand.\n- **Install**: each translation lands next to its item, in `<item>-i18n/<item>-pt-BR.ts`, including items you haven't added: they only hold text, and compile either way.\n- **Update**: install it again after adding items from a newer registry.",
   "dependencies": [],
   "registryDependencies": [
-    "@fma-ds/i18n"
+    "@fma-ds/i18n",
+    "@fma-ds/app-sidebar",
+    "@fma-ds/auth",
+    "@fma-ds/collection-field",
+    "@fma-ds/error-pages",
+    "@fma-ds/event-calendar",
+    "@fma-ds/filter-toolbar",
+    "@fma-ds/form-wizard",
+    "@fma-ds/notification-center",
+    "@fma-ds/order-summary",
+    "@fma-ds/page-header",
+    "@fma-ds/panel-card",
+    "@fma-ds/payment-card",
+    "@fma-ds/plan-builder",
+    "@fma-ds/pricing-plans",
+    "@fma-ds/settings-form",
+    "@fma-ds/stat-cards"
   ],
   "files": [
     {
