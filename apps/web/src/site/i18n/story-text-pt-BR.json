@@ -1457,5 +1457,14 @@
   "The dialog closes once the new name is saved.": "O diálogo fecha quando o novo nome é salvo.",
   "Planos": "Planos",
   "Seu plano atual e as faturas.": "Seu plano atual e as faturas.",
-  "Seções de planos": "Seções de planos"
+  "Seções de planos": "Seções de planos",
+  "Perfil": "Perfil",
+  "Como seu nome e seus horários aparecem.": "Como seu nome e seus horários aparecem.",
+  "Nome de exibição": "Nome de exibição",
+  "Fuso horário": "Fuso horário",
+  "Brasília (GMT-3)": "Brasília (GMT-3)",
+  "Manaus (GMT-4)": "Manaus (GMT-4)",
+  "Fernando de Noronha (GMT-2)": "Fernando de Noronha (GMT-2)",
+  "Resumo semanal": "Resumo semanal",
+  "Um e-mail às segundas com os pedidos da semana.": "Um e-mail às segundas com os pedidos da semana."
 }
