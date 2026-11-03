@@ -285,6 +285,8 @@ type DataGridLayout = {
   rowRounded?: boolean;
   /** Alternating row background. */
   stripped?: boolean;
+  /** The border between pinned columns and the rest. Defaults to true. */
+  pinnedDivider?: boolean;
   headerBackground?: boolean;
   /** Border under the header. Defaults to true. */
   headerBorder?: boolean;
@@ -425,12 +427,26 @@ function DataGrid<TData extends RowData>({
   );
 }
 
-/** Frames the table: border, rounded corners and clipping. */
-function DataGridContainer({ className, ...props }: React.ComponentProps<"div">) {
+/**
+ * Frames the table: border, rounded corners and clipping. `flush` drops the side
+ * borders and the corners, for a grid framed by what's around it (a card body with no
+ * side padding). It keeps the bottom border only when something follows it in the grid
+ * (the pagination), as the line between them.
+ */
+function DataGridContainer({
+  className,
+  flush = false,
+  ...props
+}: React.ComponentProps<"div"> & { flush?: boolean }) {
   return (
     <div
       data-slot="data-grid-container"
-      className={cn("w-full overflow-hidden rounded-lg border", className)}
+      data-flush={flush || undefined}
+      className={cn(
+        "w-full overflow-hidden rounded-lg border",
+        flush && "rounded-none border-x-0 last:border-b-0",
+        className,
+      )}
       {...props}
     />
   );
@@ -531,6 +547,20 @@ const pinnedDivider = "data-[last-col=end]:border-s data-[last-col=start]:border
 
 const surfaceBackground =
   "bg-[color:var(--data-grid-surface,var(--data-grid-card-surface,var(--background)))]";
+
+/**
+ * A pinned body cell is opaque (rows scroll under it), so it can't show the row's
+ * translucent state color: it repaints the row's state over the surface, with the
+ * row's transition, so it changes with the rest of the row.
+ */
+const pinnedRowState = [
+  "transition-colors",
+  "[[data-hovered]>&]:bg-[color-mix(in_oklab,var(--accent)_50%,var(--data-grid-surface,var(--data-grid-card-surface,var(--background))))]",
+  "[[data-row-pinned]>&]:bg-[color-mix(in_oklab,var(--muted)_40%,var(--data-grid-surface,var(--data-grid-card-surface,var(--background))))]",
+  "[[data-selected]>&]:bg-[var(--accent)] [[data-drop-target]>&]:bg-[var(--accent)]",
+];
+const pinnedStripedRow =
+  "[[data-slot=data-grid-table]_tbody>tr:nth-child(odd)>&]:bg-[color-mix(in_oklab,var(--muted)_30%,var(--data-grid-surface,var(--data-grid-card-surface,var(--background))))]";
 
 type DataGridTableProps<TData extends RowData = RowData> = {
   "aria-label"?: string;
@@ -660,6 +690,10 @@ function DataGridTable<TData extends RowData = RowData>({
   const fixed = layout.width === "fixed";
   const overlapsRows = layout.headerSticky || isVirtualized;
   const cellPadding = layout.dense ? "px-2.5 py-1.5" : "px-4 py-2.5";
+  // A body cell's minimum height (a table cell's height works as one) leaves room for a
+  // default Badge beside the text (a small one in dense rows): rows with and without one
+  // stay the same height. Virtualized rows already have a fixed height (`rowHeight`).
+  const bodyCellHeight = isVirtualized ? undefined : layout.dense ? "h-8.5" : "h-10.5";
 
   const onSelectionChange = (keys: Selection) => {
     const pageIds = new Set(rows.map((row) => row.id));
@@ -678,6 +712,8 @@ function DataGridTable<TData extends RowData = RowData>({
   const commitSizing = (widths: Map<Key, number | string>) => {
     const sizing: Record<string, number> = {};
     for (const [id, width] of widths) if (typeof width === "number") sizing[String(id)] = width;
+    for (const [id, width] of frozenWidthsRef.current)
+      if (id !== resizingColumnRef.current) sizing[id] = Math.round(width);
     table.setColumnSizing((old) => ({ ...old, ...sizing }));
   };
   // In "onEnd" mode the column keeps its width until release, so a line at
@@ -687,6 +723,21 @@ function DataGridTable<TData extends RowData = RowData>({
   const indicatorRef = React.useRef<HTMLDivElement>(null);
   // The column whose resizer the user grabbed (pointer or keyboard).
   const resizingColumnRef = React.useRef<string | null>(null);
+  // An `autoSize` column takes the leftover width ("1fr"), so resizing another one would
+  // shrink it to compensate. When a handle is grabbed, it keeps the width it had; from then
+  // on it has a size of its own, can be resized too, and the table grows instead.
+  const frozenWidthsRef = React.useRef(new Map<string, number>());
+  const grabResizer = (columnId: string) => {
+    resizingColumnRef.current = columnId;
+    frozenWidthsRef.current.clear();
+    for (const column of columns) {
+      if (!column.columnDef.meta?.autoSize || column.id in state.columnSizing) continue;
+      const header = containerRef.current?.querySelector<HTMLElement>(
+        `[role=columnheader][data-column-id="${CSS.escape(column.id)}"]`,
+      );
+      if (header) frozenWidthsRef.current.set(column.id, header.getBoundingClientRect().width);
+    }
+  };
   const showResizeIndicator = (widths: Map<Key, number | string>) => {
     const container = containerRef.current;
     const indicator = indicatorRef.current;
@@ -751,7 +802,11 @@ function DataGridTable<TData extends RowData = RowData>({
       >
         {columns.map((column, index) => {
           const header = headers.get(column.id);
-          const width = column.columnDef.meta?.autoSize ? "1fr" : column.getSize();
+          // Once resized, an autoSize column keeps the width it was given.
+          const width =
+            column.columnDef.meta?.autoSize && !(column.id in state.columnSizing)
+              ? "1fr"
+              : column.getSize();
           const ownerId = spannedBy.get(column.id);
           const owner = ownerId ? columnsById.get(ownerId) : undefined;
           const isSpanOwner = spans.has(column.id);
@@ -781,7 +836,7 @@ function DataGridTable<TData extends RowData = RowData>({
                   layout.dense ? "px-2.5" : "px-4",
                   layout.headerBorder && "border-b",
                   layout.cellBorder && !joinsNext && "border-e last:border-e-0",
-                  pinnedDivider,
+                  layout.pinnedDivider !== false && pinnedDivider,
                   index === columns.length - 1 && classNames.edgeCell,
                   layout.headerBackground
                     ? "bg-[color-mix(in_oklab,var(--muted)_40%,var(--data-grid-surface,var(--data-grid-card-surface,var(--background))))]"
@@ -793,15 +848,19 @@ function DataGridTable<TData extends RowData = RowData>({
                 {!joinsNext && layout.columnsResizable && fixed && column.getCanResize() && (
                   <div
                     onPointerDownCapture={() => {
-                      resizingColumnRef.current = column.id;
+                      grabResizer(column.id);
                     }}
                     onKeyDownCapture={() => {
-                      resizingColumnRef.current = column.id;
+                      grabResizer(column.id);
                     }}
                   >
                     <ColumnResizer
                       aria-label={labels.resizeColumn(getColumnHeaderLabel(column))}
-                      className="absolute inset-y-0 -end-px z-10 w-1.5 cursor-col-resize touch-none bg-transparent outline-none data-focus-visible:bg-ring data-hovered:bg-border data-resizing:bg-ring"
+                      className={cn(
+                        "absolute inset-y-0 z-10 w-1.5 cursor-col-resize touch-none bg-transparent outline-none data-focus-visible:bg-ring data-hovered:bg-border data-resizing:bg-ring",
+                        // The last column's handle stays inside the table: past its edge it adds a scrollbar.
+                        index === columns.length - 1 ? "end-0" : "-end-px",
+                      )}
                     />
                   </div>
                 )}
@@ -830,7 +889,7 @@ function DataGridTable<TData extends RowData = RowData>({
                 layout.dense ? "px-2.5" : "px-4",
                 layout.headerBorder && "border-b",
                 layout.cellBorder && !joinsNext && "border-e last:border-e-0",
-                pinnedDivider,
+                layout.pinnedDivider !== false && pinnedDivider,
                 (index === 0 || index === columns.length - 1) && classNames.edgeCell,
                 // Opaque backgrounds on the cells: rows scroll under a sticky or virtualized
                 // header, and the virtualized header row group paints no background.
@@ -849,11 +908,11 @@ function DataGridTable<TData extends RowData = RowData>({
                 )}
                 onPointerDownCapture={(event) => {
                   if ((event.target as Element).closest("[data-resizable-direction]"))
-                    resizingColumnRef.current = column.id;
+                    grabResizer(column.id);
                 }}
                 onKeyDownCapture={(event) => {
                   if ((event.target as Element).closest("[data-resizable-direction]"))
-                    resizingColumnRef.current = column.id;
+                    grabResizer(column.id);
                 }}
               >
                 {/* Pinned columns keep their place: no drag source, no drop target. */}
@@ -873,7 +932,11 @@ function DataGridTable<TData extends RowData = RowData>({
                 {layout.columnsResizable && fixed && column.getCanResize() && !isSpanOwner && (
                   <ColumnResizer
                     aria-label={labels.resizeColumn(getColumnHeaderLabel(column))}
-                    className="absolute inset-y-0 -end-px z-10 w-1.5 cursor-col-resize touch-none bg-transparent outline-none data-focus-visible:bg-ring data-hovered:bg-border data-resizing:bg-ring"
+                    className={cn(
+                      "absolute inset-y-0 z-10 w-1.5 cursor-col-resize touch-none bg-transparent outline-none data-focus-visible:bg-ring data-hovered:bg-border data-resizing:bg-ring",
+                      // The last column's handle stays inside the table: past its edge it adds a scrollbar.
+                      index === columns.length - 1 ? "end-0" : "-end-px",
+                    )}
                   />
                 )}
               </div>
@@ -895,7 +958,11 @@ function DataGridTable<TData extends RowData = RowData>({
                 {columns.map((column) => (
                   <Cell
                     key={column.id}
-                    className={cn(cellPadding, cellClassName(layout, isVirtualized))}
+                    className={cn(
+                      cellPadding,
+                      bodyCellHeight,
+                      cellClassName(layout, isVirtualized),
+                    )}
                   >
                     {column.columnDef.meta?.skeleton ?? <Skeleton className="h-4 w-full" />}
                   </Cell>
@@ -937,9 +1004,14 @@ function DataGridTable<TData extends RowData = RowData>({
                     {...pinningAttributes(cell.column)}
                     className={cn(
                       cellPadding,
+                      bodyCellHeight,
                       cellClassName(layout, isVirtualized),
-                      pinnedDivider,
-                      cell.column.getIsPinned() && surfaceBackground,
+                      layout.pinnedDivider !== false && pinnedDivider,
+                      cell.column.getIsPinned() && [
+                        surfaceBackground,
+                        layout.stripped && pinnedStripedRow,
+                        pinnedRowState,
+                      ],
                       (index === 0 || index === cells.length - 1) && classNames.edgeCell,
                       cell.column.columnDef.meta?.cellClassName,
                     )}
