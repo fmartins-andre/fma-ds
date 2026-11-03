@@ -83,14 +83,14 @@ export function SidebarPreview() {
         </ToggleGroup>
       </div>
       {/*
-        The sidebar is fixed to the viewport (h-svh) in a real app shell; here it's
-        pinned inside this frame instead. transform makes the frame the containing
-        block for anything still fixed.
+        The sidebar is fixed to the viewport (h-svh) in a real app shell; here its
+        className pins it inside this frame instead. transform makes the frame the
+        containing block for anything still fixed.
       */}
-      <div className="relative h-[620px] transform-gpu overflow-hidden rounded-xl border [&_[data-slot=sidebar-container]]:absolute! [&_[data-slot=sidebar-container]]:h-full!">
+      <div className="relative h-[620px] transform-gpu overflow-hidden rounded-xl border">
         <RouterProvider navigate={navigate}>
           <SidebarProvider className="h-full min-h-0">
-            <AppSidebar variant={variant}>
+            <AppSidebar variant={variant} className="absolute h-full">
               <SidebarHeader>
                 <AppSidebarTeamSwitcher activeTeam={team}>
                   {TEAMS.map((item) => (
