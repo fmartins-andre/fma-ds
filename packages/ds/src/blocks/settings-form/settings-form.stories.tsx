@@ -7,6 +7,13 @@ import { Field, FieldContent, FieldDescription } from "@/core/field/field";
 import { Input } from "@/core/input/input";
 import { Label } from "@/core/label/label";
 import { MaskedInput } from "@/core/masked-input/masked-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/core/select/select";
 import { Switch } from "@/core/switch/switch";
 import meta from "./meta.json";
 import {
@@ -184,6 +191,134 @@ export const Default: Story = {
     await expect(canvas.getByRole("status")).toHaveTextContent("Salvando…");
     await waitFor(() => expect(canvas.getByRole("status")).toHaveTextContent("Nenhuma alteração"));
     await expect(canvas.getByRole("switch", { name: "Lembretes de vencimento" })).toBeChecked();
+  },
+};
+
+type Preferences = { displayName: string; timezone: string; weeklySummary: boolean };
+
+const SAVED_PREFERENCES: Preferences = {
+  displayName: "Ana Souza",
+  timezone: "America/Sao_Paulo",
+  weeklySummary: true,
+};
+
+/** Stands in for the app's save request. */
+const savePreferences = (preferences: Preferences) =>
+  new Promise<Preferences>((resolve) => setTimeout(() => resolve(preferences), 800));
+
+/**
+ * Uncontrolled fields, with a `name` and a default value each: without
+ * `isDirty`, the form compares its data with the data it started with, and
+ * Discard puts the defaults back. After saving, a new `key` makes the saved
+ * values the new defaults.
+ */
+export const UncontrolledFields: Story = {
+  render: () => {
+    const [saved, setSaved] = useState(SAVED_PREFERENCES);
+    const [version, setVersion] = useState(0);
+    const [isPending, setIsPending] = useState(false);
+
+    return (
+      <SettingsForm
+        key={version}
+        i18n={PT_BR}
+        isPending={isPending}
+        onSubmit={async (event) => {
+          event.preventDefault();
+          const data = new FormData(event.currentTarget);
+          setIsPending(true);
+          setSaved(
+            await savePreferences({
+              displayName: String(data.get("displayName")),
+              timezone: String(data.get("timezone")),
+              weeklySummary: data.has("weeklySummary"),
+            }),
+          );
+          setIsPending(false);
+          setVersion((current) => current + 1);
+        }}
+        className="max-w-4xl"
+      >
+        <SettingsSection title="Perfil" description="Como seu nome e seus horários aparecem.">
+          <TextField
+            name="displayName"
+            defaultValue={saved.displayName}
+            className="flex flex-col gap-2"
+          >
+            <Label>Nome de exibição</Label>
+            <Input />
+          </TextField>
+          <Select
+            name="timezone"
+            defaultValue={saved.timezone}
+            className="flex w-full flex-col gap-2"
+          >
+            <Label>Fuso horário</Label>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem id="America/Sao_Paulo">Brasília (GMT-3)</SelectItem>
+              <SelectItem id="America/Manaus">Manaus (GMT-4)</SelectItem>
+              <SelectItem id="America/Noronha">Fernando de Noronha (GMT-2)</SelectItem>
+            </SelectContent>
+          </Select>
+          <Field orientation="horizontal" className="col-span-full">
+            <FieldContent>
+              <Label htmlFor="weekly-summary">Resumo semanal</Label>
+              <FieldDescription>Um e-mail às segundas com os pedidos da semana.</FieldDescription>
+            </FieldContent>
+            <Switch
+              id="weekly-summary"
+              name="weeklySummary"
+              defaultSelected={saved.weeklySummary}
+            />
+          </Field>
+        </SettingsSection>
+        <SettingsFormFooter />
+      </SettingsForm>
+    );
+  },
+};
+
+export const ShouldDetectChangesInUncontrolledFields: Story = {
+  ...UncontrolledFields,
+  tags: ["!autodocs"],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const status = () => canvas.getByRole("status");
+    const name = canvas.getByRole("textbox", { name: "Nome de exibição" });
+    const summary = canvas.getByRole("switch", { name: "Resumo semanal" });
+    await expect(status()).toHaveTextContent("Nenhuma alteração");
+    await expect(canvas.getByRole("button", { name: "Descartar" })).toBeDisabled();
+
+    // A change and its undo: the form compares data, it doesn't just flag edits.
+    await userEvent.click(summary);
+    await waitFor(() => expect(status()).toHaveTextContent("Há alterações não salvas"));
+    await userEvent.click(summary);
+    await waitFor(() => expect(status()).toHaveTextContent("Nenhuma alteração"));
+
+    // A picker in a portal counts too.
+    await userEvent.click(canvas.getByRole("button", { name: /Fuso horário/ }));
+    await userEvent.click(await body.findByRole("option", { name: "Manaus (GMT-4)" }));
+    await waitFor(() => expect(status()).toHaveTextContent("Há alterações não salvas"));
+
+    await userEvent.type(name, " Lima");
+    await userEvent.click(canvas.getByRole("button", { name: "Descartar" }));
+    await waitFor(() => expect(status()).toHaveTextContent("Nenhuma alteração"));
+    await expect(name).toHaveValue("Ana Souza");
+    await expect(canvas.getByRole("button", { name: /Fuso horário/ })).toHaveTextContent(
+      "Brasília (GMT-3)",
+    );
+
+    await userEvent.type(name, " Lima");
+    await userEvent.click(canvas.getByRole("button", { name: "Salvar alterações" }));
+    await expect(status()).toHaveTextContent("Salvando…");
+    await waitFor(() => expect(status()).toHaveTextContent("Nenhuma alteração"));
+    await expect(canvas.getByRole("textbox", { name: "Nome de exibição" })).toHaveValue(
+      "Ana Souza Lima",
+    );
   },
 };
 

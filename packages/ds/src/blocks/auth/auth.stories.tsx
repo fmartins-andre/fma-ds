@@ -160,8 +160,13 @@ export const Login: Story = {
   },
 };
 
-/** The brand area on the theme's brand color instead of the muted surface. */
+/**
+ * The brand area on the theme's brand color instead of the muted surface. The
+ * default theme has no brand color of its own (it's the primary), so this
+ * story uses Cobalt, whose brand is green.
+ */
 export const BrandSurface: Story = {
+  globals: { themePreset: "cobalt" },
   render: () => (
     <AuthLayout logo={<Logo />} brand={<BrandSurfacePanel />} brandSurface="brand">
       <AuthCard title="Entrar" description="Acesse sua conta com seu e-mail e senha.">
@@ -181,8 +186,12 @@ export const BrandSurface: Story = {
   ),
 };
 
-/** The brand area on the theme's primary color, the same as the main buttons. */
+/**
+ * The brand area on the theme's primary color, the same as the main buttons:
+ * in Cobalt, blue instead of the green brand.
+ */
 export const PrimarySurface: Story = {
+  globals: { themePreset: "cobalt" },
   render: () => (
     <AuthLayout logo={<Logo />} brand={<BrandSurfacePanel />} brandSurface="primary">
       <AuthCard title="Entrar" description="Acesse sua conta com seu e-mail e senha.">
