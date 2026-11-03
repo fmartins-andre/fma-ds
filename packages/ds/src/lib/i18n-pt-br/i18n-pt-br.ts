@@ -10,7 +10,6 @@ import { orderSummaryPtBR } from "@/blocks/order-summary/order-summary-i18n/orde
 import { pageHeaderPtBR } from "@/blocks/page-header/page-header-i18n/page-header-pt-BR";
 import { panelCardPtBR } from "@/blocks/panel-card/panel-card-i18n/panel-card-pt-BR";
 import { paymentCardPtBR } from "@/blocks/payment-card/payment-card-i18n/payment-card-pt-BR";
-import { planBuilderPtBR } from "@/blocks/plan-builder/plan-builder-i18n/plan-builder-pt-BR";
 import { pricingPlansPtBR } from "@/blocks/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR";
 import { settingsFormPtBR } from "@/blocks/settings-form/settings-form-i18n/settings-form-pt-BR";
 import { statCardsPtBR } from "@/blocks/stat-cards/stat-cards-i18n/stat-cards-pt-BR";
@@ -70,7 +69,6 @@ const ptBR = {
   panelCard: panelCardPtBR,
   passwordInput: passwordInputPtBR,
   paymentCard: paymentCardPtBR,
-  planBuilder: planBuilderPtBR,
   pricingPlans: pricingPlansPtBR,
   questionnaire: questionnairePtBR,
   settingsForm: settingsFormPtBR,

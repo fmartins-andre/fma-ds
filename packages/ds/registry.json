@@ -107,7 +107,7 @@
       "name": "app-shell",
       "type": "registry:block",
       "title": "App Shell",
-      "description": "The frame of an app's pages, composed from parts: the `AppSidebar`, a top bar and the page.\n\n- **`AppShell`**: takes the `AppSidebar` in `sidebar` and the top bar and page as children. It wraps `SidebarProvider` and `SidebarInset`, so it takes their props (`defaultOpen`, `open`, `onOpenChange`).\n- **`AppShellHeader`**: the top bar, sticky: the sidebar trigger, the page's trail and, at the end, its children (glances, notifications).\n- **`useAppShellBreadcrumbs`**: each page sets its trail, from the app's home down to itself; the last item is the current page.\n- **`AppShellMain`**: the page inside the shell's gutter: a `PageHeader` (usually `sticky` and `density=\"compact\"`), then `AppShellContent`.\n- **`AppShellContent`**: the page's content, a column with `gap-4` between its children. Each child sits on a surface (`Card`, `PanelCard`, a settings form, `PlanBuilder`), except the ones that already are one: a `StatGrid` and a `NotificationList`.\n\nThe parts share measures as CSS variables: `--app-shell-header-h` and `--app-shell-gutter`, handed to a sticky `PageHeader` as `--sticky-offset` and `--page-gutter`. `AppShellMain` measures its sticky `PageHeader` (`--page-header-h`) and sets `--sticky-top`, where other sticky parts stop — an `OrderSummary` stays under both bars.\n\nWrap the app in react-aria's `RouterProvider` so the sidebar, trail and tab links route client-side.",
+      "description": "The frame of an app's pages, composed from parts: the `AppSidebar`, a top bar and the page.\n\n- **`AppShell`**: takes the `AppSidebar` in `sidebar` and the top bar and page as children. It wraps `SidebarProvider` and `SidebarInset`, so it takes their props (`defaultOpen`, `open`, `onOpenChange`).\n- **`AppShellHeader`**: the top bar, sticky: the sidebar trigger, the page's trail and, at the end, its children (glances, notifications).\n- **`useAppShellBreadcrumbs`**: each page sets its trail, from the app's home down to itself; the last item is the current page.\n- **`AppShellMain`**: the page inside the shell's gutter: a `PageHeader` (usually `sticky` and `density=\"compact\"`), then `AppShellContent`.\n- **`AppShellContent`**: the page's content, a column with `gap-4` between its children. Each child sits on a surface (`Card`, `PanelCard`, a settings form), except the ones that already are one: a `StatGrid` and a `NotificationList`.\n\nThe parts share measures as CSS variables: `--app-shell-header-h` and `--app-shell-gutter`, handed to a sticky `PageHeader` as `--sticky-offset` and `--page-gutter`. `AppShellMain` measures its sticky `PageHeader` (`--page-header-h`) and sets `--sticky-top`, where other sticky parts stop — an `OrderSummary` stays under both bars.\n\nWrap the app in react-aria's `RouterProvider` so the sidebar, trail and tab links route client-side.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -139,7 +139,7 @@
           "sidebar",
           "navigation"
         ],
-        "contentHash": "1b493d691f15"
+        "contentHash": "9b86b5cfcee5"
       }
     },
     {
@@ -2497,11 +2497,6 @@
           "type": "registry:lib"
         },
         {
-          "path": "src/blocks/plan-builder/plan-builder-i18n/plan-builder-pt-BR.ts",
-          "target": "components/fma-ds/plan-builder/plan-builder-i18n/plan-builder-pt-BR.ts",
-          "type": "registry:lib"
-        },
-        {
           "path": "src/blocks/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR.ts",
           "target": "components/fma-ds/pricing-plans/pricing-plans-i18n/pricing-plans-pt-BR.ts",
           "type": "registry:lib"
@@ -2541,7 +2536,6 @@
         "@fma-ds/page-header",
         "@fma-ds/panel-card",
         "@fma-ds/payment-card",
-        "@fma-ds/plan-builder",
         "@fma-ds/pricing-plans",
         "@fma-ds/settings-form",
         "@fma-ds/stat-cards"
@@ -2556,7 +2550,7 @@
           "locale",
           "pt-BR"
         ],
-        "contentHash": "7add62e31e42"
+        "contentHash": "5fc74680cb7c"
       }
     },
     {
@@ -3337,7 +3331,7 @@
       "name": "order-summary",
       "type": "registry:block",
       "title": "Order Summary",
-      "description": "What the user is about to confirm before buying: lines, an applicable benefit, discounts, the total and the action.\n\n`OrderSummary` takes the `title`, `totalLabel`, `total` and optional `totalDescription` (values formatted by the app) and the `action` button.\n\n- **Large screens**: a card that sticks while the page scrolls — put it in the side column. It sticks `--sticky-top` from the top (1rem by default): an app with a fixed header sets it to the header's height.\n- **Smaller screens**: a bar fixed to the bottom with the total and the action; the total opens the lines in a bottom sheet. Leave room under the page, e.g. `pb-28 lg:pb-0`.\n\nIts children sit in a `description-list`:\n\n- **`OrderSummaryLine`**: `label`, `value` and a `description` under the label — an item, a fee, who the order is for. `tone=\"discount\"` for a negative value.\n- **`OrderSummaryOption`**: a benefit behind a `Switch`, such as the account balance, its amount struck through while off.\n\nThe total stands apart by size and weight, not only color.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
+      "description": "What the user is about to confirm before buying: lines, an applicable benefit, discounts, the total and the action.\n\n`OrderSummary` takes the `title`, `totalLabel`, `total` and optional `totalDescription` (values formatted by the app) and the `action` button.\n\n- **Large screens**: a card that sticks while the page scrolls — put it in the side column. It sticks `--sticky-top` from the top (1rem by default): an app with a fixed header sets it to the header's height.\n- **Smaller screens**: a bar fixed to the bottom with the total and the action; the total opens the lines in a bottom sheet. It reserves the bar's height where it sits, so keep it last in the page on small screens.\n\nIts children sit in a `description-list`:\n\n- **`OrderSummaryLine`**: `label`, `value` and a `description` under the label — an item, a fee, who the order is for. `tone=\"discount\"` for a negative value.\n- **`OrderSummaryOption`**: a benefit behind a `Switch`, such as the account balance, its amount struck through while off.\n\nThe total stands apart by size and weight, not only color.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -3373,7 +3367,7 @@
           "order",
           "total"
         ],
-        "contentHash": "9daa181410d1"
+        "contentHash": "5d422e472813"
       }
     },
     {
@@ -3612,49 +3606,6 @@
       }
     },
     {
-      "name": "plan-builder",
-      "type": "registry:block",
-      "title": "Plan Builder",
-      "description": "Build what the user is about to buy by choosing quantities, with the price in real time: a custom plan with several resources, or a quantity of one item (extra notes, credits).\n\n- **`PlanBuilder`**: lays out the resources and its `summary` (an `OrderSummary`: a sticky card on large screens, a bar fixed to the bottom on smaller ones). `isCalculating` turns every `PlanPrice` (a price formatted by the app) into a skeleton while the app recalculates.\n- **`PlanResource`**: a card with `icon`, `title`, `description` and a controlled `Slider` named by `label` (`value`/`onChange`, `minValue`/`maxValue`/`step`, `marks`, `formatValue`, `limit` for stock or quota left, `isDisabled`). A `hint` under the slider says why it stops or is disabled, and an optional `included` accordion lists what comes with it.\n- **`PlanResourceAddon`**: an add-on as a child of the resource — a switch with label and description.\n\nThe price, debouncing, limits and notices stay in the app.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
-      "author": "@fma-ds/ds",
-      "categories": [
-        "blocks"
-      ],
-      "files": [
-        {
-          "path": "src/blocks/plan-builder/plan-builder.tsx",
-          "target": "components/fma-ds/plan-builder/plan-builder.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "registryDependencies": [
-        "@fma-ds/accordion",
-        "@fma-ds/card",
-        "@fma-ds/icon-tile",
-        "@fma-ds/skeleton",
-        "@fma-ds/slider",
-        "@fma-ds/switch",
-        "@fma-ds/i18n"
-      ],
-      "dependencies": [
-        "cn@^0.5.0"
-      ],
-      "meta": {
-        "status": "experimental",
-        "source": "original",
-        "license": "MIT",
-        "tags": [
-          "block",
-          "checkout",
-          "plan",
-          "pricing",
-          "slider",
-          "quantity"
-        ],
-        "contentHash": "b8da04259744"
-      }
-    },
-    {
       "name": "popover",
       "type": "registry:ui",
       "title": "Popover",
@@ -3690,7 +3641,7 @@
       "name": "pricing-plans",
       "type": "registry:block",
       "title": "Pricing Plans",
-      "description": "Choose one of a few fixed plans, then confirm. For a plan built from quantities and add-ons, use `plan-builder`.\n\n- **`PricingPlans`**: lays out the options and an optional `summary` (an `OrderSummary` with the chosen plan and a \"Continue\" action: a sticky card on large screens, a bar fixed to the bottom on smaller ones).\n- **`PricingPeriod`**: the billing period as a segmented toggle that always has one selected (`value`/`onChange`; `PricingPeriodOption` with an `id`, and a `Badge` inside for the saving).\n- **`PricingPlanGroup`**: a radio group of `PricingPlan` cards, stacked in one list on small screens and side by side in equal columns once its own width fits them.\n- **`PricingPlan`**: `name`, `badge` (\"Most popular\"), `description`, `price` and `period` formatted by the app, `priceNote` (the equivalent, \"R$ 718,80 per year\") and `isFeatured` for a brand glow and a `brand` badge (the border is left to the selected plan). The radio is named by the plan and described by its price.\n- **`PricingPlanFeature`**: what the plan has; `isIncluded={false}` shows a dash, muted text and \"Not included\" read before it.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
+      "description": "Choose one of a few fixed plans, then confirm.\n\n- **`PricingPlans`**: lays out the options and an optional `summary` (an `OrderSummary` with the chosen plan and a \"Continue\" action: a sticky card on large screens, a bar fixed to the bottom on smaller ones).\n- **`PricingPeriod`**: the billing period as a segmented toggle that always has one selected (`value`/`onChange`; `PricingPeriodOption` with an `id`, and a `Badge` inside for the saving).\n- **`PricingPlanGroup`**: a radio group of `PricingPlan` cards, stacked in one list on small screens and side by side in equal columns once its own width fits them.\n- **`PricingPlan`**: `name`, `badge` (\"Most popular\"), `description`, `price` and `period` formatted by the app, `priceNote` (the equivalent, \"R$ 718,80 per year\") and `isFeatured` for a brand glow and a `brand` badge (the border is left to the selected plan). The radio is named by the plan and described by its price.\n- **`PricingPlanFeature`**: what the plan has; `isIncluded={false}` shows a dash, muted text and \"Not included\" read before it.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -4119,7 +4070,7 @@
       "name": "slider",
       "type": "registry:ui",
       "title": "Slider",
-      "description": "A draggable single- or range-value slider, horizontal or vertical. Pass an array default/value to get one thumb per value.\n\n- **`label`**: names it above the track.\n- **`showValue`**: prints the value (or range) beside it, formatted by `formatValue` (\"200 orders\") or `formatOptions` (currency, percent — also what screen readers announce).\n- **`marks`**: labelled stops under the track (`number` or `{ value, label }`). Clicking one moves the nearest thumb there and fires `onChangeEnd`, while the keyboard keeps using the thumb.\n- **`limit`**: caps the value below `maxValue` (stock left, plan quota). The scale and marks still run to `maxValue`, the track above the limit is drawn as unavailable and its marks are disabled.\n- **`description`**: under the track, says why, and is read with the value.",
+      "description": "A draggable single- or range-value slider, horizontal or vertical, built from parts. Pass an array default/value to get one thumb per value.\n\n- **`Slider`**: holds the value and `limit`, a cap below `maxValue` (stock left, plan quota): the scale and marks still run to `maxValue`, the track above the limit is drawn as unavailable and its marks are disabled. Without children it draws just the track and thumb (name it with `aria-label`).\n- **`SliderLabel`** names it (a `FieldLabel` works too); **`SliderValue`** prints the value (or range), formatted by its `children` (\"200 orders\") or by `formatOptions` (currency, percent — also what screen readers announce).\n- **`SliderControl`** lays out **`SliderTrack`** (with **`SliderFill`**, the selected part) and **`SliderThumb`**, which draws one thumb per value and takes `children` (an icon, a logo).\n- **`SliderMarks`**: labelled stops under the track (`number` or `{ value, label }`). Clicking one moves the nearest thumb there and fires `onChangeEnd`, while the keyboard keeps using the thumb.\n- **`SliderDescription`**: under the track, says why, and is read with the value.\n\nEvery part takes a `className`, for a branded look (a gradient fill, a bigger thumb).",
       "author": "@fma-ds/ds",
       "categories": [
         "forms"
@@ -4148,7 +4099,7 @@
           "input",
           "react-aria"
         ],
-        "contentHash": "e5f1a8943d35"
+        "contentHash": "6f26de56ae09"
       }
     },
     {

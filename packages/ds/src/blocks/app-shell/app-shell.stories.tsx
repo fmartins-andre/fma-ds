@@ -40,7 +40,6 @@ import {
   PageHeaderNav,
   PageHeaderTitle,
 } from "@/blocks/page-header/page-header";
-import { PlanBuilder, PlanPrice, PlanResource } from "@/blocks/plan-builder/plan-builder";
 import {
   SettingsForm,
   SettingsFormFooter,
@@ -76,6 +75,7 @@ import {
   dataGridFeatures,
 } from "@/core/data-grid/data-grid";
 import { DropdownMenuItem } from "@/core/dropdown-menu/dropdown-menu";
+import { IconTile } from "@/core/icon-tile/icon-tile";
 import { Input } from "@/core/input/input";
 import { Label } from "@/core/label/label";
 import { MaskedInput } from "@/core/masked-input/masked-input";
@@ -87,6 +87,16 @@ import {
   SelectValue,
 } from "@/core/select/select";
 import { SidebarContent, SidebarFooter, SidebarHeader } from "@/core/sidebar/sidebar";
+import {
+  Slider,
+  SliderControl,
+  SliderFill,
+  SliderLabel,
+  SliderMarks,
+  SliderThumb,
+  SliderTrack,
+  SliderValue,
+} from "@/core/slider/slider";
 import { TabNav, TabNavItem } from "@/core/tab-nav/tab-nav";
 import { ToggleGroupItem } from "@/core/toggle-group/toggle-group";
 import {
@@ -729,12 +739,43 @@ function BuyInvoicesPage() {
         </PageHeaderContent>
       </PageHeader>
       <AppShellContent>
-        <PlanBuilder
-          summary={
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+          <Card>
+            <CardHeader className="flex items-start gap-3">
+              <IconTile variant="soft" className="shrink-0 text-primary">
+                <FileTextIcon />
+              </IconTile>
+              <div className="flex min-w-0 flex-col gap-1">
+                <CardTitle>Notas fiscais</CardTitle>
+                <CardDescription>
+                  Notas extras para este ciclo, além das do seu plano.
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Slider minValue={0} maxValue={500} step={50} value={quantity} onChange={setQuantity}>
+                <div className="flex items-center gap-3">
+                  <SliderLabel>Quantidade</SliderLabel>
+                  <SliderValue className="text-base font-semibold text-foreground">
+                    {(value) => `${value} notas`}
+                  </SliderValue>
+                </div>
+                <SliderControl>
+                  <SliderTrack>
+                    <SliderFill />
+                  </SliderTrack>
+                  <SliderThumb />
+                </SliderControl>
+                <SliderMarks marks={[0, 100, 200, 300, 400, 500]} />
+              </Slider>
+            </CardContent>
+          </Card>
+          {/* Spans the row, so the summary has room to stick while the page scrolls. */}
+          <div className="lg:self-stretch">
             <OrderSummary
               title="Resumo da compra"
               totalLabel="Total"
-              total={<PlanPrice>{brl(subtotal - discount)}</PlanPrice>}
+              total={brl(subtotal - discount)}
               action={
                 <Button size="lg" isDisabled={quantity === 0}>
                   Comprar
@@ -744,7 +785,7 @@ function BuyInvoicesPage() {
               <OrderSummaryLine
                 label="Notas adicionais"
                 description={`${quantity} × ${brl(UNIT_PRICE)}`}
-                value={<PlanPrice>{brl(subtotal)}</PlanPrice>}
+                value={brl(subtotal)}
               />
               <OrderSummaryOption
                 label="Usar saldo de cashback"
@@ -754,22 +795,8 @@ function BuyInvoicesPage() {
                 onChange={setUseCashback}
               />
             </OrderSummary>
-          }
-        >
-          <PlanResource
-            icon={<FileTextIcon />}
-            title="Notas fiscais"
-            description="Notas extras para este ciclo, além das do seu plano."
-            label="Quantidade"
-            formatValue={(value) => `${value} notas`}
-            minValue={0}
-            maxValue={500}
-            step={50}
-            marks={[0, 100, 200, 300, 400, 500]}
-            value={quantity}
-            onChange={setQuantity}
-          />
-        </PlanBuilder>
+          </div>
+        </div>
       </AppShellContent>
     </AppShellMain>
   );

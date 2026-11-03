@@ -184,8 +184,8 @@ function AppShellMain({ className, ref, ...props }: React.ComponentProps<"div">)
 
 /**
  * The page's content, below its header: a column with the same spacing between its
- * children. Each child sits on a surface — a `Card`, `PanelCard`, a settings form or a
- * `PlanBuilder` — except the ones that are already surfaces themselves: a `StatGrid`
+ * children. Each child sits on a surface — a `Card`, `PanelCard` or a settings form —
+ * except the ones that are already surfaces themselves: a `StatGrid`
  * and a `NotificationList`.
  */
 function AppShellContent({ className, ...props }: React.ComponentProps<"div">) {
