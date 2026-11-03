@@ -5,6 +5,8 @@ import {
   ColorPicker,
   ColorPickerContent,
   ColorPickerInput,
+  ColorPickerInputField,
+  ColorPickerInputSwatch,
 } from "@/core/color-picker/color-picker";
 import { Input } from "@/core/input/input";
 import { Label } from "@/core/label/label";
@@ -77,11 +79,12 @@ export function ColorField({
         contrastWith={contrastWith}
       >
         <ColorPickerInput
-          id={id}
           // Also takes shadcn v3's bare "222 47% 11%" triplets.
           parseValue={(text) => (isColor(text) ? toOklch(text) : undefined)}
-          className="[&_[data-slot=input-group-control]]:text-xs"
-        />
+        >
+          <ColorPickerInputSwatch />
+          <ColorPickerInputField id={id} className="text-xs" />
+        </ColorPickerInput>
         <ColorPickerContent />
       </ColorPicker>
     </div>

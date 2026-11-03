@@ -32,16 +32,11 @@ import {
 } from "react";
 import {
   Dialog,
-  Label,
   ListBox,
   ListBoxItem,
   NumberField,
   Button as RACButton,
   type ButtonProps as RACButtonProps,
-  Slider,
-  SliderOutput,
-  SliderThumb,
-  SliderTrack,
 } from "react-aria-components";
 import { Button, buttonVariants } from "@/core/button/button";
 import { CopyButton } from "@/core/copy-button/copy-button";
@@ -55,6 +50,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/core/select/select";
+import { Slider, SliderControl, SliderLabel, SliderThumb, SliderTrack } from "@/core/slider/slider";
 import {
   CONTRAST_AA,
   CONTRAST_AAA,
@@ -869,70 +865,136 @@ type ColorPickerSliderProps = {
    */
   colorSpace?: ColorSpace;
   orientation?: "horizontal" | "vertical";
-  /** Shows the channel's name and value above a horizontal track. */
-  showLabel?: boolean;
   "aria-label"?: string;
   className?: string;
+  /**
+   * The parts, to compose the channel (`ColorPickerSliderLabel`, `SliderValue`,
+   * `ColorPickerSliderTrack`). Without it, just the track.
+   */
+  children?: ReactNode;
 };
 
+type ColorPickerSliderContextValue = {
+  label: string;
+  setHasLabel: (has: boolean) => void;
+  background: string;
+  thumb: string;
+  vertical: boolean;
+  percent: (value: number) => string;
+  contrast: ReturnType<typeof useTrackContrast>;
+};
+
+const ColorPickerSliderContext = createContext<ColorPickerSliderContextValue | null>(null);
+
+function useColorPickerSlider(part: string) {
+  const context = useContext(ColorPickerSliderContext);
+  if (!context) throw new Error(`${part} must be used within ColorPickerSlider`);
+  return context;
+}
+
 /**
- * One channel's track, painted with the colors it reaches from the current
- * one. With `contrastWith`, the part that fails AA is hatched and the AA/AAA
- * thresholds are marked.
+ * One channel of the color, on a `Slider`. Alone it draws the channel's track;
+ * compose it with `ColorPickerSliderLabel`, `SliderValue` and
+ * `ColorPickerSliderTrack` to show the name and value.
  */
 function ColorPickerSlider({
   channel,
   colorSpace = "oklch",
   orientation = "horizontal",
-  showLabel = false,
   "aria-label": ariaLabel,
   className,
+  children,
 }: ColorPickerSliderProps) {
   const picker = usePicker("ColorPickerSlider");
+  const [hasLabel, setHasLabel] = useState(false);
   const { key, spaces } = CHANNELS[channel];
-  const label = picker.labels[channel];
+  const label = ariaLabel ?? picker.labels[channel];
   const space = spaces.includes(colorSpace) ? colorSpace : (spaces[0] ?? "oklch");
   const { min, max, step, scale, format } = channelScale(key, space);
   const channels = channelsIn(picker.state, space);
   const value = key ? (channels[key] ?? 0) * scale : picker.state.alpha;
   const contrast = useTrackContrast(picker.state, space, key, picker.contrastWith);
   const vertical = orientation === "vertical";
-  const percent = (v: number) => `${((v * scale - min) / (max - min)) * 100}%`;
 
   const set = (next: number) => picker.update(withChannel(picker.state, space, key, next / scale));
 
   return (
-    <Slider
-      data-slot="color-picker-slider"
-      data-channel={channel}
-      orientation={orientation}
-      isDisabled={picker.isDisabled}
-      className={cn(
-        "flex gap-1.5 data-disabled:opacity-50",
-        vertical ? "h-40 flex-col items-center" : "flex-col",
-        className,
-      )}
-      minValue={min}
-      maxValue={max}
-      step={step}
-      formatOptions={format}
-      value={value}
-      onChange={set}
-      onChangeEnd={picker.end}
-      aria-label={showLabel ? undefined : (ariaLabel ?? label)}
+    <ColorPickerSliderContext.Provider
+      value={{
+        label,
+        setHasLabel,
+        background: trackBackground(picker.state, space, key, vertical),
+        thumb: swatchBackground(picker.value),
+        vertical,
+        percent: (v) => `${((v * scale - min) / (max - min)) * 100}%`,
+        contrast,
+      }}
     >
-      {showLabel && !vertical && (
-        <div className="flex items-center justify-between text-xs">
-          <Label className="text-muted-foreground">{ariaLabel ?? label}</Label>
-          <SliderOutput className="font-mono tabular-nums" />
-        </div>
-      )}
+      <Slider
+        data-slot="color-picker-slider"
+        data-channel={channel}
+        orientation={orientation}
+        isDisabled={picker.isDisabled}
+        className={cn("gap-1.5 data-vertical:h-40 data-vertical:min-h-0", className)}
+        minValue={min}
+        maxValue={max}
+        step={step}
+        formatOptions={format}
+        value={value}
+        onChange={set}
+        onChangeEnd={picker.end}
+        aria-label={hasLabel ? undefined : label}
+      >
+        {children ?? <ColorPickerSliderTrack />}
+      </Slider>
+    </ColorPickerSliderContext.Provider>
+  );
+}
+
+/** Names the channel; without `children`, with its translated name. */
+function ColorPickerSliderLabel({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof SliderLabel>) {
+  const { label, setHasLabel } = useColorPickerSlider("ColorPickerSliderLabel");
+  useEffect(() => {
+    setHasLabel(true);
+    return () => setHasLabel(false);
+  }, [setHasLabel]);
+  return (
+    <SliderLabel
+      data-slot="color-picker-slider-label"
+      className={cn("text-xs text-muted-foreground", className)}
+      {...props}
+    >
+      {children ?? label}
+    </SliderLabel>
+  );
+}
+
+/**
+ * The channel's track, painted with the colors it reaches from the current
+ * one, and the thumb in the current color. With `contrastWith`, the part that
+ * fails AA is hatched and the AA/AAA thresholds are marked.
+ */
+function ColorPickerSliderTrack({
+  className,
+  thumbClassName,
+}: {
+  className?: string;
+  thumbClassName?: string;
+}) {
+  const { background, thumb, vertical, percent, contrast } =
+    useColorPickerSlider("ColorPickerSliderTrack");
+  return (
+    <SliderControl>
       <SliderTrack
         className={cn(
-          "relative rounded-md ring-1 ring-foreground/10 ring-inset",
-          vertical ? "w-4 flex-1" : "h-4 w-full",
+          "rounded-md bg-transparent ring-1 ring-foreground/10 ring-inset data-horizontal:h-4 data-vertical:w-4",
+          className,
         )}
-        style={{ background: trackBackground(picker.state, space, key, vertical) }}
+        style={{ background }}
       >
         {contrast?.failing.map(([from, to]) => (
           <span
@@ -962,15 +1024,15 @@ function ColorPickerSlider({
             style={vertical ? { bottom: percent(mark) } : { left: percent(mark) }}
           />
         ))}
-        <SliderThumb
-          className={cn(
-            "size-4 rounded-full border-2 border-white shadow-[0_0_0_1px_rgb(0_0_0/0.4),0_1px_2px_rgb(0_0_0/0.3)] outline-none data-focus-visible:ring-3 data-focus-visible:ring-ring/50",
-            vertical ? "left-1/2" : "top-1/2",
-          )}
-          style={{ background: swatchBackground(picker.value) }}
-        />
       </SliderTrack>
-    </Slider>
+      <SliderThumb
+        className={cn(
+          "size-4 border-2 border-white shadow-[0_0_0_1px_rgb(0_0_0/0.4),0_1px_2px_rgb(0_0_0/0.3)] ring-0 hover:ring-0 active:ring-0 data-focus-visible:ring-3",
+          thumbClassName,
+        )}
+        style={{ background: thumb }}
+      />
+    </SliderControl>
   );
 }
 
@@ -1783,29 +1845,42 @@ function ColorPickerSwatch({ color, className, style, ...props }: ColorPickerSwa
 /*                              Input and actions                             */
 /* -------------------------------------------------------------------------- */
 
-type ColorPickerInputProps = Omit<
+type ColorPickerInputFieldProps = Omit<
   ComponentProps<typeof InputGroupInput>,
   "value" | "defaultValue" | "onChange"
-> & {
+>;
+
+type ColorPickerInputProps = ColorPickerInputFieldProps & {
   /**
    * Reads what was typed as a CSS color, for syntaxes culori doesn't parse
    * (e.g. bare "222 47% 11%" triplets). Return undefined to reject it.
    */
   parseValue?: (text: string) => string | undefined;
+  /**
+   * The parts (`ColorPickerInputSwatch`, `ColorPickerInputField`), to style or
+   * reorder them. Without it, the swatch and the field; the other props go to
+   * that field.
+   */
+  children?: ReactNode;
 };
+
+type ColorPickerInputContextValue = {
+  draft: string;
+  setDraft: (draft: string) => void;
+  valid: boolean;
+  commit: () => void;
+};
+
+const ColorPickerInputContext = createContext<ColorPickerInputContextValue | null>(null);
 
 /**
  * A text field taking any CSS color (hex, rgb(), hsl(), oklch(), names…),
  * committed on Enter or blur; Escape reverts what was typed. A swatch at its
- * start opens ColorPickerContent, placed against the field.
+ * start opens ColorPickerContent, placed against the field. `className` sizes
+ * the field; compose `ColorPickerInputSwatch` and `ColorPickerInputField` to
+ * style the parts.
  */
-function ColorPickerInput({
-  className,
-  parseValue,
-  onBlur,
-  onKeyDown,
-  ...props
-}: ColorPickerInputProps) {
+function ColorPickerInput({ className, parseValue, children, ...props }: ColorPickerInputProps) {
   const picker = usePicker("ColorPickerInput");
   const [draft, setDraft] = useState(picker.value);
   useEffect(() => setDraft(picker.value), [picker.value]);
@@ -1813,7 +1888,6 @@ function ColorPickerInput({
     const css = parseValue ? parseValue(text) : text;
     return css === undefined ? undefined : parseState(css, picker.state);
   };
-  const valid = read(draft) !== undefined;
   const commit = () => {
     const next = read(draft);
     if (next && formatState(next, picker.format) !== picker.value) picker.update(next, true);
@@ -1821,36 +1895,80 @@ function ColorPickerInput({
   };
 
   return (
-    <div ref={picker.anchorRef} data-slot="color-picker-input" className={cn("w-full", className)}>
-      <InputGroup isDisabled={picker.isDisabled}>
-        <InputGroupAddon align="inline-start">
-          <ColorPickerTrigger className="relative size-5 rounded-sm after:absolute after:-inset-0.5" />
-        </InputGroupAddon>
-        <InputGroupInput
-          value={draft}
-          spellCheck={false}
-          autoComplete="off"
-          disabled={picker.isDisabled}
-          aria-invalid={!valid || picker.isInvalid || undefined}
-          onChange={(event) => setDraft(event.target.value)}
-          onBlur={(event) => {
-            onBlur?.(event);
-            commit();
-          }}
-          onKeyDown={(event) => {
-            onKeyDown?.(event);
-            if (event.key === "Enter") {
-              // A changed draft is committed first; the next Enter submits the form.
-              if (draft !== picker.value) event.preventDefault();
-              commit();
-            }
-            if (event.key === "Escape") setDraft(picker.value);
-          }}
-          className="font-mono"
-          {...props}
-        />
-      </InputGroup>
-    </div>
+    <ColorPickerInputContext.Provider
+      value={{ draft, setDraft, valid: read(draft) !== undefined, commit }}
+    >
+      <div
+        ref={picker.anchorRef}
+        data-slot="color-picker-input"
+        className={cn("w-full", className)}
+      >
+        <InputGroup isDisabled={picker.isDisabled}>
+          {children ?? (
+            <>
+              <ColorPickerInputSwatch />
+              <ColorPickerInputField {...props} />
+            </>
+          )}
+        </InputGroup>
+      </div>
+    </ColorPickerInputContext.Provider>
+  );
+}
+
+/** The swatch at the field's start; opens ColorPickerContent. */
+function ColorPickerInputSwatch({
+  className,
+  align = "inline-start",
+}: {
+  className?: string;
+  align?: "inline-start" | "inline-end";
+}) {
+  return (
+    <InputGroupAddon align={align}>
+      <ColorPickerTrigger
+        className={cn("relative size-5 rounded-sm after:absolute after:-inset-0.5", className)}
+      />
+    </InputGroupAddon>
+  );
+}
+
+/** The text input itself; takes the `<input>` props. */
+function ColorPickerInputField({
+  className,
+  onBlur,
+  onKeyDown,
+  ...props
+}: ColorPickerInputFieldProps) {
+  const picker = usePicker("ColorPickerInputField");
+  const input = useContext(ColorPickerInputContext);
+  if (!input) throw new Error("ColorPickerInputField must be used within ColorPickerInput");
+  const { draft, setDraft, valid, commit } = input;
+
+  return (
+    <InputGroupInput
+      value={draft}
+      spellCheck={false}
+      autoComplete="off"
+      disabled={picker.isDisabled}
+      aria-invalid={!valid || picker.isInvalid || undefined}
+      onChange={(event) => setDraft(event.target.value)}
+      onBlur={(event) => {
+        onBlur?.(event);
+        commit();
+      }}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.key === "Enter") {
+          // A changed draft is committed first; the next Enter submits the form.
+          if (draft !== picker.value) event.preventDefault();
+          commit();
+        }
+        if (event.key === "Escape") setDraft(picker.value);
+      }}
+      className={cn("font-mono", className)}
+      {...props}
+    />
   );
 }
 
@@ -2059,6 +2177,7 @@ export type {
   ColorPickerCopyProps,
   ColorPickerFieldsProps,
   ColorPickerFormat,
+  ColorPickerInputFieldProps,
   ColorPickerInputProps,
   ColorPickerLabels,
   ColorPickerPanelProps,
@@ -2080,9 +2199,13 @@ export {
   ColorPickerFields,
   ColorPickerFixContrast,
   ColorPickerInput,
+  ColorPickerInputField,
+  ColorPickerInputSwatch,
   ColorPickerPanel,
   ColorPickerPreview,
   ColorPickerSlider,
+  ColorPickerSliderLabel,
+  ColorPickerSliderTrack,
   ColorPickerSwatch,
   ColorPickerSwatches,
   ColorPickerTrigger,

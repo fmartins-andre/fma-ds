@@ -216,11 +216,20 @@ function SliderControl({ className, children, ...props }: React.ComponentProps<"
 }
 
 /** The rail; draws the part above a `limit` as unavailable. Holds the `SliderFill`. */
-function SliderTrack({ className, children }: { className?: string; children?: React.ReactNode }) {
+function SliderTrack({
+  className,
+  style,
+  children,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
+}) {
   const { state, limitPercent } = useSlider();
   return (
     <SliderTrackPrimitive
       data-slot="slider-track"
+      style={style}
       className={cn(
         "relative grow overflow-hidden rounded-full bg-muted select-none data-horizontal:h-1 data-horizontal:w-full data-vertical:h-full data-vertical:w-1",
         className,
@@ -258,10 +267,13 @@ function SliderFill({ className }: { className?: string }) {
  */
 function SliderThumb({
   className,
+  style,
   index,
   children,
 }: {
   className?: string;
+  /** Painted on each thumb (a background with the current color, say). */
+  style?: React.CSSProperties;
   index?: number;
   children?: React.ReactNode | ((index: number) => React.ReactNode);
 }) {
@@ -272,6 +284,7 @@ function SliderThumb({
       data-slot="slider-thumb"
       key={i}
       index={i}
+      style={style}
       className={cn(
         "relative flex size-3 shrink-0 items-center justify-center rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none group-data-horizontal:top-[50%] group-data-vertical:left-[50%] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 disabled:pointer-events-none disabled:opacity-50",
         className,
