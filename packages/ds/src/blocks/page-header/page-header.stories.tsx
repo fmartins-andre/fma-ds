@@ -164,3 +164,42 @@ export const Loading: Story = {
     await expect(canvas.getByRole("heading", { level: 1 })).toHaveAttribute("aria-busy", "true");
   },
 };
+
+/** The actions sit beside the heading while they fit, and drop below only when they don't. */
+export const ShouldWrapActionsOnlyWhenOutOfRoom: Story = {
+  tags: ["!autodocs"],
+  render: () => (
+    <div className="flex flex-col gap-8">
+      {[640, 320].map((width) => (
+        <div key={width} data-testid={`header-${width}`} style={{ width }}>
+          <PageHeader>
+            <PageHeaderContent>
+              <PageHeaderHeading>
+                <PageHeaderTitle>Meus clientes</PageHeaderTitle>
+              </PageHeaderHeading>
+              <PageHeaderActions>
+                <Button>
+                  <UserPlusIcon />
+                  Cadastrar cliente
+                </Button>
+              </PageHeaderActions>
+            </PageHeaderContent>
+          </PageHeader>
+        </div>
+      ))}
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const parts = (width: number) => {
+      const root = canvasElement.querySelector(`[data-testid=header-${width}]`);
+      const heading = root?.querySelector("[data-slot=page-header-heading]");
+      const actions = root?.querySelector("[data-slot=page-header-actions]");
+      if (!heading || !actions) throw new Error("missing heading or actions");
+      return { heading: heading.getBoundingClientRect(), actions: actions.getBoundingClientRect() };
+    };
+    const wide = parts(640);
+    await expect(wide.actions.top).toBeLessThan(wide.heading.bottom);
+    const narrow = parts(320);
+    await expect(narrow.actions.top).toBeGreaterThanOrEqual(narrow.heading.bottom);
+  },
+};

@@ -102,3 +102,39 @@ export const Compact: Story = {
     </Card>
   ),
 };
+
+/**
+ * `bleed` drops the content's side padding, so a list or a table spans the card's edges;
+ * `bleed="end"` also closes the card with it, without the card's bottom padding.
+ */
+export const Bleed: Story = {
+  render: (args) => (
+    <Card {...args} className="w-80">
+      <CardHeader>
+        <CardTitle>Recent invoices</CardTitle>
+      </CardHeader>
+      <CardContent bleed="end">
+        <ul className="divide-y border-t">
+          <li className="flex justify-between px-4 py-2">
+            <span>October</span>
+            <span className="tabular-nums">$249.90</span>
+          </li>
+          <li className="flex justify-between px-4 py-2">
+            <span>September</span>
+            <span className="tabular-nums">$249.90</span>
+          </li>
+        </ul>
+      </CardContent>
+    </Card>
+  ),
+  play: async ({ canvasElement }) => {
+    const card = canvasElement.querySelector<HTMLElement>("[data-slot=card]");
+    const list = canvasElement.querySelector<HTMLElement>("ul");
+    if (!card || !list) throw new Error();
+    const cardBox = card.getBoundingClientRect();
+    const listBox = list.getBoundingClientRect();
+    await expect(Math.round(listBox.left)).toBe(Math.round(cardBox.left));
+    await expect(Math.round(listBox.right)).toBe(Math.round(cardBox.right));
+    await expect(Math.round(listBox.bottom)).toBe(Math.round(cardBox.bottom));
+  },
+};

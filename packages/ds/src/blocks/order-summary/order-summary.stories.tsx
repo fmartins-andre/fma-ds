@@ -22,6 +22,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/core/alert/alert";
 import { Button, LinkButton } from "@/core/button/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/core/card/card";
 import { CopyButton } from "@/core/copy-button/copy-button";
+import { DescriptionList } from "@/core/description-list/description-list";
 import { FieldContent, FieldDescription, FieldTitle } from "@/core/field/field";
 import { IconTile } from "@/core/icon-tile/icon-tile";
 import { Label } from "@/core/label/label";
@@ -499,5 +500,29 @@ export const Checkout: Story = {
     if (pay) await userEvent.click(pay);
     await canvas.findByText("Pagamento aprovado");
     await expect(canvas.queryByRole("radio", { name: /Pix/ })).not.toBeInTheDocument();
+  },
+};
+
+/** In a narrow column, values stay on one line ("− R$ 159,90" used to break). */
+export const ShouldKeepValuesOnOneLine: Story = {
+  tags: ["!autodocs"],
+  render: () => (
+    <DescriptionList className="w-56">
+      <OrderSummaryLine label="Certificado digital A1" value={brl(159.9)} />
+      <OrderSummaryOption
+        label="Usar o certificado de brinde"
+        description="3 disponíveis"
+        value={`− ${brl(159.9)}`}
+        defaultSelected
+      />
+    </DescriptionList>
+  ),
+  play: async ({ canvasElement }) => {
+    const values = canvasElement.querySelectorAll<HTMLElement>("[data-slot=description-details]");
+    await expect(values.length).toBe(2);
+    for (const value of values) {
+      const lineHeight = Number.parseFloat(getComputedStyle(value).lineHeight);
+      await expect(value.getBoundingClientRect().height).toBeLessThan(lineHeight * 1.5);
+    }
   },
 };

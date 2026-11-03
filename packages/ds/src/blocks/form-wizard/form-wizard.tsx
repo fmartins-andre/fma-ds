@@ -239,8 +239,10 @@ function FormWizardSteps({
             <StepperItem key={number} step={number} isDisabled={number > step || isPending}>
               <StepperTrigger className="items-start rounded-md pr-1">
                 <StepperIndicator>{number}</StepperIndicator>
-                <span className={cn("sr-only flex-col gap-1 pt-[5px] text-left", titleWidth.show)}>
-                  <StepperTitle className="group-data-[state=inactive]/step:text-muted-foreground">
+                {/* The offset that centers the title on the 24px number is a margin on the title:
+                    `not-sr-only` resets this wrapper's padding when the titles show. */}
+                <span className={cn("sr-only flex-col gap-1 text-left", titleWidth.show)}>
+                  <StepperTitle className="mt-[5px] group-data-[state=inactive]/step:text-muted-foreground">
                     {title}
                   </StepperTitle>
                   {showDescriptions && description && (
@@ -286,14 +288,30 @@ function FormWizardStep({
  * step), Next, or Finish on the last step. `children` go before Back (a
  * Cancel that closes the dialog).
  */
-function FormWizardFooter({ className, children, ...props }: React.ComponentProps<"div">) {
+function FormWizardFooter({
+  className,
+  children,
+  framed = true,
+  ...props
+}: React.ComponentProps<"div"> & {
+  /**
+   * `false` drops its own separator, so it fits a footer that frames it (a sticky
+   * `DialogFooter`, a `SheetFooter`): it only takes the full width there.
+   */
+  framed?: boolean;
+}) {
   const { step, steps, isPending, back, labels } = useFormWizard();
   const isLast = step === steps.length;
 
   return (
     <div
       data-slot="form-wizard-footer"
-      className={cn("flex flex-wrap items-center gap-3 border-t pt-4", className)}
+      data-framed={framed || undefined}
+      className={cn(
+        "flex w-full flex-wrap items-center gap-3",
+        framed && "border-t pt-4",
+        className,
+      )}
       {...props}
     >
       <p role="status" className="mr-auto text-sm text-muted-foreground">

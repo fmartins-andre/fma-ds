@@ -321,6 +321,8 @@ type NotificationMenuProps = NotificationHandlers & {
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
   i18n?: NotificationI18n;
+  /** `sm` matches a compact top bar, next to `Glance` triggers in `size="sm"`. */
+  size?: "default" | "sm";
   className?: string;
 };
 
@@ -342,6 +344,7 @@ function NotificationMenu({
   onOpenChange,
   i18n,
   className,
+  size = "default",
 }: NotificationMenuProps) {
   const labels = useNotificationLabels(i18n);
   const unread = unreadCount ?? notifications.filter((item) => !item.isRead).length;
@@ -349,7 +352,7 @@ function NotificationMenu({
   return (
     <Glance isOpen={isOpen} onOpenChange={onOpenChange}>
       <GlanceTrigger
-        size="icon"
+        size={size === "sm" ? "icon-sm" : "icon"}
         aria-label={labels.trigger(unread)}
         data-slot="notification-trigger"
         className={className}

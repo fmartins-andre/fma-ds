@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { type ColumnDef, useTable } from "@tanstack/react-table";
 import {
   AlertTriangleIcon,
   CheckIcon,
@@ -36,6 +37,13 @@ import {
 } from "@/core/chart/chart";
 import { ConfirmDialog } from "@/core/confirm-dialog/confirm-dialog";
 import { CopyButton } from "@/core/copy-button/copy-button";
+import {
+  DataGrid,
+  DataGridContainer,
+  type DataGridFeatures,
+  DataGridTable,
+  dataGridFeatures,
+} from "@/core/data-grid/data-grid";
 import {
   DescriptionDetails,
   DescriptionItem,
@@ -663,6 +671,71 @@ export const CurrentPlan: Story = {
           <Button variant="outline">Alterar plano</Button>
         </CardFooter>
       </PanelCard>
+    );
+  },
+};
+
+type Invoice = { id: string; month: string; amount: string; status: string };
+
+const INVOICES: Invoice[] = [
+  { id: "1", month: "10/2026", amount: "R$ 249,90", status: "Em aberto" },
+  { id: "2", month: "09/2026", amount: "R$ 249,90", status: "Paga" },
+  { id: "3", month: "08/2026", amount: "R$ 249,90", status: "Paga" },
+];
+
+const INVOICE_COLUMNS: ColumnDef<DataGridFeatures, Invoice>[] = [
+  { accessorKey: "month", header: "Competência", size: 160, meta: { autoSize: true } },
+  { accessorKey: "amount", header: "Valor", size: 140 },
+  { accessorKey: "status", header: "Situação", size: 140 },
+];
+
+/**
+ * A table panel: `PanelCardBody bleed="end"` and a `flush` `DataGridContainer` take the grid
+ * to the card's edges and close the card with it. Pinned cells paint the card's surface.
+ */
+export const WithDataGrid: Story = {
+  render: function WithDataGridExample() {
+    const table = useTable({
+      features: dataGridFeatures,
+      data: INVOICES,
+      columns: INVOICE_COLUMNS,
+      getRowId: (row: Invoice) => row.id,
+      initialState: { columnPinning: { start: ["month"], end: [] } },
+    });
+    return (
+      <PanelCard i18n={ptBR} className="max-w-2xl">
+        <PanelCardHeader icon={<ReceiptTextIcon />} title="Faturas" />
+        <PanelCardBody bleed="end">
+          <DataGrid
+            table={table}
+            recordCount={INVOICES.length}
+            tableLayout={{ headerBackground: true }}
+          >
+            <DataGridContainer flush>
+              <DataGridTable aria-label="Faturas" />
+            </DataGridContainer>
+          </DataGrid>
+        </PanelCardBody>
+      </PanelCard>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const card = canvasElement.querySelector<HTMLElement>("[data-slot=panel-card]");
+    const grid = canvasElement.querySelector<HTMLElement>("[data-slot=data-grid-container]");
+    const pinned = canvasElement.querySelector<HTMLElement>("tbody [data-pinned]");
+    if (!card || !grid || !pinned) throw new Error();
+    const cardBox = card.getBoundingClientRect();
+    const gridBox = grid.getBoundingClientRect();
+    await expect(Math.round(gridBox.left)).toBe(Math.round(cardBox.left));
+    await expect(Math.round(gridBox.right)).toBe(Math.round(cardBox.right));
+    await expect(Math.round(gridBox.bottom)).toBe(Math.round(cardBox.bottom));
+    // The card hands its surface to the grid, so it holds in themes where the card and the
+    // page differ.
+    await expect(getComputedStyle(pinned).getPropertyValue("--data-grid-card-surface")).not.toBe(
+      "",
+    );
+    await expect(getComputedStyle(pinned).backgroundColor).toBe(
+      getComputedStyle(card).backgroundColor,
     );
   },
 };

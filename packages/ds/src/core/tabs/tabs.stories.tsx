@@ -57,6 +57,31 @@ export const LineVariant: Story = {
   ),
 };
 
+/** On the primary color; the selected tab is a raised segment in the primary text. */
+export const PrimaryVariant: Story = {
+  render: (args) => (
+    <Tabs {...args}>
+      <TabsList aria-label="Settings" variant="primary">
+        <TabsTrigger id="account">Account</TabsTrigger>
+        <TabsTrigger id="password">Password</TabsTrigger>
+      </TabsList>
+      <TabsContent id="account">Make changes to your account here.</TabsContent>
+      <TabsContent id="password">Change your password here.</TabsContent>
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const account = canvas.getByRole("tab", { name: "Account" });
+    const password = canvas.getByRole("tab", { name: "Password" });
+    const unselected = getComputedStyle(password).color;
+    await userEvent.click(password);
+    await expect(password).toHaveAttribute("aria-selected", "true");
+    // the colors transition: wait for them to settle
+    await waitFor(() => expect(getComputedStyle(password).color).not.toBe(unselected));
+    await waitFor(() => expect(getComputedStyle(account).color).toBe(unselected));
+  },
+};
+
 export const Interactive: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

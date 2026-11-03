@@ -104,10 +104,49 @@
       }
     },
     {
+      "name": "app-shell",
+      "type": "registry:block",
+      "title": "App Shell",
+      "description": "The frame of an app's pages, composed from parts: the `AppSidebar`, a top bar and the page.\n\n- **`AppShell`**: takes the `AppSidebar` in `sidebar` and the top bar and page as children. It wraps `SidebarProvider` and `SidebarInset`, so it takes their props (`defaultOpen`, `open`, `onOpenChange`).\n- **`AppShellHeader`**: the top bar, sticky: the sidebar trigger, the page's trail and, at the end, its children (glances, notifications).\n- **`useAppShellBreadcrumbs`**: each page sets its trail, from the app's home down to itself; the last item is the current page.\n- **`AppShellMain`**: the page inside the shell's gutter: a `PageHeader` (usually `sticky` and `density=\"compact\"`), then `AppShellContent`.\n- **`AppShellContent`**: the page's content, a column with `gap-4` between its children. Each child sits on a surface (`Card`, `PanelCard`, a settings form, `PlanBuilder`), except the ones that already are one: a `StatGrid` and a `NotificationList`.\n\nThe parts share measures as CSS variables: `--app-shell-header-h` and `--app-shell-gutter`, handed to a sticky `PageHeader` as `--sticky-offset` and `--page-gutter`. `AppShellMain` measures its sticky `PageHeader` (`--page-header-h`) and sets `--sticky-top`, where other sticky parts stop — an `OrderSummary` stays under both bars.\n\nWrap the app in react-aria's `RouterProvider` so the sidebar, trail and tab links route client-side.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "blocks"
+      ],
+      "files": [
+        {
+          "path": "src/blocks/app-shell/app-shell.tsx",
+          "target": "components/fma-ds/app-shell/app-shell.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "@fma-ds/separator",
+        "@fma-ds/sidebar",
+        "@fma-ds/app-sidebar",
+        "@fma-ds/page-header"
+      ],
+      "dependencies": [
+        "cn@^0.5.0"
+      ],
+      "meta": {
+        "status": "stable",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "block",
+          "layout",
+          "shell",
+          "sidebar",
+          "navigation"
+        ],
+        "contentHash": "9182522105ff"
+      }
+    },
+    {
       "name": "app-sidebar",
       "type": "registry:block",
       "title": "App Sidebar",
-      "description": "An app-shell sidebar block, collapsible to icons, composed from parts. Render it inside a `SidebarProvider`.\n\nInside `AppSidebar`, use the core's `SidebarHeader`, `SidebarContent` and `SidebarFooter`, with:\n\n- **Header**: `AppSidebarTeamSwitcher` with `AppSidebarTeam`, or `AppSidebarLogo`. The app holds `activeTeam`.\n- **Content**: `AppSidebarSection`, `AppSidebarItem` and `AppSidebarSubItem`.\n- **Footer**: `AppSidebarUser`, with the menu's entries as `DropdownMenuItem`s.\n\nDetails:\n\n\n- **Sub-items**: expand inline (`variant=\"collapse\"`) or open a menu (`\"dropdown\"`, and always while collapsed to icons).\n- **Targets**: `href` is a link, to an app route or any URL, which `external` opens in a new tab; wrap the app in `RouterProvider` for client-side routing. `onPress` runs a function instead.\n- **Access**: `access` is what an item does (`granted`, `blocked`, `gated`), `badge` says why, with the app's own text, as `ghost`, `outline`, `primary` or `invert`, and `external` opens it in a new tab. To hide an item, don't render it. `gated` is informative only: the item follows its target, and the app must guard that route.\n- **Empty parents**: an item or section with no children isn't rendered. That's counted on direct children, so `{can && <Item />}` works, but a wrapper of yours that returns `null` still counts as one.",
+      "description": "An app's sidebar, collapsible to icons, composed from parts. It goes in the `sidebar` of an `AppShell`, which brings the provider, the top bar with its trigger and the page.\n\nInside `AppSidebar`, use the core's `SidebarHeader`, `SidebarContent` and `SidebarFooter`, with:\n\n- **Header**: `AppSidebarTeamSwitcher` with `AppSidebarTeam`, or `AppSidebarLogo`. The app holds `activeTeam`.\n- **Content**: `AppSidebarSection`, `AppSidebarItem` and `AppSidebarSubItem`.\n- **Footer**: `AppSidebarUser`, with the menu's entries as `DropdownMenuItem`s.\n\nDetails:\n\n\n- **Sub-items**: expand inline (`variant=\"collapse\"`) or open a menu (`\"dropdown\"`, and always while collapsed to icons).\n- **Targets**: `href` is a link, to an app route or any URL, which `external` opens in a new tab; wrap the app in `RouterProvider` for client-side routing. `onPress` runs a function instead.\n- **Access**: `access` is what an item does (`granted`, `blocked`, `gated`), `badge` says why, with the app's own text, as `ghost`, `outline`, `primary` or `invert`, and `external` opens it in a new tab. To hide an item, don't render it. `gated` is informative only: the item follows its target, and the app must guard that route.\n- **Empty parents**: an item or section with no children isn't rendered. That's counted on direct children, so `{can && <Item />}` works, but a wrapper of yours that returns `null` still counts as one.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -560,7 +599,7 @@
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
-      "description": "A container for grouping related content, with header, title, description, action, content, and footer slots. Supports a compact size=\"sm\" variant.",
+      "description": "A container for grouping related content, with header, title, description, action, content, and footer slots. Supports a compact size=\"sm\" variant.\n\n`CardContent bleed` drops the content's side padding, so a table, a list or an image spans the card's edges; `bleed=\"end\"`, for content that closes the card, also drops the card's bottom padding, like a `CardFooter` does. `CardFooter sticky` stays at the bottom of the screen while a long card scrolls, on an opaque surface, and the card stops clipping its overflow so it can stick.",
       "author": "@fma-ds/ds",
       "categories": [
         "layout"
@@ -577,7 +616,7 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova",
         "tags": [
@@ -585,7 +624,7 @@
           "surface",
           "nova"
         ],
-        "contentHash": "6d710b43a676"
+        "contentHash": "7c33b6b656e0"
       }
     },
     {
@@ -1192,7 +1231,7 @@
       "name": "data-grid",
       "type": "registry:ui",
       "title": "Data Grid",
-      "description": "A data grid driven by a TanStack Table v9 instance and rendered with react-aria's `Table`, which brings cell keyboard navigation, `aria-sort`, selection, column resizing, row drag and drop and virtualization.\n\n### Table\n\nCreate the table with `useTable({ features: dataGridFeatures, ... })`. The exported features cover sorting, filtering with facets, pagination, selection, row expanding (tree rows from `getSubRows`), row and column pinning, ordering, visibility and sizing, with client-side row models. For server-side data (or to show every row), set `manualSorting`/`manualFiltering`/`manualPagination`.\n\nColumn `meta` takes:\n\n- **`headerTitle`**, **`headerClassName`** and **`cellClassName`**.\n- **`skeleton`**: the cell shown in loading rows.\n- **`autoSize`**: the column takes the remaining width (not measured from content).\n- **`headerColSpan`**: the header spans the next visible columns on its pin side, e.g. \"Quantity\" over the amount and its unit. Covered headers take its accessible name and the last one keeps the resize handle.\n\n### Parts\n\nWrap them in `DataGrid table={table} recordCount={…}`:\n\n- **`DataGridTable`** and **`DataGridPagination`**.\n- **`DataGridColumnHeader`**: sort indicator, plus a menu for pinning, moving and visibility when `tableLayout` enables them.\n- **`DataGridColumnVisibility`**: a column visibility menu.\n- **`DataGridColumnFilter`**: faceted; use `filterFn: \"arrHas\"`.\n- **`DataGridRowSelect`**: a row checkbox, with `enableRowSelection`.\n- **`DataGridRowPin`**: pins to the top, or the bottom with `position=\"bottom\"`.\n- **`DataGridRowActions`**: a row's actions as `DropdownMenuItem`s behind a menu button, named from `rowLabel`. It doesn't trigger `onRowClick`, and with no items it shows a disabled \"no actions\" entry.\n- **`DataGridRowDragHandle`**: with `onRowsReorder`.\n- **`DataGridRowExpand`**: shows `getSubRows` children, indented by depth — or, with `getRowCanExpand` and `DataGridTable`'s `renderExpandedRow`, a full-width details row.\n- **`DataGridSelectionBar`**: shows while rows are selected — the count (announced, with how many are on other pages), your bulk actions as children and \"Clear selection\".\n\n### Rows\n\n- **`onRowClick`**: makes rows actionable (click or Enter).\n- **`onRowHover`**: fires when the pointer enters a row, e.g. to prefetch its details.\n- **`isLoading`**: shows skeleton rows (`meta.skeleton`) or a spinner.\n- **Footer**: `DataGridTable`'s `footerContent` takes footer rows (`DataGridTableFootRow` with `DataGridTableFootRowCell`, `colSpan` to span columns); `tableLayout.footerBackground` tints them.\n\n### Infinite scroll\n\n`DataGridTable`'s `onFetchMore` fires near the end of the loaded rows (`fetchMoreScrollOffset`, in viewport heights), `isFetchingMore` shows a loading row and `hasMore={false}` stops it with `allRowsLoadedMessage`. Works with `isVirtualized`.\n\n### Layout and styling\n\n- **`tableLayout.columnsDraggable`**: lets users drag headers to reorder columns; keyboard users use the header menu's move actions, and pinned columns stay put.\n- **`tableLayout`**: also takes `rowRounded`, `headerBorder` and `columnsResizeMode` (`\"onEnd\"` commits the width on release and draws a line at the pointer while dragging).\n- **`tableClassNames`**: adds classes to parts of the table (`base`, `header`, `headerSticky`, `body`, `bodyRow`, `footer`, `edgeCell`).\n- **Surfaces**: pinned cells and sticky headers paint `--data-grid-surface` (else `--card` inside a `Card`, else `--background`) and carry `data-pinned`/`data-last-col`.\n\n### i18n\n\nThe `i18n` prop on `DataGrid` replaces every built-in string (`{ labels: { sortAscending, rowsPerPage, paginationInfo: ({ from, to, count }) => …, goToPage: (page) => …, … } }`, defaults in `defaultDataGridI18n`). Specific props like `emptyMessage` or the pagination labels still win.",
+      "description": "A data grid driven by a TanStack Table v9 instance and rendered with react-aria's `Table`, which brings cell keyboard navigation, `aria-sort`, selection, column resizing, row drag and drop and virtualization.\n\n### Table\n\nCreate the table with `useTable({ features: dataGridFeatures, ... })`. The exported features cover sorting, filtering with facets, pagination, selection, row expanding (tree rows from `getSubRows`), row and column pinning, ordering, visibility and sizing, with client-side row models. For server-side data (or to show every row), set `manualSorting`/`manualFiltering`/`manualPagination`.\n\nColumn `meta` takes:\n\n- **`headerTitle`**, **`headerClassName`** and **`cellClassName`**.\n- **`skeleton`**: the cell shown in loading rows.\n- **`autoSize`**: the column takes the remaining width (not measured from content); give it a `minSize`. When the user grabs a resize handle it keeps the width it had, so resizing another column grows the table instead of shrinking it, and it can be resized too.\n- **`headerColSpan`**: the header spans the next visible columns on its pin side, e.g. \"Quantity\" over the amount and its unit. Covered headers take its accessible name and the last one keeps the resize handle.\n\n### Parts\n\nWrap them in `DataGrid table={table} recordCount={…}`:\n\n- **`DataGridTable`** and **`DataGridPagination`**.\n- **`DataGridColumnHeader`**: sort indicator, plus a menu for pinning, moving and visibility when `tableLayout` enables them.\n- **`DataGridColumnVisibility`**: a column visibility menu.\n- **`DataGridColumnFilter`**: faceted; use `filterFn: \"arrHas\"`.\n- **`DataGridRowSelect`**: a row checkbox, with `enableRowSelection`.\n- **`DataGridRowPin`**: pins to the top, or the bottom with `position=\"bottom\"`.\n- **`DataGridRowActions`**: a row's actions as `DropdownMenuItem`s behind a menu button, named from `rowLabel`. It doesn't trigger `onRowClick`, and with no items it shows a disabled \"no actions\" entry.\n- **`DataGridRowDragHandle`**: with `onRowsReorder`.\n- **`DataGridRowExpand`**: shows `getSubRows` children, indented by depth — or, with `getRowCanExpand` and `DataGridTable`'s `renderExpandedRow`, a full-width details row.\n- **`DataGridSelectionBar`**: shows while rows are selected — the count (announced, with how many are on other pages), your bulk actions as children and \"Clear selection\".\n\n### Rows\n\n- **`onRowClick`**: makes rows actionable (click or Enter).\n- **`onRowHover`**: fires when the pointer enters a row, e.g. to prefetch its details.\n- **`isLoading`**: shows skeleton rows (`meta.skeleton`) or a spinner.\n- **Footer**: `DataGridTable`'s `footerContent` takes footer rows (`DataGridTableFootRow` with `DataGridTableFootRowCell`, `colSpan` to span columns); `tableLayout.footerBackground` tints them.\n\n### Infinite scroll\n\n`DataGridTable`'s `onFetchMore` fires near the end of the loaded rows (`fetchMoreScrollOffset`, in viewport heights), `isFetchingMore` shows a loading row and `hasMore={false}` stops it with `allRowsLoadedMessage`. Works with `isVirtualized`.\n\n### Layout and styling\n\n- **`tableLayout.columnsDraggable`**: lets users drag headers to reorder columns; keyboard users use the header menu's move actions, and pinned columns stay put.\n- **Row height**: body rows are 42px, room for a default `Badge` beside the text, so rows with and without one line up. `dense` rows are 34px, room for a small `Badge` (`size=\"sm\"`).\n- **`tableLayout`**: also takes `rowRounded`, `headerBorder`, `pinnedDivider` (the border between pinned columns and the rest; `false` drops it) and `columnsResizeMode` (`\"onEnd\"` commits the width on release and draws a line at the pointer while dragging).\n- **`DataGridContainer flush`**: no side borders and no corners, for a grid framed by what's around it — e.g. in a `CardContent bleed`, where it spans the card's edges. It keeps the bottom border only when the pagination follows it, as the line between them.\n- **`tableClassNames`**: adds classes to parts of the table (`base`, `header`, `headerSticky`, `body`, `bodyRow`, `footer`, `edgeCell`).\n- **Surfaces**: pinned cells and sticky headers paint `--data-grid-surface` (else `--data-grid-card-surface`, set to `--card` inside a `Card`, else `--background`) and carry `data-pinned`/`data-last-col`. Pinned body cells repaint the row's hover, selection and stripes over that surface, with the row's transition.\n\n### i18n\n\nThe `i18n` prop on `DataGrid` replaces every built-in string (`{ labels: { sortAscending, rowsPerPage, paginationInfo: ({ from, to, count }) => …, goToPage: (page) => …, … } }`, defaults in `defaultDataGridI18n`). Specific props like `emptyMessage` or the pagination labels still win.",
       "author": "@fma-ds/ds",
       "categories": [
         "data-display"
@@ -1234,7 +1273,7 @@
           "tanstack",
           "react-aria"
         ],
-        "contentHash": "cbf2c50409b7"
+        "contentHash": "33e2283f3286"
       }
     },
     {
@@ -1494,7 +1533,7 @@
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
-      "description": "A modal window layered over the page, requiring explicit action (or Escape) to dismiss. Pair with react-aria-components' DialogTrigger to wire up the trigger and open state.",
+      "description": "A modal window layered over the page, requiring explicit action (or Escape) to dismiss. Pair with react-aria-components' DialogTrigger to wire up the trigger and open state.\n\n`DialogFooter sticky` keeps the footer at the bottom while a long dialog scrolls, flush with the dialog's edge and on an opaque surface.",
       "author": "@fma-ds/ds",
       "categories": [
         "overlay"
@@ -1524,7 +1563,7 @@
           "modal",
           "overlay"
         ],
-        "contentHash": "5a45cac905b6"
+        "contentHash": "23d8a2597ded"
       }
     },
     {
@@ -2068,7 +2107,7 @@
       "name": "form-wizard",
       "type": "registry:block",
       "title": "Form Wizard",
-      "description": "A form in steps, in a dialog or on a page (a new customer, an onboarding).\n\n`FormWizard` takes `steps` (`{ title, description }` per step) and the current step, controlled (`step`/`onStepChange`) or not (`defaultStep`).\n\n- **Navigation**: it's a react-aria `Form` whose submit is Next, so Enter advances and the current step's fields validate natively (only that step is mounted). Then `onNext(step)` runs — validate or save there (react-hook-form's `trigger`). Returning `false` or throwing keeps the user on the step, and a promise shows Next as pending. Finish runs `onNext` of the last step and then `onComplete`.\n- **`FormWizardSteps`**: the `stepper` list. Earlier steps are reachable, later ones only through Next. Titles show when the wizard is wide enough for that many steps; narrower, only the numbers, with the current title under them (container query).\n- **`FormWizardStep`**: holds a step's fields; after Back or Next, focus moves to its first field.\n- **`FormWizardFooter`**: the progress (\"Step 2 of 4\", announced politely), `children` before Back (a dialog's Cancel), Back and Next/Finish.\n\nThe values stay in the app; with react-hook-form, keep `shouldUnregister` off.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
+      "description": "A form in steps, in a dialog or on a page (a new customer, an onboarding).\n\n`FormWizard` takes `steps` (`{ title, description }` per step) and the current step, controlled (`step`/`onStepChange`) or not (`defaultStep`).\n\n- **Navigation**: it's a react-aria `Form` whose submit is Next, so Enter advances and the current step's fields validate natively (only that step is mounted). Then `onNext(step)` runs — validate or save there (react-hook-form's `trigger`). Returning `false` or throwing keeps the user on the step, and a promise shows Next as pending. Finish runs `onNext` of the last step and then `onComplete`.\n- **`FormWizardSteps`**: the `stepper` list. Earlier steps are reachable, later ones only through Next. Titles show when the wizard is wide enough for that many steps; narrower, only the numbers, with the current title under them (container query).\n- **`FormWizardStep`**: holds a step's fields; after Back or Next, focus moves to its first field.\n- **`FormWizardFooter`**: the progress (\"Step 2 of 4\", announced politely), `children` before Back (a dialog's Cancel), Back and Next/Finish. `framed={false}` drops its own separator, for a footer that frames it: in a `Dialog`, put it in a sticky `DialogFooter`.\n\nThe values stay in the app; with react-hook-form, keep `shouldUnregister` off.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -2102,7 +2141,7 @@
           "stepper",
           "steps"
         ],
-        "contentHash": "85840a1c4c4a"
+        "contentHash": "b84d5551fab6"
       }
     },
     {
@@ -2489,7 +2528,23 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/i18n"
+        "@fma-ds/i18n",
+        "@fma-ds/app-sidebar",
+        "@fma-ds/auth",
+        "@fma-ds/collection-field",
+        "@fma-ds/error-pages",
+        "@fma-ds/event-calendar",
+        "@fma-ds/filter-toolbar",
+        "@fma-ds/form-wizard",
+        "@fma-ds/notification-center",
+        "@fma-ds/order-summary",
+        "@fma-ds/page-header",
+        "@fma-ds/panel-card",
+        "@fma-ds/payment-card",
+        "@fma-ds/plan-builder",
+        "@fma-ds/pricing-plans",
+        "@fma-ds/settings-form",
+        "@fma-ds/stat-cards"
       ],
       "dependencies": [],
       "meta": {
@@ -3204,7 +3259,7 @@
       "name": "notification-center",
       "type": "registry:block",
       "title": "Notification Center",
-      "description": "Notifications in the header and on their own page, driven by props and callbacks (no server state).\n\n- **`NotificationMenu`**: the bell — an icon `GlanceTrigger` whose `GlanceIndicator` shows the unread count (also in the button's name). It opens a panel with the recent items, \"Mark all as read\" (`onMarkAllAsRead`), loading and empty states and a \"View all\" link (`viewAllHref`).\n- **`NotificationList`**: every notification as cards with a read/unread `Badge`, for a page paired with `Pagination`.\n- **`NotificationItem`**: an unread dot (or an `icon`), the title — a link when it has `href`, calling `onOpen` — the message, the date (formatted in the `I18nProvider` locale) and icon buttons for `onMarkAsRead` and `onDelete`, described by the title.\n\nUrgent notifications are a `ConfirmDialog` opened with `useDialogPromise`.\n\nBuilt-in text is in English; override it with `i18n.labels`.",
+      "description": "Notifications in the header and on their own page, driven by props and callbacks (no server state).\n\n- **`NotificationMenu`**: the bell — an icon `GlanceTrigger` whose `GlanceIndicator` shows the unread count (also in the button's name). It opens a panel with the recent items, \"Mark all as read\" (`onMarkAllAsRead`), loading and empty states and a \"View all\" link (`viewAllHref`). `size=\"sm\"` makes the bell 32px, for a compact top bar.\n- **`NotificationList`**: every notification as cards with a read/unread `Badge`, for a page paired with `Pagination`.\n- **`NotificationItem`**: an unread dot (or an `icon`), the title — a link when it has `href`, calling `onOpen` — the message, the date (formatted in the `I18nProvider` locale) and icon buttons for `onMarkAsRead` and `onDelete`, described by the title.\n\nUrgent notifications are a `ConfirmDialog` opened with `useDialogPromise`.\n\nBuilt-in text is in English; override it with `i18n.labels`.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -3241,14 +3296,14 @@
           "popover",
           "list"
         ],
-        "contentHash": "34aff22dfce3"
+        "contentHash": "f00c84eecb95"
       }
     },
     {
       "name": "order-summary",
       "type": "registry:block",
       "title": "Order Summary",
-      "description": "What the user is about to confirm before buying: lines, an applicable benefit, discounts, the total and the action.\n\n`OrderSummary` takes the `title`, `totalLabel`, `total` and optional `totalDescription` (values formatted by the app) and the `action` button.\n\n- **Large screens**: a card that sticks while the page scrolls — put it in the side column.\n- **Smaller screens**: a bar fixed to the bottom with the total and the action; the total opens the lines in a bottom sheet. Leave room under the page, e.g. `pb-28 lg:pb-0`.\n\nIts children sit in a `description-list`:\n\n- **`OrderSummaryLine`**: `label`, `value` and a `description` under the label — an item, a fee, who the order is for. `tone=\"discount\"` for a negative value.\n- **`OrderSummaryOption`**: a benefit behind a `Switch`, such as the account balance, its amount struck through while off.\n\nThe total stands apart by size and weight, not only color.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
+      "description": "What the user is about to confirm before buying: lines, an applicable benefit, discounts, the total and the action.\n\n`OrderSummary` takes the `title`, `totalLabel`, `total` and optional `totalDescription` (values formatted by the app) and the `action` button.\n\n- **Large screens**: a card that sticks while the page scrolls — put it in the side column. It sticks `--sticky-top` from the top (1rem by default): an app with a fixed header sets it to the header's height.\n- **Smaller screens**: a bar fixed to the bottom with the total and the action; the total opens the lines in a bottom sheet. Leave room under the page, e.g. `pb-28 lg:pb-0`.\n\nIts children sit in a `description-list`:\n\n- **`OrderSummaryLine`**: `label`, `value` and a `description` under the label — an item, a fee, who the order is for. `tone=\"discount\"` for a negative value.\n- **`OrderSummaryOption`**: a benefit behind a `Switch`, such as the account balance, its amount struck through while off.\n\nThe total stands apart by size and weight, not only color.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -3284,14 +3339,14 @@
           "order",
           "total"
         ],
-        "contentHash": "b38dff5237d4"
+        "contentHash": "9daa181410d1"
       }
     },
     {
       "name": "page-header",
       "type": "registry:block",
       "title": "Page Header",
-      "description": "The top of a page, composed from parts: breadcrumbs, the title with its description and actions, and an optional sub-page nav.\n\n- **`PageHeaderBreadcrumbs`**: an `items` trail whose last entry is the current page.\n- **`PageHeaderContent`**: heading on one side, actions on the other, stacked on narrow screens.\n- **`PageHeaderHeading`**: `PageHeaderTitle` (the `<h1>`, with an `isLoading` skeleton) and `PageHeaderDescription`. Anything that belongs beside the title, like a status select, goes inside it too.\n- **`PageHeaderActions`**: buttons that stretch on mobile.\n- **`PageHeaderNav`**: an area's sub-pages, usually a `TabNav`.\n\nWrap the app in react-aria's `RouterProvider` so breadcrumb and tab links route client-side.",
+      "description": "The top of a page, composed from parts: breadcrumbs, the title with its description and actions, and an optional sub-page nav.\n\n`sticky` keeps it at the top while the page scrolls, on a translucent, blurred surface that fades into the content. It stops at `--sticky-offset` (below a top bar) and spans `--page-gutter`, the page's padding; both default to 0, and an `AppShell` sets them. `density=\"compact\"` gives it a smaller title and tighter spacing.\n\n- **`PageHeaderBreadcrumbs`**: an `items` trail whose last entry is the current page.\n- **`PageHeaderContent`**: heading on one side, actions on the other; the actions drop below only when they don't fit beside the heading.\n- **`PageHeaderHeading`**: `PageHeaderTitle` (the `<h1>`, with an `isLoading` skeleton) and `PageHeaderDescription`. Anything that belongs beside the title, like a status select, goes inside it too.\n- **`PageHeaderActions`**: buttons that stretch on mobile.\n- **`PageHeaderNav`**: an area's sub-pages, usually a `TabNav`.\n\nWrap the app in react-aria's `RouterProvider` so breadcrumb and tab links route client-side.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -3322,7 +3377,7 @@
           "breadcrumb",
           "navigation"
         ],
-        "contentHash": "ccba63bfc22e"
+        "contentHash": "320450fb30f1"
       }
     },
     {
@@ -3365,7 +3420,7 @@
       "name": "panel-card",
       "type": "registry:block",
       "title": "Panel Card",
-      "description": "A panel on a `Card` — a dashboard chart or table, or one resource and its status (a contract, the current plan) — with a standard header and a body that handles its own states.\n\n### `PanelCardHeader`\n\n- **`title`**: a heading, `headingLevel` 2 by default.\n- **`icon`**: shown in a `soft` `IconTile`.\n- **`description`** and **`status`**: a `Badge` next to the title.\n- **`help`**: opened by an ⓘ button in a popover, so it works with touch and keyboard.\n- **`updatedAt`**: a `Date` or timestamp, formatted with `Intl` in the react-aria locale; `isRefreshing` shows a spinner next to it while the content stays on screen.\n- **`toolbar`**: a slot for the card's own controls, which wraps below the title on narrow cards.\n\n### `PanelCardBody`\n\nShows the first state that applies — `isLoading` (skeleton, first load only), `isError` (message plus \"Try again\" with `onRetry`), `isEmpty` (`Empty`) — or its children. `emptyState`/`errorState` replace the built-in messages (e.g. a missing resource with the action that adds it).\n\n### What goes where\n\n- **Body**: charts, tables, `stat-cards` and `description-list`; problems with the resource go in an `Alert` there, not in the card colors.\n- **`CardFooter`**: actions.\n\n`PanelCard`'s `i18n.labels` reaches every built-in text.",
+      "description": "A panel on a `Card` — a dashboard chart or table, or one resource and its status (a contract, the current plan) — with a standard header and a body that handles its own states.\n\n### `PanelCardHeader`\n\n- **`title`**: a heading, `headingLevel` 2 by default.\n- **`icon`**: shown in a `soft` `IconTile`.\n- **`description`** and **`status`**: a `Badge` next to the title.\n- **`help`**: opened by an ⓘ button in a popover, so it works with touch and keyboard.\n- **`updatedAt`**: a `Date` or timestamp, formatted with `Intl` in the react-aria locale; `isRefreshing` shows a spinner next to it while the content stays on screen.\n- **`toolbar`**: a slot for the card's own controls, which wraps below the title on narrow cards.\n\n### `PanelCardBody`\n\nShows the first state that applies — `isLoading` (skeleton, first load only), `isError` (message plus \"Try again\" with `onRetry`), `isEmpty` (`Empty`) — or its children. `emptyState`/`errorState` replace the built-in messages (e.g. a missing resource with the action that adds it).\n\n`bleed` drops its side padding, so a table spans the card's edges (a `DataGridContainer flush`); `bleed=\"end\"` also drops the card's bottom padding, for a body that closes the card. A `DataGrid` inside paints its pinned cells with the card's surface.\n\n### What goes where\n\n- **Body**: charts, tables, `stat-cards` and `description-list`; problems with the resource go in an `Alert` there, not in the card colors.\n- **`CardFooter`**: actions.\n\n`PanelCard`'s `i18n.labels` reaches every built-in text.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -3403,7 +3458,7 @@
           "chart",
           "status"
         ],
-        "contentHash": "4c0e12081807"
+        "contentHash": "978566534c7d"
       }
     },
     {
@@ -3562,7 +3617,7 @@
           "slider",
           "quantity"
         ],
-        "contentHash": "f983c7a220a2"
+        "contentHash": "b8da04259744"
       }
     },
     {
@@ -3878,7 +3933,7 @@
       "name": "settings-form",
       "type": "registry:block",
       "title": "Settings Form",
-      "description": "A long edit form in sections, saved as a whole (account, company, preferences).\n\n- **`SettingsForm`**: a react-aria `Form` that only shows state the app owns, so react-hook-form or any other form state fits: `isDirty` (enables Save and Discard), `isPending` (spinner on Save, `aria-busy`) and `onReset` (adds a Discard button that should restore the saved values).\n- **`SettingsSection`**: groups fields under a `title` and `description` (a labelled group) stacked above them, leaving the width to the fields next to an app sidebar. The fields fall into a two-column grid when there's room (container query); `col-span-full` takes the whole row.\n- **`SettingsFormFooter`**: a save bar stuck to the bottom of the viewport with a polite status line (no changes / unsaved / saving), optional children before the buttons, Discard and Save.\n\nWarning before leaving with unsaved changes stays in the app, since it depends on the router; use `confirm-dialog`.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
+      "description": "A long edit form in sections, saved as a whole (account, company, preferences).\n\n- **`SettingsForm`**: a react-aria `Form` that only shows state the app owns, so react-hook-form or any other form state fits: `isDirty` (enables Save and Discard), `isPending` (spinner on Save, `aria-busy`) and `onReset` (adds a Discard button that should restore the saved values).\n- **`SettingsSection`**: groups fields under a `title` and `description` (a labelled group) stacked above them, leaving the width to the fields next to an app sidebar. The fields fall into a two-column grid when there's room (container query); `col-span-full` takes the whole row.\n- **`SettingsFormFooter`**: a save bar stuck to the bottom of the viewport with a polite status line (no changes / unsaved / saving), optional children before the buttons, Discard and Save. With the form on a `Card`, put the `SettingsForm` around the card (the buttons stay in the form) and put the bar in a sticky `CardFooter` with `framed={false}`, which drops its own bar.\n\nWarning before leaving with unsaved changes stays in the app, since it depends on the router; use `confirm-dialog`.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -3909,7 +3964,7 @@
           "settings",
           "fields"
         ],
-        "contentHash": "1fb95b7ef5a6"
+        "contentHash": "2357342dbdaa"
       }
     },
     {
@@ -3993,7 +4048,7 @@
           "layout",
           "react-aria"
         ],
-        "contentHash": "88006da74cfc"
+        "contentHash": "dc2a96cf2e1f"
       }
     },
     {
@@ -4275,7 +4330,7 @@
       "name": "tab-nav",
       "type": "registry:ui",
       "title": "Tab Nav",
-      "description": "Navigation between the pages of an area that looks like tabs: a `<nav>` of react-aria links where the current page carries `aria-current=\"page\"`.\n\nUnlike `Tabs` there are no panels — each item is a route — so use it for sub-pages and `Tabs` for in-page views.\n\n- **`variant`**: matches the tab styles — `default` (segmented on `muted`, the current page raised) or `line` (underlined).\n- **Current item**: when `isCurrent` is set or its `href` matches `TabNav`'s `currentHref` (exactly, or with `matchPrefix` also on sub-paths).\n- **`TabNavItem`**: takes an icon before its label; **`TabNavSeparator`** divides groups.\n- **Overflow**: when items don't fit, the strip scrolls sideways and keeps the current page in view.\n\nWrap the app in react-aria's `RouterProvider` for client routing.",
+      "description": "Navigation between the pages of an area that looks like tabs: a `<nav>` of react-aria links where the current page carries `aria-current=\"page\"`.\n\nUnlike `Tabs` there are no panels — each item is a route — so use it for sub-pages and `Tabs` for in-page views.\n\n- **`variant`**: matches the tab styles — `default` (segmented on `muted`, the current page raised), `line` (underlined) or `primary` (segmented on the primary color, for an area's main sections).\n- **Current item**: when `isCurrent` is set or its `href` matches `TabNav`'s `currentHref` (exactly, or with `matchPrefix` also on sub-paths).\n- **`TabNavItem`**: takes an icon before its label; **`TabNavSeparator`** divides groups.\n- **Overflow**: when items don't fit, the strip scrolls sideways and keeps the current page in view.\n\nWrap the app in react-aria's `RouterProvider` for client routing.",
       "author": "@fma-ds/ds",
       "categories": [
         "navigation"
@@ -4302,7 +4357,7 @@
           "routing",
           "react-aria"
         ],
-        "contentHash": "52832920fc1b"
+        "contentHash": "95fe7a1ca147"
       }
     },
     {
@@ -4341,7 +4396,7 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",
-      "description": "A tab list and its panels for switching between related views, with default and line visual variants, horizontal or vertical orientation.",
+      "description": "A tab list and its panels for switching between related views, with default, line and primary visual variants, horizontal or vertical orientation.",
       "author": "@fma-ds/ds",
       "categories": [
         "navigation"
@@ -4367,7 +4422,7 @@
           "disclosure",
           "react-aria"
         ],
-        "contentHash": "604995a8a7d9"
+        "contentHash": "d09f9de81b6d"
       }
     },
     {

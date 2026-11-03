@@ -92,7 +92,11 @@ function OrderSummary({
   );
 
   return (
-    <div data-slot="order-summary" className={cn("lg:sticky lg:top-4", className)} {...props}>
+    <div
+      data-slot="order-summary"
+      className={cn("lg:sticky lg:top-[var(--sticky-top,1rem)]", className)}
+      {...props}
+    >
       <Card className="hidden lg:flex">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
@@ -169,7 +173,9 @@ function OrderSummaryLine({
           <span className="text-xs font-normal text-muted-foreground">{description}</span>
         )}
       </DescriptionTerm>
-      <DescriptionDetails className={cn(tone === "discount" && "text-success")}>
+      <DescriptionDetails
+        className={cn("whitespace-nowrap tabular-nums", tone === "discount" && "text-success")}
+      >
         {value}
       </DescriptionDetails>
     </DescriptionItem>
@@ -231,7 +237,10 @@ function OrderSummaryOption({
         </span>
       </DescriptionTerm>
       <DescriptionDetails
-        className={cn(selected ? "text-success" : "text-muted-foreground line-through")}
+        className={cn(
+          "whitespace-nowrap tabular-nums",
+          selected ? "text-success" : "text-muted-foreground line-through",
+        )}
       >
         {value}
       </DescriptionDetails>

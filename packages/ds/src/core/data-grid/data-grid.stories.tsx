@@ -17,6 +17,7 @@ import * as React from "react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Badge } from "@/core/badge/badge";
 import { Button } from "@/core/button/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/core/card/card";
 import { DropdownMenuItem } from "@/core/dropdown-menu/dropdown-menu";
 import { FieldHelp } from "@/core/field/field";
 import { Skeleton } from "@/core/skeleton/skeleton";
@@ -662,13 +663,14 @@ export const RowPinning: Story = {
 };
 
 /**
- * `DataGridRowActions` puts a row's actions behind a menu button. Pressing it
- * doesn't trigger `onRowClick`; with no actions left (inactive users here) the
- * menu says so.
+ * `DataGridRowActions` puts a row's actions behind a menu button, in a fixed-width
+ * column pinned to the end (the ID is pinned to the start). Pressing it doesn't
+ * trigger `onRowClick`; with no actions left (inactive users here) the menu says so.
  */
 export const RowActions: Story = {
   args: {
     onRowClick: fn(),
+    initialPinning: { start: ["id"], end: ["actions"] },
     columns: [
       ...COLUMNS,
       {
@@ -696,6 +698,10 @@ export const RowActions: Story = {
   render: (args) => <UsersDataGrid {...args} />,
   play: async ({ canvas, args }) => {
     const body = within(document.body);
+    await expect(canvas.getByRole("columnheader", { name: "Actions" })).toHaveAttribute(
+      "data-pinned",
+      "end",
+    );
     await userEvent.click(canvas.getByRole("button", { name: "Actions for Alice Martin" }));
     await body.findByRole("menuitem", { name: "Edit" });
     await expect(args.onRowClick).not.toHaveBeenCalled();
@@ -1389,5 +1395,257 @@ export const ShouldUseProviderMessages: Story = {
         within(menu).getByRole("menuitem", { name: new RegExp(name) }),
       ).toBeInTheDocument();
     await userEvent.keyboard("{Escape}");
+  },
+};
+
+/** "Name" takes the leftover width (`meta.autoSize`), so the table fills its container. */
+const FILL_COLUMNS: UserColumn[] = COLUMNS.map((column) =>
+  "accessorKey" in column && column.accessorKey === "name"
+    ? { ...column, meta: { ...column.meta, autoSize: true } }
+    : column,
+);
+
+/** Drags a column's resize handle sideways with full pointer events (see `Resizable`). */
+function dragResizer(resizer: HTMLElement, dx: number) {
+  const box = resizer.getBoundingClientRect();
+  const x = box.left + box.width / 2;
+  const y = box.top + box.height / 2;
+  const pointer = (type: string, clientX: number) =>
+    resizer.dispatchEvent(
+      new PointerEvent(type, {
+        bubbles: true,
+        clientX,
+        clientY: y,
+        pointerId: 1,
+        pointerType: "mouse",
+        button: 0,
+        buttons: type === "pointerup" ? 0 : 1,
+        isPrimary: true,
+      }),
+    );
+  pointer("pointerdown", x);
+  pointer("pointermove", x + dx / 2);
+  pointer("pointermove", x + dx);
+  pointer("pointerup", x + dx);
+}
+
+const resizerOf = (header: HTMLElement) => {
+  const resizer = header.querySelector<HTMLElement>("[data-resizable-direction]");
+  if (!resizer) throw new Error();
+  return resizer;
+};
+
+const viewportOf = (canvasElement: HTMLElement) => {
+  const viewport = canvasElement.querySelector<HTMLElement>("[data-slot=data-grid-table-viewport]");
+  if (!viewport) throw new Error();
+  return viewport;
+};
+
+/** The last column's resize handle stays inside the table: past its edge it added a scrollbar. */
+export const ShouldNotScrollForTheLastResizer: Story = {
+  tags: ["!autodocs"],
+  args: { columns: FILL_COLUMNS, layout: { columnsResizable: true } },
+  render: (args) => <UsersDataGrid {...args} />,
+  play: async ({ canvasElement }) => {
+    const viewport = viewportOf(canvasElement);
+    await waitFor(() => expect(viewport.scrollWidth).toBe(viewport.clientWidth));
+  },
+};
+
+/**
+ * Resizing another column keeps the `autoSize` column's width (the table grows and scrolls),
+ * and the `autoSize` column can then be resized too.
+ */
+export const ShouldKeepTheAutoSizeWidthOnResize: Story = {
+  tags: ["!autodocs"],
+  args: { columns: FILL_COLUMNS, layout: { columnsResizable: true } },
+  render: (args) => <UsersDataGrid {...args} />,
+  play: async ({ canvasElement, canvas }) => {
+    const name = canvas.getByRole("columnheader", { name: /^Name/ });
+    const role = canvas.getByRole("columnheader", { name: /^Role/ });
+    const nameWidth = name.getBoundingClientRect().width;
+    const roleWidth = role.getBoundingClientRect().width;
+
+    dragResizer(resizerOf(role), 60);
+    await waitFor(() => expect(role.getBoundingClientRect().width).toBeGreaterThan(roleWidth + 40));
+    await expect(Math.abs(name.getBoundingClientRect().width - nameWidth)).toBeLessThan(2);
+    const viewport = viewportOf(canvasElement);
+    await expect(viewport.scrollWidth).toBeGreaterThan(viewport.clientWidth);
+
+    dragResizer(resizerOf(name), 40);
+    await waitFor(() => expect(name.getBoundingClientRect().width).toBeGreaterThan(nameWidth + 25));
+  },
+};
+
+/**
+ * A pinned cell is opaque, so it repaints the row's hover color itself, with the row's
+ * transition: it changes together with the rest of the row.
+ */
+export const ShouldRepaintPinnedCellsWithTheRow: Story = {
+  tags: ["!autodocs"],
+  args: { onRowClick: fn(), initialPinning: { start: ["id"], end: [] } },
+  render: (args) => <UsersDataGrid {...args} />,
+  play: async ({ canvas }) => {
+    const [row] = bodyRows(canvas);
+    if (!row) throw new Error("no rows");
+    const pinned = row.querySelector<HTMLElement>("[data-pinned]");
+    if (!pinned) throw new Error("no pinned cell");
+    const resting = getComputedStyle(pinned).backgroundColor;
+    await expect(getComputedStyle(pinned).transitionProperty).toContain("background-color");
+    await userEvent.hover(within(row).getByText("Frontend Engineer"));
+    await waitFor(() => expect(getComputedStyle(pinned).backgroundColor).not.toBe(resting));
+    // Moving to another row leaves this one: its pinned cell goes back with it.
+    const next = bodyRows(canvas)[1];
+    if (!next) throw new Error();
+    await userEvent.hover(within(next).getAllByRole("gridcell")[1] as HTMLElement);
+    await waitFor(() => expect(getComputedStyle(pinned).backgroundColor).toBe(resting));
+  },
+};
+
+/** `pinnedDivider: false` drops the border between pinned columns and the rest. */
+export const PinnedColumnsWithoutDivider: Story = {
+  args: {
+    layout: { pinnedDivider: false },
+    initialPinning: { start: ["id"], end: ["joined"] },
+  },
+  render: (args) => <UsersDataGrid {...args} />,
+  play: async ({ canvas }) => {
+    const id = canvas.getByRole("columnheader", { name: /^ID/ });
+    const joined = canvas.getByRole("columnheader", { name: /^Joined/ });
+    await expect(id).toHaveAttribute("data-pinned", "start");
+    await expect(getComputedStyle(id).borderInlineEndWidth).toBe("0px");
+    await expect(getComputedStyle(joined).borderInlineStartWidth).toBe("0px");
+  },
+};
+
+type Invoice = { id: string; month: string; amount: string };
+const INVOICES: Invoice[] = [
+  { id: "1", month: "10/2026", amount: "$249.90" },
+  { id: "2", month: "09/2026", amount: "$249.90" },
+];
+const INVOICE_COLUMNS: ColumnDef<DataGridFeatures, Invoice>[] = [
+  { accessorKey: "month", header: "Month", size: 160, meta: { autoSize: true } },
+  { accessorKey: "amount", header: "Amount", size: 140 },
+];
+
+/** The invoices of a card: the grid spans the card's edges and closes it. */
+function InvoicesCard({ paginated = false }: { paginated?: boolean }) {
+  const table = useTable({
+    features: dataGridFeatures,
+    data: INVOICES,
+    columns: INVOICE_COLUMNS,
+    getRowId: (row: Invoice) => row.id,
+  });
+  return (
+    <Card className="w-[480px]">
+      <CardHeader>
+        <CardTitle>Invoices</CardTitle>
+      </CardHeader>
+      <CardContent bleed={paginated || "end"}>
+        <DataGrid
+          table={table}
+          recordCount={INVOICES.length}
+          tableLayout={{ headerBackground: true }}
+        >
+          <DataGridContainer flush>
+            <DataGridTable aria-label="Invoices" />
+          </DataGridContainer>
+          {paginated && <DataGridPagination className="px-(--card-spacing)" />}
+        </DataGrid>
+      </CardContent>
+    </Card>
+  );
+}
+
+/**
+ * In a `CardContent bleed="end"`, a `flush` container spans the card's edges and closes it:
+ * no side or bottom borders, no corners, and the cells' padding lines the text up with the card's.
+ */
+export const InACard: Story = {
+  render: () => <InvoicesCard />,
+  play: async ({ canvasElement }) => {
+    const card = canvasElement.querySelector<HTMLElement>("[data-slot=card]");
+    const grid = canvasElement.querySelector<HTMLElement>("[data-slot=data-grid-container]");
+    const title = canvasElement.querySelector<HTMLElement>("[data-slot=card-title]");
+    const cell = canvasElement.querySelector<HTMLElement>("tbody td");
+    if (!card || !grid || !title || !cell) throw new Error();
+    const cardBox = card.getBoundingClientRect();
+    const gridBox = grid.getBoundingClientRect();
+    await expect(Math.round(gridBox.left)).toBe(Math.round(cardBox.left));
+    await expect(Math.round(gridBox.right)).toBe(Math.round(cardBox.right));
+    await expect(Math.round(gridBox.bottom)).toBe(Math.round(cardBox.bottom));
+    // The card's edge closes it: no bottom border of its own.
+    await expect(getComputedStyle(grid).borderBottomWidth).toBe("0px");
+    const text = document.createRange();
+    text.selectNodeContents(cell);
+    await expect(Math.round(text.getBoundingClientRect().left)).toBe(
+      Math.round(title.getBoundingClientRect().left),
+    );
+  },
+};
+
+/** With the pagination below it, a `flush` grid keeps its bottom border, the line between them. */
+export const ShouldKeepTheFlushBottomBorderAbovePagination: Story = {
+  tags: ["!autodocs"],
+  render: () => <InvoicesCard paginated />,
+  play: async ({ canvasElement }) => {
+    const grid = canvasElement.querySelector<HTMLElement>("[data-slot=data-grid-container]");
+    if (!grid) throw new Error();
+    await expect(getComputedStyle(grid).borderBottomWidth).toBe("1px");
+    await expect(getComputedStyle(grid).borderLeftWidth).toBe("0px");
+  },
+};
+
+/** A Badge in some rows doesn't make them taller than the rows of plain text. */
+export const ShouldKeepRowsEvenWithBadges: Story = {
+  tags: ["!autodocs"],
+  args: {
+    columns: COLUMNS.map((column) =>
+      "accessorKey" in column && column.accessorKey === "status"
+        ? {
+            ...column,
+            cell: ({ row }) =>
+              row.original.status === "Active" ? (
+                <Badge>{row.original.status}</Badge>
+              ) : (
+                row.original.status
+              ),
+          }
+        : column,
+    ),
+  },
+  render: (args) => <UsersDataGrid {...args} />,
+  play: async ({ canvas }) => {
+    const rows = bodyRows(canvas) as HTMLElement[];
+    // The last row has no bottom border.
+    const heights = new Set(rows.slice(0, -1).map((row) => row.getBoundingClientRect().height));
+    await expect(heights.size).toBe(1);
+  },
+};
+
+/** Dense rows take a small Badge: it doesn't make them taller either. */
+export const ShouldKeepDenseRowsEvenWithSmallBadges: Story = {
+  tags: ["!autodocs"],
+  args: {
+    layout: { dense: true },
+    columns: COLUMNS.map((column) =>
+      "accessorKey" in column && column.accessorKey === "status"
+        ? {
+            ...column,
+            cell: ({ row }) =>
+              row.original.status === "Active" ? (
+                <Badge size="sm">{row.original.status}</Badge>
+              ) : (
+                row.original.status
+              ),
+          }
+        : column,
+    ),
+  },
+  render: (args) => <UsersDataGrid {...args} />,
+  play: async ({ canvas }) => {
+    const rows = bodyRows(canvas) as HTMLElement[];
+    const heights = new Set(rows.slice(0, -1).map((row) => row.getBoundingClientRect().height));
+    await expect(heights.size).toBe(1);
   },
 };

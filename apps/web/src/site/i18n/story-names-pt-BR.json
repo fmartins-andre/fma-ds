@@ -314,5 +314,9 @@
   "With Value": "Com valor",
   "Without Discard": "Sem Descartar",
   "Without Media": "Sem mídia",
-  "Year Granularity": "Granularidade de ano"
+  "Year Granularity": "Granularidade de ano",
+  "Primary": "Primária",
+  "Primary Variant": "Variante primária",
+  "Pinned Columns Without Divider": "Colunas fixas sem divisória",
+  "In A Card": "Num card"
 }

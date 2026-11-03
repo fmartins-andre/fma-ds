@@ -213,6 +213,22 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    `FmaNamespaces` com `declare global` e leia com `useFmaMessages("<item>", <item>En, props.i18n)`;
    o arquivo precisa de `"use client"`. `tests/i18n-coverage.test.ts` impõe.
 
+14. **Itens pragmáticos, dependências invertidas**: busque sempre a melhor prática de arquitetura,
+   principalmente a inversão de dependências.
+   - **Componentes (`core`)** resolvem o próprio problema e não conhecem outros itens: nada de
+     seletor, `data-slot`, variável CSS ou prop pensados para um componente ou bloco específico
+     (o `Card` procurando o `DataGrid`, o `DataGrid` procurando o `PanelCard`). Um componente
+     só conhece as próprias partes.
+   - **Blocos** podem compor componentes, mas também devem ser o mais pragmáticos possível.
+   - **Sem API redundante**, em nenhum dos dois: nada de preset ou helper que só reempacota a lib
+     por baixo (uma `ColumnDef` pronta), e nada de efeito para o que o estado inicial já resolve
+     (`initialState`). Antes de criar prop, variante ou export, veja se o consumidor já consegue
+     com a API existente; se consegue, mostre o padrão numa story em vez de criar API.
+   - **Dependências apontam de cima para baixo**: o nível mais alto (bloco, app) configura o mais
+     baixo por props, `className` ou variáveis CSS neutras com fallback (`--sticky-offset`,
+     `--page-gutter`, `--sticky-top`), nunca o contrário. Um bloco não depende de outro que
+     depende dele: quem compõe é quem mede e repassa (o `AppShellMain` mede o `PageHeader`).
+
 ## Estilo de código
 
 - Biome é lint + formatter (sem ESLint/Prettier): 2 espaços, aspas duplas, ponto-e-vírgula,

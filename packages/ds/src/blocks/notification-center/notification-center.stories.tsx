@@ -369,3 +369,26 @@ export const Urgent: Story = {
     await expect(canvas.getByRole("button", { name: "Notificações, 2 não lidas" })).toBeVisible();
   },
 };
+
+/** `size="sm"`: a 32px bell for a compact top bar, beside glances in `size="sm"`. */
+export const Small: Story = {
+  render: function SmallExample() {
+    const { notifications, markAsRead, markAllAsRead, remove } =
+      useNotifications(initialNotifications);
+    return (
+      <NotificationMenu
+        size="sm"
+        notifications={notifications}
+        onMarkAsRead={markAsRead}
+        onMarkAllAsRead={markAllAsRead}
+        onDelete={remove}
+        viewAllHref="/notificacoes"
+        i18n={ptBR}
+      />
+    );
+  },
+  play: async ({ canvas }) => {
+    const bell = canvas.getByRole("button", { name: "Notificações, 2 não lidas" });
+    await expect(bell.getBoundingClientRect().height).toBe(32);
+  },
+};

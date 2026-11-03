@@ -154,15 +154,28 @@ function SettingsSection({
  * the save state (announced politely), Discard when the form has `onReset`,
  * and Save. `children` go before the buttons (a "last saved" note, a help link).
  */
-function SettingsFormFooter({ className, children, ...props }: React.ComponentProps<"div">) {
+function SettingsFormFooter({
+  className,
+  children,
+  framed = true,
+  ...props
+}: React.ComponentProps<"div"> & {
+  /**
+   * `false` drops its own bar (sticky, separator, background), so it fits a footer that
+   * frames it (a sticky `CardFooter`): it only takes the full width there.
+   */
+  framed?: boolean;
+}) {
   const { isDirty, isPending, onReset, labels } = useSettingsForm();
   const status = isPending ? labels.saving : isDirty ? labels.unsaved : labels.saved;
 
   return (
     <div
       data-slot="settings-form-footer"
+      data-framed={framed || undefined}
       className={cn(
-        "sticky bottom-0 z-10 flex flex-wrap items-center gap-3 border-t bg-background py-3",
+        "flex w-full flex-wrap items-center gap-3",
+        framed && "sticky bottom-0 z-10 border-t bg-background py-3",
         className,
       )}
       {...props}

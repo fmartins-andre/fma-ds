@@ -3,6 +3,6 @@
   "category": "overlay",
   "status": "stable",
   "source": "customized",
-  "description": "A modal window layered over the page, requiring explicit action (or Escape) to dismiss. Pair with react-aria-components' DialogTrigger to wire up the trigger and open state.",
+  "description": "A modal window layered over the page, requiring explicit action (or Escape) to dismiss. Pair with react-aria-components' DialogTrigger to wire up the trigger and open state.\n\n`DialogFooter sticky` keeps the footer at the bottom while a long dialog scrolls, flush with the dialog's edge and on an opaque surface.",
   "tags": ["react-aria", "modal", "overlay"]
 }

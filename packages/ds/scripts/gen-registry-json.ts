@@ -125,12 +125,14 @@ export function detectNpmDependencies(source: string): string[] {
 export function detectRegistryDependencies(source: string, componentId: string): string[] {
   const code = stripComments(source);
   const deps = new Set<string>();
-  // Another core component via the "@/core/x/x" alias, or a published lib/hook
-  // via "@/lib/x", "@/lib/x/sub" or "@/hooks/x". "@/lib/utils" is skipped: it's
-  // the standard shadcn alias every consumer already has, not a registry item.
+  // Another core component via the "@/core/x/x" alias, a published lib/hook
+  // via "@/lib/x", "@/lib/x/sub" or "@/hooks/x", or a block one block builds on
+  // via "@/blocks/x/<file>" (an app-shell on the page-header). "@/lib/utils" is
+  // skipped: it's the standard shadcn alias every consumer already has.
   const aliasImportRegexes = [
     /from\s+["']@\/core\/([^/"']+)\/\1["']/g,
     /from\s+["']@\/(?:lib|hooks)\/([^/"']+)(?:\/[^"']*)?["']/g,
+    /from\s+["']@\/blocks\/([^/"']+)\/[^"']+["']/g,
   ];
   for (const regex of aliasImportRegexes) {
     let match: RegExpExecArray | null;

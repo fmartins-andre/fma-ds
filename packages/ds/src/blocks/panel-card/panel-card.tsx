@@ -82,7 +82,16 @@ function PanelCard({
   const { labels } = useFmaMessages("panelCard", panelCardEn, i18n);
   return (
     <PanelCardContext.Provider value={labels}>
-      <Card data-slot="panel-card" className={cn("min-w-0", className)} {...props} />
+      <Card
+        data-slot="panel-card"
+        className={cn(
+          // The data-slot replaces the Card's, so the card's surface is handed to a grid here,
+          // and a body that closes the card drops its bottom padding.
+          "min-w-0 [--data-grid-card-surface:var(--card)] has-[>[data-slot=panel-card-body][data-bleed=end]]:pb-0",
+          className,
+        )}
+        {...props}
+      />
     </PanelCardContext.Provider>
   );
 }
@@ -198,10 +207,16 @@ function PanelCardBody({
   onRetry,
   emptyState,
   errorState,
+  bleed = false,
   className,
   children,
   ...props
 }: React.ComponentProps<"div"> & {
+  /**
+   * Drops the side padding, so a table spans the card's edges; `"end"` also drops
+   * the card's bottom padding, for a body that closes the card.
+   */
+  bleed?: boolean | "end";
   isLoading?: boolean;
   isEmpty?: boolean;
   isError?: boolean;
@@ -254,8 +269,9 @@ function PanelCardBody({
   return (
     <div
       data-slot="panel-card-body"
+      data-bleed={bleed === "end" ? "end" : bleed ? "" : undefined}
       aria-busy={isLoading || undefined}
-      className={cn("flex min-w-0 flex-1 flex-col px-(--card-spacing)", className)}
+      className={cn("flex min-w-0 flex-1 flex-col px-(--card-spacing)", bleed && "px-0", className)}
       {...props}
     >
       {content}
