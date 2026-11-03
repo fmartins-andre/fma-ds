@@ -26,6 +26,7 @@ import {
   NotificationItemDate,
   NotificationItemMedia,
   NotificationItemMessage,
+  NotificationItemStatus,
   NotificationItemTitle,
   NotificationList,
   NotificationMenu,
@@ -310,8 +311,9 @@ export const Page: Story = {
 
 /**
  * Items composed from their parts: `children` on the list renders each one.
- * Here the media is an icon tile per kind, the date sits above the title and
- * an "Archive" action joins read/delete. The list's handlers still apply.
+ * Here the media is an icon tile per kind, the date sits above the title, and
+ * the status badge sits with the actions, joined by an "Archive" one. The
+ * list's handlers still apply.
  */
 export const ComposedItems: Story = {
   parameters: { layout: "padded" },
@@ -338,6 +340,7 @@ export const ComposedItems: Story = {
               <NotificationItemMessage />
             </NotificationItemContent>
             <NotificationItemActions>
+              <NotificationItemStatus className="mr-2" />
               <NotificationItemAction label="Arquivar" onPress={() => remove(notification.id)}>
                 <ArchiveIcon />
               </NotificationItemAction>
