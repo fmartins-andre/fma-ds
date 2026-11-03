@@ -1,7 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { SparklesIcon } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
+import { Field, FieldLabel } from "@/core/field/field";
 import meta from "./meta.json";
-import { Slider } from "./slider";
+import {
+  Slider,
+  SliderControl,
+  SliderDescription,
+  SliderFill,
+  SliderLabel,
+  SliderMarks,
+  SliderThumb,
+  SliderTrack,
+  SliderValue,
+} from "./slider";
 
 const componentMeta = {
   title: "ds/Slider",
@@ -19,6 +31,7 @@ const componentMeta = {
   },
   args: {
     defaultValue: 33,
+    "aria-label": "Volume",
   },
   render: (args) => (
     <div className="w-64">
@@ -47,7 +60,7 @@ export const Range: Story = {
 };
 
 export const Vertical: Story = {
-  args: { orientation: "vertical", marks: [0, 50, 100] },
+  args: { orientation: "vertical", "aria-label": "Volume" },
   parameters: {
     docs: {
       description: {
@@ -57,7 +70,15 @@ export const Vertical: Story = {
   },
   render: (args) => (
     <div className="h-40">
-      <Slider {...args} />
+      <Slider {...args}>
+        <SliderControl>
+          <SliderTrack>
+            <SliderFill />
+          </SliderTrack>
+          <SliderThumb />
+        </SliderControl>
+        <SliderMarks marks={[0, 50, 100]} />
+      </Slider>
     </div>
   ),
 };
@@ -70,24 +91,32 @@ export const Disabled: Story = {
 };
 
 /**
- * Stops for common amounts: `marks` under the track (a click moves the thumb
- * there), a `label` and the value shown with `formatValue`.
+ * The parts: `SliderLabel` and `SliderValue` (formatted by its `children`)
+ * above, `SliderMarks` under the track. Clicking a mark moves the thumb there.
  */
 export const WithMarks: Story = {
   args: {
-    label: "Pedidos por mês",
-    showValue: true,
-    formatValue: (value) => `${value} pedidos`,
     minValue: 0,
     maxValue: 500,
     step: 50,
     defaultValue: 100,
-    marks: [0, 100, 200, 300, 400, 500],
     onChangeEnd: fn(),
   },
   render: (args) => (
     <div className="w-80">
-      <Slider {...args} />
+      <Slider {...args}>
+        <div className="flex items-center gap-3">
+          <SliderLabel>Pedidos por mês</SliderLabel>
+          <SliderValue>{(value) => `${value} pedidos`}</SliderValue>
+        </div>
+        <SliderControl>
+          <SliderTrack>
+            <SliderFill />
+          </SliderTrack>
+          <SliderThumb />
+        </SliderControl>
+        <SliderMarks marks={[0, 100, 200, 300, 400, 500]} />
+      </Slider>
     </div>
   ),
   play: async ({ canvasElement, args }) => {
@@ -110,22 +139,33 @@ export const WithMarks: Story = {
 /** A range with currency formatting and custom mark labels; a mark moves the nearest thumb. */
 export const RangeWithMarks: Story = {
   args: {
-    label: "Receita mensal",
-    showValue: true,
     minValue: 0,
     maxValue: 100_000,
     step: 5_000,
     defaultValue: [20_000, 60_000],
     formatOptions: { style: "currency", currency: "BRL", maximumFractionDigits: 0 },
-    marks: [
-      { value: 0, label: "R$ 0" },
-      { value: 50_000, label: "R$ 50 mil" },
-      { value: 100_000, label: "R$ 100 mil" },
-    ],
   },
   render: (args) => (
     <div className="w-80">
-      <Slider {...args} />
+      <Slider {...args}>
+        <div className="flex items-center gap-3">
+          <SliderLabel>Receita mensal</SliderLabel>
+          <SliderValue />
+        </div>
+        <SliderControl>
+          <SliderTrack>
+            <SliderFill />
+          </SliderTrack>
+          <SliderThumb />
+        </SliderControl>
+        <SliderMarks
+          marks={[
+            { value: 0, label: "R$ 0" },
+            { value: 50_000, label: "R$ 50 mil" },
+            { value: 100_000, label: "R$ 100 mil" },
+          ]}
+        />
+      </Slider>
     </div>
   ),
   play: async ({ canvasElement }) => {
@@ -140,26 +180,34 @@ export const RangeWithMarks: Story = {
 /**
  * `limit` caps the value below `maxValue`: the scale keeps its marks, the
  * track above the limit is drawn as unavailable and its marks are disabled.
- * `description` says why, and screen readers hear it with the value.
+ * `SliderDescription` says why, and screen readers hear it with the value.
  */
 export const Limit: Story = {
   args: {
-    label: "Pedidos adicionais",
-    showValue: true,
-    formatValue: (value) => `${value} pedidos`,
     minValue: 0,
     maxValue: 60,
     step: 10,
     defaultValue: 10,
     limit: 20,
-    description: "Só 20 disponíveis neste ciclo.",
-    marks: [0, 10, 20, 30, 40, 50, 60],
     onChange: fn(),
     onChangeEnd: fn(),
   },
   render: (args) => (
     <div className="w-80">
-      <Slider {...args} />
+      <Slider {...args}>
+        <div className="flex items-center gap-3">
+          <SliderLabel>Pedidos adicionais</SliderLabel>
+          <SliderValue>{(value) => `${value} pedidos`}</SliderValue>
+        </div>
+        <SliderControl>
+          <SliderTrack>
+            <SliderFill />
+          </SliderTrack>
+          <SliderThumb />
+        </SliderControl>
+        <SliderMarks marks={[0, 10, 20, 30, 40, 50, 60]} />
+        <SliderDescription>Só 20 disponíveis neste ciclo.</SliderDescription>
+      </Slider>
     </div>
   ),
   play: async ({ canvasElement, args }) => {
@@ -180,5 +228,79 @@ export const Limit: Story = {
 
     await userEvent.keyboard("{Home}");
     await expect(slider).toHaveValue("0");
+  },
+};
+
+/**
+ * Every part takes a `className`, and `SliderThumb` takes `children`: here a
+ * gradient fill, a thicker track and a bigger thumb with an icon standing in
+ * for a logo. Marks, limit and the keyboard work as usual.
+ */
+export const CustomThumb: Story = {
+  args: {
+    minValue: 0,
+    maxValue: 60,
+    step: 10,
+    defaultValue: 20,
+    limit: 40,
+  },
+  render: (args) => (
+    <div className="w-80">
+      <Slider {...args}>
+        <div className="flex items-center gap-3">
+          <SliderLabel>Notas adicionais</SliderLabel>
+          <SliderValue>{(value) => `${value} notas`}</SliderValue>
+        </div>
+        <SliderControl>
+          <SliderTrack className="bg-primary/20 data-horizontal:h-3">
+            <SliderFill className="bg-linear-to-r from-secondary via-secondary to-primary" />
+          </SliderTrack>
+          <SliderThumb className="size-8 border-primary/50 bg-primary shadow">
+            <SparklesIcon aria-hidden="true" className="size-4 text-primary-foreground" />
+          </SliderThumb>
+        </SliderControl>
+        <SliderMarks marks={[0, 10, 20, 30, 40, 50, 60]} />
+        <SliderDescription>Só 40 disponíveis neste ciclo.</SliderDescription>
+      </Slider>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const slider = canvas.getByRole("slider", { name: "Notas adicionais" });
+    const thumb = canvasElement.querySelector("[data-slot=slider-thumb]");
+    await expect(thumb?.querySelector("svg")).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole("button", { name: "30" }));
+    await expect(slider).toHaveValue("30");
+    await userEvent.keyboard("{End}");
+    await expect(slider).toHaveValue("40");
+    await expect(canvas.getByRole("button", { name: "50" })).toBeDisabled();
+  },
+};
+
+/** Inside a `Field`, a `FieldLabel` names it like any other form control. */
+export const InField: Story = {
+  args: { defaultValue: 40 },
+  render: (args) => (
+    <div className="w-80">
+      <Field>
+        <Slider {...args}>
+          <FieldLabel>Brilho</FieldLabel>
+          <SliderControl>
+            <SliderTrack>
+              <SliderFill />
+            </SliderTrack>
+            <SliderThumb />
+          </SliderControl>
+          <SliderDescription>Ajuste o brilho da tela.</SliderDescription>
+        </Slider>
+      </Field>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const slider = canvas.getByRole("slider", { name: "Brilho" });
+    await expect(slider).toHaveValue("40");
+    await expect(slider).toHaveAccessibleDescription("Ajuste o brilho da tela.");
   },
 };

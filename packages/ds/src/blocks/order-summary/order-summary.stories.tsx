@@ -4,6 +4,7 @@ import {
   CircleCheckIcon,
   CreditCardIcon,
   DownloadIcon,
+  FileTextIcon,
   QrCodeIcon,
   TriangleAlertIcon,
 } from "lucide-react";
@@ -34,6 +35,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/core/select/select";
+import {
+  Slider,
+  SliderControl,
+  SliderDescription,
+  SliderFill,
+  SliderLabel,
+  SliderMarks,
+  SliderThumb,
+  SliderTrack,
+  SliderValue,
+} from "@/core/slider/slider";
 import { Spinner } from "@/core/spinner/spinner";
 import meta from "./meta.json";
 import {
@@ -81,7 +93,7 @@ export const Default: Story = {
     const total = PLAN - ANNUAL_DISCOUNT - (useCashback ? CASHBACK : 0);
 
     return (
-      <div className="mx-auto grid max-w-5xl gap-6 p-6 pb-28 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start lg:pb-6">
+      <div className="mx-auto grid max-w-5xl gap-6 p-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <Card>
           <CardHeader>
             <CardTitle>Plano Pro</CardTitle>
@@ -158,7 +170,7 @@ export const Default: Story = {
 /** Who the order is for, on top: buying a contract for a selected customer. */
 export const SelectedEntity: Story = {
   render: () => (
-    <div className="mx-auto max-w-sm p-6 pb-28 lg:pb-6">
+    <div className="mx-auto max-w-sm p-6">
       <OrderSummary
         i18n={PT_BR}
         title="Resumo do pedido"
@@ -242,7 +254,7 @@ export const Checkout: Story = {
     }
 
     return (
-      <div className="mx-auto grid max-w-5xl gap-6 p-6 pb-28 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start lg:pb-6">
+      <div className="mx-auto grid max-w-5xl gap-6 p-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="flex min-w-0 flex-col gap-6">
           {isPaid ? (
             <Alert variant="success" role="status">
@@ -500,6 +512,112 @@ export const Checkout: Story = {
     if (pay) await userEvent.click(pay);
     await canvas.findByText("Pagamento aprovado");
     await expect(canvas.queryByRole("radio", { name: /Pix/ })).not.toBeInTheDocument();
+  },
+};
+
+const EXTRA_ORDER_PRICE = 0.5;
+const EXTRA_CASHBACK = 4;
+
+/**
+ * Buying a quantity, with the summary beside it: a `Slider` in a `Card` picks
+ * how many, up to the 20 left this cycle (`limit`, and its description says
+ * why), and the summary follows the price the app computes.
+ */
+export const QuantityPurchase: Story = {
+  render: () => {
+    const [quantity, setQuantity] = useState(10);
+    const [useCashback, setUseCashback] = useState(false);
+    const subtotal = quantity * EXTRA_ORDER_PRICE;
+    const discount = useCashback ? Math.min(EXTRA_CASHBACK, subtotal) : 0;
+
+    return (
+      <div className="mx-auto grid max-w-5xl gap-6 p-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+        <Card>
+          <CardHeader className="flex items-start gap-3">
+            <IconTile variant="soft" className="shrink-0 text-primary">
+              <FileTextIcon />
+            </IconTile>
+            <div className="flex min-w-0 flex-col gap-1">
+              <CardTitle>Pedidos adicionais</CardTitle>
+              <CardDescription>Pedidos extras além do seu plano neste ciclo.</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Slider
+              minValue={0}
+              maxValue={60}
+              step={10}
+              limit={20}
+              value={quantity}
+              onChange={setQuantity}
+            >
+              <div className="flex items-center gap-3">
+                <SliderLabel>Quantidade</SliderLabel>
+                <SliderValue className="text-base font-semibold text-foreground">
+                  {(value) => `${value} pedidos`}
+                </SliderValue>
+              </div>
+              <SliderControl>
+                <SliderTrack>
+                  <SliderFill />
+                </SliderTrack>
+                <SliderThumb />
+              </SliderControl>
+              <SliderMarks marks={[0, 10, 20, 30, 40, 50, 60]} />
+              <SliderDescription>Só 20 disponíveis neste ciclo.</SliderDescription>
+            </Slider>
+          </CardContent>
+        </Card>
+        {/* Spans the row, so the summary has room to stick while the page scrolls. */}
+        <div className="lg:self-stretch">
+          <OrderSummary
+            i18n={PT_BR}
+            title="Resumo da compra"
+            totalLabel="Total"
+            total={brl(subtotal - discount)}
+            action={
+              <Button size="lg" isDisabled={quantity === 0}>
+                Comprar
+              </Button>
+            }
+          >
+            <OrderSummaryLine
+              label="Pedidos adicionais"
+              description={`${quantity} × ${brl(EXTRA_ORDER_PRICE)}`}
+              value={brl(subtotal)}
+            />
+            <OrderSummaryOption
+              label="Usar saldo de cashback"
+              description={`Disponível: ${brl(EXTRA_CASHBACK)}`}
+              value={`− ${brl(Math.min(EXTRA_CASHBACK, subtotal))}`}
+              isSelected={useCashback}
+              onChange={setUseCashback}
+            />
+          </OrderSummary>
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const summary = within(
+      canvasElement.querySelector<HTMLElement>(
+        "[data-slot=card]:has([data-slot=order-summary-total])",
+      ) ?? canvasElement,
+    );
+    const total = () =>
+      canvasElement.querySelector("[data-slot=card] [data-slot=order-summary-total]");
+    const slider = canvas.getByRole("slider", { name: "Quantidade" });
+    await expect(slider).toHaveAccessibleDescription("Só 20 disponíveis neste ciclo.");
+    await expect(canvas.getByRole("button", { name: "40" })).toBeDisabled();
+
+    await userEvent.click(canvas.getByRole("button", { name: "20" }));
+    await userEvent.keyboard("{End}");
+    await expect(slider).toHaveValue("20");
+    await expect(total()).toHaveTextContent("R$ 10,00");
+
+    await userEvent.click(summary.getByRole("switch", { name: "Usar saldo de cashback" }));
+    await expect(total()).toHaveTextContent("R$ 6,00");
   },
 };
 

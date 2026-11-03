@@ -72,8 +72,8 @@ function OrderSummaryTotal({
  * `OrderSummaryOption`), the total and the action.
  * On large screens it's a card that sticks while the page scrolls (place it
  * in the side column); smaller, a bar fixed to the bottom shows the total and
- * the action, and opens the lines in a sheet. Leave room under the page
- * content for the bar (`pb-24 lg:pb-0`).
+ * the action, and opens the lines in a sheet. It reserves the bar's height
+ * where it sits, so keep it last in the page on small screens.
  */
 function OrderSummary({
   title,
@@ -138,6 +138,8 @@ function OrderSummary({
         </SheetTrigger>
         <div className="shrink-0">{action}</div>
       </div>
+      {/* Keeps the end of the page clear of the fixed bar. */}
+      <div aria-hidden="true" data-slot="order-summary-bar-spacer" className="h-16 lg:hidden" />
     </div>
   );
 }
