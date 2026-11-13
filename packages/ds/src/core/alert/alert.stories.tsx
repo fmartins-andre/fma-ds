@@ -138,3 +138,35 @@ export const WithAction: Story = {
     </Alert>
   ),
 };
+
+/**
+ * A status alert keeps its own surface: the tint sits on an opaque card layer, so a
+ * colored container behind it doesn't bleed through.
+ */
+export const ShouldNotBlendWithTheSurfaceBehind: Story = {
+  tags: ["!autodocs"],
+  args: { variant: "warning" },
+  render: (args) => (
+    <div className="grid gap-4">
+      <Alert {...args}>
+        <TriangleAlert />
+        <AlertTitle>On the page</AlertTitle>
+      </Alert>
+      <div className="bg-primary p-4">
+        <Alert {...args}>
+          <TriangleAlert />
+          <AlertTitle>On a colored panel</AlertTitle>
+        </Alert>
+      </div>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const [onPage, onPanel] = canvas.getAllByRole("alert");
+    if (!onPage || !onPanel) throw new Error("missing alerts");
+    const surface = getComputedStyle(onPanel).backgroundColor;
+    // Opaque: no alpha channel in the computed color.
+    await expect(surface).not.toMatch(/rgba|\/\s*0?\.\d|transparent/);
+    await expect(surface).toBe(getComputedStyle(onPage).backgroundColor);
+    await expect(getComputedStyle(onPanel).backgroundImage).toContain("gradient");
+  },
+};

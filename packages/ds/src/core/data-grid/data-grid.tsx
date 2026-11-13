@@ -1587,9 +1587,11 @@ function DataGridColumnHeader<TData extends RowData, TValue extends CellData>({
 
   if (!hasMenu) {
     return (
-      <span className={cn("inline-flex items-center gap-1.5", className)}>
+      <span
+        className={cn("inline-flex max-w-full items-center gap-1.5 [&_svg]:shrink-0", className)}
+      >
         {icon}
-        {label}
+        <span className="truncate">{label}</span>
         {sortIcon}
       </span>
     );
@@ -1632,16 +1634,21 @@ function DataGridColumnHeader<TData extends RowData, TValue extends CellData>({
     isOn ? <CheckIcon aria-hidden="true" className="ml-auto text-primary" /> : null;
 
   return (
-    <div className="-ms-2 flex items-center gap-1">
+    // A column narrower than its header (a `size` set in code; resizing stops at the header)
+    // truncates the label: the unpin button keeps its place inside the cell.
+    <div className="-ms-2 flex min-w-0 items-center gap-1">
       <DropdownMenuTrigger>
         <Button
           variant="ghost"
           size="sm"
           isDisabled={isLoading}
-          className={cn("h-7 gap-1.5 px-2 font-medium text-muted-foreground", className)}
+          className={cn(
+            "h-7 min-w-0 shrink gap-1.5 px-2 font-medium text-muted-foreground",
+            className,
+          )}
         >
           {icon}
-          {label}
+          <span className="truncate">{label}</span>
           {sortIcon}
         </Button>
         <DropdownMenu aria-label={labels.columnMenu(label)} className="w-44" onAction={onAction}>
