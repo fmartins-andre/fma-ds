@@ -100,7 +100,9 @@ function CardFooter({
       data-slot="card-footer"
       data-sticky={sticky || undefined}
       className={cn(
-        "flex items-center rounded-b-xl border-t bg-muted/50 p-(--card-spacing)",
+        // mt-auto: in a card stretched taller than its content (a grid row), the footer
+        // stays at the bottom instead of leaving a blank strip under it.
+        "mt-auto flex items-center rounded-b-xl border-t bg-muted/50 p-(--card-spacing)",
         sticky && "sticky bottom-0 z-10 bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))]",
         className,
       )}

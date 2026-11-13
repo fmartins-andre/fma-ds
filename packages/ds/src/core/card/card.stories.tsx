@@ -138,3 +138,38 @@ export const Bleed: Story = {
     await expect(Math.round(listBox.bottom)).toBe(Math.round(cardBox.bottom));
   },
 };
+
+/**
+ * A card stretched by its grid row keeps the footer at the bottom: no blank strip
+ * under it next to a taller neighbor.
+ */
+export const ShouldKeepTheFooterAtTheBottom: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <div className="grid w-160 grid-cols-2 gap-4">
+      <Card {...args}>
+        <CardHeader>
+          <CardTitle>Balance</CardTitle>
+        </CardHeader>
+        <CardContent>$341.22</CardContent>
+        <CardFooter>
+          <Button>Use now</Button>
+        </CardFooter>
+      </Card>
+      <Card {...args}>
+        <CardHeader>
+          <CardTitle>Summary</CardTitle>
+        </CardHeader>
+        <CardContent className="h-64">Taller content</CardContent>
+      </Card>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const card = canvasElement.querySelector<HTMLElement>("[data-slot=card]");
+    const footer = canvasElement.querySelector<HTMLElement>("[data-slot=card-footer]");
+    if (!card || !footer) throw new Error();
+    await expect(Math.round(footer.getBoundingClientRect().bottom)).toBe(
+      Math.round(card.getBoundingClientRect().bottom),
+    );
+  },
+};
