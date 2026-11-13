@@ -1477,6 +1477,25 @@ export const ShouldKeepTheAutoSizeWidthOnResize: Story = {
   },
 };
 
+/** Resizing stops at the width the header needs: its label and sort icon are never clipped. */
+export const ShouldNotResizeBelowTheHeader: Story = {
+  tags: ["!autodocs"],
+  args: { layout: { columnsResizable: true } },
+  render: (args) => <UsersDataGrid {...args} />,
+  play: async ({ canvas }) => {
+    const role = canvas.getByRole("columnheader", { name: /^Role/ });
+    const before = role.getBoundingClientRect().width;
+    dragResizer(resizerOf(role), -300);
+    await waitFor(() => expect(role.getBoundingClientRect().width).toBeLessThan(before - 40));
+    const cell = role.getBoundingClientRect();
+    const label = within(role).getByText("Role");
+    await expect(label.scrollWidth).toBeLessThanOrEqual(label.clientWidth);
+    const icon = role.querySelector("svg");
+    if (!icon) throw new Error("no sort icon");
+    await expect(icon.getBoundingClientRect().right).toBeLessThanOrEqual(cell.right);
+  },
+};
+
 /**
  * A pinned cell is opaque, so it repaints the row's hover color itself, with the row's
  * transition: it changes together with the rest of the row.
