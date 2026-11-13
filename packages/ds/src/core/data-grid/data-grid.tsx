@@ -120,7 +120,8 @@ type DataGridI18nLabels = {
   pin: string;
   pinColumnStart: string;
   pinColumnEnd: string;
-  unpinColumn: (column: string) => string;
+  /** Screen reader text for the pin icon in a pinned column's header. */
+  pinned: string;
   move: string;
   moveColumnLeft: string;
   moveColumnRight: string;
@@ -173,7 +174,7 @@ export const dataGridEn: DictionaryNamespace<DataGridI18nConfig> = {
     pin: "Pin",
     pinColumnStart: "Pin to start",
     pinColumnEnd: "Pin to end",
-    unpinColumn: (column) => `Unpin ${column} column`,
+    pinned: "Pinned",
     move: "Move",
     moveColumnLeft: "Move left",
     moveColumnRight: "Move right",
@@ -1585,6 +1586,21 @@ function DataGridColumnHeader<TData extends RowData, TValue extends CellData>({
 
   const hasMenu = canPin || layout.columnsMovable || (layout.columnsVisibility && visibility);
 
+  // A pinned column shows the pin beside the sort icon; unpinning is in the menu (the
+  // checked pin option toggles it off), so the header needs no extra button.
+  const status =
+    pinned || sortIcon ? (
+      <span className="flex shrink-0 items-center gap-0.5">
+        {pinned && (
+          <>
+            <PinIcon aria-hidden="true" className="size-3.5 opacity-60" />
+            <span className="sr-only">{labels.pinned}</span>
+          </>
+        )}
+        {sortIcon}
+      </span>
+    ) : null;
+
   if (!hasMenu) {
     return (
       <span
@@ -1592,7 +1608,7 @@ function DataGridColumnHeader<TData extends RowData, TValue extends CellData>({
       >
         {icon}
         <span className="truncate">{label}</span>
-        {sortIcon}
+        {status}
       </span>
     );
   }
@@ -1635,7 +1651,7 @@ function DataGridColumnHeader<TData extends RowData, TValue extends CellData>({
 
   return (
     // A column narrower than its header (a `size` set in code; resizing stops at the header)
-    // truncates the label: the unpin button keeps its place inside the cell.
+    // truncates the label: the pin and sort icons keep their place inside the cell.
     <div className="-ms-2 flex min-w-0 items-center gap-1">
       <DropdownMenuTrigger>
         <Button
@@ -1649,7 +1665,7 @@ function DataGridColumnHeader<TData extends RowData, TValue extends CellData>({
         >
           {icon}
           <span className="truncate">{label}</span>
-          {sortIcon}
+          {status}
         </Button>
         <DropdownMenu aria-label={labels.columnMenu(label)} className="w-44" onAction={onAction}>
           {canSort && (
@@ -1721,16 +1737,6 @@ function DataGridColumnHeader<TData extends RowData, TValue extends CellData>({
           )}
         </DropdownMenu>
       </DropdownMenuTrigger>
-      {canPin && pinned && (
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          aria-label={labels.unpinColumn(label)}
-          onPress={() => column.pin(false)}
-        >
-          <PinOffIcon aria-hidden="true" className="opacity-60" />
-        </Button>
-      )}
     </div>
   );
 }
