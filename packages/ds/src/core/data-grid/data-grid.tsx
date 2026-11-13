@@ -508,6 +508,28 @@ function getHeaderSpans<TData extends RowData>(families: DataGridColumn<TData>[]
  * the covered cells; their widths are measured, which holds for `1fr` columns
  * and follows a resize.
  */
+/**
+ * The width a header cell needs to show its content unclipped: its content laid out at
+ * its natural width (a hidden copy, so the cell itself doesn't move), plus the cell's
+ * horizontal padding.
+ */
+function headerContentWidth(header: HTMLElement) {
+  const content = header.firstElementChild;
+  if (!(content instanceof HTMLElement)) return 0;
+  const copy = content.cloneNode(true) as HTMLElement;
+  copy.setAttribute("aria-hidden", "true");
+  copy.style.cssText = "position:absolute;visibility:hidden;pointer-events:none;width:max-content;";
+  for (const flexible of copy.querySelectorAll<HTMLElement>(".min-w-0"))
+    flexible.style.flex = "none";
+  header.append(copy);
+  const width = copy.getBoundingClientRect().width;
+  copy.remove();
+  const style = getComputedStyle(header);
+  return Math.ceil(
+    width + Number.parseFloat(style.paddingInlineStart) + Number.parseFloat(style.paddingInlineEnd),
+  );
+}
+
 function useHeaderSpanWidths(
   containerRef: React.RefObject<HTMLDivElement | null>,
   spans: Map<string, { id: string }[]>,
@@ -727,8 +749,20 @@ function DataGridTable<TData extends RowData = RowData>({
   // shrink it to compensate. When a handle is grabbed, it keeps the width it had; from then
   // on it has a size of its own, can be resized too, and the table grows instead.
   const frozenWidthsRef = React.useRef(new Map<string, number>());
+  // The width each grabbed column's header needs (label, sort icon, menu and padding):
+  // resizing stops there instead of clipping the header. Measured when the handle is
+  // grabbed, and never below the column's own `minSize`.
+  const [headerMinWidths, setHeaderMinWidths] = React.useState<Record<string, number>>({});
+  const minWidthOf = (columnId: string, minSize: number | undefined) =>
+    Math.max(minSize ?? 0, headerMinWidths[columnId] ?? 0) || undefined;
   const grabResizer = (columnId: string) => {
     resizingColumnRef.current = columnId;
+    const grabbed = containerRef.current?.querySelector<HTMLElement>(
+      `[role=columnheader][data-column-id="${CSS.escape(columnId)}"]`,
+    );
+    const needed = grabbed ? headerContentWidth(grabbed) : 0;
+    if (needed && headerMinWidths[columnId] !== needed)
+      setHeaderMinWidths((old) => ({ ...old, [columnId]: needed }));
     frozenWidthsRef.current.clear();
     for (const column of columns) {
       if (!column.columnDef.meta?.autoSize || column.id in state.columnSizing) continue;
@@ -825,7 +859,7 @@ function DataGridTable<TData extends RowData = RowData>({
                 textValue={ownerLabel}
                 isRowHeader={column.id === rowHeaderId}
                 width={fixed ? width : undefined}
-                minWidth={fixed ? column.columnDef.minSize : undefined}
+                minWidth={fixed ? minWidthOf(column.id, column.columnDef.minSize) : undefined}
                 style={pinningStyle(column, 2)}
                 {...pinningAttributes(column)}
                 data-column-id={column.id}
@@ -874,7 +908,7 @@ function DataGridTable<TData extends RowData = RowData>({
               isRowHeader={column.id === rowHeaderId}
               allowsSorting={column.getCanSort() && !showSkeleton}
               width={fixed ? width : undefined}
-              minWidth={fixed ? column.columnDef.minSize : undefined}
+              minWidth={fixed ? minWidthOf(column.id, column.columnDef.minSize) : undefined}
               // Header cells stack above body cells; an owner above the cells it covers.
               style={
                 pinningStyle(column, isSpanOwner ? 3 : 2) ??
