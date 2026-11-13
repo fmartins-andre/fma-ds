@@ -1,5 +1,9 @@
 # Estados de acesso no `app-sidebar`: plano de implementação
 
+> **Concluído** no PR #36. Mantido como registro; os checkboxes foram marcados no fechamento, não
+> durante a execução. Onde o plano diverge do código (`data.nav`, `hidden`, `url`), vale o desenho
+> revisado da [spec](app-sidebar-access.md).
+
 > **Para agentes:** SUB-SKILL OBRIGATÓRIA: use superpowers:subagent-driven-development (recomendado)
 > ou superpowers:executing-plans para executar este plano tarefa por tarefa. Os passos usam checkbox
 > (`- [ ]`) para acompanhamento.
@@ -53,7 +57,7 @@ indicada:
 **Interfaces:**
 - Produz: `isInactive?: boolean` em `SidebarMenuButton` e `SidebarMenuSubButton`.
 
-- [ ] **Passo 1: criar o branch**
+- [x] **Passo 1: criar o branch**
 
 ```bash
 git switch main && git pull && git switch -c feat/app-sidebar-access
@@ -61,7 +65,7 @@ git add docs/plans/app-sidebar-access.md docs/plans/app-sidebar-access-implement
 git commit -m "docs: plan the app-sidebar access states"
 ```
 
-- [ ] **Passo 2: escrever a story `InactiveItem`, que falha**
+- [x] **Passo 2: escrever a story `InactiveItem`, que falha**
 
 Composição com um item `isInactive href="/billing"` ("Billing") e um `SidebarMenuSubButton` igual
 ("Plans"), e a mesma estrutura da `Default`, mais `SidebarMenuSub`. O `play`:
@@ -83,12 +87,12 @@ await expect(getComputedStyle(item).pointerEvents).not.toBe("none");
 `navigate` é um `fn()` em um `RouterProvider` no `decorators`. Repita as asserções de `aria-disabled`
 e `href` para "Plans".
 
-- [ ] **Passo 3: confirmar a falha**
+- [x] **Passo 3: confirmar a falha**
 
 Rode: `pnpm --filter @fma-ds/ds exec vitest run --project storybook src/core/sidebar`
 Esperado: FALHA, porque `isInactive` ainda não existe e o item é link.
 
-- [ ] **Passo 4: implementar `isInactive` nos dois botões**
+- [x] **Passo 4: implementar `isInactive` nos dois botões**
 
 - Com `isInactive`, renderiza sempre `ButtonPrimitive`, removendo `href`, `target`, `rel` e `onPress`
   das props.
@@ -101,16 +105,16 @@ Esperado: FALHA, porque `isInactive` ainda não existe e o item é link.
   inclua `data-inactive:[&>svg]:text-sidebar-foreground/50`.
 - Sem `tooltip` ativo, nada muda; `isInactive` não afeta o `TooltipTrigger`.
 
-- [ ] **Passo 5: confirmar que passa**
+- [x] **Passo 5: confirmar que passa**
 
 Rode: `pnpm --filter @fma-ds/ds exec vitest run --project storybook src/core/sidebar`
 Esperado: PASSA.
 
-- [ ] **Passo 6: documentar em `meta.json`**
+- [x] **Passo 6: documentar em `meta.json`**
 
 Acrescente à descrição uma frase sobre `isInactive`: visível e focável, mas não navega.
 
-- [ ] **Passo 7: regenerar e fazer commit**
+- [x] **Passo 7: regenerar e fazer commit**
 
 ```bash
 pnpm --filter @fma-ds/ds build
@@ -136,7 +140,7 @@ git commit -m "feat(ui): add an inactive state to the sidebar menu buttons"
   - `externalLinkProps(item): { target?: "_blank"; rel?: string }`: vazio sem `external` ou com
     `blocked`.
 
-- [ ] **Passo 1: escrever os testes, que falham**
+- [x] **Passo 1: escrever os testes, que falham**
 
 Importe de `@/blocks/app-sidebar/nav-access`. Casos, com `s = (...items) => [{ title: "S", items }]`:
 
@@ -155,21 +159,21 @@ it("opens external links in a new tab", ...); // {target:"_blank", rel:"noopener
 it("ignores external on a blocked item", ...); // {}
 ```
 
-- [ ] **Passo 2: confirmar a falha**
+- [x] **Passo 2: confirmar a falha**
 
 Rode: `pnpm exec vitest run --project unit packages/ds/tests/app-sidebar-nav-access.test.ts`
 Esperado: FALHA ao resolver `@/blocks/app-sidebar/nav-access`.
 
-- [ ] **Passo 3: implementar `types.ts` e `nav-access.ts`**
+- [x] **Passo 3: implementar `types.ts` e `nav-access.ts`**
 
 Copie o comentário do contrato da spec, incluindo que `gated` só informa. `visibleNav` não muda a
 ordem nem cria objetos para itens sem subitens filtrados.
 
-- [ ] **Passo 4: confirmar que passa**
+- [x] **Passo 4: confirmar que passa**
 
 Rode o comando do Passo 2 e `pnpm type-check`. Esperado: tudo PASSA.
 
-- [ ] **Passo 5: fazer commit**
+- [x] **Passo 5: fazer commit**
 
 ```bash
 pnpm --filter @fma-ds/ds build
@@ -192,7 +196,7 @@ git commit -m "feat(ui): add the access contract to the app-sidebar items"
   AppSidebarNavSubItem; externalLabel: string; withDot?: boolean })`.
 - Produz: `AppSidebarProps["i18n"]`, `appSidebarEn` e `NavSection({ section, externalLabel })`.
 
-- [ ] **Passo 1: escrever as stories, que falham**
+- [x] **Passo 1: escrever as stories, que falham**
 
 Crie em `app-sidebar.stories.tsx` a constante `ACCESS_NAV`, com uma seção "Workspace":
 
@@ -233,12 +237,12 @@ export const ShouldNotNavigateBlockedItem: Story = {
 - `ShouldShowBlockedSubItem`: em um pai `granted` expandido, subitem `blocked` é `button` com
   `aria-disabled` e não navega.
 
-- [ ] **Passo 2: confirmar a falha**
+- [x] **Passo 2: confirmar a falha**
 
 Rode: `pnpm --filter @fma-ds/ds exec vitest run --project storybook src/blocks/app-sidebar`
 Esperado: as stories novas FALHAM.
 
-- [ ] **Passo 3: implementar `NavItemStatus`**
+- [x] **Passo 3: implementar `NavItemStatus`**
 
 Renderiza, nesta ordem e quando houver `badge`:
 
@@ -258,7 +262,7 @@ const TONE_DOT = { neutral: "bg-muted-foreground", primary: "bg-primary", succes
 
 O `tone` padrão é `primary` para `gated` e `neutral` para os demais.
 
-- [ ] **Passo 4: ligar em `nav-section.tsx` e `app-sidebar.tsx`**
+- [x] **Passo 4: ligar em `nav-section.tsx` e `app-sidebar.tsx`**
 
 - `app-sidebar.tsx` declara `AppSidebarConfig = { labels: { opensInNewTab: string } }`, `appSidebarEn`
   (`"opens in new tab"`) e `declare global { interface FmaNamespaces { appSidebar: AppSidebarConfig } }`,
@@ -270,7 +274,7 @@ O `tone` padrão é `primary` para `gated` e `neutral` para os demais.
   `className="truncate"`, seguido de `<NavItemStatus withDot />`.
 - `SidebarMenuSubButton` em `CollapseItem`: mesmo tratamento, sem `withDot`.
 
-- [ ] **Passo 5: adicionar a tradução**
+- [x] **Passo 5: adicionar a tradução**
 
 ```ts
 export const appSidebarPtBR = defineFmaNamespace("appSidebar", {
@@ -280,12 +284,12 @@ export const appSidebarPtBR = defineFmaNamespace("appSidebar", {
 
 Importe e inclua `appSidebar: appSidebarPtBR` em `i18n-pt-br.ts`.
 
-- [ ] **Passo 6: confirmar que passa**
+- [x] **Passo 6: confirmar que passa**
 
 Rode o comando do Passo 2 e `pnpm exec vitest run --project unit packages/ds/tests/i18n-coverage.test.ts`.
 Esperado: PASSAM, incluindo as stories que já existiam, com nomes como `"Home"` inalterados.
 
-- [ ] **Passo 7: fazer commit**
+- [x] **Passo 7: fazer commit**
 
 ```bash
 pnpm --filter @fma-ds/ds build
@@ -302,7 +306,7 @@ git commit -m "feat(ui): show access states on app-sidebar items"
 **Interfaces:**
 - Consome: `isExpandable`, `itemLabel` (Tarefa 2); `NavItemStatus` (Tarefa 3).
 
-- [ ] **Passo 1: escrever as stories, que falham**
+- [x] **Passo 1: escrever as stories, que falham**
 
 `CollapsedAccess` (autodocs) recolhe a sidebar com o trigger, como `CollapsedToIcons`, e restaura ao
 final. `AccessCombinations` (autodocs) mistura pais e filhos em todos os estados. Regressões:
@@ -318,12 +322,12 @@ final. `AccessCombinations` (autodocs) mistura pais e filhos em todos os estados
 - `ShouldShowReasonInCollapsedTooltip`: recolhida, foco por teclado em "Reports"; `findByRole("tooltip")`
   tem o texto `"Reports, No access"`.
 
-- [ ] **Passo 2: confirmar a falha**
+- [x] **Passo 2: confirmar a falha**
 
 Rode: `pnpm --filter @fma-ds/ds exec vitest run --project storybook src/blocks/app-sidebar`
 Esperado: as stories novas FALHAM.
 
-- [ ] **Passo 3: implementar em `nav-section.tsx`**
+- [x] **Passo 3: implementar em `nav-section.tsx`**
 
 - O ramo de item simples passa a ser `if (!isExpandable(item))`.
 - `CollapseItem` e `DropdownItem`: `<span className="truncate">` no título, `<NavItemStatus withDot />`
@@ -334,11 +338,11 @@ Esperado: as stories novas FALHAM.
 - `NavItemStatus` no subitem do dropdown fica visível: como o badge usa
   `group-data-[collapsible=icon]:hidden` e o menu abre em portal, confirme isso na story.
 
-- [ ] **Passo 4: confirmar que passa**
+- [x] **Passo 4: confirmar que passa**
 
 Rode o comando do Passo 2. Esperado: PASSA.
 
-- [ ] **Passo 5: fazer commit**
+- [x] **Passo 5: fazer commit**
 
 ```bash
 pnpm --filter @fma-ds/ds build
@@ -353,24 +357,24 @@ git commit -m "feat(ui): apply access states to app-sidebar parents and menus"
 - Modificar: `apps/web/src/site/i18n/items-pt-BR.json`, `story-names-pt-BR.json`, `stories-pt-BR.json`,
   `story-text-pt-BR.json`, `story-text-en.json`
 
-- [ ] **Passo 1: atualizar a descrição do bloco**
+- [x] **Passo 1: atualizar a descrição do bloco**
 
 Acrescente em `meta.json` um item **Acesso**: `access`, `badge` e `external`, com a frase de que
 `gated` só informa e a aplicação guarda a rota. Traduza para o mesmo item em `items-pt-BR.json`.
 Sincronize a descrição de `sidebar` (Tarefa 1).
 
-- [ ] **Passo 2: listar o que falta**
+- [x] **Passo 2: listar o que falta**
 
 Rode: `pnpm exec vitest run --project unit packages/ds/tests/site-translations.test.ts`
 Esperado: FALHA, listando os textos, descrições e nomes das stories novas.
 
-- [ ] **Passo 3: completar os dicionários**
+- [x] **Passo 3: completar os dicionários**
 
 Em pt-BR, use os rótulos: "Sem acesso", "Em breve", "Upgrade", "Pagamento pendente", "Novo". Em
 `story-names-pt-BR.json`: "Bloqueado", "Liberado com aviso", "Badges", "Link externo", "Acesso com a
 barra recolhida" e "Combinações de acesso".
 
-- [ ] **Passo 4: verificar tudo**
+- [x] **Passo 4: verificar tudo**
 
 ```bash
 pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build && pnpm --filter @fma-ds/ds test:storybook
@@ -378,12 +382,12 @@ pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build && p
 
 Esperado: tudo PASSA.
 
-- [ ] **Passo 5: conferir no browser**
+- [x] **Passo 5: conferir no browser**
 
 Com `pnpm storybook`, veja as stories de acesso expandidas e recolhidas, em tema claro e escuro, e em
 largura de celular. Confira título longo com badge longo: o título trunca, o badge não.
 
-- [ ] **Passo 6: fazer commit**
+- [x] **Passo 6: fazer commit**
 
 ```bash
 git add packages/ds/src/blocks/app-sidebar apps/web/src/site/i18n packages/ds/registry.json apps/web/public/r
@@ -419,7 +423,7 @@ Revisão no topo da [spec](app-sidebar-access.md). As Tarefas 1 a 5 já estão f
   `useFmaMessages("appSidebar", appSidebarEn)` por um contexto do bloco com `i18n`, e o namespace passa
   para `nav-items.tsx`. `AppSidebar` continua aceitando `i18n`.
 
-- [ ] **Passo 1: reescrever as stories, que falham**
+- [x] **Passo 1: reescrever as stories, que falham**
 
 Cada story passa a ter `render` com a composição real, e `SidebarProvider`, `SidebarInset` e
 `SidebarTrigger` vão para `decorators`. Mantenha os mesmos nomes e `play`, com estas mudanças:
@@ -428,16 +432,16 @@ Cada story passa a ter `render` com a composição real, e `SidebarProvider`, `S
 - Novas: `ShouldDropEmptyParent` e `ShouldDropEmptySection`.
 - `AUTOMATIONS`, `REPORTS` e demais constantes viram props espalhadas (`<AppSidebarItem {...REPORTS} />`).
 
-- [ ] **Passo 2: confirmar a falha**
+- [x] **Passo 2: confirmar a falha**
 
 Rode: `pnpm --filter @fma-ds/ds exec vitest run --project storybook src/blocks/app-sidebar`
 Esperado: FALHA, porque `AppSidebarItem` ainda não existe.
 
-- [ ] **Passo 3: ajustar os testes de `nav-access`**
+- [x] **Passo 3: ajustar os testes de `nav-access`**
 
 Remova `visibleNav` e `isExpandable`; `externalLinkProps` testa `isExpandable: true`.
 
-- [ ] **Passo 4: implementar `nav-items.tsx` e os tipos**
+- [x] **Passo 4: implementar `nav-items.tsx` e os tipos**
 
 Mova a lógica de `nav-section.tsx`:
 
@@ -447,13 +451,13 @@ Mova a lógica de `nav-section.tsx`:
 - `AppSidebarSubItem`: contexto `"collapse" | "menu"`, com padrão `"collapse"`. `DropdownItem` envolve
   `DropdownMenu` no provider com `"menu"`.
 
-- [ ] **Passo 5: confirmar que passa**
+- [x] **Passo 5: confirmar que passa**
 
 Rode os comandos de Storybook do Passo 2 e, em unit, `tests/app-sidebar-nav-access.test.ts`,
 `tests/app-sidebar-badge-contrast.test.ts` e `tests/i18n-coverage.test.ts`.
 Esperado: PASSAM.
 
-- [ ] **Passo 6: fazer commit**
+- [x] **Passo 6: fazer commit**
 
 ```bash
 pnpm --filter @fma-ds/ds build
@@ -468,20 +472,20 @@ git commit -m "refactor(ui)!: compose the app-sidebar menus from sub-components"
 - Modificar: `packages/ds/src/blocks/app-sidebar/meta.json`
 - Modificar: `apps/web/src/site/i18n/items-pt-BR.json` e os dicionários `story-*`
 
-- [ ] **Passo 1: migrar `sidebar-preview.tsx`**
+- [x] **Passo 1: migrar `sidebar-preview.tsx`**
 
 Troque `data.nav` pela composição, com o mesmo conteúdo.
 
-- [ ] **Passo 2: atualizar `meta.json` e `items-pt-BR.json`**
+- [x] **Passo 2: atualizar `meta.json` e `items-pt-BR.json`**
 
 Descreva `AppSidebarSection`, `AppSidebarItem` e `AppSidebarSubItem`, e o limite da contagem de filhos.
 
-- [ ] **Passo 3: alinhar os dicionários**
+- [x] **Passo 3: alinhar os dicionários**
 
 Rode: `pnpm --filter @fma-ds/ds exec vitest run --project unit tests/site-translations.test.ts`
 Esperado: PASSA depois de remover os textos perdidos (como "Internal") e incluir os novos.
 
-- [ ] **Passo 4: verificar tudo**
+- [x] **Passo 4: verificar tudo**
 
 ```bash
 pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build && pnpm --filter @fma-ds/ds test:storybook && pnpm --filter web test:e2e
@@ -489,11 +493,11 @@ pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build && p
 
 Esperado: tudo PASSA. `test:e2e` entra porque o editor de temas mudou.
 
-- [ ] **Passo 5: conferir no browser**
+- [x] **Passo 5: conferir no browser**
 
 Veja `/themes` e as stories de acesso, expandidas e recolhidas, no tema padrão e no cobalt.
 
-- [ ] **Passo 6: fazer commit**
+- [x] **Passo 6: fazer commit**
 
 ```bash
 git add apps/web/src packages/ds/src/blocks/app-sidebar packages/ds/registry.json apps/web/public/r docs/plans

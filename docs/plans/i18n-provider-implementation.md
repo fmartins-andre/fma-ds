@@ -1,5 +1,8 @@
 # Provider de i18n: plano de implementação
 
+> **Concluído** (PRs #19–#23, #25 e #26). Mantido como registro; os checkboxes foram marcados no
+> fechamento, não durante a execução.
+
 > **Desenho revisado em 2026-10-31** (decisão do usuário). Onde este texto divergir, vale isto:
 >
 > - O inglês e os tipos ficam **no próprio componente**, não na lib. A lib não tem dicionário:
@@ -113,10 +116,10 @@ Testes: `packages/ds/tests/lib/i18n/*.test.ts(x)`, `tests/lib/i18n-pt-br.test.ts
 
 **Files:** `docs/plans/i18n-provider.md`, `docs/plans/i18n-provider-implementation.md`
 
-- [ ] **Step 1:** `pnpm lint` passa (só `.md` mudou).
-- [ ] **Step 2:** Commits: `docs: plan the i18n provider and the per-feature message injection`
+- [x] **Step 1:** `pnpm lint` passa (só `.md` mudou).
+- [x] **Step 2:** Commits: `docs: plan the i18n provider and the per-feature message injection`
   (feito) e `docs: switch the i18n plan to the i18next hybrid model`.
-- [ ] **Step 3:** Push e PR contra `main` (corpo: resumo do spec + link do plano). `gh stack init`
+- [x] **Step 3:** Push e PR contra `main` (corpo: resumo do spec + link do plano). `gh stack init`
   quando o PR 2 for criado em cima.
 
 ## PR 2: núcleo da lib (`feat/i18n-core`, empilhado no PR 1)
@@ -158,7 +161,7 @@ function getBrowserLocales(): string[];          // [] fora do browser
 `FmaNamespaces` é uma interface (não type) para que cada `messages/<ns>.ts` a estenda por
 declaration merging *dentro da lib*; nada de augmentation no app.
 
-- [ ] **Step 1: testes que falham**
+- [x] **Step 1: testes que falham**
   - `plural("pt-BR", 0, { "=0": "Nenhuma", one: "1 item", other: "# itens" })` → `"Nenhuma"`;
     `plural("pt-BR", 1, …)` → `"1 item"`; `plural("en", 2, { one: "a", other: "b" })` → `"b"`.
     (`#` não é interpolado: o `other` vem pronto da função; o teste usa template string.)
@@ -171,11 +174,11 @@ declaration merging *dentro da lib*; nada de augmentation no app.
   - `parseAcceptLanguage("en-US,en;q=0.9,pt-BR;q=0.95,*;q=0.1")` →
     `["en-US","pt-BR","en"]`; `null`/`""`/lixo → `[]`.
   - `getBrowserLocales()` em node → `[]`.
-- [ ] **Step 2:** `pnpm --filter @fma-ds/ds exec vitest run --project unit tests/lib/i18n` → FAIL.
-- [ ] **Step 3:** implementar. Negociação igual à do react-aria (exato → idioma+script → idioma
+- [x] **Step 2:** `pnpm --filter @fma-ds/ds exec vitest run --project unit tests/lib/i18n` → FAIL.
+- [x] **Step 3:** implementar. Negociação igual à do react-aria (exato → idioma+script → idioma
   → qualquer `idioma-*` → fallback). Caches de `Intl` em `Map` por `locale+JSON(options)`.
-- [ ] **Step 4:** testes passam.
-- [ ] **Step 5:** commit `feat(ui): add i18n types, Intl formatters and locale negotiation`.
+- [x] **Step 4:** testes passam.
+- [x] **Step 5:** commit `feat(ui): add i18n types, Intl formatters and locale negotiation`.
 
 ### Task 2: resolução de namespace (camadas e fábrica de `functions`)
 
@@ -194,7 +197,7 @@ da camada de dicionário mais forte que tiver uma, chamada com as seções **já
 overrides)**, e por cima as `functions` simples dos overrides, na ordem. Memoizar por identidade
 das camadas (WeakMap) para os componentes não refazerem a cada render.
 
-- [ ] **Step 1: testes que falham**
+- [x] **Step 1: testes que falham**
   - seção parcial do override só troca as chaves dadas (`{labels:{next:"Avançar"}}` mantém
     `previous`).
   - fábrica pt-BR chamada com `labels.today` vindo do override → a função formatada usa o texto do
@@ -202,8 +205,8 @@ das camadas (WeakMap) para os componentes não refazerem a cada render.
   - `functions` explícita na prop vence a fábrica.
   - camada `active` sem o namespace → usa `fallback`, depois `en`.
   - mesmas camadas (mesmas referências) → mesmo objeto de saída (`toBe`).
-- [ ] **Step 2–4:** rodar (FAIL), implementar, rodar (PASS).
-- [ ] **Step 5:** commit `feat(ui): resolve i18n namespaces across dictionary and override layers`.
+- [x] **Step 2–4:** rodar (FAIL), implementar, rodar (PASS).
+- [x] **Step 5:** commit `feat(ui): resolve i18n namespaces across dictionary and override layers`.
 
 ### Task 3: store sem React e carregamento de pacotes
 
@@ -235,7 +238,7 @@ function createStore(options: StoreOptions): FmaI18nStore;   // um por instânci
 Cache de promessas em `WeakMap<FmaLoader, Promise>`: dicionários imutáveis, então compartilhar
 entre requisições é seguro.
 
-- [ ] **Step 1: testes que falham**
+- [x] **Step 1: testes que falham**
   - `loadFmaMessages(locales, "pt-PT")` resolve `"pt-BR"` e carrega o pacote de pt-BR **e** o do
     fallback. Loaders são chamados uma vez só (cache de promessa, também em chamadas concorrentes).
     `readFmaMessages` devolve o pacote depois disso e `undefined` antes.
@@ -249,8 +252,8 @@ entre requisições é seguro.
     `defaultLocale:"pt-BR"`, o `locale` inicial é `"en"`. `detect:false` → `"pt-BR"`.
     `initialLocale:"pt-BR"` vence a detecção.
   - dois stores criados com `initialLocale` diferentes não se afetam.
-- [ ] **Step 2–4:** FAIL → implementar → PASS.
-- [ ] **Step 5:** commit `feat(ui): add the i18n store and message pack loading`.
+- [x] **Step 2–4:** FAIL → implementar → PASS.
+- [x] **Step 5:** commit `feat(ui): add the i18n store and message pack loading`.
 
 ### Task 4: camada React e `FmaI18nProvider`
 
@@ -286,7 +289,7 @@ O contexto é único: `{ locale, layers: { active?, fallback? }, overrides, … 
 - Pacote do locale inicial não carregado: suspende com React `use` em `loadFmaMessages`.
 - No modo não controlado, `onLocaleChange` é chamado depois de cada troca.
 
-- [ ] **Step 1: testes que falham**
+- [x] **Step 1: testes que falham**
   - sem provider: `useFmaMessages("testNs")` (namespace de teste registrado no próprio teste via
     declaration merging de `FmaNamespaces`) devolve o inglês; `useFmaLocale()` → `null`.
   - prop vence overrides, que vencem o dicionário.
@@ -303,8 +306,8 @@ O contexto é único: `{ locale, layers: { active?, fallback? }, overrides, … 
   - não controlado: `setLocale` → `isPending` true durante a troca, nenhum render com textos
     misturados, `onLocaleChange` chamado no commit.
   - `useLocale` do react-aria dentro do provider devolve o locale do provider.
-- [ ] **Step 2–4:** FAIL → implementar → PASS.
-- [ ] **Step 5:** commit `feat(ui): add the i18n React provider and hooks`.
+- [x] **Step 2–4:** FAIL → implementar → PASS.
+- [x] **Step 5:** commit `feat(ui): add the i18n React provider and hooks`.
 
 ### Task 5: publicar a lib e migrar o `carousel` como prova
 
@@ -326,18 +329,18 @@ componente troca `defaultXLabels`/`mergeXI18n` por `useFmaMessages("<ns>", props
 `mergeXI18n` exportados hoje passam a ser wrappers de `resolveNamespace([en], [overrides])` para
 não quebrar quem importa.
 
-- [ ] **Step 1:** story nova `ShouldUseProviderMessages` (`tags: ["!autodocs"]`) em
+- [x] **Step 1:** story nova `ShouldUseProviderMessages` (`tags: ["!autodocs"]`) em
   `carousel.stories.tsx`: decorator com
   `<FmaI18nProvider locale="pt-BR" locales={{ "pt-BR": { carousel: { labels: { next: "Próximo slide" } } } }}>`;
   `play` verifica o botão "Próximo slide" e, sem provider, "Next slide" nas stories existentes.
-- [ ] **Step 2:** `pnpm --filter @fma-ds/ds test:storybook -- carousel` → FAIL.
-- [ ] **Step 3:** migrar. `meta.json` da lib: `name: "i18n"`, `source: "original"`, descrição
+- [x] **Step 2:** `pnpm --filter @fma-ds/ds test:storybook -- carousel` → FAIL.
+- [x] **Step 3:** migrar. `meta.json` da lib: `name: "i18n"`, `source: "original"`, descrição
   curta (provider, precedência, pacotes de idioma), tags `["i18n", "locale"]`.
-- [ ] **Step 4:** `pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build`;
+- [x] **Step 4:** `pnpm lint && pnpm type-check && pnpm test && pnpm --filter @fma-ds/ds build`;
   storybook do carousel passa; `registry.json` mostra `carousel` com `registryDependencies`
   contendo `@fma-ds/i18n`.
-- [ ] **Step 5:** commit `feat(ui): read carousel labels from the i18n provider` (com os gerados).
-- [ ] **Step 6:** push, PR empilhado (`gh stack add` / `submit`).
+- [x] **Step 5:** commit `feat(ui): read carousel labels from the i18n provider` (com os gerados).
+- [x] **Step 6:** push, PR empilhado (`gh stack add` / `submit`).
 
 ## PR 3: migração dos componentes (`feat/i18n-components`, empilhado)
 
@@ -352,13 +355,13 @@ não quebrar quem importa.
 Props `labels` (copy-button, color-picker, credit-card, code-block) viram a seção `labels` do
 namespace: `useFmaMessages("copyButton", { labels: props.labels })`.
 
-- [ ] **Step 1:** para cada um, uma story `ShouldUseProviderMessages` como na Task 5 (um label
+- [x] **Step 1:** para cada um, uma story `ShouldUseProviderMessages` como na Task 5 (um label
   trocado pelo provider aparece; um label da prop vence o provider).
-- [ ] **Step 2:** FAIL; **Step 3:** migrar seguindo o padrão; time-picker:
+- [x] **Step 2:** FAIL; **Step 3:** migrar seguindo o padrão; time-picker:
   `functions` vira fábrica em `messages/time-picker.ts` e `mergeTimePickerI18n` vira wrapper.
-- [ ] **Step 4:** checklist completo (lint, type-check, test, build, `test:storybook`); stories
+- [x] **Step 4:** checklist completo (lint, type-check, test, build, `test:storybook`); stories
   existentes intactas.
-- [ ] **Step 5:** commit por componente, `feat(ui): read <name> texts from the i18n provider`.
+- [x] **Step 5:** commit por componente, `feat(ui): read <name> texts from the i18n provider`.
 
 ### Task 7: blocos
 
@@ -377,12 +380,12 @@ Locale de formatação do `event-calendar`: prop `locale` > `useLocale()` do rea
 já alimenta) > ambiente. Troque o `resolveDefaultLocale` que lê `Intl` direto por
 `useLocale().locale` quando não houver prop.
 
-- [ ] **Step 1:** stories `ShouldUseProviderMessages` (uma por bloco). No event-calendar, uma
+- [x] **Step 1:** stories `ShouldUseProviderMessages` (uma por bloco). No event-calendar, uma
   story com `FmaI18nProvider` recebendo um dicionário inline cuja seção `functions` é uma fábrica
   que usa `labels.today`, mais `overrides` trocando `labels.today`: o texto formatado mostra o
   override (Foco 3).
-- [ ] **Step 2–4:** FAIL → migrar → checklist completo.
-- [ ] **Step 5:** commit por bloco.
+- [x] **Step 2–4:** FAIL → migrar → checklist completo.
+- [x] **Step 5:** commit por bloco.
 
 ### Task 8: strings fixas sem prop
 
@@ -399,10 +402,10 @@ sentido para a peça) e lê `useFmaMessages`. Props de texto que já existem (`t
 `source: "shadcn"` tocados viram `"customized"` (e passam a cair no gate de
 `interaction-tokens`; corrija o que ele apontar ou registre exceção com motivo).
 
-- [ ] **Step 1:** story `ShouldUseProviderMessages` por componente (aria-label traduzido pelo
+- [x] **Step 1:** story `ShouldUseProviderMessages` por componente (aria-label traduzido pelo
   provider).
-- [ ] **Step 2–4:** FAIL → migrar → checklist completo.
-- [ ] **Step 5:** commit por componente.
+- [x] **Step 2–4:** FAIL → migrar → checklist completo.
+- [x] **Step 5:** commit por componente.
 
 ### Task 9: gate de cobertura
 
@@ -416,9 +419,9 @@ Verifica, para `src/core/**` e `src/blocks/**` (exceto stories) e `src/hooks/**`
    `placeholder="[A-Z]`, `sr-only">[A-Z]`, defaults de parâmetro `= "[A-Z][a-z]`) falha, salvo
    `ALLOWED` com motivo (estilo `interaction-tokens.test.ts`).
 
-- [ ] **Step 1:** escrever o teste; rodar; corrigir o que aparecer (volta à Task 8) até passar.
-- [ ] **Step 2:** commit `test(ui): gate i18n coverage of component texts`.
-- [ ] **Step 3:** push, PR empilhado.
+- [x] **Step 1:** escrever o teste; rodar; corrigir o que aparecer (volta à Task 8) até passar.
+- [x] **Step 2:** commit `test(ui): gate i18n coverage of component texts`.
+- [x] **Step 3:** push, PR empilhado.
 
 ## PR 4: máscaras (`feat/i18n-masks`, empilhado)
 
@@ -447,7 +450,7 @@ inglês) e da ordem/separador do locale. Sem `labels`, mantém os placeholders d
 `maskedInput` no `en` da lib usa as letras em inglês, mas o hook só as usa **com provider**.
 Hora continua 24h (o spec deixa o `hourCycle` a critério; fica fora desta entrega).
 
-- [ ] **Step 1: testes que falham**
+- [x] **Step 1: testes que falham**
   - `getNumberSeparators("pt-BR")` → `{ decimal: ",", thousand: "." }`; `"en"` → `"."`/`","`.
   - `getDateOrder("en-US")` → `"mm/dd/yyyy"`; `"en-GB"`/`"pt-BR"` → `"dd/mm/yyyy"`.
   - `decimalMaskRemover("1,234.50", { decimal: ".", thousand: "," })` → `"1234.50"`;
@@ -459,9 +462,9 @@ Hora continua 24h (o spec deixa o `hourCycle` a critério; fica fora desta entre
   - parâmetro explícito vence locale: `{ type: "decimal", decimalSeparator: "," }` com
     `locale:"en"` usa `,` (adicione `decimalSeparator`/`thousandSeparator` aos `DecimalParams`).
   - CPF/CNPJ/CEP/telefone/cartão: mesmas saídas com `locale:"en"`.
-- [ ] **Step 2–4:** FAIL → implementar → PASS (todos os testes de `tests/lib/input-masks` antigos
+- [x] **Step 2–4:** FAIL → implementar → PASS (todos os testes de `tests/lib/input-masks` antigos
   continuam verdes).
-- [ ] **Step 5:** commit `feat(ui): make decimal and date masks locale-aware`.
+- [x] **Step 5:** commit `feat(ui): make decimal and date masks locale-aware`.
 
 ### Task 11: `useMask` e `MaskedInput` seguem o provider
 
@@ -472,12 +475,12 @@ Test `tests/hooks/use-mask.test.ts`, story `ShouldFollowProviderLocale` em `mask
 hoje). O `maskKey` inclui o locale. Quando o locale muda, o estado é refeito a partir de
 `state.raw` com a máscara nova (`format(raw)`), nunca do texto exibido.
 
-- [ ] **Step 1: testes que falham** (happy-dom): campo decimal com `1.234,50` digitado sob
+- [x] **Step 1: testes que falham** (happy-dom): campo decimal com `1.234,50` digitado sob
   provider pt-BR; troca para `en` → valor exibido `1,234.50`, `onValueChange` não recebe bruto
   diferente de `"1234.50"` (Foco 4). Mesmo para data (`29/10/2026` → `10/29/2026`, bruto ISO
   igual). Sem provider → igual a hoje.
-- [ ] **Step 2–4:** FAIL → implementar → PASS + `test:storybook` do masked-input.
-- [ ] **Step 5:** commit `feat(ui): follow the provider locale in useMask`; push, PR empilhado.
+- [x] **Step 2–4:** FAIL → implementar → PASS + `test:storybook` do masked-input.
+- [x] **Step 5:** commit `feat(ui): follow the provider locale in useMask`; push, PR empilhado.
 
 ## PR 5: pacote pt-BR (`feat/i18n-pt-br`, empilhado)
 
@@ -494,7 +497,7 @@ hoje). O `maskKey` inclui o locale. Quando o locale muda, o estado é refeito a 
 - `meta.json`: `name: "i18n-pt-br"`, `source: "original"`, descrição dizendo como usar com o
   provider.
 
-- [ ] **Step 1: testes que falham**
+- [x] **Step 1: testes que falham**
   - completude no repo: `const complete: FmaMessages = ptBR;` (type-check falha se faltar) e
     `expect(Object.keys(ptBR).sort()).toEqual(Object.keys(en).sort())`.
   - nenhuma string do pacote é igual à do `en` (salvo `ALLOWED` com motivo, ex.: "OK", "E-mail").
@@ -502,14 +505,14 @@ hoje). O `maskKey` inclui o locale. Quando o locale muda, o estado é refeito a 
     e, com `<FmaI18nProvider locale="pt-BR" locales={{ "pt-BR": parcial }}>`, `dataGrid` sai em
     inglês (Foco 5).
   - o arquivo só importa `@/lib/i18n/i18n` (leia o texto dos arquivos e cheque os imports).
-- [ ] **Step 2–4:** FAIL → escrever o pacote → PASS; build do registro mostra
+- [x] **Step 2–4:** FAIL → escrever o pacote → PASS; build do registro mostra
   `i18n-pt-br` com `registryDependencies: ["@fma-ds/i18n"]` e nenhum componente.
-- [ ] **Step 5:** stories: nas stories que hoje passam `i18n={{…pt-BR…}}` só para mostrar
+- [x] **Step 5:** stories: nas stories que hoje passam `i18n={{…pt-BR…}}` só para mostrar
   português, mantenha-as (demonstram a prop); acrescente ao `.storybook/preview` um seletor de
   idioma na toolbar (global `locale`: en/pt-BR) com decorator
   `<FmaI18nProvider locale={globals.locale} locales={{ "pt-BR": ptBR }}>`.
   O decorator não aparece nos snippets (regra 7).
-- [ ] **Step 6:** commit `feat(ui): add the pt-BR message pack`; push, PR empilhado.
+- [x] **Step 6:** commit `feat(ui): add the pt-BR message pack`; push, PR empilhado.
 
 ## PR 6: ponte com o i18next (`feat/i18n-i18next`, empilhado)
 
@@ -538,7 +541,7 @@ function changeLanguage(i18n: i18n, lng: string, locales: FmaLocales): Promise<v
 - O `setLocale` do `useFmaLocale()` chama `changeLanguage` (o `onLocaleChange` do modo
   controlado), para o seletor funcionar igual nos dois mundos.
 
-- [ ] **Step 1: testes que falham**
+- [x] **Step 1: testes que falham**
   - instância do i18next com `lng:"en"` e recursos inline; `changeLanguage(i18n, "pt-BR", locales)`
     com loader atrasado → nenhum render com o texto do app (`useTranslation`) em pt-BR e o do
     componente em inglês; ao final, os dois em pt-BR.
@@ -551,11 +554,11 @@ function changeLanguage(i18n: i18n, lng: string, locales: FmaLocales): Promise<v
     cada HTML no seu idioma (Foco 2).
   - `fallbackLng: ["pt-BR"]` vira o fallback dos componentes.
   - o arquivo da lib não importa componentes (só `@/lib/i18n/i18n`, `i18next`, `react-i18next`).
-- [ ] **Step 2–4:** FAIL → implementar → PASS. `meta.json`: `name: "i18n-i18next"`,
+- [x] **Step 2–4:** FAIL → implementar → PASS. `meta.json`: `name: "i18n-i18next"`,
   `source: "original"`, descrição dizendo que liga o idioma do i18next aos componentes.
-- [ ] **Step 5:** build do registro mostra `i18n-i18next` com `registryDependencies:
+- [x] **Step 5:** build do registro mostra `i18n-i18next` com `registryDependencies:
   ["@fma-ds/i18n"]` e `dependencies` com `i18next` e `react-i18next`; o `i18n` continua sem eles.
-- [ ] **Step 6:** commit `feat(ui): add the i18next bridge for the i18n provider`; push, PR
+- [x] **Step 6:** commit `feat(ui): add the i18next bridge for the i18n provider`; push, PR
   empilhado.
 
 ## PR 7: documentação (`docs/i18n-page`, empilhado)
@@ -583,9 +586,9 @@ Seções, na ordem:
 10. receitas para zod 4 (`z.config(z.locales.ptBR())` no `languageChanged` ou no
     `onLocaleChange`) e `date-fns-compat` (`setDefaultLocale` no mesmo ponto).
 
-- [ ] **Step 1:** e2e falha (rota não existe). **Step 2:** escrever a página.
-- [ ] **Step 3:** `pnpm --filter web test:e2e` passa; `llms.txt` não muda (página não é item).
-- [ ] **Step 4:** commit `docs(web): document the i18n provider`; push, PR empilhado.
+- [x] **Step 1:** e2e falha (rota não existe). **Step 2:** escrever a página.
+- [x] **Step 3:** `pnpm --filter web test:e2e` passa; `llms.txt` não muda (página não é item).
+- [x] **Step 4:** commit `docs(web): document the i18n provider`; push, PR empilhado.
 
 ## PR 8: o site como caso de uso (`feat/web-i18n`, empilhado)
 
@@ -625,7 +628,7 @@ Seções, na ordem:
 Fora do escopo: descrições dos `meta.json`, páginas de `/docs` (inclusive a nova), nomes de
 stories, `llms.txt`.
 
-- [ ] **Step 1: e2e que falham**
+- [x] **Step 1: e2e que falham**
   - contexto Playwright com `locale: "pt-BR"` (Accept-Language) → nav do header em português no
     HTML do servidor (`page.content()` antes da hidratação) e sem erro de hidratação no console.
   - trocar para English no seletor → textos do site e dos componentes (ex.: aria-label do
@@ -634,12 +637,12 @@ stories, `llms.txt`.
   - editor `/themes` em pt-BR: rótulos dos painéis traduzidos; e2e existentes do editor continuam
     passando (atualize seletores por texto para `getByRole` com o nome no idioma do contexto ou
     fixe `locale: "en-US"` neles).
-- [ ] **Step 2:** FAIL. **Step 3:** implementar. Cookie gravado no seletor (`document.cookie`,
+- [x] **Step 2:** FAIL. **Step 3:** implementar. Cookie gravado no seletor (`document.cookie`,
   `path=/; max-age=31536000; samesite=lax`).
-- [ ] **Step 4:** `pnpm build` e `pnpm --filter web test:e2e` passam. O Worker cresce só o
+- [x] **Step 4:** `pnpm build` e `pnpm --filter web test:e2e` passam. O Worker cresce só o
   i18next/react-i18next e o texto (os namespaces e o pacote pt-BR entram por `import()`). Compare
   o `.output/server` com o da `main` e registre o aumento no PR.
-- [ ] **Step 5:** commit `feat(web): translate the site interface to pt-BR with a language switcher`;
+- [x] **Step 5:** commit `feat(web): translate the site interface to pt-BR with a language switcher`;
   push, PR empilhado.
 
 ---
