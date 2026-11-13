@@ -6,8 +6,8 @@
   "description": "Layout primitives for building form fields. Pairs with `Label`, `Input`, and friends.\n\n- **`Field`**: the field wrapper.\n- **`FieldSet`/`FieldLegend`**: for grouping.\n- **`FieldLabel`/`FieldDescription`/`FieldError`**: the usual label + hint + error stack.\n- **`FieldSeparator`**: splits a group.\n- **`FieldHelp`**: an ⓘ button beside a label or column header that opens help in a popover (touch and keyboard, unlike a tooltip); its required `label` names the subject.\n- **`choiceCardClassName`**: the choice-card surface shared by `CheckboxCard` and `RadioCard`; hover uses `accent`. With react-aria the control is the card, instead of shadcn's `FieldLabel` wrapping a `Field`, which would nest labels.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0",
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [

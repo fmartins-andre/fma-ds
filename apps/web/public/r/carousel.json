@@ -5,9 +5,9 @@
   "author": "@fma-ds/ds",
   "description": "A carousel for cycling through slides (images, cards, or any content) with keyboard, swipe, and button navigation.\n\nBuilt on embla-carousel-react; `CarouselPrevious`/`CarouselNext` are `Button`s wired to the carousel API.\n\n- **Autoplay**: `autoplay` (`true` or `{ delay }`, 5000 ms by default) advances on its own and wraps to the first slide. Rotation pauses while the pointer is over the carousel or focus is inside it, and starts paused under reduced motion.\n- **`CarouselAutoplayToggle`**: pause/resume — required for moving content by WCAG 2.2.2; a dev warning flags its absence.\n- **`CarouselDots`**: one dot per slide; marks the current one and goes to a slide on press.\n- **Announcements**: slide changes are announced (`aria-live`) only when not rotating.\n\nThe toggle and dots are not positioned; place them where they fit.\n\nBuilt-in labels are in English; translate them with `i18n.labels`.",
   "dependencies": [
-    "cn@^0.5.0",
+    "cn@^0.5.1",
     "embla-carousel-react@^8.6.0",
-    "lucide-react@^1.61.0"
+    "lucide-react@^1.65.0"
   ],
   "registryDependencies": [
     "@fma-ds/button",

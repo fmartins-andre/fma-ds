@@ -6,7 +6,7 @@
   "description": "A single chat message bubble — start/end alignment for sent vs. received, several color variants, and an optional reactions pill overlaid on a corner.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0"
+    "cn@^0.5.1"
   ],
   "files": [
     {

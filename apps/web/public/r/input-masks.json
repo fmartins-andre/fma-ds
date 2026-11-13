@@ -5,8 +5,8 @@
   "author": "@fma-ds/ds",
   "description": "An input-mask system built on Maskito: mask option hooks, formatters and remover utilities for Brazilian documents and common formats.\n\n- **Documents**: CPF, CNPJ, CPF-or-CNPJ, CEP.\n- **Contact and payment**: phone; credit card, grouped by issuer (Amex 4-6-5, up to 19 digits).\n- **Dates and numbers**: date, date range, date-time, time, decimal.",
   "dependencies": [
-    "@maskito/core@^5.6.0",
-    "@maskito/kit@^5.6.0"
+    "@maskito/core@^5.6.1",
+    "@maskito/kit@^5.6.1"
   ],
   "registryDependencies": [
     "@fma-ds/credit-card-validation",

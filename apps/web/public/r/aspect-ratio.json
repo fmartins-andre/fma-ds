@@ -5,7 +5,7 @@
   "author": "@fma-ds/ds",
   "description": "Constrains content (typically an image or video) to a fixed width/height ratio, so it scales without distortion or layout shift.",
   "dependencies": [
-    "cn@^0.5.0"
+    "cn@^0.5.1"
   ],
   "files": [
     {

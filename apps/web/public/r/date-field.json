@@ -6,7 +6,7 @@
   "description": "A segmented, keyboard-editable date input.\n\n- **Granularity**: `granularity` also accepts `\"month\"` and `\"year\"` for month- or year-only fields.\n- **Availability**: values blocked by `minValue`/`maxValue` or `unavailableRanges` move to the nearest available date once the field loses focus, so typing is never interrupted.\n- **`DateInput`**: exported for composing date pickers.",
   "dependencies": [
     "@internationalized/date@^3.12.4",
-    "cn@^0.5.0",
+    "cn@^0.5.1",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [

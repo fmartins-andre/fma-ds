@@ -5,8 +5,8 @@
   "author": "@fma-ds/ds",
   "description": "What the user is about to confirm before buying: lines, an applicable benefit, discounts, the total and the action.\n\n`OrderSummary` takes the `title`, `totalLabel`, `total` and optional `totalDescription` (values formatted by the app) and the `action` button.\n\n- **Large screens**: a card that sticks while the page scrolls — put it in the side column. It sticks `--sticky-top` from the top (1rem by default): an app with a fixed header sets it to the header's height.\n- **Smaller screens**: a bar fixed to the bottom with the total and the action; the total opens the lines in a bottom sheet. It reserves the bar's height where it sits, so keep it last in the page on small screens.\n\nIts children sit in a `description-list`:\n\n- **`OrderSummaryLine`**: `label`, `value` and a `description` under the label — an item, a fee, who the order is for. `tone=\"discount\"` for a negative value.\n- **`OrderSummaryOption`**: a benefit behind a `Switch`, such as the account balance, its amount struck through while off.\n\nThe total stands apart by size and weight, not only color.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
   "dependencies": [
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0"
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0"
   ],
   "registryDependencies": [
     "@fma-ds/button",

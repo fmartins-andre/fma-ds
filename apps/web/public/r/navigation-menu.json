@@ -6,8 +6,8 @@
   "description": "Site-header navigation: a `<nav>` list of top-level links and disclosure dropdowns. For app command menus use `Menubar` or `DropdownMenu`.\n\n- **Items**: a `NavigationMenuItem` holds either a `NavigationMenuLink` or a `NavigationMenuTrigger` (a button with `aria-expanded`) plus its `NavigationMenuContent` (a popover).\n- **Closing**: Escape or a click outside closes the dropdown and returns focus to the trigger; following a link closes it too.\n- **Links**: style plain links like triggers with `navigationMenuTriggerStyle()`, and mark the current page with `aria-current=\"page\"`.\n- **Hover**: dropdowns open on press; with `openOnHover` they also open when the pointer rests on a trigger (`delay`, `closeDelay`). That's a non-modal \"peek\" that leaves focus alone, switches at once to another trigger and closes when the pointer leaves or on Escape. Pressing a peeked trigger keeps it open as a regular dropdown.\n- **`NavigationMenuIndicator`**: add it after the list for an arrow that slides under the open trigger.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0",
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0",
     "react-aria-components@^1.22.1"
   ],
   "files": [

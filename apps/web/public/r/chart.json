@@ -5,7 +5,7 @@
   "author": "@fma-ds/ds",
   "description": "Composable chart primitives (ChartContainer, ChartTooltip, ChartLegend) wrapping Recharts, themed via CSS custom properties from a ChartConfig. Supports area, bar, line, and pie charts.",
   "dependencies": [
-    "cn@^0.5.0",
+    "cn@^0.5.1",
     "recharts@3.10.1"
   ],
   "files": [

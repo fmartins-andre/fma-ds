@@ -5,8 +5,8 @@
   "author": "@fma-ds/ds",
   "description": "A control for a single on/off/indeterminate value.\n\nPair it with an external `Label` (via `id`/`htmlFor`) laid out as a flex row, rather than passing label text as children.\n\n- **`CheckboxGroup`**: gathers several under one label and a `value` array (react-aria `CheckboxGroup`; each `Checkbox` takes a `value`).\n- **`CheckboxCard`**: a choice card — the whole card is the checkbox, its children are the content (an `IconTile`, `FieldContent` with `FieldTitle` and `FieldDescription`) and a square indicator sits at the end. Selected cards take a `primary` tint, hovered ones `accent`.",
   "dependencies": [
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0",
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [

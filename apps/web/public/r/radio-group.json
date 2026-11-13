@@ -5,7 +5,7 @@
   "author": "@fma-ds/ds",
   "description": "A set of mutually-exclusive radio options.\n\nPair each `RadioGroupItem` with an external `Label` via `id`/`htmlFor` — its own children slot is for a custom indicator, not label text.\n\n- **`RadioCard`**: a choice card — the whole card is the radio, its children are the content (an `IconTile`, `FieldContent` with `FieldTitle` and `FieldDescription`) and a round indicator sits at the end. Selected cards take a `primary` tint, hovered ones `accent`.\n- **Layout**: lay several out with a `className` grid on the group.",
   "dependencies": [
-    "cn@^0.5.0",
+    "cn@^0.5.1",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [

@@ -6,7 +6,7 @@
   "description": "Wraps an Input or Textarea with leading/trailing addons (icons, text, or buttons) inside one bordered container, so the whole group shares a single focus ring and border.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0",
+    "cn@^0.5.1",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [

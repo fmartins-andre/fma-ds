@@ -5,8 +5,8 @@
   "author": "@fma-ds/ds",
   "description": "A modal window layered over the page, requiring explicit action (or Escape) to dismiss. Pair with react-aria-components' DialogTrigger to wire up the trigger and open state.\n\nChildren can be a function of `{ close }`, to close the dialog when an action finishes.\n\n`DialogFooter sticky` keeps the footer at the bottom while a long dialog scrolls, flush with the dialog's edge and on an opaque surface.",
   "dependencies": [
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0",
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [

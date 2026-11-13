@@ -5,7 +5,7 @@
   "author": "@fma-ds/ds",
   "description": "A vertical or horizontal timeline rendered as an ordered list.\n\n- **`value`**: the current step. Items with `step <= value` get `data-completed` (filled indicator and separator), and the current one gets `aria-current=\"step\"`.\n- **`TimelineItem`**: composed from `TimelineHeader` (`TimelineDate`, `TimelineTitle`, `TimelineIndicator`), `TimelineSeparator` and `TimelineContent`.",
   "dependencies": [
-    "cn@^0.5.0"
+    "cn@^0.5.1"
   ],
   "files": [
     {
