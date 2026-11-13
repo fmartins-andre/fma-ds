@@ -231,3 +231,28 @@ export const ShouldWrapActionsOnlyWhenOutOfRoom: Story = {
     await expect(narrow.actions.top).toBeGreaterThanOrEqual(narrow.heading.bottom);
   },
 };
+
+/** The title uses the theme's heading font, like the titles of cards and dialogs. */
+export const ShouldUseTheHeadingFont: Story = {
+  tags: ["!autodocs"],
+  decorators: [
+    (Story) => (
+      <div style={{ "--font-heading": "monospace" } as React.CSSProperties}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: () => (
+    <PageHeader>
+      <PageHeaderContent>
+        <PageHeaderHeading>
+          <PageHeaderTitle>Meus clientes</PageHeaderTitle>
+        </PageHeaderHeading>
+      </PageHeaderContent>
+    </PageHeader>
+  ),
+  play: async ({ canvas }) => {
+    const title = canvas.getByRole("heading", { level: 1 });
+    await expect(getComputedStyle(title).fontFamily).toBe("monospace");
+  },
+};
