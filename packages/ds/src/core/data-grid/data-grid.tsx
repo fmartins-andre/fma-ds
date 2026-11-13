@@ -595,7 +595,10 @@ type DataGridTableProps<TData extends RowData = RowData> = {
   onRowsReorder?: DragAndDropOptions["onReorder"];
   /** Renders only the visible rows. Give the table a fixed height through `className`. */
   isVirtualized?: boolean;
-  /** Row height for virtualization, in pixels (an estimate when rows can expand). */
+  /**
+   * Row height for virtualization, in pixels (an estimate when rows can expand). The
+   * default, 49, matches the minimum height of non-virtualized rows.
+   */
   rowHeight?: number;
   /**
    * Content of a full-width row shown under each expanded row. Expand rows
@@ -639,7 +642,7 @@ function DataGridTable<TData extends RowData = RowData>({
   className,
   onRowsReorder,
   isVirtualized,
-  rowHeight = 40,
+  rowHeight = 49,
   renderExpandedRow,
   footerContent,
   onFetchMore,
@@ -713,10 +716,15 @@ function DataGridTable<TData extends RowData = RowData>({
   const fixed = layout.width === "fixed";
   const overlapsRows = layout.headerSticky || isVirtualized;
   const cellPadding = layout.dense ? "px-2.5 py-1.5" : "px-4 py-2.5";
-  // A body cell's minimum height (a table cell's height works as one) leaves room for a
-  // default Badge beside the text (a small one in dense rows): rows with and without one
+  // A body cell's minimum height (a table cell's height works as one) fits the row
+  // controls (row actions, row pin, expand: `icon-sm` buttons, 28px) inside the cell
+  // padding and the row's 1px border, so rows with and without them, or with a Badge,
   // stay the same height. Virtualized rows already have a fixed height (`rowHeight`).
-  const bodyCellHeight = isVirtualized ? undefined : layout.dense ? "h-8.5" : "h-10.5";
+  const bodyCellHeight = isVirtualized
+    ? undefined
+    : layout.dense
+      ? "h-[calc(--spacing(10)+1px)]"
+      : "h-[calc(--spacing(12)+1px)]";
 
   const onSelectionChange = (keys: Selection) => {
     const pageIds = new Set(rows.map((row) => row.id));
