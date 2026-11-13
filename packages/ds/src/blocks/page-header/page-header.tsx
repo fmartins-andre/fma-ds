@@ -146,7 +146,7 @@ function PageHeaderTitle({
       data-slot="page-header-title"
       aria-busy={isLoading || undefined}
       className={cn(
-        "min-w-0 text-2xl leading-tight font-semibold tracking-tight group-data-[density=compact]/page-header:text-xl",
+        "min-w-0 font-heading text-2xl leading-tight font-semibold tracking-tight group-data-[density=compact]/page-header:text-xl",
         className,
       )}
       {...props}
