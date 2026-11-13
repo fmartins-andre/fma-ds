@@ -1,5 +1,9 @@
 # Plano: estados de acesso nos itens do `app-sidebar`
 
+> **Concluído** no PR #36, com o desenho revisado abaixo. Mantido como registro das decisões. Do
+> "Fora do escopo": os textos fixos de `nav-user.tsx` e `team-switcher.tsx` já saíram (namespace
+> `appSidebar`); a lib de permissões e o indicador agregado no pai não foram feitos.
+
 > **Desenho revisado em 2026-11-02** (decisão do usuário). Onde este texto divergir, vale isto:
 >
 > - O bloco inteiro é composição: `data`, `onTeamChange`, `onAddTeam` e `onUserAction` saem. Dentro de
@@ -230,10 +234,10 @@ entra no pacote `i18n-pt-br`.
 
 ## Critérios de pronto
 
-- [ ] Contrato documentado em `types.ts`, com `gated` descrito como informativo.
-- [ ] `isInactive` nos dois botões da `core/sidebar`.
-- [ ] Hierarquia, layout e acessibilidade como descritos acima.
-- [ ] Descrições nos `meta.json` e em `items-pt-BR.json`; exemplos nos dicionários `story-text-*` e
+- [x] Contrato documentado em `types.ts`, com `gated` descrito como informativo.
+- [x] `isInactive` nos dois botões da `core/sidebar`.
+- [x] Hierarquia, layout e acessibilidade como descritos acima.
+- [x] Descrições nos `meta.json` e em `items-pt-BR.json`; exemplos nos dicionários `story-text-*` e
       `story-names-pt-BR.json`.
-- [ ] `pnpm lint`, `pnpm type-check`, `pnpm test`, `pnpm --filter @fma-ds/ds test:storybook` e
+- [x] `pnpm lint`, `pnpm type-check`, `pnpm test`, `pnpm --filter @fma-ds/ds test:storybook` e
       `pnpm --filter @fma-ds/ds build`, com o registro gerado incluído no commit.

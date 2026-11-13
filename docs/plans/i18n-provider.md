@@ -1,5 +1,9 @@
 # Plano: provider de i18n e dicionário central
 
+> **Concluído** (PRs #19–#23, #25 e #26). Mantido como registro das decisões. O conteúdo do
+> site, que este plano deixou para depois, foi traduzido em seguida (#29). `useFormat()` não foi
+> implementado.
+
 > **Desenho revisado em 2026-10-31** (decisão do usuário). Onde este texto divergir, vale isto:
 >
 > - O inglês e os tipos ficam **no próprio componente**, não na lib. A lib não tem dicionário:
