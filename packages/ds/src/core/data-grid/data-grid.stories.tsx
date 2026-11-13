@@ -1497,6 +1497,29 @@ export const ShouldNotResizeBelowTheHeader: Story = {
 };
 
 /**
+ * A column narrower than its header: the label truncates and the unpin button of a
+ * pinned column stays inside the cell instead of overflowing into a scrollbar.
+ */
+export const ShouldKeepTheHeaderInsideANarrowColumn: Story = {
+  tags: ["!autodocs"],
+  args: {
+    layout: { columnsPinnable: true },
+    columns: COLUMNS.map((column) =>
+      column.meta?.headerTitle === "Joined" ? { ...column, size: 72 } : column,
+    ),
+    initialPinning: { start: [], end: ["joined"] },
+  },
+  render: (args) => <UsersDataGrid {...args} />,
+  play: async ({ canvas }) => {
+    const joined = canvas.getByRole("columnheader", { name: /^Joined/ });
+    const unpin = canvas.getByRole("button", { name: "Unpin Joined column" });
+    const cell = joined.getBoundingClientRect();
+    await expect(unpin.getBoundingClientRect().right).toBeLessThanOrEqual(cell.right);
+    await expect(joined.scrollWidth).toBeLessThanOrEqual(joined.clientWidth);
+  },
+};
+
+/**
  * A pinned cell is opaque, so it repaints the row's hover color itself, with the row's
  * transition: it changes together with the rest of the row.
  */

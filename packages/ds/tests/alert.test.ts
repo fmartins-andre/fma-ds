@@ -28,13 +28,14 @@ describe("Alert variant type", () => {
   });
 });
 
-// Runtime guard: catch variant removal or token remap.
+// Runtime guard: catch variant removal or token remap. Status tints are a gradient
+// layer over the opaque card surface (`from-<tone>/4`), not a translucent background.
 const EXPECTED_CLASS: Record<(typeof VARIANTS)[number], string> = {
   default: "bg-card",
-  destructive: "bg-destructive/4",
-  info: "bg-info/4",
-  success: "bg-success/4",
-  warning: "bg-warning/4",
+  destructive: "from-destructive/4",
+  info: "from-info/4",
+  success: "from-success/4",
+  warning: "from-warning/4",
   invert: "bg-invert",
   brand: "bg-brand",
 };

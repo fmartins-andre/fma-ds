@@ -8,11 +8,16 @@ const alertVariants = cva(
     variants: {
       variant: {
         default: "bg-card text-card-foreground",
+        // Status tints sit on an opaque card surface (the tint is a gradient layer over
+        // it): a translucent background would mix with whatever is behind the alert
+        // (a muted section, a colored panel) and lose its weight.
         destructive:
-          "border-destructive/30 bg-destructive/4 dark:bg-destructive/15 [&>svg]:text-destructive",
-        info: "border-info/30 bg-info/4 dark:bg-info/15 [&>svg]:text-info",
-        success: "border-success/30 bg-success/4 dark:bg-success/15 [&>svg]:text-success",
-        warning: "border-warning/30 bg-warning/4 dark:bg-warning/15 [&>svg]:text-warning",
+          "border-destructive/30 bg-card bg-linear-to-r from-destructive/4 to-destructive/4 text-card-foreground dark:from-destructive/15 dark:to-destructive/15 [&>svg]:text-destructive",
+        info: "border-info/30 bg-card bg-linear-to-r from-info/4 to-info/4 text-card-foreground dark:from-info/15 dark:to-info/15 [&>svg]:text-info",
+        success:
+          "border-success/30 bg-card bg-linear-to-r from-success/4 to-success/4 text-card-foreground dark:from-success/15 dark:to-success/15 [&>svg]:text-success",
+        warning:
+          "border-warning/30 bg-card bg-linear-to-r from-warning/4 to-warning/4 text-card-foreground dark:from-warning/15 dark:to-warning/15 [&>svg]:text-warning",
         invert:
           "border-invert bg-invert text-invert-foreground [&_[data-slot=alert-description]]:text-invert-foreground/70",
         // Announcements and promos in the second identity color, not status. The
