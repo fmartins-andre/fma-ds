@@ -722,6 +722,44 @@ export const RowActions: Story = {
   },
 };
 
+const ACTIONS_COLUMN: UserColumn = {
+  id: "actions",
+  size: 60,
+  header: () => <span className="sr-only">Actions</span>,
+  enableSorting: false,
+  enableResizing: false,
+  enableHiding: false,
+  cell: ({ row }) => (
+    <DataGridRowActions rowLabel={row.original.name}>
+      <DropdownMenuItem id="edit">Edit</DropdownMenuItem>
+    </DataGridRowActions>
+  ),
+};
+
+/**
+ * Rows have the same minimum height with or without row controls: the row actions
+ * button fits inside it instead of making those rows taller. In both densities.
+ */
+export const ShouldKeepTheRowHeightWithRowControls: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <div className="grid gap-4">
+      <UsersDataGrid {...args} />
+      <UsersDataGrid {...args} columns={[...COLUMNS, ACTIONS_COLUMN]} />
+      <UsersDataGrid {...args} layout={{ dense: true }} />
+      <UsersDataGrid {...args} layout={{ dense: true }} columns={[...COLUMNS, ACTIONS_COLUMN]} />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const heights = [...canvasElement.querySelectorAll("[data-slot=data-grid-table]")].map(
+      (table) =>
+        Math.round(table.querySelectorAll("[role=row]")[1]?.getBoundingClientRect().height ?? 0),
+    );
+    await expect(heights[1]).toBe(heights[0]);
+    await expect(heights[3]).toBe(heights[2]);
+  },
+};
+
 /**
  * Help about a column: a `FieldHelp` beside the `DataGridColumnHeader`, not
  * inside it, so it opens without sorting the column.
