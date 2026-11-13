@@ -6,7 +6,7 @@
   "description": "A small inline label used in chat/message timelines — a date separator, a status note, or similar metadata — rendered in muted text with an optional icon.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0"
+    "cn@^0.5.1"
   ],
   "files": [
     {

@@ -6,7 +6,7 @@
   "description": "A placeholder for empty states — no data, no search results, nothing configured yet. Composes an icon/media, title, description, and optional call-to-action content.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0"
+    "cn@^0.5.1"
   ],
   "files": [
     {

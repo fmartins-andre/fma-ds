@@ -6,7 +6,7 @@
   "description": "A callout for important, static information — supports an icon, title, description, and an optional action, with semantic variants (destructive/info/success/warning/invert) and a `brand` variant for announcements and promos in the theme's second identity color.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0"
+    "cn@^0.5.1"
   ],
   "files": [
     {

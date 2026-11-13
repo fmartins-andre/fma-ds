@@ -5,8 +5,8 @@
   "author": "@fma-ds/ds",
   "description": "A searchable list of commands or actions, filtered live as you type.\n\n- **`CommandDialog`**: wraps it in a `Dialog` for a full command-palette (⌘K) pattern.\n- **Empty state**: pass `CommandEmpty` through `CommandList`'s `renderEmptyState`, not as a child — the list only accepts items, groups and separators.",
   "dependencies": [
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0",
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [

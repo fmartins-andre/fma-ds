@@ -6,8 +6,8 @@
   "description": "A menu that opens on right-click (or long-press on touch) instead of a regular trigger click. Supports nested submenus, separators, and keyboard shortcut display.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0",
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0",
     "react-aria-components@^1.22.1"
   ],
   "files": [

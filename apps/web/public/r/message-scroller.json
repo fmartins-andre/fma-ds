@@ -6,8 +6,8 @@
   "description": "An auto-scrolling viewport for chat message lists: sticks to the latest message as new ones arrive, and shows a jump-to-end/start button once the user scrolls away.\n\n**Experimental**: it doesn't sit on react-aria-components like the rest of this registry, and `@shadcn/react` is still pre-1.0.",
   "dependencies": [
     "@shadcn/react@^0.3.1",
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0"
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0"
   ],
   "registryDependencies": [
     "@fma-ds/button"

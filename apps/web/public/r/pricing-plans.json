@@ -5,8 +5,8 @@
   "author": "@fma-ds/ds",
   "description": "Choose one of a few fixed plans, then confirm.\n\n- **`PricingPlans`**: lays out the options and an optional `summary` (an `OrderSummary` with the chosen plan and a \"Continue\" action: a sticky card on large screens, a bar fixed to the bottom on smaller ones).\n- **`PricingPeriod`**: the billing period as a segmented toggle that always has one selected (`value`/`onChange`; `PricingPeriodOption` with an `id`, and a `Badge` inside for the saving).\n- **`PricingPlanGroup`**: a radio group of `PricingPlan` cards, stacked in one list on small screens and side by side in equal columns once its own width fits them.\n- **`PricingPlan`**: a plan card built from parts: `PricingPlanHeader` with `PricingPlanName` (names the radio), `PricingPlanBadge` (\"Most popular\") and `PricingPlanDescription`; `PricingPlanPrice` with the price formatted by the app, its `period` and a `note` (the equivalent, \"R$ 718,80 per year\"), which describes the radio; and `PricingPlanFeatures`. `isFeatured` adds a brand glow and a `brand` badge (the border is left to the selected plan).\n- **`PricingPlanFeature`**: what the plan has; `isIncluded={false}` shows a dash, muted text and \"Not included\" read before it.\n\nBuilt-in text is in English; translate it with `i18n.labels`.",
   "dependencies": [
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0",
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [

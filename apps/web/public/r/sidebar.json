@@ -6,8 +6,8 @@
   "description": "A collapsible application sidebar with a mobile drawer fallback, a Cmd/Ctrl+B keyboard shortcut, and composable header/content/footer/menu slots.\n\n`isInactive` on `SidebarMenuButton` and `SidebarMenuSubButton` keeps an item visible and focusable, but it goes nowhere.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0",
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [

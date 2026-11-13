@@ -5,7 +5,7 @@
   "author": "@fma-ds/ds",
   "description": "A pulsing placeholder block for content that's still loading — size and shape it with className to match whatever it stands in for.",
   "dependencies": [
-    "cn@^0.5.0"
+    "cn@^0.5.1"
   ],
   "files": [
     {

@@ -6,7 +6,7 @@
   "description": "A single two-state pressable button (on/off) — the single-button counterpart to `ToggleGroup`.\n\n- **Styles**: `default` and `outline` variants, in three sizes.\n- **States**: pressed uses `accent` (the theme's selected surface); hover stays `muted`, as in shadcn, so hovering and pressed look different.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0",
+    "cn@^0.5.1",
     "react-aria-components@^1.22.1"
   ],
   "files": [

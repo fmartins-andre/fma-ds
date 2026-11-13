@@ -6,7 +6,7 @@
   "description": "A horizontal gauge for a quantity within a known range (storage, seats, quota), announced as a meter rather than a task's progress. `warningAt` and `criticalAt` tint the fill as it nears the limit; `--meter-fill` and `--meter-track` recolor it.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0",
+    "cn@^0.5.1",
     "react-aria-components@^1.22.1"
   ],
   "files": [

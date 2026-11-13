@@ -6,7 +6,7 @@
   "description": "Term/value pairs on a semantic `<dl>`: `DescriptionList` > `DescriptionItem` > `DescriptionTerm` + `DescriptionDetails`.\n\n- **`layout=\"inline\"`** (default): each value at the end of its row, right-aligned with tabular numbers — for order summaries, totals and plan details.\n- **`layout=\"stacked\"`**: the value under a smaller term, in a grid whose columns you set with `className` — for record details.\n- **`divided`**: draws rules between rows.\n- **Icons**: an icon inside `DescriptionTerm` sits before the label.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0"
+    "cn@^0.5.1"
   ],
   "files": [
     {

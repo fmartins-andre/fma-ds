@@ -5,8 +5,8 @@
   "author": "@fma-ds/ds",
   "description": "Page-number navigation built from LinkButton — previous/next controls, numbered links, and an ellipsis for collapsed ranges.",
   "dependencies": [
-    "cn@^0.5.0",
-    "lucide-react@^1.61.0"
+    "cn@^0.5.1",
+    "lucide-react@^1.65.0"
   ],
   "registryDependencies": [
     "@fma-ds/button",

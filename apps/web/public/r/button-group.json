@@ -6,7 +6,7 @@
   "description": "Visually joins a row (or column) of buttons into one connected control, with shared borders and rounded end corners. Can include a separator or a plain text segment.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "cn@^0.5.0"
+    "cn@^0.5.1"
   ],
   "registryDependencies": [
     "@fma-ds/separator"
