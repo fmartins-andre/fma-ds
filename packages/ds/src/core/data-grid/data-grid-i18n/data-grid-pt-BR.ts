@@ -13,7 +13,7 @@ export const dataGridPtBR = defineFmaNamespace("dataGrid", {
     pin: "Fixar",
     pinColumnStart: "Fixar no início",
     pinColumnEnd: "Fixar no fim",
-    unpinColumn: (column) => `Desafixar a coluna ${column}`,
+    pinned: "Fixada",
     move: "Mover",
     moveColumnLeft: "Mover para a esquerda",
     moveColumnRight: "Mover para a direita",

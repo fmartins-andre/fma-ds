@@ -487,8 +487,16 @@ export const ColumnMenus: Story = {
 
     menu = await openMenu("Joined");
     await userEvent.click(within(menu).getByRole("menuitem", { name: /Pin to start/ }));
-    await waitFor(() => expect(headers()[0]).toBe("Joined"));
-    await expect(canvas.getByRole("button", { name: "Unpin Joined column" })).toBeInTheDocument();
+    // The header text includes the screen reader "Pinned".
+    await waitFor(() => expect(headers()[0]).toBe("JoinedPinned"));
+    // The pin shows in the header; the checked pin option in the menu unpins.
+    await expect(canvas.getByRole("button", { name: /^Joined.*Pinned/ })).toBeInTheDocument();
+    menu = await openMenu("Joined");
+    await userEvent.click(within(menu).getByRole("menuitem", { name: /Pin to start/ }));
+    await waitFor(() => expect(headers()[0]).toBe("ID"));
+    await expect(canvas.getByRole("button", { name: /^Joined/ })).not.toHaveAccessibleName(
+      /Pinned/,
+    );
 
     menu = await openMenu("Name");
     await userEvent.click(within(menu).getByRole("menuitem", { name: /^Status/ }));
@@ -1497,7 +1505,7 @@ export const ShouldNotResizeBelowTheHeader: Story = {
 };
 
 /**
- * A column narrower than its header: the label truncates and the unpin button of a
+ * A column narrower than its header: the label truncates and the pin icon of a
  * pinned column stays inside the cell instead of overflowing into a scrollbar.
  */
 export const ShouldKeepTheHeaderInsideANarrowColumn: Story = {
@@ -1512,9 +1520,11 @@ export const ShouldKeepTheHeaderInsideANarrowColumn: Story = {
   render: (args) => <UsersDataGrid {...args} />,
   play: async ({ canvas }) => {
     const joined = canvas.getByRole("columnheader", { name: /^Joined/ });
-    const unpin = canvas.getByRole("button", { name: "Unpin Joined column" });
+    const trigger = within(joined).getByRole("button", { name: /^Joined.*Pinned/ });
+    const pin = trigger.querySelector("svg");
+    if (!pin) throw new Error("no pin icon");
     const cell = joined.getBoundingClientRect();
-    await expect(unpin.getBoundingClientRect().right).toBeLessThanOrEqual(cell.right);
+    await expect(pin.getBoundingClientRect().right).toBeLessThanOrEqual(cell.right);
     await expect(joined.scrollWidth).toBeLessThanOrEqual(joined.clientWidth);
   },
 };
