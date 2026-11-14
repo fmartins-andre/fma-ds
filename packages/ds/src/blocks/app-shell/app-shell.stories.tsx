@@ -470,19 +470,24 @@ function ClientsListPage() {
               </FilterToolbarActions>
             </FilterToolbar>
           </CardContent>
-          <CardContent bleed="end">
-            <DataGrid
-              table={table}
-              recordCount={clients.length}
-              emptyMessage="Nenhum cliente encontrado."
-              tableLayout={{ headerBackground: true, columnsResizable: true }}
-            >
+          {/* the grid wraps body and footer (out of the layout): the pagination is the
+              list's control, so it goes in the CardFooter, like a form's actions */}
+          <DataGrid
+            table={table}
+            recordCount={clients.length}
+            emptyMessage="Nenhum cliente encontrado."
+            tableLayout={{ headerBackground: true, columnsResizable: true }}
+            className="contents"
+          >
+            <CardContent bleed="end">
               <DataGridContainer flush>
                 <DataGridTable aria-label="Clientes" />
               </DataGridContainer>
-              <DataGridPagination className="px-(--card-spacing) pb-(--card-spacing)" />
-            </DataGrid>
-          </CardContent>
+            </CardContent>
+            <CardFooter>
+              <DataGridPagination className="w-full" />
+            </CardFooter>
+          </DataGrid>
         </Card>
       </AppShellContent>
     </AppShellMain>
