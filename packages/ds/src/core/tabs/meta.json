@@ -3,6 +3,6 @@
   "category": "navigation",
   "status": "stable",
   "source": "customized",
-  "description": "A tab list and its panels for switching between related views, with default, line and primary visual variants, horizontal or vertical orientation.\n\n- **Overflow**: horizontal tabs that don't fit scroll sideways and keep the selected one in view; the side that hides tabs fades out and shows an arrow that turns a page (pointer only, and not on small screens, where the strip is swiped).\n- **Full width**: `min-w-full` on `TabsList` spreads the tabs over the whole width while they fit, as in a card header.",
+  "description": "A tab list and its panels for switching between related views, with default, line and primary visual variants, horizontal or vertical orientation.\n\n- **Overflow**: horizontal tabs that don't fit scroll sideways and keep the selected one in view; the side that hides tabs fades out and shows an arrow that turns a page (pointer only, and not on small screens, where the strip is swiped).\n- **Full width**: `min-w-full` on `TabsList` spreads the tabs over the whole width while they fit, as in a card header.\n- **Motion**: the selection (segment or underline) slides to the new tab and the incoming panel fades in; both are off under `prefers-reduced-motion`.",
   "tags": ["navigation", "disclosure", "react-aria"]
 }

@@ -482,3 +482,32 @@ export const FormTabs: Story = {
     await waitFor(() => expect(createOrder).toHaveBeenCalled());
   },
 };
+
+/** The selection indicator slides straight to the new tab: sideways only, then over it. */
+export const ShouldMoveSelectionIndicator: Story = {
+  tags: ["!autodocs"],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const account = canvas.getByRole("tab", { name: "Account" });
+    const password = canvas.getByRole("tab", { name: "Password" });
+    const indicator = await waitFor(() => {
+      const element = canvasElement.querySelector<HTMLElement>("[data-slot=tabs-indicator]");
+      if (!element) throw new Error("no selection indicator");
+      return element;
+    });
+    const rect = (element: Element) => element.getBoundingClientRect();
+    await expect(rect(indicator).left).toBeCloseTo(rect(account).left, 0);
+    const offset = rect(indicator).top - rect(account).top;
+
+    await userEvent.click(password);
+    // while it moves, it stays on the tabs' row
+    for (let frame = 0; frame < 6; frame++) {
+      await new Promise(requestAnimationFrame);
+      await expect(rect(indicator).top - rect(password).top).toBeCloseTo(offset, 0);
+    }
+    await waitFor(() => expect(rect(indicator).left).toBeCloseTo(rect(password).left, 0));
+    await expect(rect(indicator).width).toBeCloseTo(rect(password).width, 0);
+    await expect(canvasElement.querySelectorAll("[data-slot=tabs-indicator]")).toHaveLength(1);
+    await expect(canvas.getByRole("tabpanel")).toHaveTextContent("Change your password here.");
+  },
+};
