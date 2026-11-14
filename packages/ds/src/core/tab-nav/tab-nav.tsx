@@ -14,12 +14,13 @@ const TabNavContext = React.createContext<{ variant: TabNavVariant; currentHref?
   variant: "default",
 });
 
-const tabNavListVariants = cva("inline-flex w-max items-center text-muted-foreground", {
+const tabNavListVariants = cva("inline-flex w-max items-center gap-1 text-muted-foreground", {
   variants: {
     variant: {
-      default: "h-8 rounded-lg bg-muted p-[3px]",
-      line: "h-9 gap-1",
-      primary: "h-8 gap-1 rounded-lg bg-primary px-1.5 py-[3px]",
+      default: "h-8 rounded-lg bg-muted px-1 py-[3px]",
+      // no padding: the underline sits on the strip's bottom edge (a card header's border)
+      line: "h-9",
+      primary: "h-8 rounded-lg bg-primary px-1 py-[3px]",
     },
   },
   defaultVariants: { variant: "default" },
@@ -48,6 +49,19 @@ const tabNavIndicatorVariants = cva(
 );
 
 type ItemBox = { x: number; y: number; w: number; h: number };
+
+const sameBox = (a: ItemBox, b: ItemBox) =>
+  a.x === b.x && a.y === b.y && a.w === b.w && a.h === b.h;
+
+/** Identifies a nav by its items, to hand the indicator over to its next instance. */
+const itemsKey = (scroller: HTMLElement) =>
+  Array.from(scroller.querySelectorAll("a[href]"), (link) => link.getAttribute("href")).join(" ");
+
+/** How long a nav's indicator position waits for the next instance of the nav, in ms. */
+const HANDOFF_MS = 1000;
+
+/** The indicator of the last nav that unmounted (a route change), for the next instance. */
+let departed: { items: string; box: ItemBox; at: number } | null = null;
 
 /**
  * Route navigation that looks like tabs: a `<nav>` of links where the current
@@ -106,8 +120,11 @@ function TabNav({
   React.useLayoutEffect(() => {
     const scroller = scrollRef.current;
     if (!scroller) return;
+    let last: { items: string; box: ItemBox } | null = null;
+    let frame: number | null = null;
     const resizes = new ResizeObserver(() => measure());
     const measure = () => {
+      if (frame !== null) return; // holding the previous nav's position for a frame
       const item = scroller.querySelector<HTMLElement>("[aria-current=page]");
       const box = item && {
         x: item.offsetLeft,
@@ -115,16 +132,31 @@ function TabNav({
         w: item.offsetWidth,
         h: item.offsetHeight,
       };
-      setCurrentBox((prev) =>
-        box && prev && box.x === prev.x && box.y === prev.y && box.w === prev.w && box.h === prev.h
-          ? prev
-          : box,
-      );
+      last = box && { items: itemsKey(scroller), box };
+      setCurrentBox((prev) => (box && prev && sameBox(box, prev) ? prev : box));
       resizes.disconnect();
       resizes.observe(scroller);
       for (const element of scroller.querySelectorAll("ul, a")) resizes.observe(element);
     };
-    measure();
+
+    // A route that renders its own nav mounts a new one: when it has the same items as the
+    // nav just unmounted, its indicator starts where that one was and slides from there.
+    const previous = departed;
+    departed = null;
+    if (
+      previous &&
+      performance.now() - previous.at < HANDOFF_MS &&
+      previous.items === itemsKey(scroller)
+    ) {
+      setCurrentBox(previous.box);
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        measure();
+      });
+    } else {
+      measure();
+    }
+
     const mutations = new MutationObserver(measure);
     mutations.observe(scroller, {
       subtree: true,
@@ -133,8 +165,10 @@ function TabNav({
       attributeFilter: ["aria-current"],
     });
     return () => {
+      if (frame !== null) cancelAnimationFrame(frame);
       resizes.disconnect();
       mutations.disconnect();
+      if (last) departed = { ...last, at: performance.now() };
     };
   }, []);
 
