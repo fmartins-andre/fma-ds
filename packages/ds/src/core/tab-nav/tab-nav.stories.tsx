@@ -318,7 +318,13 @@ export const ShouldMoveIndicator: Story = {
       return element;
     });
     const rect = (element: Element) => element.getBoundingClientRect();
-    await expect(rect(indicator).left).toBeCloseTo(rect(buy).left, 0);
+    // settled on the current page (it may arrive sliding from a nav with the same items
+    // just unmounted)
+    await waitFor(() => {
+      expect(indicator.getAnimations()).toHaveLength(0);
+      expect(rect(indicator).left).toBeCloseTo(rect(buy).left, 0);
+      expect(rect(indicator).top).toBeCloseTo(rect(buy).top, 0);
+    });
     const offset = rect(indicator).top - rect(buy).top;
 
     await userEvent.click(bought);
@@ -330,5 +336,47 @@ export const ShouldMoveIndicator: Story = {
     await waitFor(() => expect(rect(indicator).left).toBeCloseTo(rect(bought).left, 0));
     await expect(rect(indicator).width).toBeCloseTo(rect(bought).width, 0);
     await expect(canvasElement.querySelectorAll("[data-slot=tab-nav-indicator]")).toHaveLength(1);
+  },
+};
+
+/**
+ * Each route renders its own nav (here keyed by the path, as a page would): the new
+ * instance's indicator starts where the old one was and slides to the current page.
+ */
+export const ShouldSlideAcrossRouteRemounts: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <TabNav key={args.currentHref} {...args}>
+      <TabNavItem href="/contratos/comprar">Comprar contrato</TabNavItem>
+      <TabNavItem href="/contratos">Contratos adquiridos</TabNavItem>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const indicator = () => canvasElement.querySelector("[data-slot=tab-nav-indicator]");
+    const buy = canvas.getByRole("link", { name: "Comprar contrato" });
+    await waitFor(() => {
+      expect(indicator()?.getAnimations()).toHaveLength(0);
+      expect(indicator()?.getBoundingClientRect().left).toBeCloseTo(
+        buy.getBoundingClientRect().left,
+        0,
+      );
+    });
+    const before = indicator()?.getBoundingClientRect().left ?? 0;
+
+    await userEvent.click(canvas.getByRole("link", { name: "Contratos adquiridos" }));
+    const bought = canvas.getByRole("link", { name: "Contratos adquiridos" });
+    await expect(bought).toHaveAttribute("aria-current", "page");
+    // a new nav, its indicator still on its way from the old position
+    await new Promise(requestAnimationFrame);
+    const left = indicator()?.getBoundingClientRect().left ?? 0;
+    await expect(left).toBeLessThan(bought.getBoundingClientRect().left - 2);
+    await expect(left).toBeGreaterThanOrEqual(before - 1);
+    await waitFor(() =>
+      expect(indicator()?.getBoundingClientRect().left).toBeCloseTo(
+        bought.getBoundingClientRect().left,
+        0,
+      ),
+    );
   },
 };
