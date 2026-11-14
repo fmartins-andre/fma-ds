@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, within } from "storybook/test";
+import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
+import { expect, waitFor, within } from "storybook/test";
 import { Button } from "../button/button";
 import {
   Card,
@@ -136,6 +136,77 @@ export const Bleed: Story = {
     await expect(Math.round(listBox.left)).toBe(Math.round(cardBox.left));
     await expect(Math.round(listBox.right)).toBe(Math.round(cardBox.right));
     await expect(Math.round(listBox.bottom)).toBe(Math.round(cardBox.bottom));
+  },
+};
+
+/** A short scrolling page around the card, standing in for the app's. */
+const withScrollingPage: Decorator = (Story) => (
+  <div data-testid="page" className="h-80 w-96 overflow-y-auto">
+    <Story />
+  </div>
+);
+
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August"];
+
+/**
+ * `sticky` keeps the header at the top while a long card scrolls, on an opaque surface
+ * with a bottom border. It stops below `--sticky-edge`, which an `AppShell` page sets
+ * to the bottom of its sticky bars (0 without it). The card clips its corners without
+ * becoming a scroll container, so the header sticks to the page.
+ */
+export const StickyHeader: Story = {
+  decorators: [withScrollingPage],
+  render: (args) => (
+    <Card {...args}>
+      <CardHeader sticky>
+        <CardTitle>Invoices</CardTitle>
+        <CardDescription>Every charge of the plan.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ul className="flex flex-col gap-4">
+          {MONTHS.map((month) => (
+            <li key={month}>{month}: $249.90</li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    const page = canvas.getByTestId("page");
+    const card = canvasElement.querySelector<HTMLElement>("[data-slot=card]");
+    const header = canvasElement.querySelector<HTMLElement>("[data-slot=card-header]");
+    if (!card || !header) throw new Error();
+    await expect(getComputedStyle(card).overflow).toBe("clip");
+    page.scrollTop = 120;
+    await waitFor(() =>
+      expect(Math.round(header.getBoundingClientRect().top)).toBe(
+        Math.round(page.getBoundingClientRect().top),
+      ),
+    );
+  },
+};
+
+/** A sticky footer sticks while the card keeps clipping its corners. */
+export const ShouldStickTheFooterAndKeepClipping: Story = {
+  tags: ["!autodocs"],
+  decorators: [withScrollingPage],
+  render: (args) => (
+    <Card {...args}>
+      <CardContent className="h-[480px]">Long content</CardContent>
+      <CardFooter sticky>
+        <Button>Save</Button>
+      </CardFooter>
+    </Card>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    const page = canvas.getByTestId("page");
+    const card = canvasElement.querySelector<HTMLElement>("[data-slot=card]");
+    const footer = canvasElement.querySelector<HTMLElement>("[data-slot=card-footer]");
+    if (!card || !footer) throw new Error();
+    await expect(getComputedStyle(card).overflow).toBe("clip");
+    await expect(Math.round(footer.getBoundingClientRect().bottom)).toBe(
+      Math.round(page.getBoundingClientRect().bottom),
+    );
   },
 };
 

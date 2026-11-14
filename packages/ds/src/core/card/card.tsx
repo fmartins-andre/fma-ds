@@ -1,6 +1,11 @@
 import { cn } from "cn";
 import type * as React from "react";
 
+/**
+ * Clips its content to the rounded corners with `overflow: clip`, which, unlike `hidden`,
+ * doesn't make the card a scroll container: a sticky `CardHeader` or `CardFooter` sticks
+ * to the page while the card keeps clipping.
+ */
 function Card({
   className,
   size = "default",
@@ -11,7 +16,7 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>[data-slot=card-content][data-bleed=end]]:pb-0 has-[>[data-slot=card-footer][data-sticky]]:overflow-visible has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+        "group/card flex flex-col gap-(--card-spacing) overflow-clip rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>[data-slot=card-content][data-bleed=end]]:pb-0 has-[>[data-slot=card-header][data-sticky]]:pt-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
         className,
       )}
       {...props}
@@ -19,12 +24,24 @@ function Card({
   );
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+/**
+ * `sticky` keeps it at the top of the screen while a long card scrolls, below
+ * `--sticky-edge` (the bottom of the page's sticky bars, which `AppShellMain` sets; 0
+ * without it), on an opaque surface with a bottom border. It takes the card's top
+ * padding, so its content keeps the same room when it sticks.
+ */
+function CardHeader({
+  className,
+  sticky = false,
+  ...props
+}: React.ComponentProps<"div"> & { sticky?: boolean }) {
   return (
     <div
       data-slot="card-header"
+      data-sticky={sticky || undefined}
       className={cn(
         "group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-xl px-(--card-spacing) has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing)",
+        sticky && "sticky top-(--sticky-edge,0px) z-10 border-b bg-card pt-(--card-spacing)",
         className,
       )}
       {...props}
@@ -94,8 +111,7 @@ function CardContent({
 
 /**
  * `sticky` keeps it at the bottom of the screen while a long card scrolls, on an
- * opaque surface (the same color), so what scrolls under it doesn't show. The card
- * stops clipping its overflow so the footer can stick.
+ * opaque surface (the same color), so what scrolls under it doesn't show.
  */
 function CardFooter({
   className,
