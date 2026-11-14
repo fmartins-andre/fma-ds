@@ -254,6 +254,45 @@ export const Default: Story = {
   },
 };
 
+/** The page's header is measured through a wrapper between it and `AppShellMain`. */
+export const ShouldMeasureThePageHeaderThroughAWrapper: Story = {
+  tags: ["!autodocs"],
+  render: () => (
+    <AppShell className="h-[480px] min-h-0" sidebar={<ExampleSidebar current="/clientes" />}>
+      <AppShellHeader />
+      <AppShellMain>
+        <div className="contents" data-testid="route">
+          <PageHeader sticky density="compact" data-testid="page-header">
+            <PageHeaderContent>
+              <PageHeaderHeading>
+                <PageHeaderTitle>Clientes</PageHeaderTitle>
+              </PageHeaderHeading>
+            </PageHeaderContent>
+          </PageHeader>
+          <AppShellContent>
+            <PageHeader sticky density="compact" className="h-40">
+              <PageHeaderContent>
+                <PageHeaderHeading>
+                  <PageHeaderTitle>Seção</PageHeaderTitle>
+                </PageHeaderHeading>
+              </PageHeaderContent>
+            </PageHeader>
+          </AppShellContent>
+        </div>
+      </AppShellMain>
+    </AppShell>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    const main = canvasElement.querySelector<HTMLElement>("[data-slot=app-shell-main]");
+    if (!main) throw new Error();
+    const pageHeader = canvas.getByTestId("page-header");
+    // the page's header, not the one inside the content
+    await waitFor(() =>
+      expect(main.style.getPropertyValue("--page-header-h")).toBe(`${pageHeader.offsetHeight}px`),
+    );
+  },
+};
+
 // ---------------------------------------------------------------------------
 // Whole pages: the app's frame with the blocks composed the way an app uses
 // them. Each page is a component of its own, as it would be in the app.
