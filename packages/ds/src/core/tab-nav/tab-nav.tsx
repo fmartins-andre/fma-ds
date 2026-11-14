@@ -26,6 +26,30 @@ const tabNavListVariants = cva("inline-flex w-max items-center text-muted-foregr
 });
 
 /**
+ * The current page: a segment behind its item (`default`, `primary`) or an underline
+ * (`line`). One element for the whole nav, placed from the current item's layout box
+ * (`--x`, `--y`, `--w`, `--h`), so it slides straight from item to item; `motion-reduce`
+ * turns that off. Style it from `TabNav`'s `className`
+ * (`[&_[data-slot=tab-nav-indicator]]:bg-primary`).
+ */
+const tabNavIndicatorVariants = cva(
+  "pointer-events-none absolute top-0 left-0 z-0 transition-[translate,width,height] duration-200 ease-in-out motion-reduce:transition-none",
+  {
+    variants: {
+      variant: {
+        default:
+          "h-(--h) w-(--w) rounded-md bg-background shadow-sm [translate:var(--x)_var(--y)] dark:border dark:border-input dark:bg-input",
+        primary: "h-(--h) w-(--w) rounded-md bg-background shadow-sm [translate:var(--x)_var(--y)]",
+        // at the item's bottom, inset as the label
+        line: "h-0.5 w-[calc(var(--w)-0.5rem)] rounded-full bg-foreground [translate:calc(var(--x)+0.25rem)_calc(var(--y)+var(--h)-2px)]",
+      },
+    },
+  },
+);
+
+type ItemBox = { x: number; y: number; w: number; h: number };
+
+/**
  * Route navigation that looks like tabs: a `<nav>` of links where the current
  * page carries `aria-current="page"`. Unlike `Tabs`, there are no panels — each
  * item is a page. Overflowing items scroll sideways, keeping the current one
@@ -74,6 +98,46 @@ function TabNav({
     return () => observer.disconnect();
   }, [currentHref, reveal]);
 
+  // Where the indicator goes: the current item's box inside the scroller (its offset
+  // parent), which page scroll, surrounding layout shifts and ancestor transforms don't
+  // change. Measured before paint, and again when the current item changes (by
+  // `currentHref` or `isCurrent`), items come and go, or the strip resizes.
+  const [currentBox, setCurrentBox] = React.useState<ItemBox | null>(null);
+  React.useLayoutEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const resizes = new ResizeObserver(() => measure());
+    const measure = () => {
+      const item = scroller.querySelector<HTMLElement>("[aria-current=page]");
+      const box = item && {
+        x: item.offsetLeft,
+        y: item.offsetTop,
+        w: item.offsetWidth,
+        h: item.offsetHeight,
+      };
+      setCurrentBox((prev) =>
+        box && prev && box.x === prev.x && box.y === prev.y && box.w === prev.w && box.h === prev.h
+          ? prev
+          : box,
+      );
+      resizes.disconnect();
+      resizes.observe(scroller);
+      for (const element of scroller.querySelectorAll("ul, a")) resizes.observe(element);
+    };
+    measure();
+    const mutations = new MutationObserver(measure);
+    mutations.observe(scroller, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ["aria-current"],
+    });
+    return () => {
+      resizes.disconnect();
+      mutations.disconnect();
+    };
+  }, []);
+
   return (
     <TabNavContext.Provider value={value}>
       <nav
@@ -94,6 +158,21 @@ function TabNav({
           >
             {children}
           </ul>
+          {currentBox && (
+            <span
+              aria-hidden="true"
+              data-slot="tab-nav-indicator"
+              className={tabNavIndicatorVariants({ variant: resolvedVariant })}
+              style={
+                {
+                  "--x": `${currentBox.x}px`,
+                  "--y": `${currentBox.y}px`,
+                  "--w": `${currentBox.w}px`,
+                  "--h": `${currentBox.h}px`,
+                } as React.CSSProperties
+              }
+            />
+          )}
         </div>
         {canScrollStart && <ScrollArrow side="start" onPress={() => scrollToward("start")} />}
         {canScrollEnd && <ScrollArrow side="end" onPress={() => scrollToward("end")} />}
@@ -169,16 +248,14 @@ function TabNavItem({
         href={href}
         aria-current={current ? "page" : undefined}
         className={cn(
-          "relative inline-flex h-full flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-foreground/60 transition-all outline-none hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-          // default: the current page is a raised segment
-          "group-data-[variant=default]/tab-nav:aria-[current=page]:bg-background group-data-[variant=default]/tab-nav:aria-[current=page]:shadow-sm dark:group-data-[variant=default]/tab-nav:aria-[current=page]:border-input dark:group-data-[variant=default]/tab-nav:aria-[current=page]:bg-input",
-          // line: the current page is underlined; the focus ring is drawn inside, as the
-          // list has no padding for it and the scroller would clip it
+          "relative z-10 inline-flex h-full flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-foreground/60 transition-[color,border-color,box-shadow] duration-200 ease-in-out outline-none hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+          // the current page's segment or underline is the nav's indicator, behind (`z-10`)
+          // line: the focus ring is drawn inside, as the list has no padding for it and the
+          // scroller would clip it
           "group-data-[variant=line]/tab-nav:focus-visible:ring-inset",
-          "after:absolute after:inset-x-1 after:bottom-0 after:h-0.5 after:rounded-full after:bg-foreground after:opacity-0 after:transition-opacity group-data-[variant=line]/tab-nav:aria-[current=page]:after:opacity-100",
           "aria-[current=page]:text-foreground",
           // primary: on the primary color, the current page is a raised segment in the primary text
-          "group-data-[variant=primary]/tab-nav:px-4 group-data-[variant=primary]/tab-nav:text-primary-foreground/80 group-data-[variant=primary]/tab-nav:hover:text-primary-foreground group-data-[variant=primary]/tab-nav:aria-[current=page]:bg-background group-data-[variant=primary]/tab-nav:aria-[current=page]:text-primary group-data-[variant=primary]/tab-nav:aria-[current=page]:shadow-sm group-data-[variant=primary]/tab-nav:aria-[current=page]:hover:text-primary dark:group-data-[variant=primary]/tab-nav:text-primary-foreground/80 dark:group-data-[variant=primary]/tab-nav:hover:text-primary-foreground dark:group-data-[variant=primary]/tab-nav:aria-[current=page]:text-primary",
+          "group-data-[variant=primary]/tab-nav:px-4 group-data-[variant=primary]/tab-nav:text-primary-foreground/80 group-data-[variant=primary]/tab-nav:hover:text-primary-foreground group-data-[variant=primary]/tab-nav:aria-[current=page]:text-primary group-data-[variant=primary]/tab-nav:aria-[current=page]:hover:text-primary dark:group-data-[variant=primary]/tab-nav:text-primary-foreground/80 dark:group-data-[variant=primary]/tab-nav:hover:text-primary-foreground dark:group-data-[variant=primary]/tab-nav:aria-[current=page]:text-primary",
           className,
         )}
         {...props}
