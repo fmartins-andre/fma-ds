@@ -24,7 +24,8 @@ const useIsomorphicLayoutEffect =
  * It sets the measures the parts share, as CSS variables: `--app-shell-header-h` (the
  * top bar) and `--app-shell-gutter` (the page's padding), handed to a sticky
  * `PageHeader` as `--sticky-offset` and `--page-gutter`. `AppShellMain` adds
- * `--sticky-top`, where other sticky parts stop (an `OrderSummary` stays under both bars).
+ * `--sticky-edge`, the bottom of both bars (where a sticky `CardHeader` stops), and
+ * `--sticky-top`, 16px below it, where floating sticky parts stop (an `OrderSummary`).
  */
 function AppShell({
   sidebar,
@@ -126,8 +127,10 @@ function AppShellHeader({
  * The page: a sticky `PageHeader`, then `AppShellContent`, inside the shell's gutter.
  * The shell is already the page's `<main>` landmark, so this is a plain container.
  *
- * It measures its sticky `PageHeader` (`--page-header-h`) and sets `--sticky-top` below
- * both bars, for other sticky parts.
+ * It measures its sticky `PageHeader` (`--page-header-h`) and sets, for other sticky parts,
+ * `--sticky-edge` right below both bars (for parts that touch them, like a sticky
+ * `CardHeader`) and `--sticky-top` 16px below that (for parts that float, like an
+ * `OrderSummary`).
  */
 function AppShellMain({ className, ref, ...props }: React.ComponentProps<"div">) {
   const [element, setElement] = React.useState<HTMLDivElement | null>(null);
@@ -176,7 +179,7 @@ function AppShellMain({ className, ref, ...props }: React.ComponentProps<"div">)
       data-slot="app-shell-main"
       className={cn(
         "flex min-w-0 flex-1 flex-col gap-4 p-(--app-shell-gutter)",
-        "[--sticky-top:calc(var(--app-shell-header-h)+var(--page-header-h,0px)+--spacing(4))]",
+        "[--sticky-edge:calc(var(--app-shell-header-h)+var(--page-header-h,0px))] [--sticky-top:calc(var(--sticky-edge)+--spacing(4))]",
         className,
       )}
       {...props}

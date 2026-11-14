@@ -138,8 +138,9 @@ export const Overflow: Story = {
 
 /**
  * Tabs in a card header: a `line` list on the header's bottom border, its tabs sharing the
- * width (`min-w-full`) while they fit, scrolling when they don't. The header drops its
- * side and bottom padding so the underline sits on the border.
+ * width (`min-w-full`) while they fit, scrolling when they don't. A `sticky` header keeps
+ * the tabs in view while the card scrolls; without its side, top and bottom padding, the
+ * list sits flush with the card's top, the label centered and the underline on the border.
  */
 export const InCardHeader: Story = {
   parameters: { layout: "padded" },
@@ -147,7 +148,7 @@ export const InCardHeader: Story = {
   render: (args) => (
     <Tabs {...args}>
       <Card>
-        <CardHeader className="border-b px-0 [.border-b]:pb-0">
+        <CardHeader sticky className="px-0 pt-0 [.border-b]:pb-0">
           <TabsList aria-label="Invoice" variant="line" className="min-w-full">
             <TabsTrigger id="customer">Customer</TabsTrigger>
             <TabsTrigger id="products">Products</TabsTrigger>

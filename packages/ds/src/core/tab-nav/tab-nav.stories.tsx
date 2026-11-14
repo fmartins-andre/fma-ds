@@ -224,8 +224,10 @@ export const ShouldNotShowArrowsWhenItFits: Story = {
 
 /**
  * Tabs in a card header: a `line` strip on the header's bottom border, its items sharing
- * the width (`listClassName="min-w-full"`) while they fit, scrolling when they don't. The
- * header drops its side and bottom padding so the underline sits on the border.
+ * the width (`listClassName="min-w-full"`) while they fit, scrolling when they don't. A
+ * `sticky` header keeps the tabs in view while the card scrolls; without its side, top
+ * and bottom padding, the strip sits flush with the card's top, the label centered and
+ * the underline on the border.
  */
 export const InCardHeader: Story = {
   parameters: { layout: "padded" },
@@ -233,7 +235,7 @@ export const InCardHeader: Story = {
   decorators: [withRouter("/clientes/42/info")],
   render: (args) => (
     <Card className="w-full max-w-3xl">
-      <CardHeader className="border-b px-0 [.border-b]:pb-0">
+      <CardHeader sticky className="px-0 pt-0 [.border-b]:pb-0">
         <TabNav {...args} listClassName="min-w-full">
           <TabNavItem href="/clientes/42/info">Informações</TabNavItem>
           <TabNavItem href="/clientes/42/modulos">Módulos</TabNavItem>

@@ -166,7 +166,7 @@ function ClientsPage() {
           </StatCard>
         </StatGrid>
         <Card>
-          <CardHeader>
+          <CardHeader sticky>
             <CardTitle>Últimos cadastros</CardTitle>
             <CardDescription>Os clientes cadastrados nesta semana.</CardDescription>
           </CardHeader>
@@ -251,6 +251,17 @@ export const Default: Story = {
     const content = canvasElement.querySelector<HTMLElement>("[data-slot=app-shell-content]");
     if (!content) throw new Error();
     await expect(getComputedStyle(content).rowGap).toBe("16px");
+    // A sticky card header stops right below both bars (--sticky-edge), with no gap.
+    const cardHeader = canvasElement.querySelector<HTMLElement>(
+      "[data-slot=card-header][data-sticky]",
+    );
+    if (!cardHeader) throw new Error();
+    await expect(getComputedStyle(cardHeader).position).toBe("sticky");
+    await waitFor(() =>
+      expect(getComputedStyle(cardHeader).top).toBe(
+        `${topBar.offsetHeight + pageHeader.offsetHeight}px`,
+      ),
+    );
   },
 };
 
