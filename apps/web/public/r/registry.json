@@ -4316,7 +4316,7 @@
       "name": "tab-nav",
       "type": "registry:ui",
       "title": "Tab Nav",
-      "description": "Navigation between the pages of an area that looks like tabs: a `<nav>` of react-aria links where the current page carries `aria-current=\"page\"`.\n\nUnlike `Tabs` there are no panels — each item is a route — so use it for sub-pages and `Tabs` for in-page views.\n\n- **`variant`**: matches the tab styles — `default` (segmented on `muted`, the current page raised), `line` (underlined) or `primary` (segmented on the primary color, for an area's main sections).\n- **Current item**: when `isCurrent` is set or its `href` matches `TabNav`'s `currentHref` (exactly, or with `matchPrefix` also on sub-paths).\n- **`TabNavItem`**: takes an icon before its label; **`TabNavSeparator`** divides groups.\n- **Overflow**: when items don't fit, the strip scrolls sideways and keeps the current page in view.\n\nWrap the app in react-aria's `RouterProvider` for client routing.",
+      "description": "Navigation between the pages of an area that looks like tabs: a `<nav>` of react-aria links where the current page carries `aria-current=\"page\"`.\n\nUnlike `Tabs` there are no panels — each item is a route — so use it for sub-pages and `Tabs` for in-page views.\n\n- **`variant`**: matches the tab styles — `default` (segmented on `muted`, the current page raised), `line` (underlined) or `primary` (segmented on the primary color, for an area's main sections).\n- **Current item**: when `isCurrent` is set or its `href` matches `TabNav`'s `currentHref` (exactly, or with `matchPrefix` also on sub-paths).\n- **`TabNavItem`**: takes an icon before its label; **`TabNavSeparator`** divides groups.\n- **Overflow**: when items don't fit, the strip scrolls sideways and keeps the current page in view; the side that hides items fades out and shows an arrow that turns a page (pointer only, and not on small screens, where the strip is swiped).\n- **Full width**: `listClassName=\"min-w-full\"` spreads the items over the whole width while they fit, as in a card header.\n\nWrap the app in react-aria's `RouterProvider` for client routing.",
       "author": "@fma-ds/ds",
       "categories": [
         "navigation"
@@ -4328,9 +4328,14 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/button",
+        "@fma-ds/use-scroll-overflow"
+      ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
         "cn@^0.5.1",
+        "lucide-react@^1.65.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4343,7 +4348,7 @@
           "routing",
           "react-aria"
         ],
-        "contentHash": "95fe7a1ca147"
+        "contentHash": "bf21de801a8b"
       }
     },
     {
@@ -4382,7 +4387,7 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",
-      "description": "A tab list and its panels for switching between related views, with default, line and primary visual variants, horizontal or vertical orientation.",
+      "description": "A tab list and its panels for switching between related views, with default, line and primary visual variants, horizontal or vertical orientation.\n\n- **Overflow**: horizontal tabs that don't fit scroll sideways and keep the selected one in view; the side that hides tabs fades out and shows an arrow that turns a page (pointer only, and not on small screens, where the strip is swiped).\n- **Full width**: `min-w-full` on `TabsList` spreads the tabs over the whole width while they fit, as in a card header.",
       "author": "@fma-ds/ds",
       "categories": [
         "navigation"
@@ -4394,9 +4399,14 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/button",
+        "@fma-ds/use-scroll-overflow"
+      ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
         "cn@^0.5.1",
+        "lucide-react@^1.65.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4408,7 +4418,7 @@
           "disclosure",
           "react-aria"
         ],
-        "contentHash": "d09f9de81b6d"
+        "contentHash": "bb2d56400ae3"
       }
     },
     {
@@ -8283,6 +8293,35 @@
           "responsive"
         ],
         "contentHash": "21eff740f9e5"
+      }
+    },
+    {
+      "name": "use-scroll-overflow",
+      "type": "registry:hook",
+      "title": "Use Scroll Overflow",
+      "description": "useScrollOverflow: the horizontal overflow of a scroller — whether content is hidden before or after the visible area (following the writing direction), a page turn toward a side aligned to the items, and revealing one element without scrolling the page. Edges kept clear (arrows, fades) come from the scroller's `scroll-padding`. Used by tab-nav and tabs for their scroll arrows.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/hooks/use-scroll-overflow.ts",
+          "target": "hooks/fma-ds/use-scroll-overflow.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "dependencies": [],
+      "meta": {
+        "status": "stable",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "hook",
+          "scroll",
+          "overflow"
+        ],
+        "contentHash": "c7962ceb09a1"
       }
     }
   ]

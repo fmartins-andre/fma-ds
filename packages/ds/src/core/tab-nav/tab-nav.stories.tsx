@@ -13,7 +13,8 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { RouterProvider } from "react-aria-components";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
+import { Card, CardContent, CardHeader } from "@/core/card/card";
 import meta from "./meta.json";
 import { TabNav, TabNavItem, TabNavSeparator } from "./tab-nav";
 
@@ -129,7 +130,11 @@ export const Grouped: Story = {
   ),
 };
 
-/** In a narrow space the strip scrolls sideways and keeps the current page in view. */
+/**
+ * In a narrow space the strip scrolls sideways and keeps the current page in view. The
+ * side that hides items fades out and, with a pointer on larger screens, shows an arrow
+ * that turns a page.
+ */
 export const Overflow: Story = {
   args: { "aria-label": "Cliente", className: "w-72" },
   decorators: [withRouter("/clientes/42/mensalidades")],
@@ -169,6 +174,83 @@ export const Overflow: Story = {
     const box = current.getBoundingClientRect();
     const view = scroller.getBoundingClientRect();
     await expect(box.right).toBeLessThanOrEqual(view.right + 1);
+
+    // at the end: only the start arrow, and it's out of the accessibility tree
+    const arrow = (side: string) =>
+      canvasElement.querySelector<HTMLElement>(
+        `[data-slot=tab-nav-scroll-arrow][data-side=${side}]`,
+      );
+    await waitFor(() => expect(arrow("start")).not.toBeNull());
+    await expect(arrow("end")).toBeNull();
+    await expect(arrow("start")).toHaveAttribute("aria-hidden", "true");
+    await expect(arrow("start")?.querySelector("button")).toHaveAttribute("tabindex", "-1");
+
+    // a page back: the end arrow shows up; at the start, the start arrow goes away
+    const before = scroller.scrollLeft;
+    arrow("start")?.querySelector("button")?.click();
+    await waitFor(() => expect(scroller.scrollLeft).toBeLessThan(before));
+    await waitFor(() => expect(arrow("end")).not.toBeNull());
+    scroller.scrollLeft = 0;
+    await waitFor(() => expect(arrow("start")).toBeNull());
+
+    // the keyboard reveals a hidden item on focus
+    const pedidos = canvas.getByRole("link", { name: "Pedidos" });
+    pedidos.focus();
+    await waitFor(() =>
+      expect(pedidos.getBoundingClientRect().right).toBeLessThanOrEqual(
+        scroller.getBoundingClientRect().right + 1,
+      ),
+    );
+  },
+};
+
+/** When everything fits, no arrow and no fade. */
+export const ShouldNotShowArrowsWhenItFits: Story = {
+  tags: ["!autodocs"],
+  args: { "aria-label": "Contratos", className: "w-96" },
+  render: (args) => (
+    <TabNav {...args}>
+      <TabNavItem href="/contratos/comprar">Comprar</TabNavItem>
+      <TabNavItem href="/contratos">Adquiridos</TabNavItem>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const scroller = canvasElement.querySelector("ul")?.parentElement as HTMLElement;
+    await expect(scroller).not.toHaveAttribute("data-overflow-start");
+    await expect(scroller).not.toHaveAttribute("data-overflow-end");
+    await expect(canvasElement.querySelector("[data-slot=tab-nav-scroll-arrow]")).toBeNull();
+  },
+};
+
+/**
+ * Tabs in a card header: a `line` strip on the header's bottom border, its items sharing
+ * the width (`listClassName="min-w-full"`) while they fit, scrolling when they don't. The
+ * header drops its side and bottom padding so the underline sits on the border.
+ */
+export const InCardHeader: Story = {
+  parameters: { layout: "padded" },
+  args: { "aria-label": "Cliente", variant: "line" },
+  decorators: [withRouter("/clientes/42/info")],
+  render: (args) => (
+    <Card className="w-full max-w-3xl">
+      <CardHeader className="border-b px-0 [.border-b]:pb-0">
+        <TabNav {...args} listClassName="min-w-full">
+          <TabNavItem href="/clientes/42/info">Informações</TabNavItem>
+          <TabNavItem href="/clientes/42/modulos">Módulos</TabNavItem>
+          <TabNavItem href="/clientes/42/notas">Notas fiscais</TabNavItem>
+          <TabNavItem href="/clientes/42/certificado">Certificado digital</TabNavItem>
+        </TabNav>
+      </CardHeader>
+      <CardContent>Dados cadastrais do cliente.</CardContent>
+    </Card>
+  ),
+  play: async ({ canvas }) => {
+    // the items share the strip's width
+    const nav = canvas.getByRole("navigation", { name: "Cliente" });
+    const items = within(nav).getAllByRole("link");
+    const width = (element: Element) => element.getBoundingClientRect().width;
+    const total = items.reduce((sum, item) => sum + width(item), 0);
+    await expect(total).toBeGreaterThan(width(nav) - items.length * 8);
   },
 };
 

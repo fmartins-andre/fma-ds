@@ -1,12 +1,18 @@
+"use client";
+
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
-import type * as React from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import * as React from "react";
 import {
   TabList as TabListPrimitive,
+  TabListStateContext,
   TabPanel as TabPanelPrimitive,
   Tab as TabPrimitive,
   Tabs as TabsPrimitive,
 } from "react-aria-components";
+import { Button } from "@/core/button/button";
+import { type ScrollSide, useScrollOverflow } from "@/hooks/use-scroll-overflow";
 
 function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive>) {
   return (
@@ -34,18 +40,94 @@ const tabsListVariants = cva(
   },
 );
 
+/**
+ * Horizontal tabs that don't fit scroll sideways, keeping the selected one in view; an
+ * arrow on each side that hides tabs turns a page (pointer only, as the keyboard reaches
+ * every tab, and not on small screens, where the strip is swiped). `min-w-full` spreads
+ * the tabs over the whole width while they fit.
+ */
 function TabsList({
   className,
   variant = "default",
   ...props
 }: React.ComponentProps<typeof TabListPrimitive> & VariantProps<typeof tabsListVariants>) {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const { canScrollStart, canScrollEnd, scrollToward, reveal } = useScrollOverflow(scrollRef);
+  const selectedKey = React.useContext(TabListStateContext)?.selectedKey;
+
+  // Bring the selected tab into view inside the strip, without scrolling the page;
+  // again whenever the strip resizes (e.g. once web fonts load).
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run when the selection changes
+  React.useEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const revealSelected = () => {
+      const selected = scroller.querySelector("[role=tab][data-selected]");
+      if (selected) reveal(selected);
+    };
+    revealSelected();
+    const observer = new ResizeObserver(revealSelected);
+    for (const element of [scroller, scroller.firstElementChild]) {
+      if (element) observer.observe(element);
+    }
+    return () => observer.disconnect();
+  }, [selectedKey, reveal]);
+
   return (
-    <TabListPrimitive
-      data-slot="tabs-list"
-      data-variant={variant}
-      className={cn(tabsListVariants({ variant }), className)}
-      {...props}
-    />
+    <div data-slot="tabs-list-container" className="relative flex max-w-full min-w-0">
+      <div
+        ref={scrollRef}
+        data-overflow-start={canScrollStart || undefined}
+        data-overflow-end={canScrollEnd || undefined}
+        className={cn(
+          "flex min-w-0 flex-1",
+          // the vertical padding (pulled back by the margin) leaves room for what the
+          // scroller would clip: focus rings and the line variant's underline
+          "group-data-horizontal/tabs:-my-1 group-data-horizontal/tabs:overflow-x-auto group-data-horizontal/tabs:py-1",
+          // no scrollbar; the side that hides tabs fades out (a mask, so it works on any
+          // surface), clear under the arrow, and keeps clear of it (`scroll-padding`)
+          "scroll-px-12 [scrollbar-width:none] [--fade-dir:right] [--fade-end:0px] [--fade-start:0px] [mask-image:linear-gradient(to_var(--fade-dir),transparent_calc(var(--fade-start)*0.6),#000_var(--fade-start),#000_calc(100%-var(--fade-end)),transparent_calc(100%-var(--fade-end)*0.6))] data-overflow-end:[--fade-end:--spacing(12)] data-overflow-start:[--fade-start:--spacing(12)] rtl:[--fade-dir:left] [&::-webkit-scrollbar]:hidden",
+        )}
+      >
+        <TabListPrimitive
+          data-slot="tabs-list"
+          data-variant={variant}
+          className={cn(tabsListVariants({ variant }), className)}
+          {...props}
+        />
+      </div>
+      {canScrollStart && <ScrollArrow side="start" onPress={() => scrollToward("start")} />}
+      {canScrollEnd && <ScrollArrow side="end" onPress={() => scrollToward("end")} />}
+    </div>
+  );
+}
+
+/**
+ * Turns a page toward its side. Hidden from assistive tech and the tab order: the
+ * keyboard already reaches (and reveals) every tab.
+ */
+function ScrollArrow({ side, onPress }: { side: ScrollSide; onPress: () => void }) {
+  return (
+    <div
+      aria-hidden="true"
+      data-slot="tabs-scroll-arrow"
+      data-side={side}
+      className={cn(
+        "absolute inset-y-0 flex items-center max-sm:hidden",
+        side === "start" ? "start-0" : "end-0",
+      )}
+    >
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        excludeFromTabOrder
+        preventFocusOnPress
+        onPress={onPress}
+        className="rtl:[&_svg]:rotate-180"
+      >
+        {side === "start" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+      </Button>
+    </div>
   );
 }
 

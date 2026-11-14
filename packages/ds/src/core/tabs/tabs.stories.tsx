@@ -8,6 +8,7 @@ import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import * as z from "zod";
 import { Badge } from "@/core/badge/badge";
 import { Button } from "@/core/button/button";
+import { Card, CardContent, CardHeader } from "@/core/card/card";
 import { Checkbox } from "@/core/checkbox/checkbox";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/core/field/field";
 import { Input } from "@/core/input/input";
@@ -79,6 +80,96 @@ export const PrimaryVariant: Story = {
     // the colors transition: wait for them to settle
     await waitFor(() => expect(getComputedStyle(password).color).not.toBe(unselected));
     await waitFor(() => expect(getComputedStyle(account).color).toBe(unselected));
+  },
+};
+
+const REPORTS = ["Overview", "Sales", "Customers", "Products", "Invoices", "Taxes", "Settings"];
+
+/**
+ * Tabs that don't fit scroll sideways and keep the selected one in view. The side that
+ * hides tabs fades out and, with a pointer on larger screens, shows an arrow that turns a
+ * page; the keyboard reveals each tab as it moves.
+ */
+export const Overflow: Story = {
+  args: { defaultSelectedKey: "Settings", className: "w-72" },
+  render: (args) => (
+    <Tabs {...args}>
+      <TabsList aria-label="Reports" variant="line">
+        {REPORTS.map((report) => (
+          <TabsTrigger key={report} id={report}>
+            {report}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {REPORTS.map((report) => (
+        <TabsContent key={report} id={report}>
+          {report} report.
+        </TabsContent>
+      ))}
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const selected = canvas.getByRole("tab", { name: "Settings" });
+    const scroller = canvas.getByRole("tablist").parentElement as HTMLElement;
+    const right = (element: Element) => element.getBoundingClientRect().right;
+    await waitFor(() => expect(scroller.scrollLeft).toBeGreaterThan(0));
+    await expect(right(selected)).toBeLessThanOrEqual(right(scroller) + 1);
+
+    const arrow = (side: string) =>
+      canvasElement.querySelector<HTMLElement>(`[data-slot=tabs-scroll-arrow][data-side=${side}]`);
+    await waitFor(() => expect(arrow("start")).not.toBeNull());
+    await expect(arrow("end")).toBeNull();
+    await expect(arrow("start")).toHaveAttribute("aria-hidden", "true");
+
+    const before = scroller.scrollLeft;
+    arrow("start")?.querySelector("button")?.click();
+    await waitFor(() => expect(scroller.scrollLeft).toBeLessThan(before));
+    await waitFor(() => expect(arrow("end")).not.toBeNull());
+
+    // arrow keys move to tabs out of view and reveal them
+    await userEvent.click(canvas.getByRole("tab", { name: "Overview" }));
+    await waitFor(() => expect(arrow("start")).toBeNull());
+    for (let i = 0; i < REPORTS.length - 1; i++) await userEvent.keyboard("{ArrowRight}");
+    await expect(selected).toHaveFocus();
+    await waitFor(() => expect(right(selected)).toBeLessThanOrEqual(right(scroller) + 1));
+  },
+};
+
+/**
+ * Tabs in a card header: a `line` list on the header's bottom border, its tabs sharing the
+ * width (`min-w-full`) while they fit, scrolling when they don't. The header drops its
+ * side and bottom padding so the underline sits on the border.
+ */
+export const InCardHeader: Story = {
+  parameters: { layout: "padded" },
+  args: { defaultSelectedKey: "products", className: "w-full max-w-3xl" },
+  render: (args) => (
+    <Tabs {...args}>
+      <Card>
+        <CardHeader className="border-b px-0 [.border-b]:pb-0">
+          <TabsList aria-label="Invoice" variant="line" className="min-w-full">
+            <TabsTrigger id="customer">Customer</TabsTrigger>
+            <TabsTrigger id="products">Products</TabsTrigger>
+            <TabsTrigger id="advanced">Advanced</TabsTrigger>
+          </TabsList>
+        </CardHeader>
+        <CardContent>
+          <TabsContent id="customer">Who the invoice is for.</TabsContent>
+          <TabsContent id="products">The items being sold.</TabsContent>
+          <TabsContent id="advanced">Taxes and notes.</TabsContent>
+        </CardContent>
+      </Card>
+    </Tabs>
+  ),
+  play: async ({ canvas }) => {
+    const list = canvas.getByRole("tablist");
+    const header = list.closest("[data-slot=card-header]") as HTMLElement;
+    const width = (element: Element) => element.getBoundingClientRect().width;
+    // the tabs share the header's width
+    await expect(width(list)).toBeGreaterThan(width(header) - 2);
+    const tabs = canvas.getAllByRole("tab");
+    await expect(Math.abs(width(tabs[0] as Element) - width(tabs[2] as Element))).toBeLessThan(2);
   },
 };
 

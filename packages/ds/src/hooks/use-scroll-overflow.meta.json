@@ -1,0 +1,8 @@
+{
+  "name": "use-scroll-overflow",
+  "category": "utils",
+  "status": "stable",
+  "source": "original",
+  "description": "useScrollOverflow: the horizontal overflow of a scroller — whether content is hidden before or after the visible area (following the writing direction), a page turn toward a side aligned to the items, and revealing one element without scrolling the page. Edges kept clear (arrows, fades) come from the scroller's `scroll-padding`. Used by tab-nav and tabs for their scroll arrows.",
+  "tags": ["hook", "scroll", "overflow"]
+}
