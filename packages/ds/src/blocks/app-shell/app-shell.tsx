@@ -144,9 +144,11 @@ function AppShellMain({ className, ref, ...props }: React.ComponentProps<"div">)
       if (header) element.style.setProperty("--page-header-h", `${header.offsetHeight}px`);
     });
     // The page's header can change (a route, `sticky` toggled): track the current one.
+    // Not only a direct child: a route outlet or a `display: contents` wrapper can sit in
+    // between (the header still sticks). A header inside the content isn't the page's.
     const track = () => {
       const next = element.querySelector<HTMLElement>(
-        ":scope > [data-slot=page-header][data-sticky]",
+        "[data-slot=page-header][data-sticky]:not([data-slot=app-shell-content] *)",
       );
       if (next === header) return;
       if (header) resize.unobserve(header);
