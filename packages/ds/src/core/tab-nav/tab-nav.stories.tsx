@@ -275,3 +275,60 @@ export const MatchPrefix: Story = {
     );
   },
 };
+
+/**
+ * The current page's underline (or segment) is one indicator for the whole nav, styled
+ * from `className`: here an underline and label in the primary color.
+ */
+export const IndicatorColor: Story = {
+  args: {
+    variant: "line",
+    className: "[&_[aria-current=page]]:text-primary [&_[data-slot=tab-nav-indicator]]:bg-primary",
+  },
+  render: (args) => (
+    <TabNav {...args}>
+      <TabNavItem href="/contratos/comprar">Comprar contrato</TabNavItem>
+      <TabNavItem href="/contratos">Contratos adquiridos</TabNavItem>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const indicator = canvasElement.querySelector("[data-slot=tab-nav-indicator]");
+    const current = within(canvasElement).getByRole("link", { name: "Comprar contrato" });
+    if (!indicator) throw new Error("no indicator");
+    await expect(getComputedStyle(indicator).backgroundColor).toBe(getComputedStyle(current).color);
+  },
+};
+
+/** The indicator slides straight to the new page: sideways only, then under it. */
+export const ShouldMoveIndicator: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <TabNav {...args}>
+      <TabNavItem href="/contratos/comprar">Comprar contrato</TabNavItem>
+      <TabNavItem href="/contratos">Contratos adquiridos</TabNavItem>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const buy = canvas.getByRole("link", { name: "Comprar contrato" });
+    const bought = canvas.getByRole("link", { name: "Contratos adquiridos" });
+    const indicator = await waitFor(() => {
+      const element = canvasElement.querySelector<HTMLElement>("[data-slot=tab-nav-indicator]");
+      if (!element) throw new Error("no indicator");
+      return element;
+    });
+    const rect = (element: Element) => element.getBoundingClientRect();
+    await expect(rect(indicator).left).toBeCloseTo(rect(buy).left, 0);
+    const offset = rect(indicator).top - rect(buy).top;
+
+    await userEvent.click(bought);
+    // while it moves, it stays on the items' row
+    for (let frame = 0; frame < 6; frame++) {
+      await new Promise(requestAnimationFrame);
+      await expect(rect(indicator).top - rect(bought).top).toBeCloseTo(offset, 0);
+    }
+    await waitFor(() => expect(rect(indicator).left).toBeCloseTo(rect(bought).left, 0));
+    await expect(rect(indicator).width).toBeCloseTo(rect(bought).width, 0);
+    await expect(canvasElement.querySelectorAll("[data-slot=tab-nav-indicator]")).toHaveLength(1);
+  },
+};
