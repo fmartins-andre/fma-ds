@@ -173,3 +173,36 @@ export const ShouldKeepTheFooterAtTheBottom: Story = {
     );
   },
 };
+
+export const ShouldTouchTheFooterAfterBleedEndContent: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <div className="flex w-96 flex-col gap-4">
+      <Card {...args}>
+        <CardContent bleed="end" className="h-24 border-b">
+          Table
+        </CardContent>
+        <CardFooter>Pagination</CardFooter>
+      </Card>
+      <Card {...args}>
+        {/* a provider wrapping body and footer, out of the layout */}
+        <div className="contents">
+          <CardContent bleed="end" className="h-24 border-b">
+            Table
+          </CardContent>
+          <CardFooter>Pagination</CardFooter>
+        </div>
+      </Card>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const contents = canvasElement.querySelectorAll<HTMLElement>("[data-slot=card-content]");
+    const footers = canvasElement.querySelectorAll<HTMLElement>("[data-slot=card-footer]");
+    await expect(contents).toHaveLength(2);
+    for (const [i, content] of contents.entries()) {
+      await expect(Math.round(footers[i].getBoundingClientRect().top)).toBe(
+        Math.round(content.getBoundingClientRect().bottom),
+      );
+    }
+  },
+};

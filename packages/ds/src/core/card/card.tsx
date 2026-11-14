@@ -68,7 +68,9 @@ function CardAction({ className, ...props }: React.ComponentProps<"div">) {
 /**
  * `bleed` drops the side padding, so what's inside (a table, an image, a map) spans the
  * card's edges. `bleed="end"` is for content that closes the card: the card also drops
- * its bottom padding, as it does for a `CardFooter`.
+ * its bottom padding, as it does for a `CardFooter`, and a `CardFooter` right after it
+ * (the controls of that content, like a table's pagination) touches it, with no gap.
+ * Sibling-based, so it also holds when a provider wraps both (`display: contents`).
  */
 function CardContent({
   className,
@@ -79,7 +81,12 @@ function CardContent({
     <div
       data-slot="card-content"
       data-bleed={bleed === "end" ? "end" : bleed ? "" : undefined}
-      className={cn("px-(--card-spacing)", bleed && "px-0", className)}
+      className={cn(
+        "px-(--card-spacing)",
+        bleed && "px-0",
+        bleed === "end" && "has-[+[data-slot=card-footer]]:-mb-(--card-spacing)",
+        className,
+      )}
       {...props}
     />
   );
