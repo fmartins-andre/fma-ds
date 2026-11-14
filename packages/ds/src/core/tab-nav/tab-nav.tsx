@@ -2,8 +2,11 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as React from "react";
 import { Link, type LinkProps } from "react-aria-components";
+import { Button } from "@/core/button/button";
+import { type ScrollSide, useScrollOverflow } from "@/hooks/use-scroll-overflow";
 
 type TabNavVariant = "default" | "line" | "primary";
 
@@ -26,7 +29,10 @@ const tabNavListVariants = cva("inline-flex w-max items-center text-muted-foregr
  * Route navigation that looks like tabs: a `<nav>` of links where the current
  * page carries `aria-current="page"`. Unlike `Tabs`, there are no panels — each
  * item is a page. Overflowing items scroll sideways, keeping the current one
- * in view. Wrap the app in react-aria's `RouterProvider` for client routing.
+ * in view; an arrow on each side that hides items turns a page (pointer only, as
+ * the keyboard reaches every item, and not on small screens, where the strip is
+ * swiped). `listClassName="min-w-full"` spreads the items over the whole width
+ * while they fit. Wrap the app in react-aria's `RouterProvider` for client routing.
  */
 function TabNav({
   className,
@@ -48,39 +54,39 @@ function TabNav({
     [resolvedVariant, currentHref],
   );
 
+  const { canScrollStart, canScrollEnd, scrollToward, reveal } = useScrollOverflow(scrollRef);
+
   // Bring the current item into view inside the strip, without scrolling the
   // page; again whenever the strip resizes (e.g. once web fonts load).
   // biome-ignore lint/correctness/useExhaustiveDependencies: re-run when the current page changes
   React.useEffect(() => {
     const scroller = scrollRef.current;
     if (!scroller) return;
-    const reveal = () => {
-      const current = scroller.querySelector<HTMLElement>("[aria-current=page]");
-      if (!current) return;
-      const view = scroller.getBoundingClientRect();
-      const box = current.getBoundingClientRect();
-      if (box.left < view.left) scroller.scrollLeft -= view.left - box.left;
-      else if (box.right > view.right) scroller.scrollLeft += box.right - view.right;
+    const revealCurrent = () => {
+      const current = scroller.querySelector("[aria-current=page]");
+      if (current) reveal(current);
     };
-    reveal();
-    const observer = new ResizeObserver(reveal);
+    revealCurrent();
+    const observer = new ResizeObserver(revealCurrent);
     for (const element of [scroller, scroller.firstElementChild]) {
       if (element) observer.observe(element);
     }
     return () => observer.disconnect();
-  }, [currentHref]);
+  }, [currentHref, reveal]);
 
   return (
     <TabNavContext.Provider value={value}>
       <nav
         data-slot="tab-nav"
         data-variant={resolvedVariant}
-        className={cn("group/tab-nav min-w-0", className)}
+        className={cn("group/tab-nav relative min-w-0", className)}
         {...props}
       >
         <div
           ref={scrollRef}
-          className="relative max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          data-overflow-start={canScrollStart || undefined}
+          data-overflow-end={canScrollEnd || undefined}
+          className={cn("relative max-w-full", scrollerClassName)}
         >
           <ul
             data-slot="tab-nav-list"
@@ -89,8 +95,47 @@ function TabNav({
             {children}
           </ul>
         </div>
+        {canScrollStart && <ScrollArrow side="start" onPress={() => scrollToward("start")} />}
+        {canScrollEnd && <ScrollArrow side="end" onPress={() => scrollToward("end")} />}
       </nav>
     </TabNavContext.Provider>
+  );
+}
+
+/**
+ * Scrolls sideways with no scrollbar; the side that hides items fades out (a mask, so
+ * it works on any surface), clear under the arrow, and keeps
+ * clear of it (`scroll-padding`).
+ */
+const scrollerClassName =
+  "scroll-px-12 overflow-x-auto [scrollbar-width:none] [--fade-dir:right] [--fade-end:0px] [--fade-start:0px] [mask-image:linear-gradient(to_var(--fade-dir),transparent_calc(var(--fade-start)*0.6),#000_var(--fade-start),#000_calc(100%-var(--fade-end)),transparent_calc(100%-var(--fade-end)*0.6))] data-overflow-end:[--fade-end:--spacing(12)] data-overflow-start:[--fade-start:--spacing(12)] rtl:[--fade-dir:left] [&::-webkit-scrollbar]:hidden";
+
+/**
+ * Turns a page toward its side. Hidden from assistive tech and the tab order: the
+ * keyboard already reaches (and reveals) every item.
+ */
+function ScrollArrow({ side, onPress }: { side: ScrollSide; onPress: () => void }) {
+  return (
+    <div
+      aria-hidden="true"
+      data-slot="tab-nav-scroll-arrow"
+      data-side={side}
+      className={cn(
+        "absolute inset-y-0 flex items-center max-sm:hidden",
+        side === "start" ? "start-0" : "end-0",
+      )}
+    >
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        excludeFromTabOrder
+        preventFocusOnPress
+        onPress={onPress}
+        className="rtl:[&_svg]:rotate-180"
+      >
+        {side === "start" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+      </Button>
+    </div>
   );
 }
 
@@ -118,15 +163,18 @@ function TabNavItem({
       (currentHref === href || (matchPrefix && currentHref.startsWith(`${href}/`))));
 
   return (
-    <li data-slot="tab-nav-item" className="flex h-full">
+    // flex-1: with a `min-w-full` list, the items share the width; otherwise a no-op
+    <li data-slot="tab-nav-item" className="flex h-full flex-1">
       <Link
         href={href}
         aria-current={current ? "page" : undefined}
         className={cn(
-          "relative inline-flex h-full items-center justify-center gap-1.5 rounded-md border border-transparent px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-foreground/60 transition-all outline-none hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+          "relative inline-flex h-full flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-foreground/60 transition-all outline-none hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
           // default: the current page is a raised segment
           "group-data-[variant=default]/tab-nav:aria-[current=page]:bg-background group-data-[variant=default]/tab-nav:aria-[current=page]:shadow-sm dark:group-data-[variant=default]/tab-nav:aria-[current=page]:border-input dark:group-data-[variant=default]/tab-nav:aria-[current=page]:bg-input",
-          // line: the current page is underlined
+          // line: the current page is underlined; the focus ring is drawn inside, as the
+          // list has no padding for it and the scroller would clip it
+          "group-data-[variant=line]/tab-nav:focus-visible:ring-inset",
           "after:absolute after:inset-x-1 after:bottom-0 after:h-0.5 after:rounded-full after:bg-foreground after:opacity-0 after:transition-opacity group-data-[variant=line]/tab-nav:aria-[current=page]:after:opacity-100",
           "aria-[current=page]:text-foreground",
           // primary: on the primary color, the current page is a raised segment in the primary text
