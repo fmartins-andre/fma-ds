@@ -267,8 +267,9 @@ export const InACard: Story = {
     if (!card || !footer) throw new Error();
     await expect(footer).toHaveAttribute("data-sticky", "true");
     await expect(getComputedStyle(footer).position).toBe("sticky");
-    // The card lets the footer stick, and the footer closes the card.
-    await expect(getComputedStyle(card).overflow).toBe("visible");
+    // The card clips without being a scroll container, so the footer sticks, and the
+    // footer closes the card.
+    await expect(getComputedStyle(card).overflow).toBe("clip");
     await expect(Math.round(footer.getBoundingClientRect().bottom)).toBe(
       Math.round(card.getBoundingClientRect().bottom),
     );

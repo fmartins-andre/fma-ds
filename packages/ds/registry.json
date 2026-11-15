@@ -20,8 +20,8 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -54,7 +54,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -87,7 +87,7 @@
         "@fma-ds/button"
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -107,7 +107,7 @@
       "name": "app-shell",
       "type": "registry:block",
       "title": "App Shell",
-      "description": "The frame of an app's pages, composed from parts: the `AppSidebar`, a top bar and the page.\n\n- **`AppShell`**: takes the `AppSidebar` in `sidebar` and the top bar and page as children. It wraps `SidebarProvider` and `SidebarInset`, so it takes their props (`defaultOpen`, `open`, `onOpenChange`).\n- **`AppShellHeader`**: the top bar, sticky: the sidebar trigger, the page's trail and, at the end, its children (glances, notifications).\n- **`useAppShellBreadcrumbs`**: each page sets its trail, from the app's home down to itself; the last item is the current page.\n- **`AppShellMain`**: the page inside the shell's gutter: a `PageHeader` (usually `sticky` and `density=\"compact\"`), then `AppShellContent`.\n- **`AppShellContent`**: the page's content, a column with `gap-4` between its children. Each child sits on a surface (`Card`, `PanelCard`, a settings form), except the ones that already are one: a `StatGrid` and a `NotificationList`.\n\nThe parts share measures as CSS variables: `--app-shell-header-h` and `--app-shell-gutter`, handed to a sticky `PageHeader` as `--sticky-offset` and `--page-gutter`. `AppShellMain` measures its sticky `PageHeader` (`--page-header-h`) and sets `--sticky-top`, where other sticky parts stop — an `OrderSummary` stays under both bars.\n\nWrap the app in react-aria's `RouterProvider` so the sidebar, trail and tab links route client-side.",
+      "description": "The frame of an app's pages, composed from parts: the `AppSidebar`, a top bar and the page.\n\n- **`AppShell`**: takes the `AppSidebar` in `sidebar` and the top bar and page as children. It wraps `SidebarProvider` and `SidebarInset`, so it takes their props (`defaultOpen`, `open`, `onOpenChange`).\n- **`AppShellHeader`**: the top bar, sticky: the sidebar trigger, the page's trail and, at the end, its children (glances, notifications).\n- **`useAppShellBreadcrumbs`**: each page sets its trail, from the app's home down to itself; the last item is the current page.\n- **`AppShellMain`**: the page inside the shell's gutter: a `PageHeader` (usually `sticky` and `density=\"compact\"`), then `AppShellContent`.\n- **`AppShellContent`**: the page's content, a column with `gap-4` between its children. Each child sits on a surface (`Card`, `PanelCard`, a settings form), except the ones that already are one: a `StatGrid` and a `NotificationList`.\n\nThe parts share measures as CSS variables: `--app-shell-header-h` and `--app-shell-gutter`, handed to a sticky `PageHeader` as `--sticky-offset` and `--page-gutter`. `AppShellMain` measures its sticky `PageHeader` (`--page-header-h`, also through a wrapper such as a route outlet) and sets `--sticky-edge`, right below both bars, where parts that touch them stop (a sticky `CardHeader`), and `--sticky-top`, 16px below that, where parts that float stop (an `OrderSummary`).\n\nWrap the app in react-aria's `RouterProvider` so the sidebar, trail and tab links route client-side.",
       "author": "@fma-ds/ds",
       "categories": [
         "blocks"
@@ -126,7 +126,7 @@
         "@fma-ds/page-header"
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -139,7 +139,7 @@
           "sidebar",
           "navigation"
         ],
-        "contentHash": "9b86b5cfcee5"
+        "contentHash": "1bbe182f7523"
       }
     },
     {
@@ -202,8 +202,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -236,7 +236,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -270,7 +270,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -307,7 +307,7 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "experimental",
@@ -340,7 +340,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -372,7 +372,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -436,8 +436,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -469,7 +469,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -500,7 +500,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -538,7 +538,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -579,8 +579,8 @@
       "dependencies": [
         "@internationalized/date@^3.12.4",
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -599,7 +599,7 @@
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
-      "description": "A container for grouping related content, with header, title, description, action, content, and footer slots. Supports a compact size=\"sm\" variant.\n\n`CardContent bleed` drops the content's side padding, so a table, a list or an image spans the card's edges; `bleed=\"end\"`, for content that closes the card, also drops the card's bottom padding, like a `CardFooter` does. `CardFooter sticky` stays at the bottom of the screen while a long card scrolls, on an opaque surface, and the card stops clipping its overflow so it can stick.",
+      "description": "A container for grouping related content, with header, title, description, action, content, and footer slots. Supports a compact size=\"sm\" variant.\n\n`CardContent bleed` drops the content's side padding, so a table, a list or an image spans the card's edges; `bleed=\"end\"`, for content that closes the card, also drops the card's bottom padding, like a `CardFooter` does. `CardHeader sticky` and `CardFooter sticky` stay at the top and bottom of the screen while a long card scrolls, on an opaque surface; the header stops below `--sticky-edge` (the page's sticky bars, which `AppShellMain` sets). The card clips its corners with `overflow: clip`, which doesn't make it a scroll container, so they stick to the page.",
       "author": "@fma-ds/ds",
       "categories": [
         "layout"
@@ -612,7 +612,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -624,7 +624,7 @@
           "surface",
           "nova"
         ],
-        "contentHash": "311bc99e4f8d"
+        "contentHash": "d4ecde20a174"
       }
     },
     {
@@ -648,9 +648,9 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "embla-carousel-react@^8.6.0",
-        "lucide-react@^1.65.0"
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -682,7 +682,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "recharts@3.10.1"
       ],
       "meta": {
@@ -718,8 +718,8 @@
         "@fma-ds/field"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -759,8 +759,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -794,7 +794,7 @@
         }
       ],
       "dependencies": [
-        "shiki@^4.5.0"
+        "shiki@^4.6.0"
       ],
       "meta": {
         "status": "stable",
@@ -866,8 +866,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "experimental",
@@ -946,9 +946,9 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "culori@^4.0.2",
-        "lucide-react@^1.65.0",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "devDependencies": [
@@ -991,8 +991,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1030,8 +1030,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1070,8 +1070,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -1104,8 +1104,8 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1144,8 +1144,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -1180,7 +1180,7 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -1258,8 +1258,8 @@
       ],
       "dependencies": [
         "@tanstack/react-table@^9.3.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1334,7 +1334,7 @@
       ],
       "dependencies": [
         "@internationalized/date@^3.12.4",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1481,8 +1481,8 @@
       ],
       "dependencies": [
         "@internationalized/date@^3.12.4",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1515,7 +1515,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -1551,8 +1551,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1616,7 +1616,7 @@
       ],
       "dependencies": [
         "@base-ui/react@^1.9.0",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -1649,8 +1649,8 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1692,8 +1692,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1729,7 +1729,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -1768,8 +1768,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "experimental",
@@ -1880,8 +1880,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1",
         "@internationalized/date@^3.12.4"
       ],
@@ -1922,7 +1922,7 @@
         "@fma-ds/brand"
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1964,8 +1964,8 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -1999,7 +1999,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -2041,8 +2041,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2086,8 +2086,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2127,8 +2127,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2167,7 +2167,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2201,7 +2201,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2297,8 +2297,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "i18next@^26.5.12",
-        "react-i18next@^17.1.9"
+        "i18next@^26.7.2",
+        "react-i18next@^17.1.13"
       ],
       "meta": {
         "status": "stable",
@@ -2571,7 +2571,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -2605,7 +2605,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -2637,7 +2637,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2676,7 +2676,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2822,9 +2822,9 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "input-otp@^1.5.0",
-        "lucide-react@^1.65.0"
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -2891,7 +2891,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2924,7 +2924,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2957,7 +2957,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -2993,8 +2993,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3028,7 +3028,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -3096,7 +3096,7 @@
         "@fma-ds/dropdown-menu"
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3131,7 +3131,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -3166,8 +3166,8 @@
       ],
       "dependencies": [
         "@shadcn/react@^0.3.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "experimental",
@@ -3200,7 +3200,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3233,8 +3233,8 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -3266,8 +3266,8 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3310,8 +3310,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3354,8 +3354,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "experimental",
@@ -3393,7 +3393,7 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -3430,8 +3430,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -3472,8 +3472,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3487,7 +3487,7 @@
           "chart",
           "status"
         ],
-        "contentHash": "978566534c7d"
+        "contentHash": "8d2a82cc9862"
       }
     },
     {
@@ -3511,8 +3511,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -3544,8 +3544,8 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -3588,8 +3588,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3623,7 +3623,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3662,8 +3662,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3697,7 +3697,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3734,8 +3734,8 @@
       ],
       "dependencies": [
         "@shadcn/react@^0.3.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "experimental",
@@ -3769,7 +3769,7 @@
         "@fma-ds/field"
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3802,8 +3802,8 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "react-resizable-panels@^4.15.3"
+        "cn@^0.5.2",
+        "react-resizable-panels@^4.19.1"
       ],
       "meta": {
         "status": "stable",
@@ -3834,7 +3834,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -3867,8 +3867,8 @@
         "@fma-ds/input-group"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3900,7 +3900,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3937,7 +3937,7 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -3975,8 +3975,8 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4021,8 +4021,8 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4054,7 +4054,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -4071,7 +4071,7 @@
       "name": "slider",
       "type": "registry:ui",
       "title": "Slider",
-      "description": "A draggable single- or range-value slider, horizontal or vertical, built from parts. Pass an array default/value to get one thumb per value.\n\n- **`Slider`**: holds the value and `limit`, a cap below `maxValue` (stock left, plan quota): the scale and marks still run to `maxValue`, the track above the limit is drawn as unavailable and its marks are disabled. Without children it draws just the track and thumb (name it with `aria-label`).\n- **`SliderLabel`** names it (a `FieldLabel` works too); **`SliderValue`** prints the value (or range), formatted by its `children` (\"200 orders\") or by `formatOptions` (currency, percent — also what screen readers announce).\n- **`SliderControl`** lays out **`SliderTrack`** (with **`SliderFill`**, the selected part) and **`SliderThumb`**, which draws one thumb per value and takes `children` (an icon, a logo).\n- **`SliderMarks`**: labelled stops under the track (`number` or `{ value, label }`). Clicking one moves the nearest thumb there and fires `onChangeEnd`, while the keyboard keeps using the thumb.\n- **`SliderDescription`**: under the track, says why, and is read with the value.\n\nEvery part takes a `className`, for a branded look (a gradient fill, a bigger thumb).",
+      "description": "A draggable single- or range-value slider, horizontal or vertical, built from parts. Pass an array default/value to get one thumb per value.\n\n- **`Slider`**: holds the value and `limit`, a cap below `maxValue` (stock left, plan quota): the scale and marks still run to `maxValue`, the track above the limit is drawn as unavailable and its marks are disabled. Without children it draws just the track and thumb (name it with `aria-label`).\n- **`SliderLabel`** names it (a `FieldLabel` works too); **`SliderValue`** prints the value (or range), formatted by its `children` (\"200 orders\") or by `formatOptions` (currency, percent — also what screen readers announce).\n- **`SliderControl`** lays out **`SliderTrack`** (with **`SliderFill`**, the selected part) and **`SliderThumb`**, which draws one thumb per value and takes `children` (an icon, a logo).\n- **`SliderMarks`**: labelled stops under the track (`number` or `{ value, label }`). Clicking one moves the nearest thumb there and fires `onChangeEnd`, while the keyboard keeps using the thumb.\n- **`SliderDescription`**: under the track, says why, and is read with the value.\n- **Motion**: a jump (a press on the track, a mark, the keyboard) glides the thumb and fill to the new value; dragging over steps you can see glides from step to step, and over finer ones follows the pointer at once. Off under `prefers-reduced-motion`.\n\nEvery part takes a `className`, for a branded look (a gradient fill, a bigger thumb).",
       "author": "@fma-ds/ds",
       "categories": [
         "forms"
@@ -4087,7 +4087,7 @@
         "@fma-ds/label"
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4100,7 +4100,7 @@
           "input",
           "react-aria"
         ],
-        "contentHash": "e0b9cbd91e2b"
+        "contentHash": "4ac577f6f313"
       }
     },
     {
@@ -4120,7 +4120,7 @@
         }
       ],
       "dependencies": [
-        "lucide-react@^1.65.0",
+        "lucide-react@^1.70.0",
         "next-themes@^0.4.6",
         "sonner@^2.0.8"
       ],
@@ -4152,8 +4152,8 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4190,8 +4190,8 @@
         "@fma-ds/i18n"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0"
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0"
       ],
       "meta": {
         "status": "stable",
@@ -4227,7 +4227,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4261,7 +4261,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4296,7 +4296,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4316,7 +4316,7 @@
       "name": "tab-nav",
       "type": "registry:ui",
       "title": "Tab Nav",
-      "description": "Navigation between the pages of an area that looks like tabs: a `<nav>` of react-aria links where the current page carries `aria-current=\"page\"`.\n\nUnlike `Tabs` there are no panels — each item is a route — so use it for sub-pages and `Tabs` for in-page views.\n\n- **`variant`**: matches the tab styles — `default` (segmented on `muted`, the current page raised), `line` (underlined) or `primary` (segmented on the primary color, for an area's main sections).\n- **Current item**: when `isCurrent` is set or its `href` matches `TabNav`'s `currentHref` (exactly, or with `matchPrefix` also on sub-paths).\n- **`TabNavItem`**: takes an icon before its label; **`TabNavSeparator`** divides groups.\n- **Overflow**: when items don't fit, the strip scrolls sideways and keeps the current page in view.\n\nWrap the app in react-aria's `RouterProvider` for client routing.",
+      "description": "Navigation between the pages of an area that looks like tabs: a `<nav>` of react-aria links where the current page carries `aria-current=\"page\"`.\n\nUnlike `Tabs` there are no panels — each item is a route — so use it for sub-pages and `Tabs` for in-page views.\n\n- **`variant`**: matches the tab styles — `default` (segmented on `muted`, the current page raised), `line` (underlined) or `primary` (segmented on the primary color, for an area's main sections).\n- **Current item**: when `isCurrent` is set or its `href` matches `TabNav`'s `currentHref` (exactly, or with `matchPrefix` also on sub-paths).\n- **`TabNavItem`**: takes an icon before its label; **`TabNavSeparator`** divides groups.\n- **Overflow**: when items don't fit, the strip scrolls sideways and keeps the current page in view; the side that hides items fades out and shows an arrow that turns a page (pointer only, and not on small screens, where the strip is swiped).\n- **Full width**: `listClassName=\"min-w-full\"` spreads the items over the whole width while they fit, as in a card header.\n- **Motion**: the current page's segment or underline is one indicator (`data-slot=\"tab-nav-indicator\"`, styled from `className`) that slides to the new page; off under `prefers-reduced-motion`.\n\nWrap the app in react-aria's `RouterProvider` for client routing.",
       "author": "@fma-ds/ds",
       "categories": [
         "navigation"
@@ -4328,9 +4328,14 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/button",
+        "@fma-ds/use-scroll-overflow"
+      ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4343,7 +4348,7 @@
           "routing",
           "react-aria"
         ],
-        "contentHash": "95fe7a1ca147"
+        "contentHash": "67cf3c2602b5"
       }
     },
     {
@@ -4363,7 +4368,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4382,7 +4387,7 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",
-      "description": "A tab list and its panels for switching between related views, with default, line and primary visual variants, horizontal or vertical orientation.",
+      "description": "A tab list and its panels for switching between related views, with default, line and primary visual variants, horizontal or vertical orientation.\n\n- **Overflow**: horizontal tabs that don't fit scroll sideways and keep the selected one in view; the side that hides tabs fades out and shows an arrow that turns a page (pointer only, and not on small screens, where the strip is swiped).\n- **Full width**: `min-w-full` on `TabsList` spreads the tabs over the whole width while they fit, as in a card header.\n- **Motion**: the selection (segment or underline) slides to the new tab and the incoming panel fades in; both are off under `prefers-reduced-motion`.",
       "author": "@fma-ds/ds",
       "categories": [
         "navigation"
@@ -4394,9 +4399,14 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/button",
+        "@fma-ds/use-scroll-overflow"
+      ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -4408,7 +4418,7 @@
           "disclosure",
           "react-aria"
         ],
-        "contentHash": "d09f9de81b6d"
+        "contentHash": "d96ea0614a82"
       }
     },
     {
@@ -4428,7 +4438,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -7875,8 +7885,8 @@
       ],
       "dependencies": [
         "@internationalized/date@^3.12.4",
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -7911,7 +7921,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1"
+        "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
@@ -7945,7 +7955,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -7981,7 +7991,7 @@
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -8013,7 +8023,7 @@
         }
       ],
       "dependencies": [
-        "cn@^0.5.1",
+        "cn@^0.5.2",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -8048,8 +8058,8 @@
         "@fma-ds/collapsible"
       ],
       "dependencies": [
-        "cn@^0.5.1",
-        "lucide-react@^1.65.0",
+        "cn@^0.5.2",
+        "lucide-react@^1.70.0",
         "react-aria-components@^1.22.1"
       ],
       "meta": {
@@ -8283,6 +8293,35 @@
           "responsive"
         ],
         "contentHash": "21eff740f9e5"
+      }
+    },
+    {
+      "name": "use-scroll-overflow",
+      "type": "registry:hook",
+      "title": "Use Scroll Overflow",
+      "description": "useScrollOverflow: the horizontal overflow of a scroller — whether content is hidden before or after the visible area (following the writing direction), a page turn toward a side aligned to the items, and revealing one element without scrolling the page. Edges kept clear (arrows, fades) come from the scroller's `scroll-padding`. Used by tab-nav and tabs for their scroll arrows.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/hooks/use-scroll-overflow.ts",
+          "target": "hooks/fma-ds/use-scroll-overflow.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "dependencies": [],
+      "meta": {
+        "status": "stable",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "hook",
+          "scroll",
+          "overflow"
+        ],
+        "contentHash": "c7962ceb09a1"
       }
     }
   ]

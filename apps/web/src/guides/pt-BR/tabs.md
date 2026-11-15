@@ -36,6 +36,28 @@ Com mais seções, coloque-a em `PageHeaderNav`, abaixo do título. A faixa rola
 </PageHeaderNav>
 ```
 
+## Muitas abas
+
+Quando as abas não cabem, `Tabs` e `TabNav` rolam de lado e mantêm a aba selecionada (ou a página atual) à vista. O lado que esconde abas esmaece. Com ponteiro em telas maiores, uma seta desse lado vira uma página. As setas só aparecem quando há abas escondidas. Elas ficam fora da ordem do Tab e dos leitores de tela, porque o teclado já alcança cada aba e a revela. Em telas pequenas também ficam ocultas, porque ali se arrasta a faixa.
+
+## No cabeçalho de um cartão
+
+As subpáginas de um registro podem ficar no cabeçalho do cartão que as mostra, e o conteúdo da aba é o corpo desse cartão. Use uma faixa `line` sobre a borda inferior do cabeçalho, com os itens dividindo a largura enquanto cabem (`listClassName="min-w-full"` no `TabNav`, `min-w-full` no `TabsList`). Com `sticky`, as abas ficam à vista enquanto o cartão rola. Sem o padding lateral, de cima e de baixo do cabeçalho, a faixa encosta no topo do cartão, com o rótulo centralizado e o sublinhado sobre a borda:
+
+```tsx
+<Card>
+  <CardHeader sticky className="px-0 pt-0 [.border-b]:pb-0">
+    <TabNav aria-label="Client sections" variant="line" currentHref={pathname} listClassName="min-w-full">
+      <TabNavItem href="/clients/42/info">Info</TabNavItem>
+      <TabNavItem href="/clients/42/orders">Orders</TabNavItem>
+    </TabNav>
+  </CardHeader>
+  <CardContent>…</CardContent>
+</Card>
+```
+
+O conteúdo de cada aba vai no corpo desse cartão (`CardContent`, uma tabela, um rodapé), não num cartão próprio dentro dele.
+
 ## Variante
 
 `Tabs` e `TabNav` têm as mesmas três variantes:

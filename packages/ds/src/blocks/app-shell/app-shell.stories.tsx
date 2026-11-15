@@ -166,7 +166,7 @@ function ClientsPage() {
           </StatCard>
         </StatGrid>
         <Card>
-          <CardHeader>
+          <CardHeader sticky>
             <CardTitle>Últimos cadastros</CardTitle>
             <CardDescription>Os clientes cadastrados nesta semana.</CardDescription>
           </CardHeader>
@@ -251,6 +251,56 @@ export const Default: Story = {
     const content = canvasElement.querySelector<HTMLElement>("[data-slot=app-shell-content]");
     if (!content) throw new Error();
     await expect(getComputedStyle(content).rowGap).toBe("16px");
+    // A sticky card header stops right below both bars (--sticky-edge), with no gap.
+    const cardHeader = canvasElement.querySelector<HTMLElement>(
+      "[data-slot=card-header][data-sticky]",
+    );
+    if (!cardHeader) throw new Error();
+    await expect(getComputedStyle(cardHeader).position).toBe("sticky");
+    await waitFor(() =>
+      expect(getComputedStyle(cardHeader).top).toBe(
+        `${topBar.offsetHeight + pageHeader.offsetHeight}px`,
+      ),
+    );
+  },
+};
+
+/** The page's header is measured through a wrapper between it and `AppShellMain`. */
+export const ShouldMeasureThePageHeaderThroughAWrapper: Story = {
+  tags: ["!autodocs"],
+  render: () => (
+    <AppShell className="h-[480px] min-h-0" sidebar={<ExampleSidebar current="/clientes" />}>
+      <AppShellHeader />
+      <AppShellMain>
+        <div className="contents" data-testid="route">
+          <PageHeader sticky density="compact" data-testid="page-header">
+            <PageHeaderContent>
+              <PageHeaderHeading>
+                <PageHeaderTitle>Clientes</PageHeaderTitle>
+              </PageHeaderHeading>
+            </PageHeaderContent>
+          </PageHeader>
+          <AppShellContent>
+            <PageHeader sticky density="compact" className="h-40">
+              <PageHeaderContent>
+                <PageHeaderHeading>
+                  <PageHeaderTitle>Seção</PageHeaderTitle>
+                </PageHeaderHeading>
+              </PageHeaderContent>
+            </PageHeader>
+          </AppShellContent>
+        </div>
+      </AppShellMain>
+    </AppShell>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    const main = canvasElement.querySelector<HTMLElement>("[data-slot=app-shell-main]");
+    if (!main) throw new Error();
+    const pageHeader = canvas.getByTestId("page-header");
+    // the page's header, not the one inside the content
+    await waitFor(() =>
+      expect(main.style.getPropertyValue("--page-header-h")).toBe(`${pageHeader.offsetHeight}px`),
+    );
   },
 };
 
@@ -470,19 +520,24 @@ function ClientsListPage() {
               </FilterToolbarActions>
             </FilterToolbar>
           </CardContent>
-          <CardContent bleed="end">
-            <DataGrid
-              table={table}
-              recordCount={clients.length}
-              emptyMessage="Nenhum cliente encontrado."
-              tableLayout={{ headerBackground: true, columnsResizable: true }}
-            >
+          {/* the grid wraps body and footer (out of the layout): the pagination is the
+              list's control, so it goes in the CardFooter, like a form's actions */}
+          <DataGrid
+            table={table}
+            recordCount={clients.length}
+            emptyMessage="Nenhum cliente encontrado."
+            tableLayout={{ headerBackground: true, columnsResizable: true }}
+            className="contents"
+          >
+            <CardContent bleed="end">
               <DataGridContainer flush>
                 <DataGridTable aria-label="Clientes" />
               </DataGridContainer>
-              <DataGridPagination className="px-(--card-spacing) pb-(--card-spacing)" />
-            </DataGrid>
-          </CardContent>
+            </CardContent>
+            <CardFooter>
+              <DataGridPagination className="w-full" />
+            </CardFooter>
+          </DataGrid>
         </Card>
       </AppShellContent>
     </AppShellMain>

@@ -228,7 +228,7 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
      com a API existente; se consegue, mostre o padrão numa story em vez de criar API.
    - **Dependências apontam de cima para baixo**: o nível mais alto (bloco, app) configura o mais
      baixo por props, `className` ou variáveis CSS neutras com fallback (`--sticky-offset`,
-     `--page-gutter`, `--sticky-top`), nunca o contrário. Um bloco não depende de outro que
+     `--page-gutter`, `--sticky-top`, `--sticky-edge`), nunca o contrário. Um bloco não depende de outro que
      depende dele: quem compõe é quem mede e repassa (o `AppShellMain` mede o `PageHeader`).
 
 ## Estilo de código

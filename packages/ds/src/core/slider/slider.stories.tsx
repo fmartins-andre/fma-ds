@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SparklesIcon } from "lucide-react";
-import { expect, fn, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Field, FieldLabel } from "@/core/field/field";
 import meta from "./meta.json";
 import {
@@ -302,5 +302,82 @@ export const InField: Story = {
     const slider = canvas.getByRole("slider", { name: "Brilho" });
     await expect(slider).toHaveValue("40");
     await expect(slider).toHaveAccessibleDescription("Ajuste o brilho da tela.");
+  },
+};
+
+/** A real mouse's pointer event on the track, as react-aria reads it. */
+function pointerOnTrack(track: HTMLElement, type: string, clientX: number) {
+  const box = track.getBoundingClientRect();
+  track.dispatchEvent(
+    new PointerEvent(type, {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      clientX,
+      clientY: box.top + box.height / 2,
+      pointerId: 1,
+      pointerType: "mouse",
+      isPrimary: true,
+      button: type === "pointermove" ? -1 : 0,
+      buttons: type === "pointerup" ? 0 : 1,
+    }),
+  );
+}
+
+function thumbCenter(canvasElement: HTMLElement) {
+  const box = (
+    canvasElement.querySelector("[data-slot=slider-thumb]") as HTMLElement
+  ).getBoundingClientRect();
+  return box.left + box.width / 2;
+}
+
+/** A press on the track glides the thumb there; over fine steps a drag then follows the pointer at once. */
+export const ShouldGlideOnJumpAndFollowDrag: Story = {
+  tags: ["!autodocs"],
+  play: async ({ canvasElement }) => {
+    const track = canvasElement.querySelector("[data-slot=slider-track]") as HTMLElement;
+    const control = canvasElement.querySelector("[data-slot=slider-control]") as HTMLElement;
+    const box = track.getBoundingClientRect();
+
+    const target = box.left + box.width * 0.9;
+    pointerOnTrack(track, "pointerdown", target);
+    await new Promise(requestAnimationFrame);
+    // still on its way
+    await expect(Math.abs(thumbCenter(canvasElement) - target)).toBeGreaterThan(2);
+    await waitFor(() => expect(thumbCenter(canvasElement)).toBeCloseTo(target, 0));
+
+    for (const fraction of [0.8, 0.65, 0.5]) {
+      const clientX = box.left + box.width * fraction;
+      pointerOnTrack(track, "pointermove", clientX);
+      await waitFor(() => expect(control).toHaveAttribute("data-following"));
+      await new Promise(requestAnimationFrame);
+      await expect(thumbCenter(canvasElement)).toBeCloseTo(clientX, 0);
+    }
+
+    pointerOnTrack(track, "pointerup", box.left + box.width * 0.5);
+    await waitFor(() => expect(control).not.toHaveAttribute("data-following"));
+  },
+};
+
+/** Over steps you can see, a drag glides from step to step instead of snapping. */
+export const ShouldGlideBetweenStepsWhileDragging: Story = {
+  tags: ["!autodocs"],
+  args: { minValue: 0, maxValue: 500, step: 50, defaultValue: 100 },
+  play: async ({ canvasElement }) => {
+    const track = canvasElement.querySelector("[data-slot=slider-track]") as HTMLElement;
+    const control = canvasElement.querySelector("[data-slot=slider-control]") as HTMLElement;
+    const box = track.getBoundingClientRect();
+    const at = (value: number) => box.left + (box.width * value) / 500;
+
+    pointerOnTrack(track, "pointerdown", at(100));
+    await waitFor(() => expect(thumbCenter(canvasElement)).toBeCloseTo(at(100), 0));
+    // past the middle of the next step: the thumb snaps to 150, gliding there
+    pointerOnTrack(track, "pointermove", at(130));
+    await new Promise(requestAnimationFrame);
+    await expect(control).not.toHaveAttribute("data-following");
+    await expect(thumbCenter(canvasElement)).toBeLessThan(at(150) - 2);
+    await waitFor(() => expect(thumbCenter(canvasElement)).toBeCloseTo(at(150), 0));
+    await expect(canvasElement.querySelector("input[type=range]")).toHaveValue("150");
+    pointerOnTrack(track, "pointerup", at(130));
   },
 };

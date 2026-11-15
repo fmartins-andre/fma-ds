@@ -13,7 +13,8 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { RouterProvider } from "react-aria-components";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
+import { Card, CardContent, CardHeader } from "@/core/card/card";
 import meta from "./meta.json";
 import { TabNav, TabNavItem, TabNavSeparator } from "./tab-nav";
 
@@ -129,7 +130,11 @@ export const Grouped: Story = {
   ),
 };
 
-/** In a narrow space the strip scrolls sideways and keeps the current page in view. */
+/**
+ * In a narrow space the strip scrolls sideways and keeps the current page in view. The
+ * side that hides items fades out and, with a pointer on larger screens, shows an arrow
+ * that turns a page.
+ */
 export const Overflow: Story = {
   args: { "aria-label": "Cliente", className: "w-72" },
   decorators: [withRouter("/clientes/42/mensalidades")],
@@ -169,6 +174,85 @@ export const Overflow: Story = {
     const box = current.getBoundingClientRect();
     const view = scroller.getBoundingClientRect();
     await expect(box.right).toBeLessThanOrEqual(view.right + 1);
+
+    // at the end: only the start arrow, and it's out of the accessibility tree
+    const arrow = (side: string) =>
+      canvasElement.querySelector<HTMLElement>(
+        `[data-slot=tab-nav-scroll-arrow][data-side=${side}]`,
+      );
+    await waitFor(() => expect(arrow("start")).not.toBeNull());
+    await expect(arrow("end")).toBeNull();
+    await expect(arrow("start")).toHaveAttribute("aria-hidden", "true");
+    await expect(arrow("start")?.querySelector("button")).toHaveAttribute("tabindex", "-1");
+
+    // a page back: the end arrow shows up; at the start, the start arrow goes away
+    const before = scroller.scrollLeft;
+    arrow("start")?.querySelector("button")?.click();
+    await waitFor(() => expect(scroller.scrollLeft).toBeLessThan(before));
+    await waitFor(() => expect(arrow("end")).not.toBeNull());
+    scroller.scrollLeft = 0;
+    await waitFor(() => expect(arrow("start")).toBeNull());
+
+    // the keyboard reveals a hidden item on focus
+    const pedidos = canvas.getByRole("link", { name: "Pedidos" });
+    pedidos.focus();
+    await waitFor(() =>
+      expect(pedidos.getBoundingClientRect().right).toBeLessThanOrEqual(
+        scroller.getBoundingClientRect().right + 1,
+      ),
+    );
+  },
+};
+
+/** When everything fits, no arrow and no fade. */
+export const ShouldNotShowArrowsWhenItFits: Story = {
+  tags: ["!autodocs"],
+  args: { "aria-label": "Contratos", className: "w-96" },
+  render: (args) => (
+    <TabNav {...args}>
+      <TabNavItem href="/contratos/comprar">Comprar</TabNavItem>
+      <TabNavItem href="/contratos">Adquiridos</TabNavItem>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const scroller = canvasElement.querySelector("ul")?.parentElement as HTMLElement;
+    await expect(scroller).not.toHaveAttribute("data-overflow-start");
+    await expect(scroller).not.toHaveAttribute("data-overflow-end");
+    await expect(canvasElement.querySelector("[data-slot=tab-nav-scroll-arrow]")).toBeNull();
+  },
+};
+
+/**
+ * Tabs in a card header: a `line` strip on the header's bottom border, its items sharing
+ * the width (`listClassName="min-w-full"`) while they fit, scrolling when they don't. A
+ * `sticky` header keeps the tabs in view while the card scrolls; without its side, top
+ * and bottom padding, the strip sits flush with the card's top, the label centered and
+ * the underline on the border.
+ */
+export const InCardHeader: Story = {
+  parameters: { layout: "padded" },
+  args: { "aria-label": "Cliente", variant: "line" },
+  decorators: [withRouter("/clientes/42/info")],
+  render: (args) => (
+    <Card className="w-full max-w-3xl">
+      <CardHeader sticky className="px-0 pt-0 [.border-b]:pb-0">
+        <TabNav {...args} listClassName="min-w-full">
+          <TabNavItem href="/clientes/42/info">Informações</TabNavItem>
+          <TabNavItem href="/clientes/42/modulos">Módulos</TabNavItem>
+          <TabNavItem href="/clientes/42/notas">Notas fiscais</TabNavItem>
+          <TabNavItem href="/clientes/42/certificado">Certificado digital</TabNavItem>
+        </TabNav>
+      </CardHeader>
+      <CardContent>Dados cadastrais do cliente.</CardContent>
+    </Card>
+  ),
+  play: async ({ canvas }) => {
+    // the items share the strip's width
+    const nav = canvas.getByRole("navigation", { name: "Cliente" });
+    const items = within(nav).getAllByRole("link");
+    const width = (element: Element) => element.getBoundingClientRect().width;
+    const total = items.reduce((sum, item) => sum + width(item), 0);
+    await expect(total).toBeGreaterThan(width(nav) - items.length * 8);
   },
 };
 
@@ -188,6 +272,111 @@ export const MatchPrefix: Story = {
     await expect(canvas.getByRole("link", { name: "Plano e faturas" })).toHaveAttribute(
       "aria-current",
       "page",
+    );
+  },
+};
+
+/**
+ * The current page's underline (or segment) is one indicator for the whole nav, styled
+ * from `className`: here an underline and label in the primary color.
+ */
+export const IndicatorColor: Story = {
+  args: {
+    variant: "line",
+    className: "[&_[aria-current=page]]:text-primary [&_[data-slot=tab-nav-indicator]]:bg-primary",
+  },
+  render: (args) => (
+    <TabNav {...args}>
+      <TabNavItem href="/contratos/comprar">Comprar contrato</TabNavItem>
+      <TabNavItem href="/contratos">Contratos adquiridos</TabNavItem>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const indicator = canvasElement.querySelector("[data-slot=tab-nav-indicator]");
+    const current = within(canvasElement).getByRole("link", { name: "Comprar contrato" });
+    if (!indicator) throw new Error("no indicator");
+    await expect(getComputedStyle(indicator).backgroundColor).toBe(getComputedStyle(current).color);
+  },
+};
+
+/** The indicator slides straight to the new page: sideways only, then under it. */
+export const ShouldMoveIndicator: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <TabNav {...args}>
+      <TabNavItem href="/contratos/comprar">Comprar contrato</TabNavItem>
+      <TabNavItem href="/contratos">Contratos adquiridos</TabNavItem>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const buy = canvas.getByRole("link", { name: "Comprar contrato" });
+    const bought = canvas.getByRole("link", { name: "Contratos adquiridos" });
+    const indicator = await waitFor(() => {
+      const element = canvasElement.querySelector<HTMLElement>("[data-slot=tab-nav-indicator]");
+      if (!element) throw new Error("no indicator");
+      return element;
+    });
+    const rect = (element: Element) => element.getBoundingClientRect();
+    // settled on the current page (it may arrive sliding from a nav with the same items
+    // just unmounted)
+    await waitFor(() => {
+      expect(indicator.getAnimations()).toHaveLength(0);
+      expect(rect(indicator).left).toBeCloseTo(rect(buy).left, 0);
+      expect(rect(indicator).top).toBeCloseTo(rect(buy).top, 0);
+    });
+    const offset = rect(indicator).top - rect(buy).top;
+
+    await userEvent.click(bought);
+    // while it moves, it stays on the items' row
+    for (let frame = 0; frame < 6; frame++) {
+      await new Promise(requestAnimationFrame);
+      await expect(rect(indicator).top - rect(bought).top).toBeCloseTo(offset, 0);
+    }
+    await waitFor(() => expect(rect(indicator).left).toBeCloseTo(rect(bought).left, 0));
+    await expect(rect(indicator).width).toBeCloseTo(rect(bought).width, 0);
+    await expect(canvasElement.querySelectorAll("[data-slot=tab-nav-indicator]")).toHaveLength(1);
+  },
+};
+
+/**
+ * Each route renders its own nav (here keyed by the path, as a page would): the new
+ * instance's indicator starts where the old one was and slides to the current page.
+ */
+export const ShouldSlideAcrossRouteRemounts: Story = {
+  tags: ["!autodocs"],
+  render: (args) => (
+    <TabNav key={args.currentHref} {...args}>
+      <TabNavItem href="/contratos/comprar">Comprar contrato</TabNavItem>
+      <TabNavItem href="/contratos">Contratos adquiridos</TabNavItem>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const indicator = () => canvasElement.querySelector("[data-slot=tab-nav-indicator]");
+    const buy = canvas.getByRole("link", { name: "Comprar contrato" });
+    await waitFor(() => {
+      expect(indicator()?.getAnimations()).toHaveLength(0);
+      expect(indicator()?.getBoundingClientRect().left).toBeCloseTo(
+        buy.getBoundingClientRect().left,
+        0,
+      );
+    });
+    const before = indicator()?.getBoundingClientRect().left ?? 0;
+
+    await userEvent.click(canvas.getByRole("link", { name: "Contratos adquiridos" }));
+    const bought = canvas.getByRole("link", { name: "Contratos adquiridos" });
+    await expect(bought).toHaveAttribute("aria-current", "page");
+    // a new nav, its indicator still on its way from the old position
+    await new Promise(requestAnimationFrame);
+    const left = indicator()?.getBoundingClientRect().left ?? 0;
+    await expect(left).toBeLessThan(bought.getBoundingClientRect().left - 2);
+    await expect(left).toBeGreaterThanOrEqual(before - 1);
+    await waitFor(() =>
+      expect(indicator()?.getBoundingClientRect().left).toBeCloseTo(
+        bought.getBoundingClientRect().left,
+        0,
+      ),
     );
   },
 };

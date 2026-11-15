@@ -188,16 +188,64 @@ function SliderValue({
   );
 }
 
+/** How far the pointer goes before a press becomes a drag, in px. */
+const DRAG_THRESHOLD = 3;
+
+/** The on-screen size of a step from which dragging glides from step to step, in px. */
+const GLIDE_STEP_MIN = 6;
+
 /**
- * Lays out the track and thumbs, and marks where a `limit` cuts the scale.
+ * Lays out the track and thumbs, and marks where a `limit` cuts the scale. A jump (a
+ * press on the track, a mark, the keyboard) glides the thumbs and fill to the new value,
+ * and so does dragging over steps you can see (from `GLIDE_STEP_MIN`), from step to
+ * step; over finer steps a drag follows the pointer without delay (`data-following`).
  */
-function SliderControl({ className, children, ...props }: React.ComponentProps<"div">) {
+function SliderControl({
+  className,
+  children,
+  onPointerDownCapture,
+  ...props
+}: React.ComponentProps<"div">) {
   const { state, limitPercent } = useSlider();
+  const [isFollowing, setIsFollowing] = React.useState(false);
+  const pressRef = React.useRef<AbortController | null>(null);
+  React.useEffect(() => () => pressRef.current?.abort(), []);
+
+  // Capture phase: react-aria's thumb and track handle the press themselves.
+  const watchPress = (event: React.PointerEvent<HTMLDivElement>) => {
+    onPointerDownCapture?.(event);
+    pressRef.current?.abort();
+    const press = new AbortController();
+    pressRef.current = press;
+    const { clientX, clientY } = event;
+    const box = event.currentTarget.getBoundingClientRect();
+    const length = state.orientation === "vertical" ? box.height : box.width;
+    const stepSize = (state.getValuePercent(state.step) - state.getValuePercent(0)) * length;
+    if (stepSize >= GLIDE_STEP_MIN) return;
+    window.addEventListener(
+      "pointermove",
+      (move) => {
+        if (Math.hypot(move.clientX - clientX, move.clientY - clientY) > DRAG_THRESHOLD) {
+          setIsFollowing(true);
+        }
+      },
+      { signal: press.signal },
+    );
+    const release = () => {
+      setIsFollowing(false);
+      press.abort();
+    };
+    window.addEventListener("pointerup", release, { signal: press.signal });
+    window.addEventListener("pointercancel", release, { signal: press.signal });
+  };
+
   return (
     <div
       data-slot="slider-control"
+      data-following={isFollowing || undefined}
+      onPointerDownCapture={watchPress}
       className={cn(
-        "relative flex w-full items-center group-data-vertical:h-full group-data-vertical:w-auto group-data-vertical:flex-col",
+        "group/slider-control relative flex w-full items-center group-data-vertical:h-full group-data-vertical:w-auto group-data-vertical:flex-col",
         className,
       )}
       {...props}
@@ -254,7 +302,7 @@ function SliderFill({ className }: { className?: string }) {
     <SliderFillPrimitive
       data-slot="slider-range"
       className={cn(
-        "absolute bg-primary select-none data-horizontal:h-full data-vertical:w-full",
+        "absolute bg-primary transition-[left,right,width,bottom,height] duration-150 ease-out select-none group-data-following/slider-control:transition-none data-horizontal:h-full data-vertical:w-full motion-reduce:transition-none",
         className,
       )}
     />
@@ -286,7 +334,7 @@ function SliderThumb({
       index={i}
       style={style}
       className={cn(
-        "relative flex size-3 shrink-0 items-center justify-center rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none group-data-horizontal:top-[50%] group-data-vertical:left-[50%] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 disabled:pointer-events-none disabled:opacity-50",
+        "relative flex size-3 shrink-0 items-center justify-center rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow,left,top] duration-150 ease-out select-none group-data-following/slider-control:transition-[color,box-shadow] motion-reduce:transition-[color,box-shadow] group-data-horizontal:top-[50%] group-data-vertical:left-[50%] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
     >

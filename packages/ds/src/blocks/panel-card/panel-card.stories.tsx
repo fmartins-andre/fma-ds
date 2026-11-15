@@ -739,3 +739,34 @@ export const WithDataGrid: Story = {
     );
   },
 };
+
+export const ShouldTouchTheFooterAfterBleedEndBody: Story = {
+  tags: ["!autodocs"],
+  render: () => (
+    <div className="flex max-w-md flex-col gap-4">
+      <PanelCard i18n={ptBR}>
+        <PanelCardHeader icon={<ReceiptTextIcon />} title="Faturas" />
+        <PanelCardBody bleed="end" className="h-24 border-b" />
+        <CardFooter>Paginação</CardFooter>
+      </PanelCard>
+      <PanelCard i18n={ptBR}>
+        <PanelCardHeader icon={<ReceiptTextIcon />} title="Faturas" />
+        {/* a provider wrapping body and footer, out of the layout */}
+        <div className="contents">
+          <PanelCardBody bleed="end" className="h-24 border-b" />
+          <CardFooter>Paginação</CardFooter>
+        </div>
+      </PanelCard>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const bodies = canvasElement.querySelectorAll<HTMLElement>("[data-slot=panel-card-body]");
+    const footers = canvasElement.querySelectorAll<HTMLElement>("[data-slot=card-footer]");
+    await expect(bodies).toHaveLength(2);
+    for (const [i, body] of bodies.entries()) {
+      await expect(Math.round(footers[i].getBoundingClientRect().top)).toBe(
+        Math.round(body.getBoundingClientRect().bottom),
+      );
+    }
+  },
+};

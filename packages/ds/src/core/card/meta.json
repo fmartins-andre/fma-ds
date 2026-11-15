@@ -4,6 +4,6 @@
   "status": "stable",
   "source": "customized",
   "origin": "shadcn/ui, style: aria-nova",
-  "description": "A container for grouping related content, with header, title, description, action, content, and footer slots. Supports a compact size=\"sm\" variant.\n\n`CardContent bleed` drops the content's side padding, so a table, a list or an image spans the card's edges; `bleed=\"end\"`, for content that closes the card, also drops the card's bottom padding, like a `CardFooter` does. `CardFooter sticky` stays at the bottom of the screen while a long card scrolls, on an opaque surface, and the card stops clipping its overflow so it can stick.",
+  "description": "A container for grouping related content, with header, title, description, action, content, and footer slots. Supports a compact size=\"sm\" variant.\n\n`CardContent bleed` drops the content's side padding, so a table, a list or an image spans the card's edges; `bleed=\"end\"`, for content that closes the card, also drops the card's bottom padding, like a `CardFooter` does. `CardHeader sticky` and `CardFooter sticky` stay at the top and bottom of the screen while a long card scrolls, on an opaque surface; the header stops below `--sticky-edge` (the page's sticky bars, which `AppShellMain` sets). The card clips its corners with `overflow: clip`, which doesn't make it a scroll container, so they stick to the page.",
   "tags": ["layout", "surface", "nova"]
 }

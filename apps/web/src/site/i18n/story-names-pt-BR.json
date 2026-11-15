@@ -330,5 +330,10 @@
   "Tabs Beside The Title": "Abas ao lado do título",
   "List Page": "Página de lista",
   "Record Page": "Página de registro",
-  "Purchase Page": "Página de compra"
+  "Purchase Page": "Página de compra",
+  "In Card Header": "No cabeçalho do card",
+  "Should Not Show Arrows When It Fits": "Não deve mostrar setas quando cabe",
+  "Should Measure The Page Header Through A Wrapper": "Deve medir o cabeçalho da página através de um wrapper",
+  "Sticky Header": "Cabeçalho fixo",
+  "Should Stick The Footer And Keep Clipping": "Deve fixar o rodapé e continuar recortando"
 }

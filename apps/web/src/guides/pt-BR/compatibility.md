@@ -11,6 +11,10 @@ Cada item lista o restante das dependências npm no seu arquivo de registro, e o
 
 O Node.js só importa para o CLI do shadcn, então use uma versão que ele suporte. As versões de Node e pnpm no `package.json` deste repositório valem para trabalhar no próprio registro, não para usá-lo.
 
+## Navegadores
+
+Os navegadores são os que o Tailwind CSS v4 suporta: Safari 16.4, Chrome 111 e Firefox 128 ou mais novos. Os componentes usam CSS dentro dessa faixa, como o `overflow: clip` no cartão, que mantém cabeçalhos e rodapés fixos funcionando.
+
 ## Configuração do projeto
 
 Você precisa de um projeto inicializado para o shadcn/ui: um `components.json` e uma folha de estilos com Tailwind v4. Depois, siga os [passos de instalação](/docs).

@@ -214,7 +214,8 @@ function PanelCardBody({
 }: React.ComponentProps<"div"> & {
   /**
    * Drops the side padding, so a table spans the card's edges; `"end"` also drops
-   * the card's bottom padding, for a body that closes the card.
+   * the card's bottom padding, for a body that closes the card, and a `CardFooter` right
+   * after it (a table's pagination) touches it, also when a provider wraps both.
    */
   bleed?: boolean | "end";
   isLoading?: boolean;
@@ -271,7 +272,12 @@ function PanelCardBody({
       data-slot="panel-card-body"
       data-bleed={bleed === "end" ? "end" : bleed ? "" : undefined}
       aria-busy={isLoading || undefined}
-      className={cn("flex min-w-0 flex-1 flex-col px-(--card-spacing)", bleed && "px-0", className)}
+      className={cn(
+        "flex min-w-0 flex-1 flex-col px-(--card-spacing)",
+        bleed && "px-0",
+        bleed === "end" && "has-[+[data-slot=card-footer]]:-mb-(--card-spacing)",
+        className,
+      )}
       {...props}
     >
       {content}
