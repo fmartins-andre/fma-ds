@@ -722,11 +722,14 @@ export const RecordDetails: Story = {
     // Values show once the record loads.
     await within(dialog).findByText("R$ 1.200,00");
 
+    // Each tab panel fades in: wait until it's shown, not only mounted.
     await userEvent.click(within(dialog).getByRole("tab", { name: "Notificações" }));
-    await expect(within(dialog).getByRole("grid", { name: "Notificações" })).toBeVisible();
+    const grid = within(dialog).getByRole("grid", { name: "Notificações" });
+    await waitFor(() => expect(grid).toBeVisible());
     await expect(within(dialog).getByText("E-mail entregue")).toBeVisible();
     await userEvent.click(within(dialog).getByRole("tab", { name: "Logs" }));
-    await expect(within(dialog).getByText("Nenhuma alteração registrada.")).toBeVisible();
+    const empty = within(dialog).getByText("Nenhuma alteração registrada.");
+    await waitFor(() => expect(empty).toBeVisible());
 
     // The destructive action confirms over the record and comes back to it.
     await userEvent.click(within(dialog).getByRole("button", { name: "Ações" }));
@@ -737,6 +740,7 @@ export const RecordDetails: Story = {
     await expect(within(dialog).getByText("Cancelada")).toBeVisible();
 
     await userEvent.click(within(dialog).getByRole("tab", { name: "Histórico" }));
-    await expect(within(dialog).getByText("Cancelada por você.")).toBeVisible();
+    const cancelled = within(dialog).getByText("Cancelada por você.");
+    await waitFor(() => expect(cancelled).toBeVisible());
   },
 };
