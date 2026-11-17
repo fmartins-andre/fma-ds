@@ -1,70 +1,54 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
 import type * as React from "react";
+import { defaultTone, type Tone, toneVariants, type Variant } from "@/lib/tone";
+
+// Variant recipes (fma-ds docs, "Tones and variants"): every variant reads the --tone-*
+// variables that `toneVariants` sets. The root owns the footprint (size, radius and the
+// transparent border), so switching variants (ghost ↔ soft, for instance) never moves the
+// layout. `ghost` has no surface: only the icon, in the tone.
+const iconTileVariantsConfig = {
+  variant: {
+    solid: "bg-(--tone) text-(color:--tone-foreground)",
+    soft: "bg-(--tone-soft) text-(color:--tone-icon)",
+    outline: "border-(--tone-line) bg-background text-(color:--tone-icon)",
+    ghost: "text-(color:--tone-icon)",
+  },
+  size: {
+    xs: "[--icon-tile-icon-size:--spacing(3.5)] [--icon-tile-size:--spacing(6)]",
+    sm: "[--icon-tile-icon-size:--spacing(4)] [--icon-tile-size:--spacing(8)]",
+    default: "[--icon-tile-icon-size:--spacing(4.5)] [--icon-tile-size:--spacing(10)]",
+    lg: "[--icon-tile-icon-size:--spacing(5.5)] [--icon-tile-size:--spacing(12)]",
+    xl: "[--icon-tile-icon-size:--spacing(7)] [--icon-tile-size:--spacing(14)]",
+  },
+  radius: {
+    // Clamped to a third of the tile, so small tiles keep their corner
+    // ratio instead of turning into circles (which is what `full` is for).
+    default: "[--icon-tile-radius:min(var(--radius-md),calc(var(--icon-tile-size)/3))]",
+    full: "[--icon-tile-radius:calc(infinity*1px)]",
+  },
+} satisfies {
+  variant: Record<Variant, string>;
+  size: Record<string, string>;
+  radius: Record<string, string>;
+};
 
 /**
- * The root owns four variables so every part of the tile stays in proportion
+ * The root owns three variables so every part of the tile stays in proportion
  * and is overridable from `className`:
  *
  *   --icon-tile-size       tile width/height
  *   --icon-tile-icon-size  glyph size applied to child svgs
- *   --icon-tile-radius     corner radius (also drives the nested inner card)
- *   --icon-tile-inset      gap between the outer ring and the inner card
- *
- * `frame` and `soft` paint their inner card with an `::after` pseudo element
- * instead of a wrapper node: `isolate` makes the root a stacking context, so
- * the negative z-index pseudo paints above the root background but below the
- * icon.
- *
- * `soft` and `solid` derive their fills from `currentColor` (default
- * `text-primary`), so a single text color class retints the whole tile.
+ *   --icon-tile-radius     corner radius
  */
-const iconTileVariants = cva(
+const iconTileCva = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center align-middle",
-    "size-(--icon-tile-size) rounded-(--icon-tile-radius)",
+    "size-(--icon-tile-size) rounded-(--icon-tile-radius) border border-transparent",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-(--icon-tile-icon-size)",
   ],
   {
-    variants: {
-      variant: {
-        /** Plain bordered surface. The quiet default for list rows and toolbars. */
-        outline: "border border-border bg-background dark:bg-input/32",
-        /** Raised muted fill with a background-colored ring. Reads as a physical chip. */
-        elevated:
-          "border-2 border-background bg-muted text-accent-foreground shadow-[0_1px_3px_0_rgb(0_0_0/0.14)] dark:border",
-        /** Tinted ring around a bordered inner card, all from `currentColor`. */
-        soft: [
-          "isolate bg-current/10 p-(--icon-tile-inset) text-primary",
-          "after:absolute after:inset-(--icon-tile-inset) after:-z-10",
-          "after:rounded-[calc(var(--icon-tile-radius)-var(--icon-tile-inset))]",
-          "after:border after:border-current/20 after:bg-current/5",
-        ],
-        /** Filled tone with a contrasting glyph. Retint with `bg-*` and a text color. */
-        solid: "bg-primary text-primary-foreground",
-        /** A muted ring around an inset card, matching `Card`. */
-        frame: [
-          "isolate border border-border bg-muted/50 p-(--icon-tile-inset)",
-          "after:absolute after:inset-(--icon-tile-inset) after:-z-10",
-          "after:rounded-[calc(var(--icon-tile-radius)-var(--icon-tile-inset))]",
-          "after:border after:border-border after:bg-card after:shadow-xs",
-        ],
-      },
-      size: {
-        xs: "[--icon-tile-icon-size:--spacing(3.5)] [--icon-tile-inset:--spacing(0.5)] [--icon-tile-size:--spacing(6)]",
-        sm: "[--icon-tile-icon-size:--spacing(4)] [--icon-tile-inset:--spacing(0.5)] [--icon-tile-size:--spacing(8)]",
-        default:
-          "[--icon-tile-icon-size:--spacing(4.5)] [--icon-tile-inset:--spacing(0.75)] [--icon-tile-size:--spacing(10)]",
-        lg: "[--icon-tile-icon-size:--spacing(5.5)] [--icon-tile-inset:--spacing(0.75)] [--icon-tile-size:--spacing(12)]",
-        xl: "[--icon-tile-icon-size:--spacing(7)] [--icon-tile-inset:--spacing(1)] [--icon-tile-size:--spacing(14)]",
-      },
-      radius: {
-        // Clamped to a third of the tile, so small tiles keep their corner
-        // ratio instead of turning into circles (which is what `full` is for).
-        default: "[--icon-tile-radius:min(var(--radius-md),calc(var(--icon-tile-size)/3))]",
-        full: "[--icon-tile-radius:calc(infinity*1px)]",
-      },
-    },
+    variants: iconTileVariantsConfig,
     defaultVariants: {
       variant: "outline",
       size: "default",
@@ -73,25 +57,49 @@ const iconTileVariants = cva(
   },
 );
 
-type IconTileProps = React.ComponentProps<"span"> & VariantProps<typeof iconTileVariants>;
+type IconTileVariantProps = Omit<VariantProps<typeof iconTileCva>, "variant"> & {
+  variant?: Variant;
+  /** Defaults to `defaultTone(variant)`: primary for solid, neutral otherwise. */
+  tone?: Tone;
+  className?: string;
+};
+
+function iconTileVariants({
+  variant = "outline",
+  tone,
+  size,
+  radius,
+  className,
+}: IconTileVariantProps = {}) {
+  return cn(
+    iconTileCva({ variant, size, radius }),
+    toneVariants[tone ?? defaultTone(variant)],
+    className,
+  );
+}
+
+type IconTileProps = Omit<React.ComponentProps<"span">, "className"> & IconTileVariantProps;
 
 function IconTile({
   className,
   variant = "outline",
+  tone,
   size = "default",
   radius = "default",
   ...props
 }: IconTileProps) {
+  const resolvedTone = tone ?? defaultTone(variant);
   return (
     <span
       data-slot="icon-tile"
       data-variant={variant}
+      data-tone={resolvedTone}
       data-size={size}
-      className={cn(iconTileVariants({ variant, size, radius }), className)}
+      className={iconTileVariants({ variant, tone: resolvedTone, size, radius, className })}
       {...props}
     />
   );
 }
 
 export type { IconTileProps };
-export { IconTile, iconTileVariants };
+export { IconTile, iconTileVariants, iconTileVariantsConfig };

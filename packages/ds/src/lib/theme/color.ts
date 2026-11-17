@@ -14,6 +14,7 @@ import {
 
 const toOklchColor = converter("oklch");
 const toHslColor = converter("hsl");
+const toOklabColor = converter("oklab");
 
 function parseColor(value: string): Color | undefined {
   const trimmed = value.trim();
@@ -30,9 +31,9 @@ const round = (n: number, digits: number) => {
   return Object.is(r, -0) ? 0 : r;
 };
 
-function formatOklch({ l, c, h, alpha }: Oklch): string {
+function formatOklch({ l, c, h, alpha }: Oklch, digits = 3): string {
   const hue = c < 0.0005 || h === undefined || Number.isNaN(h) ? 0 : h;
-  const body = `${round(l, 3)} ${round(c, 3)} ${round(hue, 3)}`;
+  const body = `${round(l, digits)} ${round(c, digits)} ${round(hue, digits)}`;
   return alpha !== undefined && alpha < 1
     ? `oklch(${body} / ${round(alpha * 100, 1)}%)`
     : `oklch(${body})`;
@@ -70,6 +71,28 @@ export function contrastRatio(a: string, b: string): number {
   const cb = parseColor(b);
   if (!ca || !cb) return 1;
   return wcagContrast({ ...ca, alpha: 1 }, { ...cb, alpha: 1 });
+}
+
+/**
+ * Like CSS `color-mix(in oklab, a, b <shareOfB>)`: `shareOfB` is b's share (0–1). Opaque result,
+ * written with `digits` decimals (more of them when the result is only measured, not stored).
+ */
+export function mixColors(a: string, b: string, shareOfB: number, digits = 3): string {
+  const ca = parseColor(a);
+  const cb = parseColor(b);
+  if (!ca || !cb) return a;
+  const la = toOklabColor({ ...ca, alpha: 1 });
+  const lb = toOklabColor({ ...cb, alpha: 1 });
+  const mix = (x: number, y: number) => x + (y - x) * shareOfB;
+  return formatOklch(
+    toOklchColor({
+      mode: "oklab",
+      l: mix(la.l, lb.l),
+      a: mix(la.a, lb.a),
+      b: mix(la.b, lb.b),
+    }),
+    digits,
+  );
 }
 
 /** Moves a color's oklch lightness by `delta` (clamped to 0–1), keeping chroma, hue and alpha. */

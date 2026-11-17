@@ -188,7 +188,9 @@ export function SidebarPreview() {
                       <CardTitle className="text-2xl">{stat.value}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <Badge variant="success-light">{stat.delta}</Badge>
+                      <Badge variant="soft" tone="success">
+                        {stat.delta}
+                      </Badge>
                     </CardContent>
                   </Card>
                 ))}

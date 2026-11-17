@@ -120,7 +120,9 @@ export const Default: Story = {
             <PricingPeriodOption id="monthly">Mensal</PricingPeriodOption>
             <PricingPeriodOption id="annual">
               Anual
-              <Badge variant="success-light">2 meses grátis</Badge>
+              <Badge variant="soft" tone="success">
+                2 meses grátis
+              </Badge>
             </PricingPeriodOption>
           </PricingPeriod>
           <PricingPlanGroup aria-label="Plano" value={planId} onChange={setPlanId}>

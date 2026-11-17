@@ -17,6 +17,8 @@ export const THEME_VARS = [
   "--font-heading",
   "--spacing",
   "--tracking-normal",
+  "--tone-icon-mix",
+  "--tone-soft-mix",
   ...SHADOW_SIZES.map((size) => `--shadow-${size}`),
   "--shadow-color",
   "--shadow-opacity",
@@ -45,6 +47,7 @@ export function sharedThemeVars(theme: Theme): Record<string, string> {
     ...(theme.fonts.heading && { "--font-heading": theme.fonts.heading }),
     ...(theme.spacing && { "--spacing": theme.spacing }),
     ...(theme.letterSpacing && { "--tracking-normal": theme.letterSpacing }),
+    ...(theme.iconMix && { "--tone-icon-mix": theme.iconMix }),
   };
 }
 
@@ -56,6 +59,7 @@ export function modeThemeVars(
 ): Record<string, string> {
   const vars: Record<string, string> = {};
   for (const token of COLOR_TOKENS) vars[`--${token}`] = theme[mode][token];
+  if (theme.softMix) vars["--tone-soft-mix"] = theme.softMix[mode];
   const shadow = theme.shadow?.[mode];
   if (shadow) {
     const scale = shadowScale(shadow);
@@ -114,7 +118,10 @@ export function generateIndexCss(theme: Theme, baseCss: string): string {
     ...sharedThemeVars(theme),
     ...modeThemeVars(theme, "light", { shadowRecipe: true }),
   });
-  const dark = block(".dark", modeThemeVars(theme, "dark", { shadowRecipe: true }));
+  const dark = block(".dark", {
+    ...defaultsFrom(baseCss, ".dark"),
+    ...modeThemeVars(theme, "dark", { shadowRecipe: true }),
+  });
   let css = baseCss;
   for (const [selector, replacement] of [
     [":root", root],

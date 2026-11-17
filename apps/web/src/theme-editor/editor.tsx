@@ -138,7 +138,11 @@ export function ThemeEditor({ preset }: { preset?: string }) {
             <div className="ml-auto flex flex-wrap items-center gap-2">
               {/* Same picker as the site header, which hides it below md. */}
               <ThemeSelect className="w-48 md:hidden" />
-              {modified && <Badge variant="warning-light">{t(($) => $.modified)}</Badge>}
+              {modified && (
+                <Badge variant="soft" tone="warning">
+                  {t(($) => $.modified)}
+                </Badge>
+              )}
               <ImportDialog onImport={(next) => dispatch({ type: "load", theme: next })} />
               <div className="flex items-center">
                 <IconButton

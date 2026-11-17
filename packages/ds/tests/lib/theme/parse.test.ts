@@ -1,9 +1,12 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { toOklch } from "@/lib/theme/color";
+import { checkContrast } from "@/lib/theme/contrast";
 import { generateIndexCss, generateThemeCss } from "@/lib/theme/css";
 import { parseCssVars, parseThemeInput, themeFromCssVars } from "@/lib/theme/parse";
 import { themeRegistryItem } from "@/lib/theme/registry";
+import { deriveToneText } from "@/lib/theme/tone-text";
 import { DEFAULT_THEME, getTheme, THEMES } from "@/themes/index";
 
 const identity = { name: "imported", title: "Imported" };
@@ -57,13 +60,48 @@ describe("themeFromCssVars", () => {
       DEFAULT_THEME,
       identity,
     );
-    // Text on a destructive tint, not tweakcn's white-on-solid.
-    expect(theme.light["destructive-foreground"]).toBe("oklch(0.48 0.2 25)");
-    expect(theme.dark["destructive-foreground"]).toBe("oklch(0.8 0.2 25)");
-    expect(theme.light.invert).toBe(theme.light.foreground);
-    expect(theme.light["invert-foreground"]).toBe(theme.light.background);
+    expect(theme.light["destructive-foreground"]).toBe(toOklch("#ffffff")); // the source's, as it came
+    expect(theme.light["success-foreground"]).toBe(theme.light.background); // fallback default
+    expect(theme.dark["info-foreground"]).toBe(theme.dark.background);
+    expect(theme.light["success-text"]).toBe(deriveToneText(theme.light, "success", "light"));
+    expect(theme.dark["primary-text"]).toBe(deriveToneText(theme.dark, "primary", "dark"));
     expect(theme.light.info).toBe(DEFAULT_THEME.light.info);
-    expect(theme.dark["success-foreground"]).toBe(DEFAULT_THEME.dark["success-foreground"]);
+  });
+
+  it("falls back destructive-foreground to the background when the source lacks it", () => {
+    const theme = themeFromCssVars(
+      {
+        light: { background: "#ffffff", destructive: "oklch(0.6 0.2 25)" },
+        dark: { background: "#000000", destructive: "oklch(0.7 0.2 25)" },
+      },
+      DEFAULT_THEME,
+      identity,
+    );
+    expect(theme.light["destructive-foreground"]).toBe(theme.light.background);
+    expect(theme.dark["destructive-foreground"]).toBe(theme.dark.background);
+  });
+
+  it("ignores the secondary and invert tokens of a source", () => {
+    const theme = themeFromCssVars(
+      {
+        light: {
+          primary: "#ff0000",
+          secondary: "#00ff00",
+          "secondary-foreground": "#000000",
+          invert: "#111111",
+          "invert-foreground": "#eeeeee",
+        },
+        dark: { secondary: "#00ff00", invert: "#111111" },
+      },
+      DEFAULT_THEME,
+      identity,
+    );
+    for (const mode of [theme.light, theme.dark]) {
+      expect(Object.keys(mode)).not.toContain("secondary");
+      expect(Object.keys(mode)).not.toContain("secondary-foreground");
+      expect(Object.keys(mode)).not.toContain("invert");
+      expect(Object.keys(mode)).not.toContain("invert-foreground");
+    }
   });
 
   it("makes brand the primary pair when the source has no brand", () => {
@@ -121,6 +159,43 @@ describe("themeFromCssVars", () => {
     });
     expect(theme.shadow?.dark.opacity).toBe(0.5);
     expect(theme.shadow?.dark.blur).toBe("8px");
+  });
+});
+
+describe("themeFromCssVars icon gate", () => {
+  // What a tweakcn export lacks: our status and brand tokens, the -text tokens and the mixes.
+  const lacking = (colors: Record<string, string>) =>
+    Object.fromEntries(
+      Object.entries(colors).filter(
+        ([token]) =>
+          !/^(info|success|warning|brand)(-foreground)?$/.test(token) && !token.endsWith("-text"),
+      ),
+    );
+
+  it.each(THEMES.map((theme) => theme.name))(
+    "%s re-imports with every icon pair passing",
+    (name) => {
+      // biome-ignore lint/style/noNonNullAssertion: listed in THEMES
+      const source = getTheme(name)!;
+      const theme = themeFromCssVars(
+        { light: lacking(source.light), dark: lacking(source.dark) },
+        DEFAULT_THEME,
+        identity,
+      );
+      for (const mode of ["light", "dark"] as const) {
+        const failing = checkContrast(theme, mode).filter((pair) => !pair.passes);
+        expect(failing.map((pair) => `${mode} ${pair.background} ${pair.foreground}`)).toEqual([]);
+      }
+    },
+  );
+
+  it("keeps the iconMix a source declares", () => {
+    const theme = themeFromCssVars(
+      { light: { "tone-icon-mix": "60%" }, dark: {} },
+      DEFAULT_THEME,
+      identity,
+    );
+    expect(theme.iconMix).toBe("60%");
   });
 });
 

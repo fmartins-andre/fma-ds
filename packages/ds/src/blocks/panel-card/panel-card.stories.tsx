@@ -318,7 +318,11 @@ export const Refreshing: Story = {
                   <TableCell>
                     <span className="flex items-center gap-2">
                       {das.due}
-                      {das.overdue && <Badge variant="destructive-light">Vencido</Badge>}
+                      {das.overdue && (
+                        <Badge variant="soft" tone="destructive">
+                          Vencido
+                        </Badge>
+                      )}
                     </span>
                   </TableCell>
                   <TableCell className="text-right tabular-nums">{das.amount}</TableCell>
@@ -416,7 +420,7 @@ export const WithStats: Story = {
               <StatLabel className="sr-only">Saldo</StatLabel>
               <StatValue>R$ 1.365,00</StatValue>
             </Stat>
-            <Alert variant="warning">
+            <Alert variant="soft" tone="warning">
               <AlertTriangleIcon />
               <AlertTitle>R$ 120,00 expiram em 5 dias</AlertTitle>
             </Alert>
@@ -436,10 +440,10 @@ export const WithStats: Story = {
 type ContractState = "valid" | "expiring" | "expired" | "missing";
 
 const CONTRACT_STATUS = {
-  valid: { label: "Válido", badge: "success-light" },
-  expiring: { label: "Expirando", badge: "warning-light" },
-  expired: { label: "Expirado", badge: "destructive-light" },
-  missing: { label: "Inexistente", badge: "muted" },
+  valid: { label: "Válido", tone: "success" },
+  expiring: { label: "Expirando", tone: "warning" },
+  expired: { label: "Expirado", tone: "destructive" },
+  missing: { label: "Inexistente", tone: "neutral" },
 } as const;
 
 const SERIAL_NUMBER = "5A3F9C21D07E4B88A1C6F2E90B7D3E45";
@@ -483,7 +487,11 @@ export const ResourceStatus: Story = {
           <PanelCardHeader
             icon={<FileBadgeIcon />}
             title="Contrato de serviço"
-            status={<Badge variant={status.badge}>{status.label}</Badge>}
+            status={
+              <Badge variant="soft" tone={status.tone}>
+                {status.label}
+              </Badge>
+            }
           />
           <PanelCardBody
             isEmpty={state === "missing"}
@@ -509,14 +517,14 @@ export const ResourceStatus: Story = {
             className="gap-4"
           >
             {state === "expiring" && (
-              <Alert variant="warning">
+              <Alert variant="soft" tone="warning">
                 <AlertTriangleIcon />
                 <AlertTitle>Vence em 3 dias</AlertTitle>
                 <AlertDescription>Substitua para continuar registrando pedidos.</AlertDescription>
               </Alert>
             )}
             {state === "expired" && (
-              <Alert variant="destructive">
+              <Alert variant="soft" tone="destructive">
                 <AlertTriangleIcon />
                 <AlertTitle>Venceu em 20/09/2026</AlertTitle>
                 <AlertDescription>
@@ -616,7 +624,11 @@ export const CurrentPlan: Story = {
         <PanelCardHeader
           icon={<ReceiptTextIcon />}
           title="Plano Profissional"
-          status={<Badge variant="destructive-light">Pagamento em atraso</Badge>}
+          status={
+            <Badge variant="soft" tone="destructive">
+              Pagamento em atraso
+            </Badge>
+          }
           updatedAt={UPDATED_AT}
           isRefreshing={isRefreshing}
           toolbar={
@@ -632,7 +644,7 @@ export const CurrentPlan: Story = {
           }
         />
         <PanelCardBody className="gap-4">
-          <Alert variant="destructive">
+          <Alert variant="soft" tone="destructive">
             <AlertTriangleIcon />
             <AlertTitle>A fatura de setembro está em aberto</AlertTitle>
             <AlertDescription>Regularize até 30/10 para não perder os benefícios.</AlertDescription>

@@ -38,8 +38,15 @@ export function Palette({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
             <TableHead className="text-right">{t(($) => $.contrast.ratio)}</TableHead>
           </TableHeader>
           <TableBody>
-            {results.map(({ background: bg, foreground: fg, minimum, passes }) => {
-              return (
+            {results.map(
+              ({
+                background: bg,
+                foreground: fg,
+                backgroundValue,
+                foregroundValue,
+                minimum,
+                passes,
+              }) => (
                 <TableRow
                   key={`${bg}/${fg}`}
                   id={`${bg}/${fg}`}
@@ -48,20 +55,20 @@ export function Palette({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
                   <TableCell>
                     <span
                       className="inline-flex rounded-md px-2 py-1 text-sm font-medium ring-1 ring-foreground/10"
-                      style={{ background: colors[bg], color: colors[fg] }}
+                      style={{ background: backgroundValue, color: foregroundValue }}
                     >
                       Aa
                     </span>
                   </TableCell>
-                  <TableCell className="font-mono text-xs">--{fg}</TableCell>
-                  <TableCell className="font-mono text-xs">--{bg}</TableCell>
+                  <TableCell className="font-mono text-xs">{fg}</TableCell>
+                  <TableCell className="font-mono text-xs">{bg}</TableCell>
                   <TableCell className="text-xs">{minimum}:1</TableCell>
                   <TableCell className="text-right">
-                    <ContrastBadge background={colors[bg]} foreground={colors[fg]} />
+                    <ContrastBadge background={backgroundValue} foreground={foregroundValue} />
                   </TableCell>
                 </TableRow>
-              );
-            })}
+              ),
+            )}
           </TableBody>
         </Table>
       </section>

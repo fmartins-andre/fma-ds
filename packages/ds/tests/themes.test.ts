@@ -47,6 +47,16 @@ it("the default theme matches src/styles.css", () => {
   expect(DEFAULT_THEME.shadow).toBeUndefined();
 });
 
+it("the schema rejects malformed tone mix settings", () => {
+  const base = JSON.parse(readFileSync(join(THEMES_DIR, "default.json"), "utf8"));
+  expect(ThemeSchema.safeParse({ ...base, iconMix: "51%" }).success).toBe(true);
+  expect(ThemeSchema.safeParse({ ...base, iconMix: "51" }).success).toBe(false);
+  expect(ThemeSchema.safeParse({ ...base, softMix: { light: "10%", dark: "18%" } }).success).toBe(
+    true,
+  );
+  expect(ThemeSchema.safeParse({ ...base, softMix: { light: "10%" } }).success).toBe(false);
+});
+
 describe.each(files)("src/themes/%s", (file) => {
   const json = JSON.parse(readFileSync(join(THEMES_DIR, file), "utf8"));
   const theme = ThemeSchema.parse(json);

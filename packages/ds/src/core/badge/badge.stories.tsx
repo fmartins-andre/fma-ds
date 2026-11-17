@@ -1,24 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
+import { TONES, VARIANTS } from "@/lib/tone";
 import { Badge } from "./badge";
 import meta from "./meta.json";
-
-const TONES = ["primary", "info", "success", "warning", "destructive", "invert", "brand"] as const;
-
-const VARIANTS = [
-  "default",
-  "secondary",
-  "outline",
-  "ghost",
-  "link",
-  "info",
-  "success",
-  "warning",
-  "destructive",
-  "invert",
-  "brand",
-  ...TONES.map((tone) => `${tone}-light` as const),
-  ...TONES.map((tone) => `${tone}-outline` as const),
-] as const;
 
 const SIZES = ["xs", "sm", "default", "lg", "xl"] as const;
 
@@ -31,15 +15,13 @@ const componentMeta = {
     docs: { description: { component: meta.description } },
   },
   argTypes: {
-    variant: {
-      control: "select",
-      options: VARIANTS,
-    },
+    variant: { control: "select", options: VARIANTS },
+    tone: { control: "select", options: TONES },
     size: { control: "radio", options: SIZES },
     radius: { control: "radio", options: ["default", "full"] },
   },
   args: {
-    variant: "default",
+    variant: "solid",
     children: "Badge",
   },
 } satisfies Meta<typeof Badge>;
@@ -50,38 +32,57 @@ type Story = StoryObj<typeof componentMeta>;
 export const Default: Story = {};
 
 export const Variants: Story = {
-  render: (args) => (
-    <div className="flex flex-wrap gap-2">
-      {(["default", "secondary", "outline", "ghost", "link"] as const).map((variant) => (
-        <Badge {...args} key={variant} variant={variant}>
-          {variant}
-        </Badge>
-      ))}
-    </div>
-  ),
-};
-
-export const Semantic: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Each tone in solid, `-light` and `-outline` styles, driven by the status tokens.",
+        story:
+          "The four variants in their default tone: solid is primary, the quieter ones are neutral. ghost is a dot before plain text, with no surface.",
+      },
+    },
+  },
+  render: (args) => (
+    <div className="flex flex-wrap gap-2">
+      <Badge {...args} variant="solid">
+        Solid
+      </Badge>
+      <Badge {...args} variant="soft">
+        Soft
+      </Badge>
+      <Badge {...args} variant="outline">
+        Outline
+      </Badge>
+      <Badge {...args} variant="ghost">
+        Ghost
+      </Badge>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    expect(canvas.getByText("Solid")).toHaveAttribute("data-tone", "primary");
+    for (const name of ["Soft", "Outline", "Ghost"]) {
+      expect(canvas.getByText(name)).toHaveAttribute("data-tone", "neutral");
+    }
+  },
+};
+
+export const Tones: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'tone picks the color of any variant: the seven tones in each. brand is the theme\'s second identity color, for labels ("New", "Pro"), never for status.',
       },
     },
   },
   render: (args) => (
     <div className="flex flex-col gap-2">
-      {(["info", "success", "warning", "destructive", "invert"] as const).map((tone) => (
-        <div key={tone} className="flex gap-2">
-          <Badge {...args} variant={tone}>
-            {tone}
-          </Badge>
-          <Badge {...args} variant={`${tone}-light`}>
-            {tone}-light
-          </Badge>
-          <Badge {...args} variant={`${tone}-outline`}>
-            {tone}-outline
-          </Badge>
+      {VARIANTS.map((variant) => (
+        <div key={variant} className="flex flex-wrap gap-2">
+          {TONES.map((tone) => (
+            <Badge {...args} key={tone} variant={variant} tone={tone}>
+              {tone}
+            </Badge>
+          ))}
         </div>
       ))}
     </div>
@@ -89,68 +90,28 @@ export const Semantic: Story = {
 };
 
 /**
- * The theme's second identity color, for identity labels ("New", "AI", "Pro"),
- * never for status. Same as primary unless the brand has a second color.
- */
-export const Brand: Story = {
-  render: (args) => (
-    <div className="flex gap-2">
-      <Badge {...args} variant="brand">
-        Pro
-      </Badge>
-      <Badge {...args} variant="brand-light">
-        Novo
-      </Badge>
-      <Badge {...args} variant="brand-outline">
-        Beta
-      </Badge>
-      <Badge {...args} variant="brand-dot">
-        IA
-      </Badge>
-    </div>
-  ),
-};
-
-/** Neutral status: inactive, pending, unknown or already seen. */
-export const Muted: Story = {
-  render: (args) => (
-    <div className="flex gap-2">
-      <Badge {...args} variant="muted">
-        Cancelado
-      </Badge>
-      <Badge {...args} variant="muted-outline">
-        Pendente
-      </Badge>
-    </div>
-  ),
-};
-
-/**
- * `*-dot` puts a colored dot before plain text, with no surface — for select
+ * `ghost` puts a colored dot before plain text, with no surface — for select
  * items, dense lists and table cells. The text carries the status, not the color.
  */
 export const Dot: Story = {
   render: (args) => (
     <div className="flex flex-col items-start gap-1">
-      <Badge {...args} variant="success-dot">
+      <Badge {...args} variant="ghost" tone="success">
         Ativo
       </Badge>
-      <Badge {...args} variant="warning-dot">
+      <Badge {...args} variant="ghost" tone="warning">
         Próximo do vencimento
       </Badge>
-      <Badge {...args} variant="destructive-dot">
+      <Badge {...args} variant="ghost" tone="destructive">
         Bloqueado
       </Badge>
-      <Badge {...args} variant="info-dot">
+      <Badge {...args} variant="ghost" tone="info">
         Em processamento
       </Badge>
-      <Badge {...args} variant="primary-dot">
+      <Badge {...args} variant="ghost" tone="primary">
         Novo
       </Badge>
-      <Badge {...args} variant="secondary-dot">
-        Rascunho
-      </Badge>
-      <Badge {...args} variant="muted-dot">
+      <Badge {...args} variant="ghost" tone="neutral">
         Cancelado
       </Badge>
     </div>
@@ -183,8 +144,20 @@ export const Radius: Story = {
 };
 
 export const AsLink: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A badge is not interactive. When you render it as a link, add your own hover and focus styling.",
+      },
+    },
+  },
   render: (args) => (
-    <Badge {...args} render={(props) => <a href="https://example.com" {...props} />}>
+    <Badge
+      {...args}
+      className="hover:bg-accent"
+      render={(props) => <a href="https://example.com" {...props} />}
+    >
       Clickable
     </Badge>
   ),

@@ -225,9 +225,10 @@ function QuestionnairePrevious({
   className,
   size = "default",
   variant = "outline",
+  tone,
   ...props
 }: React.ComponentProps<typeof QuestionnairePrimitive.Previous> &
-  Pick<React.ComponentProps<typeof Button>, "size" | "variant">) {
+  Pick<React.ComponentProps<typeof Button>, "size" | "variant" | "tone">) {
   const { labels } = useFmaMessages("questionnaire", questionnaireEn);
   return (
     <QuestionnairePrimitive.Previous
@@ -235,7 +236,7 @@ function QuestionnairePrevious({
       data-size={size}
       data-variant={variant}
       className={cn(
-        buttonVariants({ size, variant }),
+        buttonVariants({ size, variant, tone }),
         "col-start-1 row-start-1 min-h-11 justify-self-start sm:min-h-0",
         className,
       )}
@@ -251,9 +252,10 @@ function QuestionnaireSkip({
   className,
   size = "default",
   variant = "outline",
+  tone,
   ...props
 }: React.ComponentProps<typeof QuestionnairePrimitive.Skip> &
-  Pick<React.ComponentProps<typeof Button>, "size" | "variant">) {
+  Pick<React.ComponentProps<typeof Button>, "size" | "variant" | "tone">) {
   const { labels } = useFmaMessages("questionnaire", questionnaireEn);
   return (
     <QuestionnairePrimitive.Skip
@@ -261,7 +263,7 @@ function QuestionnaireSkip({
       data-size={size}
       data-variant={variant}
       className={cn(
-        buttonVariants({ size, variant }),
+        buttonVariants({ size, variant, tone }),
         "col-start-2 row-start-1 min-h-11 justify-self-end sm:min-h-0",
         className,
       )}
@@ -276,10 +278,11 @@ function QuestionnaireNext({
   children,
   className,
   size = "default",
-  variant = "default",
+  variant = "solid",
+  tone,
   ...props
 }: React.ComponentProps<typeof QuestionnairePrimitive.Next> &
-  Pick<React.ComponentProps<typeof Button>, "size" | "variant">) {
+  Pick<React.ComponentProps<typeof Button>, "size" | "variant" | "tone">) {
   const { labels } = useFmaMessages("questionnaire", questionnaireEn);
   return (
     <QuestionnairePrimitive.Next
@@ -287,7 +290,7 @@ function QuestionnaireNext({
       data-size={size}
       data-variant={variant}
       className={cn(
-        buttonVariants({ size, variant }),
+        buttonVariants({ size, variant, tone }),
         "col-start-3 row-start-1 min-h-11 justify-self-end sm:min-h-0",
         className,
       )}
@@ -302,10 +305,11 @@ function QuestionnaireSubmit({
   children,
   className,
   size = "default",
-  variant = "default",
+  variant = "solid",
+  tone,
   ...props
 }: React.ComponentProps<typeof QuestionnairePrimitive.Submit> &
-  Pick<React.ComponentProps<typeof Button>, "size" | "variant">) {
+  Pick<React.ComponentProps<typeof Button>, "size" | "variant" | "tone">) {
   const { labels } = useFmaMessages("questionnaire", questionnaireEn);
   return (
     <QuestionnairePrimitive.Submit
@@ -313,7 +317,7 @@ function QuestionnaireSubmit({
       data-size={size}
       data-variant={variant}
       className={cn(
-        buttonVariants({ size, variant }),
+        buttonVariants({ size, variant, tone }),
         "col-start-3 row-start-1 min-h-11 justify-self-end sm:min-h-0",
         className,
       )}

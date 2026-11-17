@@ -271,7 +271,7 @@ function OrderForm() {
                 {item.label}
                 {count > 0 && (
                   <>
-                    <Badge variant="destructive-dot" aria-hidden="true">
+                    <Badge variant="ghost" tone="destructive" aria-hidden="true">
                       {count}
                     </Badge>
                     <span className="sr-only">, {count === 1 ? "1 erro" : `${count} erros`}</span>

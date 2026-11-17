@@ -121,7 +121,7 @@ export function ImportDialog({ onImport }: { onImport: (theme: Theme) => void })
           </TabsContent>
         </Tabs>
         {error && (
-          <p role="alert" className="text-sm text-destructive-foreground">
+          <p role="alert" className="text-sm text-destructive">
             {error}
           </p>
         )}

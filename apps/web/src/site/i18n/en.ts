@@ -45,6 +45,8 @@ export const site = {
   },
   guides: {
     compatibility: "Compatibility",
+    theming: "Themes",
+    tones: "Tones and variants",
     "dark-mode": "Dark mode",
     routing: "Routing",
     offline: "Offline and privacy",
@@ -62,7 +64,7 @@ export const site = {
       "This is not a package you install from npm. Like shadcn/ui, the code is copied into your project by the <c>shadcn</c> CLI, and from then on it is yours. Everything lands in <c>fma-ds</c> folders (<c>components/fma-ds/</c>, <c>hooks/fma-ds/</c>, <c>lib/fma-ds/</c>), so it never collides with the official shadcn components.",
     installation: "Installation",
     start:
-      "Start from a project set up for shadcn/ui (Tailwind v4, a <c>components.json</c>; see <compat>compatibility</compat>). Then register the <c>@fma-ds</c> namespace:",
+      "Start from a project set up for shadcn/ui (Tailwind v4, a <c>components.json</c>; see <compat>compatibility</compat>). Then register the <c>@fma-ds</c> namespace. The components need an fma-ds theme (status <c>-foreground</c> tokens are text on the solid color, plus <c>--*-text</c> tokens), so install one of the themes below or export yours from the theme editor; a stock shadcn theme lacks those tokens:",
     add: "And add any component or block by name:",
     deps: "Dependencies between items resolve through the same namespace, so adding a block pulls the components it is built from.",
     index:
@@ -73,7 +75,7 @@ export const site = {
       "Interaction, focus management and accessibility come from react-aria-components, so the APIs follow React Aria rather than Radix: <c>isDisabled</c> instead of <c>disabled</c>, <c>onPress</c> instead of <c>onClick</c>, and no <c>asChild</c> (use <c>LinkButton</c> for a link that looks like a button). Wrap your app in React Aria's <c>RouterProvider</c> so links navigate client-side (see <routing>routing</routing>).",
     themes: "Themes",
     themesText:
-      "Every color, radius, font and shadow is a CSS variable. Pick one of the curated themes, tweak it in the theme editor and export it as CSS, or install it straight from the registry with <c>@fma-ds/theme-{{name}}</c>. Every theme has a light and a dark palette (see <dark>dark mode</dark>).",
+      "Every color, radius, font and shadow is a CSS variable. Pick one of the curated themes, tweak it in the theme editor and export it as CSS, or install it straight from the registry with <c>@fma-ds/theme-{{name}}</c>. Every theme has a light and a dark palette (see <dark>dark mode</dark>). fma-ds themes no longer define the <c>secondary</c> or <c>invert</c> tokens: official shadcn components that rely on <c>secondary</c> need it added by you, or swapped for muted or a tone.",
     openEditor: "Open the theme editor",
     storybook: "Storybook",
     storybookText:

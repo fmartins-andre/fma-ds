@@ -1,0 +1,8 @@
+{
+  "name": "tone",
+  "category": "color",
+  "status": "experimental",
+  "source": "original",
+  "description": "Maps a tone to the `--tone-*` CSS variables that variant recipes read, so one recipe serves every color.\n\n- **`TONES` / `VARIANTS`**: the tone (`brand`, `primary`, `neutral`, `success`, `warning`, `info`, `destructive`) and variant (`solid`, `soft`, `outline`, `ghost`) lists.\n- **`toneVariants`**: per tone, the classes that set `--tone`, `--tone-foreground`, `--tone-soft`, `--tone-soft-hover`, `--tone-line`, `--tone-hover`, `--tone-text` and `--tone-icon`, with the dark values under `dark:`.\n- **`defaultTone`**: `primary` for `solid`, `neutral` for the rest.",
+  "tags": ["color", "tone", "variant", "theme"]
+}

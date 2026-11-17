@@ -51,8 +51,6 @@ const BASE = [
   "--popover-foreground",
   "--primary",
   "--primary-foreground",
-  "--secondary",
-  "--secondary-foreground",
   "--muted",
   "--muted-foreground",
   "--accent",
@@ -72,8 +70,15 @@ const STATUS = [
   "--success-foreground",
   "--warning",
   "--warning-foreground",
-  "--invert",
-  "--invert-foreground",
+];
+
+const TONE_TEXT = [
+  "--primary-text",
+  "--brand-text",
+  "--destructive-text",
+  "--info-text",
+  "--success-text",
+  "--warning-text",
 ];
 
 const CHARTS = ["--chart-1", "--chart-2", "--chart-3", "--chart-4", "--chart-5"];
@@ -109,7 +114,18 @@ export const Base: Story = {
 };
 
 export const Status: Story = {
-  render: () => <Group title="Status" tokens={STATUS} />,
+  render: () => (
+    <>
+      <p className="mb-3 text-xs text-muted-foreground">
+        Each status -foreground is text on the solid color, like primary-foreground.
+      </p>
+      <Group title="Status" tokens={STATUS} />
+    </>
+  ),
+};
+
+export const ToneText: Story = {
+  render: () => <Group title="Tone text" tokens={TONE_TEXT} />,
 };
 
 export const Charts: Story = {

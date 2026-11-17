@@ -19,7 +19,6 @@ export const themeEditorPtBR = {
   reset: "Voltar para {{title}}",
   groups: {
     primary: "Primária",
-    secondary: "Secundária",
     accent: "Destaque",
     brand: "Marca",
     base: "Base",
@@ -27,7 +26,6 @@ export const themeEditorPtBR = {
     popover: "Popover",
     muted: "Discreta",
     status: "Status",
-    invert: "Invertida",
     border: "Borda e campo",
     chart: "Gráfico",
     sidebar: "Barra lateral",
@@ -36,10 +34,11 @@ export const themeEditorPtBR = {
     brand:
       "A segunda cor de identidade: superfícies de marca, gradientes com a primária, badges e decoração. Nunca hover, foco ou seleção. Igual à primária, a menos que a marca tenha uma segunda cor.",
     status:
-      "Cada cor de texto fica sobre um tom claro da sua cor (badges, alertas), então o contraste é medido contra o fundo da página.",
+      "Cada foreground fica sobre a cor sólida (badges e botões sólidos); cada texto no tom é a cor usada como texto na página ou sobre o seu tom suave (estilos soft, outline e ghost).",
   },
   colors: {
     Background: "Fundo",
+    "Text in tone": "Texto no tom",
     Foreground: "Texto",
     Destructive: "Destrutivo",
     Info: "Informação",
@@ -73,13 +72,14 @@ export const themeEditorPtBR = {
     badge: "Contraste de {{ratio}}:1 com o fundo",
     aaLarge: "AA grande",
     fail: "Reprovado",
+    derive: "Derivar do tom",
     pick: "Escolher {{label}}",
   },
   import: {
     action: "Importar",
     title: "Importar um tema",
     description:
-      "Um <code>styles.css</code> do shadcn (daqui, do tweakcn ou de ui.shadcn.com/themes), um item de tema de registro shadcn como <code>tweakcn.com/r/themes/{{id}}.json</code>, ou um JSON de tema exportado aqui. Os tokens que faltarem vêm do tema padrão.",
+      "Um <code>styles.css</code> do shadcn (daqui, do tweakcn ou de ui.shadcn.com/themes), um item de tema de registro shadcn como <code>tweakcn.com/r/themes/{{id}}.json</code>, ou um JSON de tema exportado aqui. Os tokens que faltarem vêm do tema padrão; o texto no tom (<code>-text</code>) e a mistura do ícone são derivados para passar no contraste.",
     paste: "Colar",
     url: "URL",
     file: "Arquivo",
@@ -112,6 +112,11 @@ export const themeEditorPtBR = {
     customSpacing: "Espaçamento base personalizado",
     shadow: "Sombra",
     customShadow: "Sombras personalizadas (senão, as do Tailwind)",
+    iconMix: "Ícone e dot: % do texto no tom",
+    softMix: "Tinta do soft",
+    softLight: "Claro",
+    softDark: "Escuro",
+    resetDefault: "Voltar ao padrão",
     color: "Cor ({{mode}})",
     opacity: "Opacidade",
     blur: "Desfoque",

@@ -232,7 +232,7 @@ function PricingPlanBadge(props: Omit<React.ComponentProps<typeof Badge>, "id">)
   return (
     <Badge
       data-slot="pricing-plan-badge"
-      variant={isFeatured ? "brand" : "default"}
+      tone={isFeatured ? "brand" : "primary"}
       {...props}
       id={badgeId}
     />

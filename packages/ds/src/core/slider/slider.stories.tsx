@@ -253,7 +253,7 @@ export const CustomThumb: Story = {
         </div>
         <SliderControl>
           <SliderTrack className="bg-primary/20 data-horizontal:h-3">
-            <SliderFill className="bg-linear-to-r from-secondary via-secondary to-primary" />
+            <SliderFill className="bg-linear-to-r from-brand via-brand to-primary" />
           </SliderTrack>
           <SliderThumb className="size-8 border-primary/50 bg-primary shadow">
             <SparklesIcon aria-hidden="true" className="size-4 text-primary-foreground" />

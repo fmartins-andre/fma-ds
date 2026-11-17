@@ -1674,7 +1674,7 @@ function TimePickerConfirm({
   const context = useTimePickerContext("TimePickerConfirm");
   return (
     <Button
-      variant={variant ?? (context.requireConfirm ? "default" : "secondary")}
+      variant={variant ?? (context.requireConfirm ? "solid" : "soft")}
       size={size}
       isDisabled={context.isDisabled}
       data-slot="time-picker-confirm"

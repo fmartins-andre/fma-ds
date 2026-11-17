@@ -329,12 +329,14 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-2">
           {item.categories?.[0] && kind === "components" && (
-            <Badge variant="secondary">{category(item.categories[0])}</Badge>
+            <Badge variant="soft">{category(item.categories[0])}</Badge>
           )}
           <Badge variant="outline">{item.meta.source}</Badge>
           <Badge variant="outline">{item.meta.license}</Badge>
           {item.meta.status !== "stable" && (
-            <Badge variant="warning-light">{item.meta.status}</Badge>
+            <Badge variant="soft" tone="warning">
+              {item.meta.status}
+            </Badge>
           )}
           <span className="flex-1" />
           <LinkButton
@@ -417,7 +419,7 @@ export function ItemPage({ kind, item }: { kind: ItemKind; item: RegistryItem })
                 <span className="text-muted-foreground">{t(($) => $.item.none)}</span>
               )}
               {(item.dependencies ?? []).map((dependency) => (
-                <Badge key={dependency} variant="secondary" className="font-mono">
+                <Badge key={dependency} variant="soft" className="font-mono">
                   {dependency}
                 </Badge>
               ))}

@@ -19,7 +19,7 @@ import { THEMES } from "@/themes/index";
 // of them render at once; the light/dark toolbar picks the mode. To see a
 // whole story in one theme, use the theme toolbar instead.
 
-const SWATCHES = ["primary", "secondary", "accent", "muted", "destructive", "border"] as const;
+const SWATCHES = ["primary", "brand", "accent", "muted", "destructive", "border"] as const;
 
 function ThemeCard({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
   useEffect(() => loadThemeFonts(theme), [theme]);
@@ -46,14 +46,18 @@ function ThemeCard({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <Button size="sm">Primary</Button>
-        <Button size="sm" variant="secondary">
-          Secondary
+        <Button size="sm" variant="soft">
+          Soft
         </Button>
         <Button size="sm" variant="outline">
           Outline
         </Button>
-        <Badge variant="success-light">Success</Badge>
-        <Badge variant="destructive-light">Error</Badge>
+        <Badge variant="soft" tone="success">
+          Success
+        </Badge>
+        <Badge variant="soft" tone="destructive">
+          Error
+        </Badge>
       </div>
       <Input aria-label={`${theme.title} input`} placeholder="Type here…" />
     </div>

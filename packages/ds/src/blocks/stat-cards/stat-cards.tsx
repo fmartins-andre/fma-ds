@@ -49,7 +49,7 @@ function useMergedLabels(i18n?: StatI18n) {
 
 /**
  * The tone tints the icon with the status color and the value with its
- * `*-foreground`, which keeps text contrast on the card surface.
+ * `*-text`, which keeps text contrast on the card surface.
  */
 const statVariants = cva(
   "group/stat grid min-w-0 grid-cols-[minmax(0,1fr)_auto] content-start items-start gap-x-3 gap-y-1 text-left",
@@ -57,11 +57,10 @@ const statVariants = cva(
     variants: {
       tone: {
         default: "[--stat-icon:var(--primary)] [--stat-value:var(--foreground)]",
-        success: "[--stat-icon:var(--success)] [--stat-value:var(--success-foreground)]",
-        warning: "[--stat-icon:var(--warning)] [--stat-value:var(--warning-foreground)]",
-        info: "[--stat-icon:var(--info)] [--stat-value:var(--info-foreground)]",
-        destructive:
-          "[--stat-icon:var(--destructive)] [--stat-value:var(--destructive-foreground)]",
+        success: "[--stat-icon:var(--success)] [--stat-value:var(--success-text)]",
+        warning: "[--stat-icon:var(--warning)] [--stat-value:var(--warning-text)]",
+        info: "[--stat-icon:var(--info)] [--stat-value:var(--info-text)]",
+        destructive: "[--stat-icon:var(--destructive)] [--stat-value:var(--destructive-text)]",
         muted: "[--stat-icon:var(--muted-foreground)] [--stat-value:var(--muted-foreground)]",
       },
     },
@@ -156,6 +155,14 @@ function StatDescription({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
+// The stat's tone lives in `--stat-icon`; the tile reads it through its own --tone-* variables
+// (the soft surface mixes it like the tone lib does).
+const statIconToneClassName = [
+  "[--tone-icon:var(--stat-icon)]",
+  "[--tone-soft:color-mix(in_oklab,var(--stat-icon)_var(--tone-soft-mix,10%),var(--background))]",
+  "dark:[--tone-soft:color-mix(in_oklab,var(--stat-icon)_var(--tone-soft-mix,18%),var(--background))]",
+].join(" ");
+
 /** The icon, in a `soft` `IconTile` tinted by the stat's tone. */
 function StatIcon({ className, ...props }: React.ComponentProps<typeof IconTile>) {
   return (
@@ -164,7 +171,7 @@ function StatIcon({ className, ...props }: React.ComponentProps<typeof IconTile>
       aria-hidden="true"
       variant="soft"
       size="sm"
-      className={cn("col-start-2 row-span-2 row-start-1 text-(--stat-icon)", className)}
+      className={cn("col-start-2 row-span-2 row-start-1", statIconToneClassName, className)}
       {...props}
     />
   );

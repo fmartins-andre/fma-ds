@@ -182,7 +182,7 @@ export const ChoiceCard: Story = {
     <RadioGroup defaultValue="pj" className="w-[30rem] grid-cols-2">
       <Label className="col-span-2">Tipo de pessoa</Label>
       <RadioCard value="pf">
-        <IconTile variant="soft" size="sm">
+        <IconTile variant="soft" tone="primary" size="sm">
           <UserIcon />
         </IconTile>
         <FieldContent>
@@ -191,7 +191,7 @@ export const ChoiceCard: Story = {
         </FieldContent>
       </RadioCard>
       <RadioCard value="pj">
-        <IconTile variant="soft" size="sm">
+        <IconTile variant="soft" tone="primary" size="sm">
           <Building2Icon />
         </IconTile>
         <FieldContent>

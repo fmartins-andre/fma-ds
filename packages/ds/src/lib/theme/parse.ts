@@ -3,7 +3,8 @@
 // item (e.g. https://tweakcn.com/r/themes/<id>.json), or one of our theme JSONs.
 
 import { z } from "zod";
-import { shiftLightness, toOklch } from "./color";
+import { toOklch } from "./color";
+import { checkContrast, TONE_MIX } from "./contrast";
 import {
   COLOR_TOKENS,
   type Theme,
@@ -13,6 +14,7 @@ import {
   type ThemeShadow,
   ThemeShadowSchema,
 } from "./schema";
+import { deriveToneText, TEXT_TONES } from "./tone-text";
 
 export interface CssVarBlocks {
   /** Variables from `:root` blocks, without the leading "--". */
@@ -54,11 +56,11 @@ function collect(selector: string | undefined, declaration: string, result: CssV
   if (target && match?.[1] && match[2]) target[match[1]] = match[2];
 }
 
-// Our destructive/info/success/warning "-foreground" is text on a light tint of
-// the color (badge "info-light", alert); tweakcn/shadcn's destructive-foreground
-// is text on the solid color. Sources without our tokens get them derived.
+// `-foreground` is text on the solid color in every tone. Sources without our status tokens get
+// info/success/warning from the fallback with `-foreground` = the mode's background; their own
+// `destructive-foreground` (already text on the solid color) is kept. The `-text` tokens are
+// derived once the colors are complete.
 const STATUS_TOKENS = ["info", "success", "warning"] as const;
-const STATUS_FOREGROUND_SHIFT: Record<ThemeMode, number> = { light: -0.12, dark: 0.1 };
 
 function colorsFrom(
   vars: Record<string, string>,
@@ -74,19 +76,20 @@ function colorsFrom(
   if (!ours) {
     for (const token of STATUS_TOKENS) {
       colors[token] = fallback[token];
-      colors[`${token}-foreground`] = fallback[`${token}-foreground`];
+      colors[`${token}-foreground`] = colors.background;
     }
-    colors["destructive-foreground"] = shiftLightness(
-      colors.destructive,
-      STATUS_FOREGROUND_SHIFT[mode],
-    );
-    colors.invert = colors.foreground;
-    colors["invert-foreground"] = colors.background;
+    if (vars["destructive-foreground"] === undefined) {
+      colors["destructive-foreground"] = colors.background;
+    }
   }
   // No second identity color (other tools' themes, or ours before brand): brand = primary.
   if (vars.brand === undefined) {
     colors.brand = colors.primary;
     colors["brand-foreground"] = colors["primary-foreground"];
+  }
+  for (const tone of TEXT_TONES) {
+    if (vars[`${tone}-text`] === undefined)
+      colors[`${tone}-text`] = deriveToneText(colors, tone, mode);
   }
   return colors;
 }
@@ -140,7 +143,7 @@ export function themeFromCssVars(
   const tracking = all["tracking-normal"] ?? all["letter-spacing"];
   const lightShadow = shadowFrom(light, shared);
   const darkShadow = shadowFrom(dark, { ...shared, ...light });
-  return ThemeSchema.parse({
+  const theme = ThemeSchema.parse({
     ...identity,
     description: identity.description ?? base.description,
     source: "original",
@@ -160,6 +163,14 @@ export function themeFromCssVars(
         : tracking === "normal" || Number.parseFloat(tracking) === 0
           ? undefined
           : tracking,
+    iconMix: all["tone-icon-mix"] ?? base.iconMix,
+    softMix:
+      light["tone-soft-mix"] === undefined && dark["tone-soft-mix"] === undefined
+        ? base.softMix
+        : {
+            light: light["tone-soft-mix"] ?? dark["tone-soft-mix"],
+            dark: dark["tone-soft-mix"] ?? light["tone-soft-mix"],
+          },
     shadow:
       lightShadow || darkShadow
         ? {
@@ -170,6 +181,27 @@ export function themeFromCssVars(
     light: colorsFrom(light, base.light, "light"),
     dark: colorsFrom({ ...light, ...dark }, base.dark, "dark"),
   });
+  if (all["tone-icon-mix"] !== undefined) return theme;
+  const iconMix = iconMixFor(theme);
+  return iconMix === undefined ? theme : { ...theme, iconMix };
+}
+
+const ICON_MIX_DEFAULT = Math.round(TONE_MIX.icon * 100);
+
+/**
+ * Sources without `tone-icon-mix` (tweakcn, ui.shadcn.com) get the smallest share, from the shared
+ * default up, at which every icon and dot reads on both modes; undefined when the default does.
+ */
+function iconMixFor(theme: Theme): `${number}%` | undefined {
+  const fails = (mix: number) =>
+    (["light", "dark"] as const).some((mode) =>
+      checkContrast({ ...theme, iconMix: `${mix}%` }, mode).some(
+        (pair) => pair.foreground.startsWith("icon(") && !pair.passes,
+      ),
+    );
+  if (!fails(ICON_MIX_DEFAULT)) return undefined;
+  for (let mix = ICON_MIX_DEFAULT + 1; mix < 100; mix++) if (!fails(mix)) return `${mix}%`;
+  return "100%";
 }
 
 /** A theme from CSS text, JSON text (our theme or a shadcn registry item), or throws. */

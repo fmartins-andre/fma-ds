@@ -140,7 +140,7 @@ const COLUMNS: UserColumn[] = [
     size: 120,
     filterFn: "arrHas",
     cell: ({ row }) => (
-      <Badge variant={row.original.status === "Active" ? "success-light" : "secondary"}>
+      <Badge variant="soft" tone={row.original.status === "Active" ? "success" : "neutral"}>
         {row.original.status}
       </Badge>
     ),

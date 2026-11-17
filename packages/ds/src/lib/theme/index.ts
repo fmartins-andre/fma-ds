@@ -12,3 +12,4 @@ export * from "./parse";
 export * from "./registry";
 export * from "./schema";
 export * from "./shadows";
+export * from "./tone-text";

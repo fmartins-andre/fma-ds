@@ -189,9 +189,14 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
 9. **Temas**: `src/themes/<nome>.json` segue `ThemeSchema` (`src/lib/theme/schema.ts`) com
    todos os tokens de `tests/required-tokens.ts`; registre em `src/themes/index.ts`.
    `default.json` precisa bater com `styles.css`. Terceiros: `source: "third-party"`, `origin`
-   e linha em `src/themes/THIRD_PARTY_NOTICES.md`. Nossos `*-foreground` de status são texto
-   sobre o fundo **tingido**, não sobre a cor sólida (diferente do shadcn/tweakcn). O
-   `tests/themes.test.ts` impõe isso e um gate de contraste.
+   e linha em `src/themes/THIRD_PARTY_NOTICES.md`. `*-foreground` é texto sobre a cor cheia em
+   todos os tons, como `primary-foreground`; `*-text` é texto no tom (sobre a página ou o soft),
+   valor inicial de `deriveToneText`. Ícone no tom = mistura do tom com o `-text` (`iconMix`).
+   Componentes leem os tokens, nunca derivam de `--background` / `--foreground`. O
+   `tests/themes.test.ts` impõe essas regras dos tokens de tema e o gate de contraste.
+   `--secondary` e `--invert` foram aposentados: ao vendorizar, troque por muted ou um tom
+   (`tests/retired-tokens.test.ts`). O guia `theming.md` explica o sistema ao usuário: token ou
+   configuração nova entra nele (en + pt-BR).
 10. **Todo token de tema é editável no editor (`/themes`)**. Token novo: declare em
    `styles.css` (`:root`, `.dark`, `@theme inline`), em `COLOR_TOKENS`
    (`src/lib/theme/schema.ts`) **e** em `tests/required-tokens.ts`, adicione-o a um grupo
@@ -201,9 +206,12 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    `apps/web/src/theme-editor/` (listado em `TYPOGRAPHY_SETTINGS` ou `OTHER_SETTINGS`).
    `tests/theme-editor-coverage.test.ts` e o type-check do `apps/web` (`SETTINGS_COVERED`)
    falham se faltar algum elo.
-11. **Tokens de estado** (doc de theming do shadcn): hover/focus/selecionado/hoje/intervalo usam
-   `bg-accent` + `text-accent-foreground`; `muted` é só superfície estática (zebra, footer,
-   skeleton) e texto secundário. Nunca `bg-muted` nem `bg-foreground/N` como destaque de
+11. **Tokens de estado** (doc de theming do shadcn): `accent` / `accent-foreground` = destaque de
+   **item numa coleção** (hover, foco, selecionado, hoje, intervalo; menu, listbox, combobox,
+   calendário, linha de tabela). A família `muted` = hover de **controles neutros** (botões e
+   triggers do tom neutral): o hover do tom neutral da lib de tons é `--tone-hover` = `--muted`
+   (`neutral` em `src/lib/tone.ts`), caso permitido. `muted` estático continua para zebra, footer,
+   skeleton e texto secundário. Fora isso, nunca `bg-muted` nem `bg-foreground/N` como destaque de
    interação — os estilos `*-nova` do shadcn fazem isso; corrija ao vendorizar. Exigido em
    componentes `customized`/`original` e blocos por `tests/interaction-tokens.test.ts`
    (exceções no `ALLOWED`, com motivo). Detalhes no `CONTRIBUTING.md`.
@@ -230,6 +238,18 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
      baixo por props, `className` ou variáveis CSS neutras com fallback (`--sticky-offset`,
      `--page-gutter`, `--sticky-top`, `--sticky-edge`), nunca o contrário. Um bloco não depende de outro que
      depende dele: quem compõe é quem mede e repassa (o `AppShellMain` mede o `PageHeader`).
+
+15. **Variantes e tons**: componente com cor expõe `variant` (`solid` | `soft` | `outline` |
+   `ghost`) × `tone` (`brand` | `primary` | `neutral` | `success` | `warning` | `info` |
+   `destructive`) pela lib `src/lib/tone.ts`: as classes das variantes leem as variáveis
+   `--tone-*`, e o tom vem de `toneVariants[tone ?? defaultTone(variant)]` (`primary` no solid,
+   `neutral` nas outras). Sem nomes próprios nem aliases (`default`, `secondary`, `link`,
+   `*-light`, `*-dot`, `invert`); o componente aceita só as variantes que fazem sentido para ele,
+   e todo tom vale em todas elas. Borda transparente em todas as variantes, para o tamanho não
+   mudar. As classes do `tone.ts` ficam literais (o Tailwind não gera classe montada em loop).
+   `tests/tone-variants.test.ts` impõe o contrato. O guia `tones.md` é a referência do usuário,
+   com a tabela de migração dos nomes antigos: mudança de variante, tom ou padrão entra nele e
+   no `description` do `meta.json` (en + pt-BR).
 
 ## Estilo de código
 

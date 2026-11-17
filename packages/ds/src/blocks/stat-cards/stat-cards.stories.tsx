@@ -192,11 +192,11 @@ const CLIENTS: { name: string; status: Status }[] = [
 
 const STATUS: Record<
   Status,
-  { label: string; badge: "success-dot" | "destructive-dot" | "muted" }
+  { label: string; variant: "ghost" | "soft"; tone: "success" | "destructive" | "neutral" }
 > = {
-  ativo: { label: "Ativo", badge: "success-dot" },
-  bloqueado: { label: "Bloqueado", badge: "destructive-dot" },
-  cancelado: { label: "Cancelado", badge: "muted" },
+  ativo: { label: "Ativo", variant: "ghost", tone: "success" },
+  bloqueado: { label: "Bloqueado", variant: "ghost", tone: "destructive" },
+  cancelado: { label: "Cancelado", variant: "soft", tone: "neutral" },
 };
 
 const count = (status: Status) => CLIENTS.filter((client) => client.status === status).length;
@@ -253,7 +253,9 @@ export const FilterSingle: Story = {
           {clients.map((client) => (
             <li key={client.name} className="flex items-center justify-between gap-3 p-3">
               <span className="truncate font-medium">{client.name}</span>
-              <Badge variant={STATUS[client.status].badge}>{STATUS[client.status].label}</Badge>
+              <Badge variant={STATUS[client.status].variant} tone={STATUS[client.status].tone}>
+                {STATUS[client.status].label}
+              </Badge>
             </li>
           ))}
         </ul>

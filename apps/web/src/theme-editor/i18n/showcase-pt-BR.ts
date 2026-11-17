@@ -53,11 +53,11 @@ export const showcasePtBR = {
   controls: {
     title: "Botões e sobreposições",
     default: "Padrão",
-    secondary: "Secundário",
+    soft: "Suave",
     outline: "Contorno",
     ghost: "Fantasma",
     destructive: "Destrutivo",
-    link: "Link",
+    ghostPrimary: "Fantasma primário",
     uploading: "Enviando",
     hover: "Passe o mouse",
     tooltip: "Tooltips usam os tokens de popover",

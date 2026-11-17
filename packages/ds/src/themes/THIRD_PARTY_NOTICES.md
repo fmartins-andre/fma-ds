@@ -4,12 +4,22 @@ The themes below are adapted from [tweakcn](https://github.com/jnsahaj/tweakcn)'
 presets (`utils/theme-presets.ts`), © tweakcn contributors, licensed under the Apache License 2.0
 (full text below). So is the shadow recipe in `src/lib/theme/shadows.ts`.
 
-Changes made here: colors converted to oklch; tweakcn's `destructive-foreground` (text on solid
-destructive) replaced by this repo's meaning (text on a destructive tint) and derived from
-`destructive`; `info`, `success`, `warning` and `invert` tokens added; `sidebar-primary` and its foreground
-adjusted where the pair fell short of AA or got lost on the sidebar; settings equal to
-tweakcn's defaults (system fonts, 0.25rem spacing, 0em tracking, default shadow) dropped so the
-theme leaves them alone.
+Changes made here: colors converted to oklch; `info`, `success` and `warning` tokens added;
+`sidebar-primary` and its foreground adjusted where the pair fell short of AA or got lost on the
+sidebar; settings equal to tweakcn's defaults (system fonts, 0.25rem spacing, 0em tracking,
+default shadow) dropped so the theme leaves them alone.
+
+Status colors (`success`, `warning`, `info`, `destructive`): their `*-foreground` is redefined as
+the text color on the solid status color (set to the mode's `background`, so it can be edited
+per theme). Status lightness adjusted so the pair stays at least 3:1 and the color stands out
+against the page: `cosmic-night` light `destructive`, `kodama-grove` light `destructive`,
+`nature` dark `destructive`, `supabase` dark `destructive`, `vintage-paper` dark `destructive`.
+`muted` adjusted where it vanished against the page: `elegant-luxury` dark, `ocean-breeze` light.
+The in-tone text tokens (`primary-text`, `brand-text` and the status `*-text`) are new: half the tone
+and half `foreground`, with lightness adjusted where that mix fell short of the contrast gate
+(`kodama-grove` light, all six).
+`kodama-grove`, `supabase` and `amber-minimal` declare an `iconMix` (the share of `-text` in icons
+and dots), because the default share left their icons under 3:1 in the light mode.
 
 | Theme | Source |
 | --- | --- |

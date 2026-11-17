@@ -235,7 +235,9 @@ export const Centered: Story = {
           },
         ].map((method) => (
           <div key={method.title} className="flex flex-col gap-3 rounded-lg border p-4">
-            <IconTile variant="soft">{method.icon}</IconTile>
+            <IconTile variant="soft" tone="primary">
+              {method.icon}
+            </IconTile>
             <div className="flex flex-col gap-1">
               <p className="font-medium">{method.title}</p>
               <p className="text-muted-foreground">{method.description}</p>
@@ -261,7 +263,7 @@ export const Shortcuts: Story = {
       <FeaturePromoGrid>
         <Item variant="outline" href="/contratos/comprar">
           <ItemMedia>
-            <IconTile variant="soft" size="sm">
+            <IconTile variant="soft" tone="primary" size="sm">
               <FileBadgeIcon />
             </IconTile>
           </ItemMedia>
@@ -275,7 +277,7 @@ export const Shortcuts: Story = {
         </Item>
         <Item variant="outline" href="/planos">
           <ItemMedia>
-            <IconTile variant="soft" size="sm">
+            <IconTile variant="soft" tone="primary" size="sm">
               <ZapIcon />
             </IconTile>
           </ItemMedia>
@@ -289,7 +291,7 @@ export const Shortcuts: Story = {
         </Item>
         <Item variant="outline" href="/pedidos-adicionais/comprar">
           <ItemMedia>
-            <IconTile variant="soft" size="sm">
+            <IconTile variant="soft" tone="primary" size="sm">
               <FilePlusIcon />
             </IconTile>
           </ItemMedia>

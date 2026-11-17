@@ -24,3 +24,9 @@ npx shadcn@latest add @fma-ds/button --overwrite
 ```
 
 Isso substitui a sua cópia, incluindo edições locais. Faça um commit antes, depois revise o diff no git e traga suas mudanças de volta. Manter as personalizações em componentes que envolvem os itens, em vez de editar os arquivos, facilita muito as atualizações.
+
+## Atualize o tema também
+
+Os componentes fma-ds leem tokens de tema que os temas antigos não têm: os tokens `-foreground` de status (`--destructive-foreground`, `--success-foreground`...) agora são o texto sobre a cor cheia, e o texto no tom fica nos tokens `--*-text`. Depois de atualizar os componentes, reinstale o seu tema com `npx shadcn@latest add @fma-ds/theme-<nome> --overwrite`, ou exporte-o de novo pelo editor de temas em `/themes`. Manter um tema fma-ds antigo, ou um tema padrão do shadcn sem `--destructive-foreground`, deixa badges e botões sólidos ilegíveis.
+
+Os componentes com cores também mudaram as props: `variant` agora escolhe a superfície (`solid`, `soft`, `outline`, `ghost`) e `tone` a cor, e os nomes antigos de variante saíram. [Tons e variantes](/docs/tones) mapeia cada nome antigo para as props novas, e [Temas](/docs/theming) lista os tokens que um tema precisa ter.

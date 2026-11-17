@@ -41,10 +41,10 @@ test("the components menu lists every component and opens its page", async ({ pa
 test("a component page lists its examples on this page", async ({ page }) => {
   await open(page, "/components/badge");
   const toc = page.getByRole("complementary").filter({ hasText: "On this page" });
-  const example = toc.getByRole("link", { name: "Semantic", exact: true });
-  await expect(example).toHaveAttribute("href", "#example-semantic");
+  const example = toc.getByRole("link", { name: "Tones", exact: true });
+  await expect(example).toHaveAttribute("href", "#example-tones");
   await example.click();
-  await expect(page.getByRole("heading", { level: 3, name: "Semantic" })).toBeInViewport();
+  await expect(page.getByRole("heading", { level: 3, name: "Tones" })).toBeInViewport();
 });
 
 test("the blocks menu lists every block", async ({ page }) => {

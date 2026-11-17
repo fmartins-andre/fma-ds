@@ -13,7 +13,11 @@ const componentMeta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "secondary", "muted", "tinted", "outline", "ghost", "destructive"],
+      options: ["solid", "soft", "outline"],
+    },
+    tone: {
+      control: "select",
+      options: ["brand", "primary", "neutral", "success", "warning", "info", "destructive"],
     },
     align: { control: "select", options: ["start", "end"] },
   },
@@ -37,7 +41,7 @@ export const Conversation: Story = {
       <Bubble align="start">
         <BubbleContent>Hey, how's the new design system coming along?</BubbleContent>
       </Bubble>
-      <Bubble align="end" variant="tinted">
+      <Bubble align="end" variant="soft" tone="primary">
         <BubbleContent>Almost there — just vendoring the last few components.</BubbleContent>
       </Bubble>
     </BubbleGroup>
@@ -45,6 +49,26 @@ export const Conversation: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     expect(canvas.getByText(/almost there/i)).toBeVisible();
+  },
+};
+
+export const Tones: Story = {
+  render: () => (
+    <BubbleGroup className="w-80">
+      <Bubble variant="outline" tone="neutral">
+        <BubbleContent>Neutral</BubbleContent>
+      </Bubble>
+      <Bubble variant="soft" tone="success">
+        <BubbleContent>Success</BubbleContent>
+      </Bubble>
+      <Bubble variant="soft" tone="destructive">
+        <BubbleContent>Error</BubbleContent>
+      </Bubble>
+    </BubbleGroup>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    expect(canvas.getByText("Success")).toBeVisible();
   },
 };
 

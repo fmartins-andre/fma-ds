@@ -2,7 +2,7 @@
   "name": "bubble",
   "category": "chat",
   "status": "stable",
-  "source": "shadcn",
-  "description": "A single chat message bubble — start/end alignment for sent vs. received, several color variants, and an optional reactions pill overlaid on a corner.",
+  "source": "customized",
+  "description": "A single chat message bubble — start/end alignment for sent vs. received, a `variant` (solid, soft or outline) crossed with a `tone`; the default tone is primary for solid and neutral otherwise, and an optional reactions pill overlaid on a corner.",
   "tags": ["chat", "message"]
 }

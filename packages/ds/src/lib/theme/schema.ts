@@ -1,6 +1,6 @@
 // Theme format for the curated themes in src/themes/*.json and the theme editor
 // (apps/web). Shaped after tweakcn's ThemeStyles (https://github.com/jnsahaj/tweakcn,
-// Apache-2.0), but with this repo's extra status tokens (info/success/warning/invert)
+// Apache-2.0), but with this repo's extra status tokens (info/success/warning)
 // and the non-color settings lifted out of light/dark, since they're shared by both.
 
 import { z } from "zod";
@@ -15,24 +15,26 @@ export const COLOR_TOKENS = [
   "popover-foreground",
   "primary",
   "primary-foreground",
-  "secondary",
-  "secondary-foreground",
+  "primary-text",
   "muted",
   "muted-foreground",
   "accent",
   "accent-foreground",
   "destructive",
   "destructive-foreground",
+  "destructive-text",
   "info",
   "info-foreground",
+  "info-text",
   "success",
   "success-foreground",
+  "success-text",
   "warning",
   "warning-foreground",
-  "invert",
-  "invert-foreground",
+  "warning-text",
   "brand",
   "brand-foreground",
+  "brand-text",
   "border",
   "input",
   "ring",
@@ -87,6 +89,11 @@ export const ThemeFontsSchema = z.object({
 
 export type ThemeFonts = z.infer<typeof ThemeFontsSchema>;
 
+const Percent = z
+  .string()
+  .regex(/^\d+(\.\d+)?%$/, 'a percentage like "42%"')
+  .refine((value) => Number.parseFloat(value) <= 100, "a percentage from 0% to 100%");
+
 export const ThemeSchema = z.object({
   name: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "kebab-case"),
   title: z.string().min(1),
@@ -102,6 +109,9 @@ export const ThemeSchema = z.object({
   spacing: z.string().optional(),
   letterSpacing: z.string().optional(),
   shadow: z.object({ light: ThemeShadowSchema, dark: ThemeShadowSchema }).optional(),
+  // Tone recipe: share of the tone's `-text` in icons and dots, and the soft tint per mode.
+  iconMix: Percent.optional(),
+  softMix: z.object({ light: Percent, dark: Percent }).optional(),
   light: ThemeColorsSchema,
   dark: ThemeColorsSchema,
 });

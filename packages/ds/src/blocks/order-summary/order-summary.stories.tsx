@@ -257,13 +257,13 @@ export const Checkout: Story = {
       <div className="mx-auto grid max-w-5xl gap-6 p-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="flex min-w-0 flex-col gap-6">
           {isPaid ? (
-            <Alert variant="success" role="status">
+            <Alert variant="soft" tone="success" role="status">
               <CircleCheckIcon />
               <AlertTitle>Pagamento aprovado</AlertTitle>
               <AlertDescription>O recibo foi enviado para maria@exemplo.com.br.</AlertDescription>
             </Alert>
           ) : (
-            <Alert variant="warning">
+            <Alert variant="soft" tone="warning">
               <TriangleAlertIcon />
               <AlertTitle>Esta fatura venceu em 15/11/2026</AlertTitle>
               <AlertDescription>A multa e os juros já estão no total.</AlertDescription>
@@ -283,7 +283,7 @@ export const Checkout: Story = {
                 >
                   <Label className="sr-only">Forma de pagamento</Label>
                   <RadioCard value="pix">
-                    <IconTile variant="soft" size="sm">
+                    <IconTile variant="soft" tone="primary" size="sm">
                       <QrCodeIcon />
                     </IconTile>
                     <FieldContent>
@@ -292,7 +292,7 @@ export const Checkout: Story = {
                     </FieldContent>
                   </RadioCard>
                   <RadioCard value="card">
-                    <IconTile variant="soft" size="sm">
+                    <IconTile variant="soft" tone="primary" size="sm">
                       <CreditCardIcon />
                     </IconTile>
                     <FieldContent>
@@ -301,7 +301,7 @@ export const Checkout: Story = {
                     </FieldContent>
                   </RadioCard>
                   <RadioCard value="boleto">
-                    <IconTile variant="soft" size="sm">
+                    <IconTile variant="soft" tone="primary" size="sm">
                       <BarcodeIcon />
                     </IconTile>
                     <FieldContent>
@@ -448,7 +448,7 @@ export const Checkout: Story = {
               ? null
               : {
                   pix: (
-                    <CopyButton value={PIX_CODE} variant="default" size="lg">
+                    <CopyButton value={PIX_CODE} variant="solid" size="lg">
                       Copiar código Pix
                     </CopyButton>
                   ),
@@ -534,7 +534,7 @@ export const QuantityPurchase: Story = {
       <div className="mx-auto grid max-w-5xl gap-6 p-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <Card>
           <CardHeader className="flex items-start gap-3">
-            <IconTile variant="soft" className="shrink-0 text-primary">
+            <IconTile variant="soft" tone="primary" className="shrink-0">
               <FileTextIcon />
             </IconTile>
             <div className="flex min-w-0 flex-col gap-1">

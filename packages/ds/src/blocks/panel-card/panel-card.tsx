@@ -139,7 +139,7 @@ function PanelCardHeader({
     >
       <div className="flex min-w-0 flex-1 basis-56 items-start gap-3">
         {icon && (
-          <IconTile aria-hidden="true" variant="soft" size="sm">
+          <IconTile aria-hidden="true" variant="soft" tone="primary" size="sm">
             {icon}
           </IconTile>
         )}

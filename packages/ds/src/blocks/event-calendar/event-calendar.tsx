@@ -1514,7 +1514,7 @@ interface EventCalendarViewConfig<TData = unknown> {
    */
   scrollbars: "custom" | "native";
   /** Nav button variant; all nav buttons follow it. Default "ghost". */
-  navButtonVariant: "ghost" | "outline" | "secondary" | "default";
+  navButtonVariant: "ghost" | "outline" | "soft" | "solid";
   /** Nav button size; icon buttons use the icon twin. Default "sm". */
   navButtonSize: "sm" | "default";
   /**

@@ -51,11 +51,11 @@ export const showcase = {
   controls: {
     title: "Buttons & overlays",
     default: "Default",
-    secondary: "Secondary",
+    soft: "Soft",
     outline: "Outline",
     ghost: "Ghost",
     destructive: "Destructive",
-    link: "Link",
+    ghostPrimary: "Ghost primary",
     uploading: "Uploading",
     hover: "Hover me",
     tooltip: "Tooltips use the popover tokens",

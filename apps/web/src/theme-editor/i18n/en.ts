@@ -17,7 +17,6 @@ export const themeEditor = {
   reset: "Reset to {{title}}",
   groups: {
     primary: "Primary",
-    secondary: "Secondary",
     accent: "Accent",
     brand: "Brand",
     base: "Base",
@@ -25,7 +24,6 @@ export const themeEditor = {
     popover: "Popover",
     muted: "Muted",
     status: "Status",
-    invert: "Invert",
     border: "Border & input",
     chart: "Chart",
     sidebar: "Sidebar",
@@ -34,10 +32,11 @@ export const themeEditor = {
     brand:
       "The second identity color: brand surfaces, gradients with primary, badges and decoration. Never hover, focus or selection. Same as primary unless the brand has a second color.",
     status:
-      "Each foreground is text on a light tint of its color (badges, alerts), so contrast is checked against the page background.",
+      "Each foreground is text on the solid color (solid badges, buttons); each text is the color used as text on the page or on its tint (soft, outline and ghost styles).",
   },
   colors: {
     Background: "Background",
+    "Text in tone": "Text in tone",
     Foreground: "Foreground",
     Destructive: "Destructive",
     Info: "Info",
@@ -71,13 +70,14 @@ export const themeEditor = {
     badge: "Contrast {{ratio}}:1 against its background",
     aaLarge: "AA large",
     fail: "Fail",
+    derive: "Derive from tone",
     pick: "Pick {{label}}",
   },
   import: {
     action: "Import",
     title: "Import a theme",
     description:
-      "A shadcn <code>styles.css</code> (from here, tweakcn or ui.shadcn.com/themes), a shadcn registry theme item such as <code>tweakcn.com/r/themes/{{id}}.json</code>, or a theme JSON exported here. Missing tokens come from the default theme.",
+      "A shadcn <code>styles.css</code> (from here, tweakcn or ui.shadcn.com/themes), a shadcn registry theme item such as <code>tweakcn.com/r/themes/{{id}}.json</code>, or a theme JSON exported here. Missing tokens come from the default theme; the in-tone text (<code>-text</code>) and the icon mix are derived to pass the contrast check.",
     paste: "Paste",
     url: "URL",
     file: "File",
@@ -110,6 +110,11 @@ export const themeEditor = {
     customSpacing: "Custom base spacing",
     shadow: "Shadow",
     customShadow: "Custom shadows (else Tailwind's)",
+    iconMix: "Icon and dot: share of in-tone text",
+    softMix: "Soft tint",
+    softLight: "Light",
+    softDark: "Dark",
+    resetDefault: "Reset to default",
     color: "Color ({{mode}})",
     opacity: "Opacity",
     blur: "Blur",

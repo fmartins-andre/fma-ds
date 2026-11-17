@@ -47,6 +47,8 @@ export const sitePtBR = {
   },
   guides: {
     compatibility: "Compatibilidade",
+    theming: "Temas",
+    tones: "Tons e variantes",
     "dark-mode": "Modo escuro",
     routing: "Roteamento",
     offline: "Offline e privacidade",
@@ -64,7 +66,7 @@ export const sitePtBR = {
       "Isto não é um pacote que você instala pelo npm. Como no shadcn/ui, o código é copiado para o seu projeto pelo CLI <c>shadcn</c>, e a partir daí é seu. Tudo vai para pastas <c>fma-ds</c> (<c>components/fma-ds/</c>, <c>hooks/fma-ds/</c>, <c>lib/fma-ds/</c>), então nunca colide com os componentes oficiais do shadcn.",
     installation: "Instalação",
     start:
-      "Comece de um projeto configurado para o shadcn/ui (Tailwind v4, um <c>components.json</c>; veja <compat>compatibilidade</compat>). Depois, registre o namespace <c>@fma-ds</c>:",
+      "Comece de um projeto configurado para o shadcn/ui (Tailwind v4, um <c>components.json</c>; veja <compat>compatibilidade</compat>). Depois, registre o namespace <c>@fma-ds</c>. Os componentes exigem um tema fma-ds (os tokens <c>-foreground</c> de status são o texto sobre a cor cheia, além dos tokens <c>--*-text</c>), então instale um dos temas abaixo ou exporte o seu pelo editor de temas; um tema padrão do shadcn não tem esses tokens:",
     add: "E adicione qualquer componente ou bloco pelo nome:",
     deps: "As dependências entre itens são resolvidas pelo mesmo namespace, então adicionar um bloco traz os componentes de que ele é feito.",
     index:
@@ -75,7 +77,7 @@ export const sitePtBR = {
       "Interação, gerenciamento de foco e acessibilidade vêm do react-aria-components, então as APIs seguem o React Aria, não o Radix: <c>isDisabled</c> em vez de <c>disabled</c>, <c>onPress</c> em vez de <c>onClick</c>, e sem <c>asChild</c> (use <c>LinkButton</c> para um link com cara de botão). Envolva seu app no <c>RouterProvider</c> do React Aria para os links navegarem no cliente (veja <routing>roteamento</routing>).",
     themes: "Temas",
     themesText:
-      "Cada cor, raio, fonte e sombra é uma variável CSS. Escolha um dos temas curados, ajuste no editor de temas e exporte como CSS, ou instale direto do registro com <c>@fma-ds/theme-{{name}}</c>. Todo tema tem uma paleta clara e uma escura (veja <dark>modo escuro</dark>).",
+      "Cada cor, raio, fonte e sombra é uma variável CSS. Escolha um dos temas curados, ajuste no editor de temas e exporte como CSS, ou instale direto do registro com <c>@fma-ds/theme-{{name}}</c>. Todo tema tem uma paleta clara e uma escura (veja <dark>modo escuro</dark>). Os temas fma-ds não definem mais os tokens <c>secondary</c> e <c>invert</c>: componentes oficiais do shadcn que dependem de <c>secondary</c> precisam que você o adicione, ou troque por muted ou por um tom.",
     openEditor: "Abrir o editor de temas",
     storybook: "Storybook",
     storybookText:

@@ -30,7 +30,9 @@ export const Default: Story = {
   },
   render: (args) => (
     <HoverCardTrigger>
-      <Button variant="link">@ada</Button>
+      <Button variant="ghost" tone="primary">
+        @ada
+      </Button>
       <HoverCard {...args}>
         <div className="flex flex-col gap-1">
           <p className="font-medium">@ada</p>

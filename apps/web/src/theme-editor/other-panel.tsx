@@ -10,11 +10,18 @@ import {
   type ThemeEditorAction,
   type ThemeMode,
   type ThemeShadow,
+  TONE_MIX,
 } from "@/lib/theme/index";
 import { ColorField, Section, SliderField } from "./fields";
 
 /** The theme settings this panel edits; see SETTINGS_COVERED in editor.tsx. */
-export const OTHER_SETTINGS = ["radius", "spacing", "shadow"] as const satisfies EditableSetting[];
+export const OTHER_SETTINGS = [
+  "radius",
+  "spacing",
+  "shadow",
+  "iconMix",
+  "softMix",
+] as const satisfies EditableSetting[];
 type OtherSetting = (typeof OTHER_SETTINGS)[number];
 
 const DEFAULT_SHADOW: ThemeShadow = {
@@ -38,6 +45,10 @@ const HSL_PRESETS = [
   { id: "dimmer", hsl: { ...NO_HSL_ADJUSTMENT, lightnessScale: 0.9 } },
   { id: "brighter", hsl: { ...NO_HSL_ADJUSTMENT, lightnessScale: 1.1 } },
 ] as const satisfies { id: string; hsl: HslAdjustment }[];
+
+const percent = (value: string | undefined, fallback: number) =>
+  value === undefined ? fallback : Number.parseFloat(value) || 0;
+const asPercent = (value: number) => `${Number(value.toFixed(1))}%`;
 
 const px = (value: string) => Number.parseFloat(value) || 0;
 const rem = (value: string | undefined, fallback: number) =>
@@ -183,6 +194,57 @@ export function OtherPanel({
         )}
       </Section>
     ),
+    iconMix: (
+      <Section title={t(($) => $.other.iconMix)}>
+        <SliderField
+          label="--tone-icon-mix"
+          value={percent(theme.iconMix, TONE_MIX.icon * 100)}
+          min={0}
+          max={100}
+          step={0.5}
+          unit="%"
+          onChange={(value) => edit((current) => ({ ...current, iconMix: asPercent(value) }))}
+        />
+        <ResetButton
+          isDisabled={theme.iconMix === undefined}
+          onPress={() => edit((current) => ({ ...current, iconMix: undefined }))}
+        />
+      </Section>
+    ),
+    softMix: (
+      <Section title={t(($) => $.other.softMix)}>
+        {(
+          [
+            ["light", 40],
+            ["dark", 50],
+          ] as const
+        ).map(([side, max]) => (
+          <SliderField
+            key={side}
+            label={side === "light" ? t(($) => $.other.softLight) : t(($) => $.other.softDark)}
+            value={percent(theme.softMix?.[side], TONE_MIX.soft[side] * 100)}
+            min={0}
+            max={max}
+            step={0.5}
+            unit="%"
+            onChange={(value) =>
+              edit((current) => ({
+                ...current,
+                softMix: {
+                  light: current.softMix?.light ?? asPercent(TONE_MIX.soft.light * 100),
+                  dark: current.softMix?.dark ?? asPercent(TONE_MIX.soft.dark * 100),
+                  [side]: asPercent(value),
+                },
+              }))
+            }
+          />
+        ))}
+        <ResetButton
+          isDisabled={theme.softMix === undefined}
+          onPress={() => edit((current) => ({ ...current, softMix: undefined }))}
+        />
+      </Section>
+    ),
   };
   return (
     <div className="flex flex-col gap-6">
@@ -228,6 +290,15 @@ export function OtherPanel({
         />
       </Section>
     </div>
+  );
+}
+
+function ResetButton({ isDisabled, onPress }: { isDisabled: boolean; onPress: () => void }) {
+  const { t } = useTranslation("themeEditor");
+  return (
+    <Button size="xs" variant="outline" isDisabled={isDisabled} onPress={onPress}>
+      {t(($) => $.other.resetDefault)}
+    </Button>
   );
 }
 

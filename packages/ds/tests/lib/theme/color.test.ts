@@ -5,6 +5,7 @@ import {
   alphaOf,
   contrastRatio,
   isColor,
+  mixColors,
   NO_HSL_ADJUSTMENT,
   shiftLightness,
   toHex,
@@ -103,5 +104,13 @@ describe("adjustHsl", () => {
     expect(adjustHsl("oklch(1 0 0 / 10%)", { ...NO_HSL_ADJUSTMENT, lightnessScale: 0.5 })).toMatch(
       / \/ 10%\)$/,
     );
+  });
+});
+
+describe("mixColors", () => {
+  it("mixes in oklab by the share of the second color", () => {
+    expect(mixColors("#ffffff", "#000000", 0)).toBe("oklch(1 0 0)");
+    expect(mixColors("#ffffff", "#000000", 1)).toBe("oklch(0 0 0)");
+    expect(mixColors("oklch(1 0 0)", "oklch(0.5 0 0)", 0.5)).toBe("oklch(0.75 0 0)");
   });
 });

@@ -122,7 +122,7 @@ export const ChoiceCard: Story = {
     <CheckboxGroup defaultValue={["pedidos"]} className="w-96">
       <Label>Módulos do cliente</Label>
       <CheckboxCard value="pedidos">
-        <IconTile variant="soft" size="sm">
+        <IconTile variant="soft" tone="primary" size="sm">
           <ReceiptIcon />
         </IconTile>
         <FieldContent>
@@ -131,7 +131,7 @@ export const ChoiceCard: Story = {
         </FieldContent>
       </CheckboxCard>
       <CheckboxCard value="vendas">
-        <IconTile variant="soft" size="sm">
+        <IconTile variant="soft" tone="primary" size="sm">
           <ChartBarIcon />
         </IconTile>
         <FieldContent>
@@ -140,7 +140,7 @@ export const ChoiceCard: Story = {
         </FieldContent>
       </CheckboxCard>
       <CheckboxCard value="das" isDisabled>
-        <IconTile variant="soft" size="sm">
+        <IconTile variant="soft" tone="primary" size="sm">
           <FileTextIcon />
         </IconTile>
         <FieldContent>

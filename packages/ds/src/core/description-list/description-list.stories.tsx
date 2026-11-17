@@ -43,7 +43,7 @@ export const Default: Story = {
       <DescriptionItem>
         <DescriptionTerm>Validade</DescriptionTerm>
         <DescriptionDetails>
-          <Badge variant="secondary">12 meses</Badge>
+          <Badge variant="soft">12 meses</Badge>
         </DescriptionDetails>
       </DescriptionItem>
     </DescriptionList>
@@ -64,7 +64,7 @@ export const Divided: Story = {
       </DescriptionItem>
       <DescriptionItem>
         <DescriptionTerm>Cashback aplicado</DescriptionTerm>
-        <DescriptionDetails className="text-success-foreground">− R$ 30,00</DescriptionDetails>
+        <DescriptionDetails className="text-success-text">− R$ 30,00</DescriptionDetails>
       </DescriptionItem>
       <DescriptionItem>
         <DescriptionTerm className="font-medium text-foreground">Total</DescriptionTerm>
