@@ -15,7 +15,7 @@ function BubbleGroup({ className, ...props }: React.ComponentProps<"div">) {
 
 type BubbleVariant = Exclude<Variant, "ghost">;
 
-// Variant recipes (docs/plans/tone-variant-standard.md): every variant reads the --tone-*
+// Variant recipes (fma-ds docs, "Tones and variants"): every variant reads the --tone-*
 // variables that `toneVariants` sets on the root and paints the content slot; the content keeps
 // its transparent border from the base so switching variants never changes the box.
 const bubbleVariantsConfig = {

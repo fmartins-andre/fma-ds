@@ -79,7 +79,7 @@ export const themeEditorPtBR = {
     action: "Importar",
     title: "Importar um tema",
     description:
-      "Um <code>styles.css</code> do shadcn (daqui, do tweakcn ou de ui.shadcn.com/themes), um item de tema de registro shadcn como <code>tweakcn.com/r/themes/{{id}}.json</code>, ou um JSON de tema exportado aqui. Os tokens que faltarem vêm do tema padrão.",
+      "Um <code>styles.css</code> do shadcn (daqui, do tweakcn ou de ui.shadcn.com/themes), um item de tema de registro shadcn como <code>tweakcn.com/r/themes/{{id}}.json</code>, ou um JSON de tema exportado aqui. Os tokens que faltarem vêm do tema padrão; o texto no tom (<code>-text</code>) e a mistura do ícone são derivados para passar no contraste.",
     paste: "Colar",
     url: "URL",
     file: "Arquivo",

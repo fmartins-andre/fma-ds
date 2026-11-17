@@ -47,6 +47,8 @@ export const sitePtBR = {
   },
   guides: {
     compatibility: "Compatibilidade",
+    theming: "Temas",
+    tones: "Tons e variantes",
     "dark-mode": "Modo escuro",
     routing: "Roteamento",
     offline: "Offline e privacidade",

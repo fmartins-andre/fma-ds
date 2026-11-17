@@ -194,6 +194,9 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    valor inicial de `deriveToneText`. Ícone no tom = mistura do tom com o `-text` (`iconMix`).
    Componentes leem os tokens, nunca derivam de `--background` / `--foreground`. O
    `tests/themes.test.ts` impõe essas regras dos tokens de tema e o gate de contraste.
+   `--secondary` e `--invert` foram aposentados: ao vendorizar, troque por muted ou um tom
+   (`tests/retired-tokens.test.ts`). O guia `theming.md` explica o sistema ao usuário: token ou
+   configuração nova entra nele (en + pt-BR).
 10. **Todo token de tema é editável no editor (`/themes`)**. Token novo: declare em
    `styles.css` (`:root`, `.dark`, `@theme inline`), em `COLOR_TOKENS`
    (`src/lib/theme/schema.ts`) **e** em `tests/required-tokens.ts`, adicione-o a um grupo
@@ -235,6 +238,18 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
      baixo por props, `className` ou variáveis CSS neutras com fallback (`--sticky-offset`,
      `--page-gutter`, `--sticky-top`, `--sticky-edge`), nunca o contrário. Um bloco não depende de outro que
      depende dele: quem compõe é quem mede e repassa (o `AppShellMain` mede o `PageHeader`).
+
+15. **Variantes e tons**: componente com cor expõe `variant` (`solid` | `soft` | `outline` |
+   `ghost`) × `tone` (`brand` | `primary` | `neutral` | `success` | `warning` | `info` |
+   `destructive`) pela lib `src/lib/tone.ts`: as classes das variantes leem as variáveis
+   `--tone-*`, e o tom vem de `toneVariants[tone ?? defaultTone(variant)]` (`primary` no solid,
+   `neutral` nas outras). Sem nomes próprios nem aliases (`default`, `secondary`, `link`,
+   `*-light`, `*-dot`, `invert`); o componente aceita só as variantes que fazem sentido para ele,
+   e todo tom vale em todas elas. Borda transparente em todas as variantes, para o tamanho não
+   mudar. As classes do `tone.ts` ficam literais (o Tailwind não gera classe montada em loop).
+   `tests/tone-variants.test.ts` impõe o contrato. O guia `tones.md` é a referência do usuário,
+   com a tabela de migração dos nomes antigos: mudança de variante, tom ou padrão entra nele e
+   no `description` do `meta.json` (en + pt-BR).
 
 ## Estilo de código
 

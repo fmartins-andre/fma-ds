@@ -236,6 +236,27 @@ Regras:
   os controles neutros com cara de botão (triggers do menubar e navigation-menu), que seguem o
   hover `muted` do tom neutral, o toggle e o segmento em foco do date-field.
 
+### Variantes e tons
+
+Componente com cor segue o padrão `variant` × `tone` (guia do usuário:
+`apps/web/src/guides/tones.md`):
+
+- `variant`: `solid`, `soft`, `outline`, `ghost`. `tone`: `brand`, `primary`, `neutral`,
+  `success`, `warning`, `info`, `destructive`. O componente aceita só as variantes que fazem
+  sentido (o Alert não tem `ghost`), e todo tom vale em todas elas. Sem aliases dos nomes antigos.
+- As classes das variantes leem as variáveis `--tone-*` (`--tone`, `--tone-foreground`,
+  `--tone-soft`, `--tone-soft-hover`, `--tone-line`, `--tone-hover`, `--tone-text`,
+  `--tone-icon`), e o componente aplica `toneVariants[tone ?? defaultTone(variant)]` de
+  `src/lib/tone.ts`. Siga o `badge.tsx` ou o `button.tsx`.
+- Tom padrão: `primary` no `solid`, `neutral` nas outras variantes, para `variant="outline"`
+  continuar neutro sem mudar o JSX.
+- Todas as variantes mantêm `border border-transparent` na base: trocar de variante nunca muda
+  o tamanho (`tests/tone-variants.test.ts` confere).
+- As classes do `tone.ts` são escritas por extenso, uma por tom: o Tailwind só gera classes que
+  encontra literalmente no código.
+- Mudou variante, tom ou padrão de um componente? Atualize o `description` do `meta.json`, a
+  tradução em `items-pt-BR.json` e o guia `tones.md` (en + pt-BR), inclusive a tabela de migração.
+
 ## Storybook e testes
 
 ```bash
@@ -307,6 +328,14 @@ Temas curados ficam em `packages/ds/src/themes/<nome>.json` (schema `ThemeSchema
 - `*-foreground` é texto sobre a cor cheia em todos os tons (como `primary-foreground`); os
   `*-text` (primary, brand, status) são texto no tom, sobre a página ou o soft, com valor inicial
   de `deriveToneText`. Componentes leem esses tokens, nunca derivam de `--background` / `--foreground`.
+- `iconMix` (mistura do ícone no tom, padrão 42%) e `softMix` (tinta do soft por modo, padrão
+  10% / 18%) são configurações opcionais do tema; o importador deriva o `-text` e o `iconMix`
+  quando o tema de origem não os tem.
+- `--secondary` e `--invert` não existem mais. Código vendorizado com `bg-secondary`,
+  `bg-invert` e afins troca para a família muted ou um tom; `tests/retired-tokens.test.ts`
+  barra o uso.
+- O guia `apps/web/src/guides/theming.md` explica o sistema de temas ao usuário: token ou
+  configuração nova entra nele (en + pt-BR).
 - Tema de terceiros: `"source": "third-party"` + `origin`, e uma linha na tabela de
   `src/themes/THIRD_PARTY_NOTICES.md` (com a licença). Os atuais vêm do
   [tweakcn](https://github.com/jnsahaj/tweakcn) (Apache-2.0).

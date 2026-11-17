@@ -28,3 +28,5 @@ This replaces your copy, including local edits. Commit first, then review the di
 ## Update your theme too
 
 fma-ds components read theme tokens that older themes lack: the status `-foreground` tokens (`--destructive-foreground`, `--success-foreground`...) are now the text on the solid color, and in-tone text lives in `--*-text` tokens. After updating components, reinstall your theme with `npx shadcn@latest add @fma-ds/theme-<name> --overwrite`, or export it again from the theme editor at `/themes`. Keeping an old fma-ds theme, or a stock shadcn theme without `--destructive-foreground`, gives unreadable solid badges and buttons.
+
+Components with colors also changed their props: `variant` now picks the surface (`solid`, `soft`, `outline`, `ghost`) and `tone` the color, and the old variant names are gone. [Tones and variants](/docs/tones) maps each old name to the new props, and [Themes](/docs/theming) lists the tokens a theme needs.

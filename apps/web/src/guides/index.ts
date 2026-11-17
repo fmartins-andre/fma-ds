@@ -11,6 +11,8 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   { slug: "compatibility", title: "Compatibility" },
+  { slug: "theming", title: "Themes" },
+  { slug: "tones", title: "Tones and variants" },
   { slug: "dark-mode", title: "Dark mode" },
   { slug: "routing", title: "Routing" },
   { slug: "offline", title: "Offline and privacy" },

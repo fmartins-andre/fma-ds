@@ -3,7 +3,7 @@ import { cn } from "cn";
 import type * as React from "react";
 import { defaultTone, type Tone, toneVariants, type Variant } from "@/lib/tone";
 
-// Variant recipes (docs/plans/tone-variant-standard.md): every variant reads the --tone-*
+// Variant recipes (fma-ds docs, "Tones and variants"): every variant reads the --tone-*
 // variables that `toneVariants` sets. The root owns the footprint (size, radius and the
 // transparent border), so switching variants (ghost ↔ soft, for instance) never moves the
 // layout. `ghost` has no surface: only the icon, in the tone.

@@ -1,4 +1,4 @@
-// Contract gate for the variant × tone standard (docs/plans/tone-variant-standard.md):
+// Contract gate for the variant × tone standard (user guide: apps/web/src/guides/tones.md):
 // every component that takes `variant` + `tone` offers exactly the four variants,
 // reads the `--tone-*` variables, and keeps the same box across variants.
 import { readFileSync } from "node:fs";

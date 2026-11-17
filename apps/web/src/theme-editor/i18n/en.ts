@@ -77,7 +77,7 @@ export const themeEditor = {
     action: "Import",
     title: "Import a theme",
     description:
-      "A shadcn <code>styles.css</code> (from here, tweakcn or ui.shadcn.com/themes), a shadcn registry theme item such as <code>tweakcn.com/r/themes/{{id}}.json</code>, or a theme JSON exported here. Missing tokens come from the default theme.",
+      "A shadcn <code>styles.css</code> (from here, tweakcn or ui.shadcn.com/themes), a shadcn registry theme item such as <code>tweakcn.com/r/themes/{{id}}.json</code>, or a theme JSON exported here. Missing tokens come from the default theme; the in-tone text (<code>-text</code>) and the icon mix are derived to pass the contrast check.",
     paste: "Paste",
     url: "URL",
     file: "File",

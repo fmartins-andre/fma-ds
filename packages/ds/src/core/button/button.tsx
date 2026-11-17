@@ -9,7 +9,7 @@ import {
 } from "react-aria-components";
 import { defaultTone, type Tone, toneVariants, type Variant } from "@/lib/tone";
 
-// Variant recipes (docs/plans/tone-variant-standard.md): every variant reads the
+// Variant recipes (fma-ds docs, "Tones and variants"): every variant reads the
 // --tone-* variables that `toneVariants` sets, and keeps the transparent border from
 // the base so switching variants never changes the box.
 const buttonVariantsConfig = {

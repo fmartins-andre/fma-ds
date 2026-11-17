@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
 import { defaultTone, type Tone, toneVariants, type Variant } from "@/lib/tone";
 
-// Variant recipes (docs/plans/tone-variant-standard.md): every variant reads the --tone-*
+// Variant recipes (fma-ds docs, "Tones and variants"): every variant reads the --tone-*
 // variables that `toneVariants` sets, and keeps the transparent border from the base so
 // switching variants never changes the box. `ghost` is a colored dot before plain text,
 // with no surface, so it sits in lists, select items and table cells; the text carries the

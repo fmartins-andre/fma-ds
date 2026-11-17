@@ -45,6 +45,8 @@ export const site = {
   },
   guides: {
     compatibility: "Compatibility",
+    theming: "Themes",
+    tones: "Tones and variants",
     "dark-mode": "Dark mode",
     routing: "Routing",
     offline: "Offline and privacy",
