@@ -152,8 +152,12 @@ test("imports a tweakcn-style CSS theme and derives our status tokens", async ({
   await page.getByRole("dialog").getByRole("button", { name: "Import", exact: true }).click();
   await expect.poll(() => rootVar(page, "--primary")).toBe("oklch(0.55 0.15 150)");
   expect(await rootVar(page, "--radius")).toBe("0.25rem");
-  // Text on a destructive tint, not tweakcn's white-on-solid.
-  expect(await rootVar(page, "--destructive-foreground")).toBe("oklch(0.48 0.2 25)");
+  // -foreground is text on the full color: the imported white is kept while it holds 3:1 on
+  // the solid; -text is the derived text on the tint.
+  expect(await rootVar(page, "--destructive-foreground")).toBe("oklch(1 0 0)");
+  const destructiveText = await rootVar(page, "--destructive-text");
+  expect(destructiveText).toMatch(/^oklch\(/);
+  expect(destructiveText).not.toBe("oklch(0.6 0.2 25)");
   await expect(page.getByRole("button", { name: /Theme preset/ })).toContainText("imported");
 });
 
