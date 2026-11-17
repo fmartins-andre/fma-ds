@@ -38,7 +38,7 @@ export function ColorsPanel({
   const { t } = useTranslation("themeEditor");
   const colors = theme[mode];
   return (
-    <Accordion allowsMultipleExpanded defaultExpandedKeys={["primary", "secondary", "base"]}>
+    <Accordion allowsMultipleExpanded defaultExpandedKeys={["primary", "base"]}>
       {COLOR_GROUPS.map((group) => (
         <AccordionItem key={group.id} id={group.id}>
           <AccordionTrigger>{t(($) => $.groups[group.id as ColorGroupId])}</AccordionTrigger>

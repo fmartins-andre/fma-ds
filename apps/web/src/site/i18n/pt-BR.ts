@@ -75,7 +75,7 @@ export const sitePtBR = {
       "Interação, gerenciamento de foco e acessibilidade vêm do react-aria-components, então as APIs seguem o React Aria, não o Radix: <c>isDisabled</c> em vez de <c>disabled</c>, <c>onPress</c> em vez de <c>onClick</c>, e sem <c>asChild</c> (use <c>LinkButton</c> para um link com cara de botão). Envolva seu app no <c>RouterProvider</c> do React Aria para os links navegarem no cliente (veja <routing>roteamento</routing>).",
     themes: "Temas",
     themesText:
-      "Cada cor, raio, fonte e sombra é uma variável CSS. Escolha um dos temas curados, ajuste no editor de temas e exporte como CSS, ou instale direto do registro com <c>@fma-ds/theme-{{name}}</c>. Todo tema tem uma paleta clara e uma escura (veja <dark>modo escuro</dark>).",
+      "Cada cor, raio, fonte e sombra é uma variável CSS. Escolha um dos temas curados, ajuste no editor de temas e exporte como CSS, ou instale direto do registro com <c>@fma-ds/theme-{{name}}</c>. Todo tema tem uma paleta clara e uma escura (veja <dark>modo escuro</dark>). Os temas fma-ds não definem mais os tokens <c>secondary</c> e <c>invert</c>: componentes oficiais do shadcn que dependem de <c>secondary</c> precisam que você o adicione, ou troque por muted ou por um tom.",
     openEditor: "Abrir o editor de temas",
     storybook: "Storybook",
     storybookText:

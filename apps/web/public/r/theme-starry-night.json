@@ -22,8 +22,6 @@
       "primary": "oklch(0.481 0.118 263.376)",
       "primary-foreground": "oklch(0.986 0.028 98.054)",
       "primary-text": "oklch(0.368 0.08 264.628)",
-      "secondary": "oklch(0.857 0.116 81.009)",
-      "secondary-foreground": "oklch(0.256 0.043 268.066)",
       "muted": "oklch(0.92 0.008 106.556)",
       "muted-foreground": "oklch(0.481 0.118 263.376)",
       "accent": "oklch(0.66 0.071 234.039)",
@@ -40,8 +38,6 @@
       "warning": "oklch(0.555 0.163 48.998)",
       "warning-foreground": "oklch(0.975 0.005 258.325)",
       "warning-text": "oklch(0.406 0.066 37.188)",
-      "invert": "oklch(0.256 0.043 268.066)",
-      "invert-foreground": "oklch(0.975 0.005 258.325)",
       "brand": "oklch(0.481 0.118 263.376)",
       "brand-foreground": "oklch(0.986 0.028 98.054)",
       "brand-text": "oklch(0.368 0.08 264.628)",
@@ -73,8 +69,6 @@
       "primary": "oklch(0.481 0.118 263.376)",
       "primary-foreground": "oklch(0.91 0.144 95.112)",
       "primary-text": "oklch(0.709 0.065 263.705)",
-      "secondary": "oklch(0.91 0.144 95.112)",
-      "secondary-foreground": "oklch(0.27 0.041 281.304)",
       "muted": "oklch(0.242 0.032 281.089)",
       "muted-foreground": "oklch(0.624 0.041 262.037)",
       "accent": "oklch(0.847 0.052 264.775)",
@@ -91,8 +85,6 @@
       "warning": "oklch(0.828 0.189 84.429)",
       "warning-foreground": "oklch(0.22 0.02 275.844)",
       "warning-text": "oklch(0.883 0.088 84.262)",
-      "invert": "oklch(0.937 0.013 266.697)",
-      "invert-foreground": "oklch(0.22 0.02 275.844)",
       "brand": "oklch(0.481 0.118 263.376)",
       "brand-foreground": "oklch(0.91 0.144 95.112)",
       "brand-text": "oklch(0.709 0.065 263.705)",
@@ -127,7 +119,7 @@
       "gold",
       "serif"
     ],
-    "contentHash": "e073d1e1f652"
+    "contentHash": "03417fd0620e"
   },
   "categories": [
     "theme"

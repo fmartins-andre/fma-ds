@@ -81,6 +81,29 @@ describe("themeFromCssVars", () => {
     expect(theme.dark["destructive-foreground"]).toBe(theme.dark.background);
   });
 
+  it("ignores the secondary and invert tokens of a source", () => {
+    const theme = themeFromCssVars(
+      {
+        light: {
+          primary: "#ff0000",
+          secondary: "#00ff00",
+          "secondary-foreground": "#000000",
+          invert: "#111111",
+          "invert-foreground": "#eeeeee",
+        },
+        dark: { secondary: "#00ff00", invert: "#111111" },
+      },
+      DEFAULT_THEME,
+      identity,
+    );
+    for (const mode of [theme.light, theme.dark]) {
+      expect(Object.keys(mode)).not.toContain("secondary");
+      expect(Object.keys(mode)).not.toContain("secondary-foreground");
+      expect(Object.keys(mode)).not.toContain("invert");
+      expect(Object.keys(mode)).not.toContain("invert-foreground");
+    }
+  });
+
   it("makes brand the primary pair when the source has no brand", () => {
     const theme = themeFromCssVars(
       { light: { primary: "#ff0000", "primary-foreground": "#ffffff" }, dark: {} },

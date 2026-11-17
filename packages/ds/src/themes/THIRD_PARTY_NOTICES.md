@@ -4,10 +4,10 @@ The themes below are adapted from [tweakcn](https://github.com/jnsahaj/tweakcn)'
 presets (`utils/theme-presets.ts`), © tweakcn contributors, licensed under the Apache License 2.0
 (full text below). So is the shadow recipe in `src/lib/theme/shadows.ts`.
 
-Changes made here: colors converted to oklch; `info`, `success`, `warning` and `invert` tokens added; `sidebar-primary` and its foreground
-adjusted where the pair fell short of AA or got lost on the sidebar; settings equal to
-tweakcn's defaults (system fonts, 0.25rem spacing, 0em tracking, default shadow) dropped so the
-theme leaves them alone.
+Changes made here: colors converted to oklch; `info`, `success` and `warning` tokens added;
+`sidebar-primary` and its foreground adjusted where the pair fell short of AA or got lost on the
+sidebar; settings equal to tweakcn's defaults (system fonts, 0.25rem spacing, 0em tracking,
+default shadow) dropped so the theme leaves them alone.
 
 Status colors (`success`, `warning`, `info`, `destructive`): their `*-foreground` is redefined as
 the text color on the solid status color (set to the mode's `background`, so it can be edited

@@ -17,7 +17,6 @@ export const themeEditor = {
   reset: "Reset to {{title}}",
   groups: {
     primary: "Primary",
-    secondary: "Secondary",
     accent: "Accent",
     brand: "Brand",
     base: "Base",
@@ -25,7 +24,6 @@ export const themeEditor = {
     popover: "Popover",
     muted: "Muted",
     status: "Status",
-    invert: "Invert",
     border: "Border & input",
     chart: "Chart",
     sidebar: "Sidebar",

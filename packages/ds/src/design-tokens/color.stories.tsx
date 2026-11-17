@@ -51,8 +51,6 @@ const BASE = [
   "--popover-foreground",
   "--primary",
   "--primary-foreground",
-  "--secondary",
-  "--secondary-foreground",
   "--muted",
   "--muted-foreground",
   "--accent",
@@ -72,8 +70,6 @@ const STATUS = [
   "--success-foreground",
   "--warning",
   "--warning-foreground",
-  "--invert",
-  "--invert-foreground",
 ];
 
 const TONE_TEXT = [

@@ -19,7 +19,7 @@ import { THEMES } from "@/themes/index";
 // of them render at once; the light/dark toolbar picks the mode. To see a
 // whole story in one theme, use the theme toolbar instead.
 
-const SWATCHES = ["primary", "secondary", "accent", "muted", "destructive", "border"] as const;
+const SWATCHES = ["primary", "brand", "accent", "muted", "destructive", "border"] as const;
 
 function ThemeCard({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
   useEffect(() => loadThemeFonts(theme), [theme]);

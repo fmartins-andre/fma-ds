@@ -81,8 +81,6 @@ function colorsFrom(
     if (vars["destructive-foreground"] === undefined) {
       colors["destructive-foreground"] = colors.background;
     }
-    colors.invert = colors.foreground;
-    colors["invert-foreground"] = colors.background;
   }
   // No second identity color (other tools' themes, or ours before brand): brand = primary.
   if (vars.brand === undefined) {

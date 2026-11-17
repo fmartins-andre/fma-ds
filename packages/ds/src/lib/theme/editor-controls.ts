@@ -38,7 +38,6 @@ export const COLOR_GROUPS: ColorGroup[] = [
     title: "Primary",
     colors: tonePair("primary", "primary-foreground", "primary-text"),
   },
-  { id: "secondary", title: "Secondary", colors: pair("secondary", "secondary-foreground") },
   { id: "accent", title: "Accent", colors: pair("accent", "accent-foreground") },
   {
     id: "brand",
@@ -60,7 +59,6 @@ export const COLOR_GROUPS: ColorGroup[] = [
       { token: `${status}-text` as ColorToken, label: "Text in tone", on: "background" },
     ]),
   },
-  { id: "invert", title: "Invert", colors: pair("invert", "invert-foreground") },
   {
     id: "border",
     title: "Border & input",

@@ -26,8 +26,6 @@
       "primary": "oklch(0.539 0.271 286.746)",
       "primary-foreground": "oklch(1 0 0)",
       "primary-text": "oklch(0.27 0.136 286.746)",
-      "secondary": "oklch(0.954 0.006 255.476)",
-      "secondary-foreground": "oklch(0.134 0 0)",
       "muted": "oklch(0.97 0 0)",
       "muted-foreground": "oklch(0.439 0 0)",
       "accent": "oklch(0.939 0.029 266.368)",
@@ -44,8 +42,6 @@
       "warning": "oklch(0.555 0.163 48.998)",
       "warning-foreground": "oklch(0.994 0 0)",
       "warning-text": "oklch(0.278 0.082 48.998)",
-      "invert": "oklch(0 0 0)",
-      "invert-foreground": "oklch(0.994 0 0)",
       "brand": "oklch(0.539 0.271 286.746)",
       "brand-foreground": "oklch(1 0 0)",
       "brand-text": "oklch(0.27 0.136 286.746)",
@@ -85,8 +81,6 @@
       "primary": "oklch(0.613 0.229 291.744)",
       "primary-foreground": "oklch(1 0 0)",
       "primary-text": "oklch(0.784 0.115 291.744)",
-      "secondary": "oklch(0.294 0.013 272.931)",
-      "secondary-foreground": "oklch(0.955 0 0)",
       "muted": "oklch(0.294 0.013 272.931)",
       "muted-foreground": "oklch(0.706 0 0)",
       "accent": "oklch(0.279 0.037 260.031)",
@@ -103,8 +97,6 @@
       "warning": "oklch(0.828 0.189 84.429)",
       "warning-foreground": "oklch(0.222 0.006 271.139)",
       "warning-text": "oklch(0.891 0.095 84.429)",
-      "invert": "oklch(0.955 0 0)",
-      "invert-foreground": "oklch(0.222 0.006 271.139)",
       "brand": "oklch(0.613 0.229 291.744)",
       "brand-foreground": "oklch(1 0 0)",
       "brand-text": "oklch(0.784 0.115 291.744)",
@@ -174,7 +166,7 @@
         "offsetY": "2px"
       }
     },
-    "contentHash": "c2af8662223a"
+    "contentHash": "32106ea476a4"
   },
   "categories": [
     "theme"

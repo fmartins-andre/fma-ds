@@ -1,6 +1,6 @@
 // Theme format for the curated themes in src/themes/*.json and the theme editor
 // (apps/web). Shaped after tweakcn's ThemeStyles (https://github.com/jnsahaj/tweakcn,
-// Apache-2.0), but with this repo's extra status tokens (info/success/warning/invert)
+// Apache-2.0), but with this repo's extra status tokens (info/success/warning)
 // and the non-color settings lifted out of light/dark, since they're shared by both.
 
 import { z } from "zod";
@@ -16,8 +16,6 @@ export const COLOR_TOKENS = [
   "primary",
   "primary-foreground",
   "primary-text",
-  "secondary",
-  "secondary-foreground",
   "muted",
   "muted-foreground",
   "accent",
@@ -34,8 +32,6 @@ export const COLOR_TOKENS = [
   "warning",
   "warning-foreground",
   "warning-text",
-  "invert",
-  "invert-foreground",
   "brand",
   "brand-foreground",
   "brand-text",

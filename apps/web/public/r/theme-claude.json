@@ -17,8 +17,6 @@
       "primary": "oklch(0.617 0.138 39.043)",
       "primary-foreground": "oklch(1 0 0)",
       "primary-text": "oklch(0.48 0.077 47.441)",
-      "secondary": "oklch(0.924 0.014 92.989)",
-      "secondary-foreground": "oklch(0.433 0.018 98.605)",
       "muted": "oklch(0.934 0.015 90.239)",
       "muted-foreground": "oklch(0.606 0.007 97.423)",
       "accent": "oklch(0.924 0.014 92.989)",
@@ -35,8 +33,6 @@
       "warning": "oklch(0.555 0.163 48.998)",
       "warning-foreground": "oklch(0.982 0.005 95.099)",
       "warning-text": "oklch(0.45 0.091 55.179)",
-      "invert": "oklch(0.344 0.027 95.723)",
-      "invert-foreground": "oklch(0.982 0.005 95.099)",
       "brand": "oklch(0.617 0.138 39.043)",
       "brand-foreground": "oklch(1 0 0)",
       "brand-text": "oklch(0.48 0.077 47.441)",
@@ -68,8 +64,6 @@
       "primary": "oklch(0.672 0.131 38.756)",
       "primary-foreground": "oklch(1 0 0)",
       "primary-text": "oklch(0.74 0.07 43.424)",
-      "secondary": "oklch(0.982 0.005 95.099)",
-      "secondary-foreground": "oklch(0.308 0.004 106.604)",
       "muted": "oklch(0.221 0.004 106.707)",
       "muted-foreground": "oklch(0.771 0.017 99.066)",
       "accent": "oklch(0.213 0.008 95.424)",
@@ -86,8 +80,6 @@
       "warning": "oklch(0.828 0.189 84.429)",
       "warning-foreground": "oklch(0.268 0.004 106.643)",
       "warning-text": "oklch(0.818 0.101 85.019)",
-      "invert": "oklch(0.807 0.014 93.014)",
-      "invert-foreground": "oklch(0.268 0.004 106.643)",
       "brand": "oklch(0.672 0.131 38.756)",
       "brand-foreground": "oklch(1 0 0)",
       "brand-text": "oklch(0.74 0.07 43.424)",
@@ -118,7 +110,7 @@
       "warm",
       "sans"
     ],
-    "contentHash": "04e44d67bcb0"
+    "contentHash": "a6f23d8bafd5"
   },
   "categories": [
     "theme"

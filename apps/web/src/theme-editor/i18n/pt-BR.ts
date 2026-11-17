@@ -19,7 +19,6 @@ export const themeEditorPtBR = {
   reset: "Voltar para {{title}}",
   groups: {
     primary: "Primária",
-    secondary: "Secundária",
     accent: "Destaque",
     brand: "Marca",
     base: "Base",
@@ -27,7 +26,6 @@ export const themeEditorPtBR = {
     popover: "Popover",
     muted: "Discreta",
     status: "Status",
-    invert: "Invertida",
     border: "Borda e campo",
     chart: "Gráfico",
     sidebar: "Barra lateral",
