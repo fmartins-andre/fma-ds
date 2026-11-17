@@ -43,6 +43,8 @@ const everything: Theme = {
   fonts: { sans: "Inter", serif: "Lora", mono: "Fira Code", heading: "Fraunces" },
   spacing: "0.25rem",
   letterSpacing: "0.01em",
+  iconMix: "42%",
+  softMix: { light: "10%", dark: "18%" },
   shadow: {
     light: {
       color: "#000",

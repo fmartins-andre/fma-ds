@@ -62,7 +62,7 @@ export const site = {
       "This is not a package you install from npm. Like shadcn/ui, the code is copied into your project by the <c>shadcn</c> CLI, and from then on it is yours. Everything lands in <c>fma-ds</c> folders (<c>components/fma-ds/</c>, <c>hooks/fma-ds/</c>, <c>lib/fma-ds/</c>), so it never collides with the official shadcn components.",
     installation: "Installation",
     start:
-      "Start from a project set up for shadcn/ui (Tailwind v4, a <c>components.json</c>; see <compat>compatibility</compat>). Then register the <c>@fma-ds</c> namespace:",
+      "Start from a project set up for shadcn/ui (Tailwind v4, a <c>components.json</c>; see <compat>compatibility</compat>). Then register the <c>@fma-ds</c> namespace. The components need an fma-ds theme (status <c>-foreground</c> tokens are text on the solid color, plus <c>--*-text</c> tokens), so install one of the themes below or export yours from the theme editor; a stock shadcn theme lacks those tokens:",
     add: "And add any component or block by name:",
     deps: "Dependencies between items resolve through the same namespace, so adding a block pulls the components it is built from.",
     index:

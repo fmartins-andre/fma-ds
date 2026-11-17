@@ -49,7 +49,7 @@ function useMergedLabels(i18n?: StatI18n) {
 
 /**
  * The tone tints the icon with the status color and the value with its
- * `*-foreground`, which keeps text contrast on the card surface.
+ * `*-text`, which keeps text contrast on the card surface.
  */
 const statVariants = cva(
   "group/stat grid min-w-0 grid-cols-[minmax(0,1fr)_auto] content-start items-start gap-x-3 gap-y-1 text-left",
@@ -57,11 +57,10 @@ const statVariants = cva(
     variants: {
       tone: {
         default: "[--stat-icon:var(--primary)] [--stat-value:var(--foreground)]",
-        success: "[--stat-icon:var(--success)] [--stat-value:var(--success-foreground)]",
-        warning: "[--stat-icon:var(--warning)] [--stat-value:var(--warning-foreground)]",
-        info: "[--stat-icon:var(--info)] [--stat-value:var(--info-foreground)]",
-        destructive:
-          "[--stat-icon:var(--destructive)] [--stat-value:var(--destructive-foreground)]",
+        success: "[--stat-icon:var(--success)] [--stat-value:var(--success-text)]",
+        warning: "[--stat-icon:var(--warning)] [--stat-value:var(--warning-text)]",
+        info: "[--stat-icon:var(--info)] [--stat-value:var(--info-text)]",
+        destructive: "[--stat-icon:var(--destructive)] [--stat-value:var(--destructive-text)]",
         muted: "[--stat-icon:var(--muted-foreground)] [--stat-value:var(--muted-foreground)]",
       },
     },

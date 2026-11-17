@@ -189,9 +189,11 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
 9. **Temas**: `src/themes/<nome>.json` segue `ThemeSchema` (`src/lib/theme/schema.ts`) com
    todos os tokens de `tests/required-tokens.ts`; registre em `src/themes/index.ts`.
    `default.json` precisa bater com `styles.css`. Terceiros: `source: "third-party"`, `origin`
-   e linha em `src/themes/THIRD_PARTY_NOTICES.md`. Nossos `*-foreground` de status são texto
-   sobre o fundo **tingido**, não sobre a cor sólida (diferente do shadcn/tweakcn). O
-   `tests/themes.test.ts` impõe isso e um gate de contraste.
+   e linha em `src/themes/THIRD_PARTY_NOTICES.md`. `*-foreground` é texto sobre a cor cheia em
+   todos os tons, como `primary-foreground`; `*-text` é texto no tom (sobre a página ou o soft),
+   valor inicial de `deriveToneText`. Ícone no tom = mistura do tom com o `-text` (`iconMix`).
+   Componentes leem os tokens, nunca derivam de `--background` / `--foreground`. O
+   `tests/themes.test.ts` impõe essas regras dos tokens de tema e o gate de contraste.
 10. **Todo token de tema é editável no editor (`/themes`)**. Token novo: declare em
    `styles.css` (`:root`, `.dark`, `@theme inline`), em `COLOR_TOKENS`
    (`src/lib/theme/schema.ts`) **e** em `tests/required-tokens.ts`, adicione-o a um grupo

@@ -64,7 +64,7 @@ export const sitePtBR = {
       "Isto não é um pacote que você instala pelo npm. Como no shadcn/ui, o código é copiado para o seu projeto pelo CLI <c>shadcn</c>, e a partir daí é seu. Tudo vai para pastas <c>fma-ds</c> (<c>components/fma-ds/</c>, <c>hooks/fma-ds/</c>, <c>lib/fma-ds/</c>), então nunca colide com os componentes oficiais do shadcn.",
     installation: "Instalação",
     start:
-      "Comece de um projeto configurado para o shadcn/ui (Tailwind v4, um <c>components.json</c>; veja <compat>compatibilidade</compat>). Depois, registre o namespace <c>@fma-ds</c>:",
+      "Comece de um projeto configurado para o shadcn/ui (Tailwind v4, um <c>components.json</c>; veja <compat>compatibilidade</compat>). Depois, registre o namespace <c>@fma-ds</c>. Os componentes exigem um tema fma-ds (os tokens <c>-foreground</c> de status são o texto sobre a cor cheia, além dos tokens <c>--*-text</c>), então instale um dos temas abaixo ou exporte o seu pelo editor de temas; um tema padrão do shadcn não tem esses tokens:",
     add: "E adicione qualquer componente ou bloco pelo nome:",
     deps: "As dependências entre itens são resolvidas pelo mesmo namespace, então adicionar um bloco traz os componentes de que ele é feito.",
     index:

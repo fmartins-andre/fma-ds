@@ -20,6 +20,7 @@ const TRACKING_SCALE = {
 function modeVars(theme: Theme, mode: ThemeMode): Record<string, string> {
   const vars: Record<string, string> = {};
   for (const token of COLOR_TOKENS) vars[token] = theme[mode][token];
+  if (theme.softMix) vars["tone-soft-mix"] = theme.softMix[mode];
   const shadow = theme.shadow?.[mode];
   if (shadow) {
     const scale = shadowScale(shadow);
@@ -63,6 +64,7 @@ export function themeRegistryItem(theme: Theme): RegistryItem {
         radius: theme.radius,
         ...(theme.spacing && { spacing: theme.spacing }),
         ...(theme.letterSpacing && { "tracking-normal": theme.letterSpacing }),
+        ...(theme.iconMix && { "tone-icon-mix": theme.iconMix }),
       },
       dark: modeVars(theme, "dark"),
     },

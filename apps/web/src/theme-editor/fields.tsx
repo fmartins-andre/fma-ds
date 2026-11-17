@@ -1,6 +1,7 @@
 import { type ReactNode, useId } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/core/badge/badge";
+import { Button } from "@/core/button/button";
 import {
   ColorPicker,
   ColorPickerContent,
@@ -51,6 +52,7 @@ export function ColorField({
   onChange,
   onChangeEnd,
   contrastWith,
+  onDerive,
 }: {
   label: string;
   value: string;
@@ -59,6 +61,8 @@ export function ColorField({
   onChangeEnd?: () => void;
   /** The background this color is text on: shows a contrast badge, and contrast in the picker. */
   contrastWith?: string;
+  /** Offers a "Derive from tone" button that recomputes this color from its tone. */
+  onDerive?: () => void;
 }) {
   const { t } = useTranslation("themeEditor");
   const id = useId();
@@ -69,7 +73,14 @@ export function ColorField({
         <Label htmlFor={id} className="text-xs text-muted-foreground">
           {label}
         </Label>
-        {contrastWith && <ContrastBadge background={contrastWith} foreground={value} />}
+        <div className="flex items-center gap-1.5">
+          {onDerive && (
+            <Button size="xs" variant="outline" onPress={onDerive}>
+              {t(($) => $.contrast.derive)}
+            </Button>
+          )}
+          {contrastWith && <ContrastBadge background={contrastWith} foreground={value} />}
+        </div>
       </div>
       <ColorPicker
         label={t(($) => $.contrast.pick, { label })}

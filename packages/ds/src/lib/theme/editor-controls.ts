@@ -26,15 +26,25 @@ const pair = (bg: ColorToken, fg: ColorToken): ColorEntry[] => [
   { token: fg, label: "Foreground", on: bg },
 ];
 
+/** A tone: its color, the text on it and the text in the tone (on the page and on its tint). */
+const tonePair = (tone: ColorToken, fg: ColorToken, text: ColorToken): ColorEntry[] => [
+  ...pair(tone, fg),
+  { token: text, label: "Text in tone", on: "background" },
+];
+
 export const COLOR_GROUPS: ColorGroup[] = [
-  { id: "primary", title: "Primary", colors: pair("primary", "primary-foreground") },
+  {
+    id: "primary",
+    title: "Primary",
+    colors: tonePair("primary", "primary-foreground", "primary-text"),
+  },
   { id: "secondary", title: "Secondary", colors: pair("secondary", "secondary-foreground") },
   { id: "accent", title: "Accent", colors: pair("accent", "accent-foreground") },
   {
     id: "brand",
     title: "Brand",
     hint: "The second identity color: brand surfaces, gradients with primary, badges and decoration. Never hover, focus or selection. Same as primary unless the brand has a second color.",
-    colors: pair("brand", "brand-foreground"),
+    colors: tonePair("brand", "brand-foreground", "brand-text"),
   },
   { id: "base", title: "Base", colors: pair("background", "foreground") },
   { id: "card", title: "Card", colors: pair("card", "card-foreground") },
@@ -43,10 +53,11 @@ export const COLOR_GROUPS: ColorGroup[] = [
   {
     id: "status",
     title: "Status",
-    hint: "Each foreground is text on a light tint of its color (badges, alerts), so contrast is checked against the page background.",
+    hint: "Each foreground is text on the solid color (solid badges, buttons); each text is the color used as text on the page or on its tint (soft, outline and ghost styles).",
     colors: (["destructive", "info", "success", "warning"] as const).flatMap((status) => [
       { token: status, label: status[0]?.toUpperCase() + status.slice(1) },
-      { token: `${status}-foreground` as ColorToken, label: "Foreground", on: "background" },
+      { token: `${status}-foreground` as ColorToken, label: "Foreground", on: status },
+      { token: `${status}-text` as ColorToken, label: "Text in tone", on: "background" },
     ]),
   },
   { id: "invert", title: "Invert", colors: pair("invert", "invert-foreground") },

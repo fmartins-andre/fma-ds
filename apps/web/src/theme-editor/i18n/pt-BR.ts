@@ -36,10 +36,11 @@ export const themeEditorPtBR = {
     brand:
       "A segunda cor de identidade: superfícies de marca, gradientes com a primária, badges e decoração. Nunca hover, foco ou seleção. Igual à primária, a menos que a marca tenha uma segunda cor.",
     status:
-      "Cada cor de texto fica sobre um tom claro da sua cor (badges, alertas), então o contraste é medido contra o fundo da página.",
+      "Cada foreground fica sobre a cor sólida (badges e botões sólidos); cada texto no tom é a cor usada como texto na página ou sobre o seu tom suave (estilos soft, outline e ghost).",
   },
   colors: {
     Background: "Fundo",
+    "Text in tone": "Texto no tom",
     Foreground: "Texto",
     Destructive: "Destrutivo",
     Info: "Informação",
@@ -73,6 +74,7 @@ export const themeEditorPtBR = {
     badge: "Contraste de {{ratio}}:1 com o fundo",
     aaLarge: "AA grande",
     fail: "Reprovado",
+    derive: "Derivar do tom",
     pick: "Escolher {{label}}",
   },
   import: {
@@ -112,6 +114,11 @@ export const themeEditorPtBR = {
     customSpacing: "Espaçamento base personalizado",
     shadow: "Sombra",
     customShadow: "Sombras personalizadas (senão, as do Tailwind)",
+    iconMix: "Ícone e dot: % do texto no tom",
+    softMix: "Tinta do soft",
+    softLight: "Claro",
+    softDark: "Escuro",
+    resetDefault: "Voltar ao padrão",
     color: "Cor ({{mode}})",
     opacity: "Opacidade",
     blur: "Desfoque",

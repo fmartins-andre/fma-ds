@@ -303,8 +303,9 @@ Temas curados ficam em `packages/ds/src/themes/<nome>.json` (schema `ThemeSchema
 - Todo tema novo entra na lista de `src/themes/index.ts` (o teste confere).
 - Gate de contraste (`themes.test.ts`): texto principal ≥ 4.5:1, preenchimentos com texto
   (`primary`, `muted-foreground`, status…) ≥ 3:1, em light e dark.
-- Os nossos `destructive/info/success/warning-foreground` são **texto sobre o fundo tingido** da
-  cor (badge `*-light`), não texto sobre a cor sólida como no shadcn/tweakcn.
+- `*-foreground` é texto sobre a cor cheia em todos os tons (como `primary-foreground`); os
+  `*-text` (primary, brand, status) são texto no tom, sobre a página ou o soft, com valor inicial
+  de `deriveToneText`. Componentes leem esses tokens, nunca derivam de `--background` / `--foreground`.
 - Tema de terceiros: `"source": "third-party"` + `origin`, e uma linha na tabela de
   `src/themes/THIRD_PARTY_NOTICES.md` (com a licença). Os atuais vêm do
   [tweakcn](https://github.com/jnsahaj/tweakcn) (Apache-2.0).

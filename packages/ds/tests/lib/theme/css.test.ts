@@ -53,6 +53,54 @@ describe("sharedThemeVars", () => {
   });
 });
 
+describe("tone mix settings", () => {
+  const mixed: Theme = {
+    ...DEFAULT_THEME,
+    iconMix: "51%",
+    softMix: { light: "14%", dark: "22%" },
+  };
+
+  it("emits --tone-icon-mix once, and --tone-soft-mix per mode, only when set", () => {
+    expect(sharedThemeVars(mixed)["--tone-icon-mix"]).toBe("51%");
+    expect(modeThemeVars(mixed, "light")["--tone-soft-mix"]).toBe("14%");
+    expect(modeThemeVars(mixed, "dark")["--tone-soft-mix"]).toBe("22%");
+    expect(sharedThemeVars(DEFAULT_THEME)).not.toHaveProperty("--tone-icon-mix");
+    expect(modeThemeVars(DEFAULT_THEME, "light")).not.toHaveProperty("--tone-soft-mix");
+    expect(modeThemeVars(DEFAULT_THEME, "dark")).not.toHaveProperty("--tone-soft-mix");
+  });
+
+  it("puts the soft tint of each mode in its own block of the generated stylesheet", () => {
+    const { light, dark } = parseCssVars(generateIndexCss(mixed, STYLES));
+    expect(light["tone-icon-mix"]).toBe("51%");
+    expect(light["tone-soft-mix"]).toBe("14%");
+    expect(dark["tone-soft-mix"]).toBe("22%");
+  });
+});
+
+describe("default soft tint", () => {
+  it("styles.css declares 10% in :root and 18% in .dark", () => {
+    const { light, dark } = parseCssVars(STYLES);
+    expect(light["tone-soft-mix"]).toBe("10%");
+    expect(dark["tone-soft-mix"]).toBe("18%");
+  });
+
+  it("a theme without softMix keeps the dark default in the generated stylesheet", () => {
+    const { light, dark } = parseCssVars(generateIndexCss(DEFAULT_THEME, STYLES));
+    expect(light["tone-soft-mix"]).toBe("10%");
+    expect(dark["tone-soft-mix"]).toBe("18%");
+  });
+
+  it("only --tone-soft-mix is a non-color declaration of .dark, so the block swap adds nothing else", () => {
+    const body = STYLES.slice(STYLES.indexOf("\n.dark {"));
+    const names = [...body.slice(0, body.indexOf("\n}\n")).matchAll(/(--[\w-]+)\s*:/g)].map((m) =>
+      (m[1] as string).slice(2),
+    );
+    expect(names.filter((name) => !(COLOR_TOKENS as readonly string[]).includes(name))).toEqual([
+      "tone-soft-mix",
+    ]);
+  });
+});
+
 describe("modeThemeVars", () => {
   it("emits every color token of the mode", () => {
     const vars = modeThemeVars(custom, "light");
