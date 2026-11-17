@@ -155,6 +155,14 @@ function StatDescription({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
+// The stat's tone lives in `--stat-icon`; the tile reads it through its own --tone-* variables
+// (the soft surface mixes it like the tone lib does).
+const statIconToneClassName = [
+  "[--tone-icon:var(--stat-icon)]",
+  "[--tone-soft:color-mix(in_oklab,var(--stat-icon)_var(--tone-soft-mix,10%),var(--background))]",
+  "dark:[--tone-soft:color-mix(in_oklab,var(--stat-icon)_var(--tone-soft-mix,18%),var(--background))]",
+].join(" ");
+
 /** The icon, in a `soft` `IconTile` tinted by the stat's tone. */
 function StatIcon({ className, ...props }: React.ComponentProps<typeof IconTile>) {
   return (
@@ -163,7 +171,7 @@ function StatIcon({ className, ...props }: React.ComponentProps<typeof IconTile>
       aria-hidden="true"
       variant="soft"
       size="sm"
-      className={cn("col-start-2 row-span-2 row-start-1 text-(--stat-icon)", className)}
+      className={cn("col-start-2 row-span-2 row-start-1", statIconToneClassName, className)}
       {...props}
     />
   );

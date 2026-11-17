@@ -43,7 +43,7 @@ export const Default: Story = {
       <DescriptionItem>
         <DescriptionTerm>Validade</DescriptionTerm>
         <DescriptionDetails>
-          <Badge variant="secondary">12 meses</Badge>
+          <Badge variant="soft">12 meses</Badge>
         </DescriptionDetails>
       </DescriptionItem>
     </DescriptionList>

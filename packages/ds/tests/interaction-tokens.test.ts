@@ -1,12 +1,14 @@
-// Design-system gate: interactive states use `accent`, not `muted`, and never
-// the identity color `brand`.
+// Design-system gate (AGENTS.md, rule 11): item highlights use `accent`, not `muted`,
+// and never the identity color `brand`.
 //
-// Following the shadcn theming docs (https://ui.shadcn.com/docs/theming),
-// `accent` is the "interactive hover, focus, and active surfaces" token (menu
-// highlights, hovered rows, selected items) and `muted` is for "subtle
-// surfaces and lower-emphasis content". The upstream `*-nova` styles drift from
-// that (and aria-nova paints focused items with `bg-foreground/10`), which
-// ignores the theme's accent. See CONTRIBUTING.md, "Tokens de estado".
+// `accent` / `accent-foreground` mark an item in a collection (hover, focus, selected,
+// today, range: menus, listboxes, comboboxes, calendar, table rows). The `muted` family is
+// the hover of neutral controls (buttons and triggers of the neutral tone): the tone lib's
+// neutral recipe sets `--tone-hover: var(--muted)` (src/lib/tone.ts), so that is allowed,
+// and the ALLOWED entries below are that case. Static `muted` (zebra, footer, skeleton,
+// secondary text) is not an interactive state and is never flagged. The upstream `*-nova`
+// styles drift from this (aria-nova paints focused items with `bg-foreground/10`).
+// See CONTRIBUTING.md, "Tokens de estado".
 //
 // Checked: our own code — components whose meta.json `source` is "customized"
 // or "original", and every block. Vendored ("shadcn") and "third-party"
@@ -21,16 +23,12 @@ const BLOCKS_DIR = join(UI_ROOT, "src", "blocks");
 
 // Deliberate exceptions, keyed by file (relative to packages/ds). Keep the
 // reason honest: the default answer is to switch to `bg-accent`.
-const GHOST_BUTTON_REASON =
-  "matches Button ghost/outline hover, which still uses muted (aria-nova); revisit together with Button";
+const NEUTRAL_CONTROL_REASON =
+  "hover of a neutral control (button-like trigger): muted, as the neutral tone's --tone-hover (rule 11)";
 const ALLOWED: Record<string, { classes: string[]; reason: string }> = {
-  "src/core/badge/badge.tsx": {
-    classes: ["[a]:hover:bg-muted", "hover:bg-muted", "dark:hover:bg-muted/50"],
-    reason: GHOST_BUTTON_REASON,
-  },
   "src/core/menubar/menubar.tsx": {
     classes: ["data-hovered:bg-muted", "data-pressed:bg-muted", "aria-expanded:bg-muted"],
-    reason: GHOST_BUTTON_REASON,
+    reason: NEUTRAL_CONTROL_REASON,
   },
   "src/core/navigation-menu/navigation-menu.tsx": {
     classes: [
@@ -40,7 +38,7 @@ const ALLOWED: Record<string, { classes: string[]; reason: string }> = {
       "aria-expanded:data-hovered:bg-muted",
       "data-current:bg-muted/50",
     ],
-    reason: GHOST_BUTTON_REASON,
+    reason: NEUTRAL_CONTROL_REASON,
   },
   "src/core/toggle/toggle.tsx": {
     classes: ["hover:bg-muted"],
@@ -62,15 +60,6 @@ const FORBIDDEN_UTILITY = /^!?(bg-muted(\/\d+)?|bg-foreground\/\d+)!?$/;
 // Any utility painting with brand: bg-brand, text-brand-foreground, border-brand/30,
 // from-brand, shadow-[…var(--brand)…], [--ring:var(--brand-foreground)]…
 const BRAND_UTILITY = /(^|[-[(:,])brand\b/;
-
-// A brand element's own hover (a brand badge rendered as a link dims, like
-// primary's) keeps the color; it doesn't use brand to mark another element.
-const BRAND_ALLOWED: Record<string, { classes: string[]; reason: string }> = {
-  "src/core/badge/badge.tsx": {
-    classes: ["[a]:hover:bg-brand/80"],
-    reason: "the brand badge as a link dims its own color on hover, like [a]:hover:bg-primary/80",
-  },
-};
 
 /** Splits `a:[&:is(x)]:b` on the colons outside brackets/parens. */
 function splitVariants(token: string): string[] {
@@ -157,25 +146,12 @@ describe("interactive states use accent", () => {
 
 describe("interactive states never use brand", () => {
   it.each(checkedFiles)("%s", (file) => {
-    const allowed = new Set(BRAND_ALLOWED[file]?.classes);
-    const violations = findViolations(
-      readFileSync(join(UI_ROOT, file), "utf8"),
-      BRAND_UTILITY,
-    ).filter((token) => !allowed.has(token));
+    const violations = findViolations(readFileSync(join(UI_ROOT, file), "utf8"), BRAND_UTILITY);
     expect(
       violations,
       "brand is identity, not state: hover/focus/selected use accent and ring",
     ).toEqual([]);
   });
-
-  it.each(Object.entries(BRAND_ALLOWED))(
-    "allowlist entry %s is still needed",
-    (file, { classes }) => {
-      expect(checkedFiles).toContain(file);
-      const present = findViolations(readFileSync(join(UI_ROOT, file), "utf8"), BRAND_UTILITY);
-      expect(classes.filter((token) => !present.includes(token))).toEqual([]);
-    },
-  );
 });
 
 describe("findViolations", () => {

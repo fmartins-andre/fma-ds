@@ -35,7 +35,7 @@ import type { CalendarView } from "./event-calendar-types";
 /** Configured nav button variant/size (viewConfig.navButtonVariant/Size)
  *  plus the shared classNames.navButton hook, merged on every nav button. */
 function useNavButtonProps(): {
-  variant: "ghost" | "outline" | "secondary" | "default";
+  variant: "ghost" | "outline" | "soft" | "solid";
   size: "sm" | "default";
   iconSize: "icon-sm" | "icon";
   className: string | undefined;

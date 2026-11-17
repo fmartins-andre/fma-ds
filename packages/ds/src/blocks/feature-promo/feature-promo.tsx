@@ -162,7 +162,7 @@ function FeaturePromoBenefit({
       className={cn("flex items-center gap-3 text-base font-medium", className)}
       {...props}
     >
-      <IconTile variant="soft" radius="full" aria-hidden="true">
+      <IconTile variant="soft" tone="primary" radius="full" aria-hidden="true">
         {icon}
       </IconTile>
       <span>{children}</span>

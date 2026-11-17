@@ -27,13 +27,8 @@ export function ContrastBadge({
   const level = contrastLevel(ratio);
   return (
     <Badge
-      variant={
-        level === "Fail"
-          ? "destructive-light"
-          : level === "AA18"
-            ? "warning-light"
-            : "success-light"
-      }
+      variant="soft"
+      tone={level === "Fail" ? "destructive" : level === "AA18" ? "warning" : "success"}
       title={t(($) => $.contrast.badge, { ratio: ratio.toFixed(2) })}
     >
       {ratio.toFixed(1)}{" "}

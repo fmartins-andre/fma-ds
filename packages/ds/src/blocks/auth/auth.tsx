@@ -202,12 +202,13 @@ function ResendCode({
   return (
     <Button
       data-slot="resend-code"
-      variant="link"
+      variant="ghost"
+      tone="primary"
       size="sm"
       isDisabled={left > 0}
       isPending={isPending}
       onPress={resend}
-      className={cn("h-auto px-0 tabular-nums", className)}
+      className={cn("tabular-nums", className)}
       {...props}
     >
       {left > 0 ? labels.resendIn(formatCooldown(left)) : labels.resend}

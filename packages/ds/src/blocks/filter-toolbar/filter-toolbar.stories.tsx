@@ -315,7 +315,7 @@ export const Default: Story = {
                 <span className="truncate font-medium">{client.name}</span>
                 <span className="text-sm text-muted-foreground">{client.document}</span>
               </div>
-              <Badge variant={client.status === "ativo" ? "success-dot" : "destructive-dot"}>
+              <Badge variant="ghost" tone={client.status === "ativo" ? "success" : "destructive"}>
                 {STATUS_LABELS[client.status]}
               </Badge>
             </li>

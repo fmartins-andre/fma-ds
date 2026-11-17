@@ -203,9 +203,12 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    `apps/web/src/theme-editor/` (listado em `TYPOGRAPHY_SETTINGS` ou `OTHER_SETTINGS`).
    `tests/theme-editor-coverage.test.ts` e o type-check do `apps/web` (`SETTINGS_COVERED`)
    falham se faltar algum elo.
-11. **Tokens de estado** (doc de theming do shadcn): hover/focus/selecionado/hoje/intervalo usam
-   `bg-accent` + `text-accent-foreground`; `muted` é só superfície estática (zebra, footer,
-   skeleton) e texto secundário. Nunca `bg-muted` nem `bg-foreground/N` como destaque de
+11. **Tokens de estado** (doc de theming do shadcn): `accent` / `accent-foreground` = destaque de
+   **item numa coleção** (hover, foco, selecionado, hoje, intervalo; menu, listbox, combobox,
+   calendário, linha de tabela). A família `muted` = hover de **controles neutros** (botões e
+   triggers do tom neutral): o hover do tom neutral da lib de tons é `--tone-hover` = `--muted`
+   (`neutral` em `src/lib/tone.ts`), caso permitido. `muted` estático continua para zebra, footer,
+   skeleton e texto secundário. Fora isso, nunca `bg-muted` nem `bg-foreground/N` como destaque de
    interação — os estilos `*-nova` do shadcn fazem isso; corrija ao vendorizar. Exigido em
    componentes `customized`/`original` e blocos por `tests/interaction-tokens.test.ts`
    (exceções no `ALLOWED`, com motivo). Detalhes no `CONTRIBUTING.md`.

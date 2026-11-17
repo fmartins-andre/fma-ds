@@ -120,7 +120,7 @@ export const Login: Story = {
             }}
           >
             {error && (
-              <Alert variant="destructive">
+              <Alert variant="soft" tone="destructive">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -224,7 +224,7 @@ export const ForgotPassword: Story = {
             description={`Se ${sentTo} tiver uma conta, você vai receber um código para redefinir a senha.`}
           >
             <div className="flex justify-center">
-              <IconTile variant="soft" size="lg">
+              <IconTile variant="soft" tone="primary" size="lg">
                 <MailCheckIcon />
               </IconTile>
             </div>
@@ -551,7 +551,7 @@ export const SignUp: Story = {
           >
             <FormWizardSteps />
             {error && (
-              <Alert variant="destructive">
+              <Alert variant="soft" tone="destructive">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

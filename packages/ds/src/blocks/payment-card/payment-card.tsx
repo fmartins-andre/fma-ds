@@ -202,7 +202,7 @@ function PaymentCardRemove({ onRemove, i18n, className, ...props }: PaymentCardR
   return (
     <>
       <Button
-        variant="destructive"
+        tone="destructive"
         className={className}
         onPress={() => void dialog.open()}
         {...props}

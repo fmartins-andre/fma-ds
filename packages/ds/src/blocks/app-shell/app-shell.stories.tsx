@@ -403,7 +403,7 @@ const CLIENT_COLUMNS: ColumnDef<DataGridFeatures, Client>[] = [
     size: 130,
     minSize: 130,
     cell: ({ row }) => (
-      <Badge variant={row.original.status === "Ativo" ? "success-light" : "warning-light"}>
+      <Badge variant="soft" tone={row.original.status === "Ativo" ? "success" : "warning"}>
         {row.original.status}
       </Badge>
     ),
@@ -797,7 +797,7 @@ function BuyInvoicesPage() {
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
           <Card>
             <CardHeader className="flex items-start gap-3">
-              <IconTile variant="soft" className="shrink-0 text-primary">
+              <IconTile variant="soft" tone="primary" className="shrink-0">
                 <FileTextIcon />
               </IconTile>
               <div className="flex min-w-0 flex-col gap-1">

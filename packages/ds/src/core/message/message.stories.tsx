@@ -58,7 +58,7 @@ export const Sent: Story = {
   render: (args) => (
     <Message {...args} className="w-96">
       <MessageContent>
-        <Bubble align="end" variant="tinted">
+        <Bubble align="end" variant="soft" tone="primary">
           <BubbleContent>Nice, thanks!</BubbleContent>
         </Bubble>
       </MessageContent>
@@ -82,7 +82,7 @@ export const Conversation: Story = {
       </Message>
       <Message align="end">
         <MessageContent>
-          <Bubble align="end" variant="tinted">
+          <Bubble align="end" variant="soft" tone="primary">
             <BubbleContent>All 59 components vendored!</BubbleContent>
           </Bubble>
         </MessageContent>

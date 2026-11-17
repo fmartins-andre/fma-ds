@@ -176,7 +176,7 @@ export const WithIcons: Story = {
         date: new Date("2026-10-19T15:02:00Z"),
         href: "/pedidos/1204",
         icon: (
-          <IconTile size="sm" variant="soft" className="text-destructive">
+          <IconTile size="sm" variant="soft" tone="destructive">
             <ShieldAlertIcon />
           </IconTile>
         ),
@@ -188,7 +188,7 @@ export const WithIcons: Story = {
         date: new Date("2026-10-18T11:30:00Z"),
         href: "/relatorios",
         icon: (
-          <IconTile size="sm" variant="soft">
+          <IconTile size="sm" variant="soft" tone="primary">
             <ReceiptIcon />
           </IconTile>
         ),
@@ -200,7 +200,7 @@ export const WithIcons: Story = {
         href: "/relatorios",
         isRead: true,
         icon: (
-          <IconTile size="sm" variant="soft">
+          <IconTile size="sm" variant="soft" tone="primary">
             <FileTextIcon />
           </IconTile>
         ),

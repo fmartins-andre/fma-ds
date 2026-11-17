@@ -120,6 +120,7 @@ import {
   brandSurface,
 } from "@/lib/brand";
 import { SHADOW_SIZES } from "@/lib/theme/index";
+import { TONES, type Variant } from "@/lib/tone";
 import { cn } from "@/lib/utils";
 
 const PAYMENTS = [
@@ -130,36 +131,26 @@ const PAYMENTS = [
 ] as const;
 
 const STATUS_BADGE = {
-  Paid: "success-light",
-  Pending: "warning-light",
-  Failed: "destructive-light",
+  Paid: "success",
+  Pending: "warning",
+  Failed: "destructive",
 } as const;
 
 const CHART = [62, 88, 45, 74, 96, 58, 80];
 
-type BadgeVariant = keyof typeof badgeVariantsConfig.variant;
+// Every variant (a row) in every tone, read from the component and the tone lib so a new
+// one shows up here on its own. The row labels are the existing "solid/light/outline/dot".
+const BADGE_ROW_LABELS = {
+  solid: "solid",
+  soft: "light",
+  outline: "outline",
+  ghost: "dot",
+} as const satisfies Record<Variant, string>;
 
-// Every badge variant, read from the component so a new one shows up here on its own.
-const BADGE_VARIANTS = Object.keys(badgeVariantsConfig.variant) as BadgeVariant[];
-
-const BADGE_GROUPS = [
-  { label: "light", suffix: "-light" },
-  { label: "outline", suffix: "-outline" },
-  { label: "dot", suffix: "-dot" },
-] as const;
-
-const BADGE_ROWS = [
-  {
-    label: "solid" as const,
-    variants: BADGE_VARIANTS.filter((variant) =>
-      BADGE_GROUPS.every(({ suffix }) => !variant.endsWith(suffix)),
-    ),
-  },
-  ...BADGE_GROUPS.map(({ label, suffix }) => ({
-    label,
-    variants: BADGE_VARIANTS.filter((variant) => variant.endsWith(suffix)),
-  })),
-];
+const BADGE_ROWS = (Object.keys(badgeVariantsConfig.variant) as Variant[]).map((variant) => ({
+  variant,
+  label: BADGE_ROW_LABELS[variant],
+}));
 
 function AccountCard() {
   const { t } = useTranslation("showcase");
@@ -266,7 +257,7 @@ function PaymentsCard() {
                 <TableCell className="font-mono text-xs">{payment.id}</TableCell>
                 <TableCell>{payment.customer}</TableCell>
                 <TableCell>
-                  <Badge variant={STATUS_BADGE[payment.status]}>
+                  <Badge variant="soft" tone={STATUS_BADGE[payment.status]}>
                     {t(($) => $.payments[payment.status])}
                   </Badge>
                 </TableCell>
@@ -289,32 +280,32 @@ function AlertsStack() {
         <AlertTitle>{t(($) => $.alerts.signInTitle)}</AlertTitle>
         <AlertDescription>{t(($) => $.alerts.signInText)}</AlertDescription>
       </Alert>
-      <Alert variant="info">
+      <Alert variant="soft" tone="info">
         <Info />
         <AlertTitle>{t(($) => $.alerts.infoTitle)}</AlertTitle>
         <AlertDescription>{t(($) => $.alerts.infoText)}</AlertDescription>
       </Alert>
-      <Alert variant="success">
+      <Alert variant="soft" tone="success">
         <CircleCheck />
         <AlertTitle>{t(($) => $.alerts.savedTitle)}</AlertTitle>
         <AlertDescription>{t(($) => $.alerts.savedText)}</AlertDescription>
       </Alert>
-      <Alert variant="warning">
+      <Alert variant="soft" tone="warning">
         <TriangleAlert />
         <AlertTitle>{t(($) => $.alerts.storageTitle)}</AlertTitle>
         <AlertDescription>{t(($) => $.alerts.storageText)}</AlertDescription>
       </Alert>
-      <Alert variant="destructive">
+      <Alert variant="soft" tone="destructive">
         <CircleAlert />
         <AlertTitle>{t(($) => $.alerts.paymentTitle)}</AlertTitle>
         <AlertDescription>{t(($) => $.alerts.paymentText)}</AlertDescription>
       </Alert>
-      <Alert variant="invert">
+      <Alert variant="solid" tone="neutral">
         <Sparkles />
         <AlertTitle>{t(($) => $.alerts.tipTitle)}</AlertTitle>
         <AlertDescription>{t(($) => $.alerts.tipText)}</AlertDescription>
       </Alert>
-      <Alert variant="brand">
+      <Alert variant="solid" tone="brand">
         <Sparkles />
         <AlertTitle>{t(($) => $.alerts.aiTitle)}</AlertTitle>
         <AlertDescription>{t(($) => $.alerts.aiText)}</AlertDescription>
@@ -333,11 +324,15 @@ function ControlsCard() {
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-wrap gap-2">
           <Button>{t(($) => $.controls.default)}</Button>
-          <Button variant="secondary">{t(($) => $.controls.secondary)}</Button>
+          <Button variant="soft" tone="primary">
+            {t(($) => $.controls.soft)}
+          </Button>
           <Button variant="outline">{t(($) => $.controls.outline)}</Button>
           <Button variant="ghost">{t(($) => $.controls.ghost)}</Button>
-          <Button variant="destructive">{t(($) => $.controls.destructive)}</Button>
-          <Button variant="link">{t(($) => $.controls.link)}</Button>
+          <Button tone="destructive">{t(($) => $.controls.destructive)}</Button>
+          <Button variant="ghost" tone="primary">
+            {t(($) => $.controls.ghostPrimary)}
+          </Button>
         </div>
         <Progress value={64}>
           <ProgressLabel>{t(($) => $.controls.uploading)}</ProgressLabel>
@@ -393,7 +388,9 @@ function ControlsCard() {
                 </DialogHeader>
                 <DialogFooter>
                   <DialogClose>{t(($) => $.controls.cancel)}</DialogClose>
-                  <DialogClose variant="destructive">{t(($) => $.controls.delete)}</DialogClose>
+                  <DialogClose variant="solid" tone="destructive">
+                    {t(($) => $.controls.delete)}
+                  </DialogClose>
                 </DialogFooter>
               </Dialog>
             </DialogTrigger>
@@ -476,13 +473,13 @@ function BadgesCard() {
         <CardDescription>{t(($) => $.badges.description)}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
-        {BADGE_ROWS.map(({ label, variants }) => (
+        {BADGE_ROWS.map(({ variant, label }) => (
           <div key={label} className="flex flex-col gap-1.5">
             <span className="text-xs text-muted-foreground">{t(($) => $.badges[label])}</span>
             <div className="flex flex-wrap gap-1.5">
-              {variants.map((variant) => (
-                <Badge key={variant} variant={variant}>
-                  {variant}
+              {TONES.map((tone) => (
+                <Badge key={tone} variant={variant} tone={tone}>
+                  {tone}
                 </Badge>
               ))}
             </div>
@@ -499,10 +496,10 @@ function BadgesCard() {
               </Badge>
             ))}
             <Badge radius="full">full</Badge>
-            <Badge radius="full" variant="success-light">
+            <Badge radius="full" variant="soft" tone="success">
               full
             </Badge>
-            <Badge radius="full" variant="primary-dot">
+            <Badge radius="full" variant="ghost" tone="primary">
               full
             </Badge>
           </div>
@@ -543,7 +540,9 @@ function BrandCard() {
               {t(($) => $.brand.checking)}
             </div>
           </div>
-          <Badge variant="brand-light">{t(($) => $.brand.new)}</Badge>
+          <Badge variant="soft" tone="brand">
+            {t(($) => $.brand.new)}
+          </Badge>
         </div>
       </CardContent>
     </Card>

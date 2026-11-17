@@ -83,7 +83,42 @@ export const Default: Story = {
   },
 };
 
-/** `tone` tints the trigger and the panel's media, like `Alert`. */
+/**
+ * `variant` sets the trigger's surface: `solid`, `soft` or `outline` (the default). The box
+ * is the same in all three.
+ */
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2">
+      {(["solid", "soft", "outline"] as const).map((variant) => (
+        <Glance key={variant} variant={variant} tone="info">
+          <GlanceTrigger>
+            <InfoIcon />
+            <GlanceText>
+              <GlanceLabel>Novidade</GlanceLabel>
+              <GlanceValue>Relatórios</GlanceValue>
+            </GlanceText>
+          </GlanceTrigger>
+          <GlanceContent>
+            <GlanceTitle>Relatórios disponíveis</GlanceTitle>
+          </GlanceContent>
+        </Glance>
+      ))}
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const triggers = canvas.getAllByRole("button", { name: /Novidade/ });
+    await expect(triggers.map((trigger) => trigger.dataset.variant)).toEqual([
+      "solid",
+      "soft",
+      "outline",
+    ]);
+    const heights = triggers.map((trigger) => trigger.getBoundingClientRect().height);
+    await expect(new Set(heights).size).toBe(1);
+  },
+};
+
+/** `tone` colors the trigger and the panel's media, in any variant. */
 export const Tones: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-2">
@@ -142,7 +177,7 @@ export const Tones: Story = {
 /** An account notice: what happened, what it means and how to fix it. */
 export const Notice: Story = {
   render: () => (
-    <Glance tone="warning">
+    <Glance variant="soft" tone="warning">
       <GlanceTrigger>
         <ReceiptIcon />
         <GlanceText>

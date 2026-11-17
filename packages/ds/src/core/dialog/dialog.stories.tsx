@@ -292,7 +292,7 @@ function CancelReceiptDialog({ controller }: { controller: DialogController<Rece
             <Button variant="outline" onPress={controller.cancel}>
               Voltar
             </Button>
-            <Button variant="destructive" onPress={run}>
+            <Button tone="destructive" onPress={run}>
               Cancelar recebimento
             </Button>
           </DialogFooter>
@@ -414,7 +414,7 @@ export const Phases: Story = {
               #{receipt.id} · {receipt.customer} · {receipt.amount}
             </span>
             {cancelled.includes(receipt.id) ? (
-              <Badge variant="muted">Cancelado</Badge>
+              <Badge variant="soft">Cancelado</Badge>
             ) : (
               <Button
                 variant="outline"
@@ -566,7 +566,10 @@ export const RecordDetails: Story = {
                 <span className="text-base font-medium text-foreground tabular-nums">
                   R$ 1.227,60
                 </span>
-                <Badge variant={status === "Cancelada" ? "muted-outline" : "info-dot"}>
+                <Badge
+                  variant={status === "Cancelada" ? "outline" : "ghost"}
+                  tone={status === "Cancelada" ? "neutral" : "info"}
+                >
                   {status}
                 </Badge>
                 <span>Vencimento 15/11/2026</span>

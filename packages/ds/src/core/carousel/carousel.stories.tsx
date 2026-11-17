@@ -126,7 +126,7 @@ export const Autoplay: Story = {
         ].map((banner) => (
           <CarouselItem key={banner.title}>
             <div className="flex items-center gap-4 rounded-xl border bg-card p-6">
-              <IconTile variant="soft" size="lg">
+              <IconTile variant="soft" tone="primary" size="lg">
                 {banner.icon}
               </IconTile>
               <div className="flex flex-col gap-1">

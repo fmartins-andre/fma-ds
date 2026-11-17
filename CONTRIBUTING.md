@@ -219,21 +219,22 @@ que cada tema controle a cor de interação de forma coerente em todos os compon
 
 | Token | Uso | Exemplos |
 | --- | --- | --- |
-| `accent` / `accent-foreground` | Superfície de **interação**: hover, focus, item ativo/selecionado | item de menu/select/combobox/command em foco, linha de tabela em hover ou selecionada, dia de hoje e meio de intervalo no calendário |
-| `muted` / `muted-foreground` | Superfície **estática** sutil e texto secundário | zebra e coluna fixada da tabela, footer, skeleton, descrições, placeholders |
+| `accent` / `accent-foreground` | Destaque de **item numa coleção**: hover, focus, ativo/selecionado, hoje, intervalo | item de menu/select/combobox/command em foco, linha de tabela em hover ou selecionada, dia de hoje e meio de intervalo no calendário |
+| `muted` / `muted-foreground` | Hover de **controles neutros** (botões e triggers do tom neutral, `--tone-hover` = `--muted` em `src/lib/tone.ts`); superfície **estática** sutil e texto secundário | zebra e coluna fixada da tabela, footer, skeleton, descrições, placeholders |
 | `primary` | Seleção de alta ênfase | dia selecionado, pontas de um intervalo |
 
 Regras:
 
-- Estado interativo usa `bg-accent` com `text-accent-foreground` (ou `bg-accent/50` sem trocar o
-  texto, para hover leve de linha). Nunca `bg-muted` nem `bg-foreground/N`.
+- Destaque de item usa `bg-accent` com `text-accent-foreground` (ou `bg-accent/50` sem trocar o
+  texto, para hover leve de linha). Nunca `bg-muted` nem `bg-foreground/N` num item de coleção;
+  o hover `muted` só vale para controles neutros, como o tom neutral da lib de tons.
 - Os estilos `*-nova` do shadcn divergem da própria doc (calendar e command com `muted`, e o
   `aria-nova` pinta itens em foco com `bg-foreground/10` no popover, sobrescrevendo o
   `bg-accent` do item). Ao vendorizar/atualizar um componente, confira e corrija isso.
 - O gate `packages/ds/tests/interaction-tokens.test.ts` verifica componentes `customized` e
   `original` e todos os blocos. Exceções vão no `ALLOWED` desse teste, com o motivo; hoje são
-  os controles com cara de botão ghost (badge, triggers do menubar e navigation-menu), que
-  acompanham o `Button` e continuam `muted`, e o segmento em foco do date-field.
+  os controles neutros com cara de botão (triggers do menubar e navigation-menu), que seguem o
+  hover `muted` do tom neutral, o toggle e o segmento em foco do date-field.
 
 ## Storybook e testes
 

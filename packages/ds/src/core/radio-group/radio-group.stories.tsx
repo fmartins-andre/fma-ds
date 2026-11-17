@@ -113,7 +113,7 @@ export const ChoiceCard: Story = {
     <RadioGroup {...args} className="w-96">
       <Label>Forma de pagamento</Label>
       <RadioCard value="card">
-        <IconTile variant="soft" size="sm">
+        <IconTile variant="soft" tone="primary" size="sm">
           <CreditCardIcon />
         </IconTile>
         <FieldContent>
@@ -122,7 +122,7 @@ export const ChoiceCard: Story = {
         </FieldContent>
       </RadioCard>
       <RadioCard value="pix">
-        <IconTile variant="soft" size="sm">
+        <IconTile variant="soft" tone="primary" size="sm">
           <QrCodeIcon />
         </IconTile>
         <FieldContent>
@@ -131,7 +131,7 @@ export const ChoiceCard: Story = {
         </FieldContent>
       </RadioCard>
       <RadioCard value="boleto">
-        <IconTile variant="soft" size="sm">
+        <IconTile variant="soft" tone="primary" size="sm">
           <BarcodeIcon />
         </IconTile>
         <FieldContent>

@@ -321,7 +321,8 @@ function NotificationItemStatus({ className }: { className?: string }) {
     return (
       <Badge
         data-slot="notification-status"
-        variant={isRead ? "muted-dot" : "primary-dot"}
+        variant="ghost"
+        tone={isRead ? "neutral" : "primary"}
         className={className}
       >
         {isRead ? labels.read : labels.unread}

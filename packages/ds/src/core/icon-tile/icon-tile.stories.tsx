@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CircleCheckIcon, SparklesIcon, TriangleAlertIcon } from "lucide-react";
 import { expect } from "storybook/test";
+import { TONES, VARIANTS } from "@/lib/tone";
 import { IconTile } from "./icon-tile";
 import meta from "./meta.json";
 
-const VARIANTS = ["outline", "elevated", "soft", "solid", "frame"] as const;
 const SIZES = ["xs", "sm", "default", "lg", "xl"] as const;
 
 const componentMeta = {
@@ -17,6 +17,7 @@ const componentMeta = {
   },
   argTypes: {
     variant: { control: "select", options: VARIANTS },
+    tone: { control: "select", options: TONES },
     size: { control: "select", options: SIZES },
     radius: { control: "radio", options: ["default", "full"] },
   },
@@ -33,6 +34,10 @@ type Story = StoryObj<typeof componentMeta>;
 
 export const Default: Story = {};
 
+/**
+ * `solid`, `soft`, `outline` and `ghost` share one footprint: `ghost` is only the icon, at
+ * the tile's size, so switching variants never moves the layout.
+ */
 export const Variants: Story = {
   render: (args) => (
     <div className="flex items-center gap-3">
@@ -43,7 +48,10 @@ export const Variants: Story = {
   ),
   play: async ({ canvas }) => {
     for (const variant of VARIANTS) {
-      await expect(canvas.getByLabelText(variant)).toHaveAttribute("data-variant", variant);
+      const tile = canvas.getByLabelText(variant);
+      await expect(tile).toHaveAttribute("data-variant", variant);
+      const { width, height } = tile.getBoundingClientRect();
+      await expect([width, height]).toEqual([40, 40]);
     }
   },
 };
@@ -66,23 +74,23 @@ export const Sizes: Story = {
 
 /** `full` makes the tile circular. */
 export const RadiusFull: Story = {
-  args: { radius: "full", variant: "soft" },
+  args: { radius: "full", variant: "soft", tone: "primary" },
 };
 
-/** `soft` and `solid` follow `currentColor`: one text color class retints the tile. */
+/** `tone` colors any variant: here `soft` and `solid` in status tones. */
 export const Tones: Story = {
   render: (args) => (
     <div className="flex items-center gap-3">
-      <IconTile {...args} variant="soft" className="text-success">
+      <IconTile {...args} variant="soft" tone="success">
         <CircleCheckIcon />
       </IconTile>
-      <IconTile {...args} variant="soft" className="text-warning">
+      <IconTile {...args} variant="soft" tone="warning">
         <TriangleAlertIcon />
       </IconTile>
-      <IconTile {...args} variant="solid" className="bg-success text-background">
+      <IconTile {...args} variant="solid" tone="success">
         <CircleCheckIcon />
       </IconTile>
-      <IconTile {...args} variant="solid" className="bg-destructive text-background">
+      <IconTile {...args} variant="solid" tone="destructive">
         <TriangleAlertIcon />
       </IconTile>
     </div>

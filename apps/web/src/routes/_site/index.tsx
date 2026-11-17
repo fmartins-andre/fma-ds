@@ -43,7 +43,7 @@ function Home() {
     <div className="mx-auto max-w-screen-2xl px-4 md:px-6">
       <section className="flex flex-col items-center gap-4 py-16 text-center md:py-24">
         <Link href="/blocks" className="outline-none">
-          <Badge variant="secondary" className="gap-1">
+          <Badge variant="soft" className="gap-1">
             {t(($) => $.home.counts, {
               components: COMPONENTS.length,
               blocks: BLOCKS.length,

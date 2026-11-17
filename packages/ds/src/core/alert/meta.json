@@ -3,6 +3,6 @@
   "category": "feedback",
   "status": "stable",
   "source": "customized",
-  "description": "A callout for important, static information — supports an icon, title, description, and an optional action, with semantic variants (destructive/info/success/warning/invert) and a `brand` variant for announcements and promos in the theme's second identity color.",
+  "description": "A callout for important, static information — supports an icon, title, description, and an optional action. `variant` sets the surface (`outline`, the default, `soft` or `solid`) and `tone` the color (`neutral`, `primary`, `brand`, `success`, `warning`, `info` or `destructive`; the default is primary for solid, neutral otherwise). Status alerts are usually `soft` in the status tone; `solid` with `tone=\"brand\"` is for announcements and promos in the theme's second identity color.",
   "tags": ["feedback", "callout"]
 }

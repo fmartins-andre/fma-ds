@@ -1,6 +1,7 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { cn } from "cn";
 import type * as React from "react";
+import { defaultTone, type Tone, toneVariants, type Variant } from "@/lib/tone";
 
 function BubbleGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -12,48 +13,60 @@ function BubbleGroup({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-const bubbleVariants = cva(
-  "group/bubble relative flex w-fit max-w-[80%] min-w-0 flex-col gap-1 group-data-[align=end]/message:self-end data-[align=end]:self-end data-[variant=ghost]:max-w-full",
+type BubbleVariant = Exclude<Variant, "ghost">;
+
+// Variant recipes (docs/plans/tone-variant-standard.md): every variant reads the --tone-*
+// variables that `toneVariants` sets on the root and paints the content slot; the content keeps
+// its transparent border from the base so switching variants never changes the box.
+const bubbleVariantsConfig = {
+  variant: {
+    solid:
+      "*:data-[slot=bubble-content]:bg-(--tone) *:data-[slot=bubble-content]:text-(color:--tone-foreground) [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))]",
+    soft: "*:data-[slot=bubble-content]:bg-(--tone-soft) *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-(--tone-soft-hover)",
+    outline:
+      "*:data-[slot=bubble-content]:border-(--tone-line) *:data-[slot=bubble-content]:bg-background *:data-[slot=bubble-content]:text-(color:--tone-text) [&>[data-slot=bubble-content]:is(button,a):hover]:bg-(--tone-hover)",
+  },
+} satisfies { variant: Record<BubbleVariant, string> };
+
+const bubbleCva = cva(
+  "group/bubble relative flex w-fit max-w-[80%] min-w-0 flex-col gap-1 group-data-[align=end]/message:self-end data-[align=end]:self-end",
   {
-    variants: {
-      variant: {
-        default:
-          "*:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80",
-        secondary:
-          "*:data-[slot=bubble-content]:bg-secondary *:data-[slot=bubble-content]:text-secondary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]",
-        muted:
-          "*:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]",
-        tinted:
-          "*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] *:data-[slot=bubble-content]:text-foreground dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]",
-        outline:
-          "*:data-[slot=bubble-content]:border-border *:data-[slot=bubble-content]:bg-background [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:text-foreground dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-input/30",
-        ghost:
-          "border-none *:data-[slot=bubble-content]:rounded-none *:data-[slot=bubble-content]:bg-transparent *:data-[slot=bubble-content]:p-0 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:text-foreground dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted/50",
-        destructive:
-          "*:data-[slot=bubble-content]:bg-destructive/10 *:data-[slot=bubble-content]:text-destructive dark:*:data-[slot=bubble-content]:bg-destructive/20 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30",
-      },
-    },
+    variants: bubbleVariantsConfig,
     defaultVariants: {
-      variant: "default",
+      variant: "solid",
     },
   },
 );
 
+type BubbleVariantProps = {
+  /** The surface: `solid` (the default), `soft` or `outline`. */
+  variant?: BubbleVariant;
+  /** Defaults to `defaultTone(variant)`: primary for solid, neutral otherwise. */
+  tone?: Tone;
+  className?: string;
+};
+
+function bubbleVariants({ variant = "solid", tone, className }: BubbleVariantProps = {}) {
+  return cn(bubbleCva({ variant }), toneVariants[tone ?? defaultTone(variant)], className);
+}
+
 function Bubble({
-  variant = "default",
+  variant = "solid",
+  tone,
   align = "start",
   className,
   ...props
 }: React.ComponentProps<"div"> &
-  VariantProps<typeof bubbleVariants> & {
+  Omit<BubbleVariantProps, "className"> & {
     align?: "start" | "end";
   }) {
   return (
     <div
       data-slot="bubble"
       data-variant={variant}
+      data-tone={tone ?? defaultTone(variant)}
       data-align={align}
-      className={cn(bubbleVariants({ variant }), className)}
+      className={bubbleVariants({ variant, tone, className })}
       {...props}
     />
   );
@@ -135,4 +148,11 @@ function BubbleReactions({
   );
 }
 
-export { Bubble, BubbleContent, BubbleGroup, BubbleReactions };
+export {
+  Bubble,
+  BubbleContent,
+  BubbleGroup,
+  BubbleReactions,
+  bubbleVariants,
+  bubbleVariantsConfig,
+};

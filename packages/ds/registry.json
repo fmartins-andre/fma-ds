@@ -40,7 +40,7 @@
       "name": "alert",
       "type": "registry:ui",
       "title": "Alert",
-      "description": "A callout for important, static information — supports an icon, title, description, and an optional action, with semantic variants (destructive/info/success/warning/invert) and a `brand` variant for announcements and promos in the theme's second identity color.",
+      "description": "A callout for important, static information — supports an icon, title, description, and an optional action. `variant` sets the surface (`outline`, the default, `soft` or `solid`) and `tone` the color (`neutral`, `primary`, `brand`, `success`, `warning`, `info` or `destructive`; the default is primary for solid, neutral otherwise). Status alerts are usually `soft` in the status tone; `solid` with `tone=\"brand\"` is for announcements and promos in the theme's second identity color.",
       "author": "@fma-ds/ds",
       "categories": [
         "feedback"
@@ -51,6 +51,9 @@
           "target": "components/fma-ds/alert.tsx",
           "type": "registry:component"
         }
+      ],
+      "registryDependencies": [
+        "@fma-ds/tone"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -64,7 +67,7 @@
           "feedback",
           "callout"
         ],
-        "contentHash": "edbe58a0f0b5"
+        "contentHash": "5d2e30cb3378"
       }
     },
     {
@@ -320,7 +323,7 @@
           "password",
           "otp"
         ],
-        "contentHash": "83f12a5fe7c6"
+        "contentHash": "3345468acc83"
       }
     },
     {
@@ -358,7 +361,7 @@
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
-      "description": "A small label for status, count, or category — inline with text or attached to another element.\n\n- **Semantic variants**: info, success, warning, destructive and invert, in solid, `-light` and `-outline` styles.\n- **Neutral**: `muted`/`muted-outline` for inactive or pending states.\n- **Brand**: `brand`, `brand-light`, `brand-outline` and `brand-dot` in the theme's second identity color, for identity labels (\"New\", \"AI\", \"Pro\"), never for status.\n- **Dots**: a `*-dot` family (primary, secondary, brand, success, warning, info, destructive, muted) that shows a colored dot before plain text, for select items and dense lists.\n- **Shape**: size and radius options.\n\nCan also render as a link.",
+      "description": "A small label for status, count, or category — inline with text or attached to another element.\n\n- **Variants**: `solid` (default), `soft`, `outline` and `ghost`. Ghost is a dot before plain text with no surface, for select items and dense lists.\n- **Tones**: `tone` picks the color of any variant: brand, primary, neutral, success, warning, info or destructive. The default is primary for solid and neutral otherwise.\n- **Brand**: the theme's second identity color, for identity labels (\"New\", \"AI\", \"Pro\"), never for status.\n- **Shape**: size and radius options.\n\nCan also render as a link.",
       "author": "@fma-ds/ds",
       "categories": [
         "data-display"
@@ -369,6 +372,9 @@
           "target": "components/fma-ds/badge.tsx",
           "type": "registry:component"
         }
+      ],
+      "registryDependencies": [
+        "@fma-ds/tone"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -383,7 +389,7 @@
           "status",
           "label"
         ],
-        "contentHash": "1d2a961ad3bd"
+        "contentHash": "78dbc28922bc"
       }
     },
     {
@@ -455,7 +461,7 @@
       "name": "bubble",
       "type": "registry:ui",
       "title": "Bubble",
-      "description": "A single chat message bubble — start/end alignment for sent vs. received, several color variants, and an optional reactions pill overlaid on a corner.",
+      "description": "A single chat message bubble — start/end alignment for sent vs. received, a `variant` (solid, soft or outline) crossed with a `tone`; the default tone is primary for solid and neutral otherwise, and an optional reactions pill overlaid on a corner.",
       "author": "@fma-ds/ds",
       "categories": [
         "chat"
@@ -467,26 +473,29 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/tone"
+      ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
         "cn@^0.5.2"
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "chat",
           "message"
         ],
-        "contentHash": "d8c23fa4e803"
+        "contentHash": "aa3f3573a3c3"
       }
     },
     {
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
-      "description": "Displays a button, or a component that looks like one, with a set of visual variants and sizes. Also exports LinkButton (react-aria-components' Link, same variants) for link-as-button use cases.",
+      "description": "Displays a button, or a component that looks like one, in four variants (solid, soft, outline, ghost) × seven tones and a set of sizes. Also exports LinkButton (react-aria-components' Link, same variants and tones) for link-as-button use cases.",
       "author": "@fma-ds/ds",
       "categories": [
         "buttons"
@@ -498,6 +507,9 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/tone"
+      ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
         "cn@^0.5.2",
@@ -505,7 +517,7 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components). No asChild — use LinkButton for a link styled as a button, and isDisabled instead of disabled.",
         "tags": [
@@ -514,7 +526,7 @@
           "react-aria",
           "nova"
         ],
-        "contentHash": "a6504d2df11f"
+        "contentHash": "af523517381c"
       }
     },
     {
@@ -1083,7 +1095,7 @@
           "confirm",
           "alert"
         ],
-        "contentHash": "3f6030e54d9d"
+        "contentHash": "ca16230f3468"
       }
     },
     {
@@ -1274,7 +1286,7 @@
           "tanstack",
           "react-aria"
         ],
-        "contentHash": "edbdeadd3564"
+        "contentHash": "20d1022b0110"
       }
     },
     {
@@ -1897,7 +1909,7 @@
           "events",
           "recurrence"
         ],
-        "contentHash": "a034075aebce"
+        "contentHash": "7b07c6014892"
       }
     },
     {
@@ -1937,7 +1949,7 @@
           "onboarding",
           "empty-state"
         ],
-        "contentHash": "d3122ff1aacf"
+        "contentHash": "c3019f33375e"
       }
     },
     {
@@ -2149,7 +2161,7 @@
       "name": "glance",
       "type": "registry:ui",
       "title": "Glance",
-      "description": "A quick piece of information that opens more context one click away — an account notice, a balance, a count of pending items.\n\n`Glance` wraps react-aria's `DialogTrigger` and shares a `tone` (`default`, `info`, `success`, `warning`, `destructive`) with its parts.\n\n- **`GlanceTrigger`**: the compact button — an icon plus `GlanceText` (a `GlanceLabel` caption over a `GlanceValue`), or icon-only with `size=\"icon\"` and an `aria-label`.\n- **`GlanceIndicator`**: pins a dot or count to the trigger's corner.\n- **`GlanceContent`**: a popover holding a dialog (focus moves in, Escape closes, focus returns), laid out with `GlanceHeader`, `GlanceMedia` (an `IconTile` in the tone), `GlanceTitle`, `GlanceDescription` and `GlanceFooter`. Its children can be a function of `{ close }`, to close it from an action.\n\nTone tints the trigger like `Alert`, with no motion — urgency comes from tone and wording.",
+      "description": "A quick piece of information that opens more context one click away — an account notice, a balance, a count of pending items.\n\n`Glance` wraps react-aria's `DialogTrigger` and shares a `variant` (`outline`, the default, `soft` or `solid`, the trigger's surface) and a `tone` (`neutral`, `primary`, `brand`, `success`, `warning`, `info` or `destructive`; the default is primary for solid and neutral otherwise) with its parts.\n\n- **`GlanceTrigger`**: the compact button — an icon plus `GlanceText` (a `GlanceLabel` caption over a `GlanceValue`), or icon-only with `size=\"icon\"` and an `aria-label`.\n- **`GlanceIndicator`**: pins a dot or count to the trigger's corner.\n- **`GlanceContent`**: a popover holding a dialog (focus moves in, Escape closes, focus returns), laid out with `GlanceHeader`, `GlanceMedia` (an `IconTile` in the tone), `GlanceTitle`, `GlanceDescription` and `GlanceFooter`. Its children can be a function of `{ close }`, to close it from an action.\n\nTone colors the trigger like `Alert`, with no motion — urgency comes from tone and wording.",
       "author": "@fma-ds/ds",
       "categories": [
         "overlay"
@@ -2163,7 +2175,8 @@
       ],
       "registryDependencies": [
         "@fma-ds/icon-tile",
-        "@fma-ds/popover"
+        "@fma-ds/popover",
+        "@fma-ds/tone"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -2181,7 +2194,7 @@
           "status",
           "header"
         ],
-        "contentHash": "24871faccb10"
+        "contentHash": "69d6ffc5a3c5"
       }
     },
     {
@@ -2591,7 +2604,7 @@
       "name": "icon-tile",
       "type": "registry:ui",
       "title": "Icon Tile",
-      "description": "A square surface that gives icons a consistent footprint.\n\n- **`variant`**: `outline` (bordered), `elevated` (raised chip), `soft` (tinted double container), `solid` (filled) or `frame` (double container matching `Card`). `soft` and `solid` follow `currentColor`, so a text color class retints them.\n- **`size`**: from `xs` to `xl`.\n- **`radius`**: `default` (clamped to the tile) or `full` (circular).\n\nRenders a `<span>`; wrap it in a `Button` or `Link` to make it interactive.",
+      "description": "A square surface that gives icons a consistent footprint.\n\n- **`variant`**: `outline` (bordered, the default), `soft` (tinted surface), `solid` (filled) or `ghost` (only the icon). All four keep the same footprint, so switching variants never moves the layout.\n- **`tone`**: `neutral`, `primary`, `brand`, `success`, `warning`, `info` or `destructive`. The default is primary for solid and neutral otherwise.\n- **`size`**: from `xs` to `xl`.\n- **`radius`**: `default` (clamped to the tile) or `full` (circular).\n\nRenders a `<span>`; wrap it in a `Button` or `Link` to make it interactive.",
       "author": "@fma-ds/ds",
       "categories": [
         "data-display"
@@ -2602,6 +2615,9 @@
           "target": "components/fma-ds/icon-tile.tsx",
           "type": "registry:component"
         }
+      ],
+      "registryDependencies": [
+        "@fma-ds/tone"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -2617,7 +2633,7 @@
           "icon",
           "surface"
         ],
-        "contentHash": "47b0a69cb33e"
+        "contentHash": "a4e25c1c22fe"
       }
     },
     {
@@ -3135,14 +3151,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova",
         "tags": [
           "chat",
           "layout"
         ],
-        "contentHash": "866cf9356b98"
+        "contentHash": "138ba29aa1f8"
       }
     },
     {
@@ -3171,7 +3187,7 @@
       ],
       "meta": {
         "status": "experimental",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova. Built on @shadcn/react/message-scroller, not react-aria-components — upstream hasn't ported this one to the aria base yet.",
         "tags": [
@@ -3179,7 +3195,7 @@
           "scroll",
           "@shadcn/react"
         ],
-        "contentHash": "3ae18a214230"
+        "contentHash": "b60a9a71e53a"
       }
     },
     {
@@ -3325,7 +3341,7 @@
           "popover",
           "list"
         ],
-        "contentHash": "e984bb708e4a"
+        "contentHash": "610a05cf6401"
       }
     },
     {
@@ -3487,7 +3503,7 @@
           "chart",
           "status"
         ],
-        "contentHash": "8d2a82cc9862"
+        "contentHash": "da32e7b28474"
       }
     },
     {
@@ -3603,7 +3619,7 @@
           "form",
           "billing"
         ],
-        "contentHash": "13919624efa0"
+        "contentHash": "e05c1e6a7403"
       }
     },
     {
@@ -3677,7 +3693,7 @@
           "pricing",
           "subscription"
         ],
-        "contentHash": "81eb38c3fb79"
+        "contentHash": "b98d76d7c77f"
       }
     },
     {
@@ -3746,7 +3762,7 @@
           "form",
           "@shadcn/react"
         ],
-        "contentHash": "eab40ec72bc9"
+        "contentHash": "87b8b0714a13"
       }
     },
     {
@@ -4241,7 +4257,7 @@
           "totals",
           "filters"
         ],
-        "contentHash": "754dea3bfcaf"
+        "contentHash": "0d03ea9cb9df"
       }
     },
     {
@@ -8181,7 +8197,7 @@
           "popover",
           "react-aria"
         ],
-        "contentHash": "6679abb293aa"
+        "contentHash": "1ea2fe8d3947"
       }
     },
     {
@@ -8284,6 +8300,36 @@
           "react-aria"
         ],
         "contentHash": "c25eb7aa70d6"
+      }
+    },
+    {
+      "name": "tone",
+      "type": "registry:lib",
+      "title": "Tone",
+      "description": "Maps a tone to the `--tone-*` CSS variables that variant recipes read, so one recipe serves every color.\n\n- **`TONES` / `VARIANTS`**: the tone (`brand`, `primary`, `neutral`, `success`, `warning`, `info`, `destructive`) and variant (`solid`, `soft`, `outline`, `ghost`) lists.\n- **`toneVariants`**: per tone, the classes that set `--tone`, `--tone-foreground`, `--tone-soft`, `--tone-soft-hover`, `--tone-line`, `--tone-hover`, `--tone-text` and `--tone-icon`, with the dark values under `dark:`.\n- **`defaultTone`**: `primary` for `solid`, `neutral` for the rest.",
+      "author": "@fma-ds/ds",
+      "categories": [
+        "color"
+      ],
+      "files": [
+        {
+          "path": "src/lib/tone.ts",
+          "target": "lib/fma-ds/tone.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "dependencies": [],
+      "meta": {
+        "status": "experimental",
+        "source": "original",
+        "license": "MIT",
+        "tags": [
+          "color",
+          "tone",
+          "variant",
+          "theme"
+        ],
+        "contentHash": "c738f7be97a9"
       }
     },
     {

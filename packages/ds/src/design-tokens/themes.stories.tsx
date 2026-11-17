@@ -46,14 +46,18 @@ function ThemeCard({ theme, mode }: { theme: Theme; mode: ThemeMode }) {
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <Button size="sm">Primary</Button>
-        <Button size="sm" variant="secondary">
-          Secondary
+        <Button size="sm" variant="soft">
+          Soft
         </Button>
         <Button size="sm" variant="outline">
           Outline
         </Button>
-        <Badge variant="success-light">Success</Badge>
-        <Badge variant="destructive-light">Error</Badge>
+        <Badge variant="soft" tone="success">
+          Success
+        </Badge>
+        <Badge variant="soft" tone="destructive">
+          Error
+        </Badge>
       </div>
       <Input aria-label={`${theme.title} input`} placeholder="Type here…" />
     </div>

@@ -126,7 +126,7 @@ function ConfirmDialog<D = void>({
           </AlertDialogCancel>
         )}
         <Button
-          variant={tone === "destructive" ? "destructive" : "default"}
+          tone={tone === "destructive" ? "destructive" : undefined}
           isPending={isPending}
           onPress={handleConfirm}
           className={cn(isPending && "cursor-progress")}

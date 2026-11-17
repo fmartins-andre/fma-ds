@@ -79,7 +79,7 @@ test.describe("Portuguese content", () => {
     await open(page, "/components/badge");
     const main = page.getByRole("main");
     await expect(main.getByText("Um rótulo pequeno para status").first()).toBeVisible();
-    await expect(main.getByText("Status neutro: inativo")).toBeVisible();
+    await expect(main.getByText("tone escolhe a cor de qualquer variante").first()).toBeVisible();
     await expect(page).toHaveTitle("Badge · fma-ds");
   });
 

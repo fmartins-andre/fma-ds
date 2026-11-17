@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
+import { TONES, VARIANTS } from "@/lib/tone";
 import { Button, LinkButton } from "./button";
 import meta from "./meta.json";
 
@@ -14,10 +15,8 @@ const componentMeta = {
     docs: { description: { component: meta.description } },
   },
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["default", "outline", "secondary", "ghost", "destructive", "link"],
-    },
+    variant: { control: "select", options: VARIANTS },
+    tone: { control: "select", options: TONES },
     size: {
       control: "select",
       options: ["default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"],
@@ -26,7 +25,7 @@ const componentMeta = {
   },
   args: {
     children: "Button",
-    variant: "default",
+    variant: "solid",
     size: "default",
     onPress: fn(),
   },
@@ -39,17 +38,94 @@ export const Default: Story = {};
 
 export const Variants: Story = {
   parameters: {
-    docs: { description: { story: "All six visual variants, side by side." } },
+    docs: {
+      description: {
+        story:
+          "The four variants in their default tone: solid is primary, the quieter ones are neutral.",
+      },
+    },
   },
   render: (args) => (
     <div className="flex flex-wrap gap-2">
-      {(["default", "outline", "secondary", "ghost", "destructive", "link"] as const).map(
-        (variant) => (
-          <Button {...args} key={variant} variant={variant}>
-            {variant}
-          </Button>
-        ),
-      )}
+      <Button {...args} variant="solid">
+        Solid
+      </Button>
+      <Button {...args} variant="soft">
+        Soft
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    expect(canvas.getByRole("button", { name: "Solid" })).toHaveAttribute("data-tone", "primary");
+    for (const name of ["Soft", "Outline", "Ghost"]) {
+      expect(canvas.getByRole("button", { name })).toHaveAttribute("data-tone", "neutral");
+    }
+  },
+};
+
+export const Tones: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "tone picks the color of any variant: the seven tones in solid and soft.",
+      },
+    },
+  },
+  render: (args) => (
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap gap-2">
+        <Button {...args} tone="brand">
+          Brand
+        </Button>
+        <Button {...args} tone="primary">
+          Primary
+        </Button>
+        <Button {...args} tone="neutral">
+          Neutral
+        </Button>
+        <Button {...args} tone="success">
+          Success
+        </Button>
+        <Button {...args} tone="warning">
+          Warning
+        </Button>
+        <Button {...args} tone="info">
+          Info
+        </Button>
+        <Button {...args} tone="destructive">
+          Destructive
+        </Button>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Button {...args} variant="soft" tone="brand">
+          Brand
+        </Button>
+        <Button {...args} variant="soft" tone="primary">
+          Primary
+        </Button>
+        <Button {...args} variant="soft" tone="neutral">
+          Neutral
+        </Button>
+        <Button {...args} variant="soft" tone="success">
+          Success
+        </Button>
+        <Button {...args} variant="soft" tone="warning">
+          Warning
+        </Button>
+        <Button {...args} variant="soft" tone="info">
+          Info
+        </Button>
+        <Button {...args} variant="soft" tone="destructive">
+          Destructive
+        </Button>
+      </div>
     </div>
   ),
 };

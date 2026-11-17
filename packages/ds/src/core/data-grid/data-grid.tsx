@@ -1824,7 +1824,7 @@ function DataGridColumnFilter<TData extends RowData, TValue extends CellData>({
         <CirclePlusIcon aria-hidden="true" />
         {title}
         {selected.size > 0 && (
-          <Badge variant="secondary" className="ms-1 px-1 font-normal">
+          <Badge variant="soft" className="ms-1 px-1 font-normal">
             {selected.size > 2
               ? labels.filterSelected(selected.size)
               : options

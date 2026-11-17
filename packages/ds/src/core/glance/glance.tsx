@@ -11,59 +11,82 @@ import {
 } from "react-aria-components";
 import { IconTile } from "@/core/icon-tile/icon-tile";
 import { Popover, PopoverTrigger } from "@/core/popover/popover";
+import { defaultTone, type Tone, toneVariants, type Variant } from "@/lib/tone";
 
-type GlanceTone = "default" | "info" | "success" | "warning" | "destructive";
+type GlanceTone = Tone;
+type GlanceVariant = Exclude<Variant, "ghost">;
 
-const GlanceContext = React.createContext<{ tone: GlanceTone }>({ tone: "default" });
+const GlanceContext = React.createContext<{ variant: GlanceVariant; tone: Tone }>({
+  variant: "outline",
+  tone: "neutral",
+});
 
-const glanceTriggerVariants = cva(
-  "group/glance-trigger relative inline-flex shrink-0 items-center gap-2 rounded-lg border text-left text-sm whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+// Variant recipes (docs/plans/tone-variant-standard.md): every variant reads the --tone-*
+// variables that `toneVariants` sets, and keeps the transparent border from the base so
+// switching variants never changes the box.
+const glanceTriggerVariantsConfig = {
+  variant: {
+    solid:
+      "bg-(--tone) text-(color:--tone-foreground) hover:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))] aria-expanded:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))] [&_[data-slot=glance-label]]:text-[color-mix(in_oklab,var(--tone-foreground)_78%,transparent)]",
+    soft: "bg-(--tone-soft) text-(color:--tone-text) hover:bg-(--tone-soft-hover) aria-expanded:bg-(--tone-soft-hover) [&>svg]:text-(color:--tone-icon)",
+    outline:
+      "border-(--tone-line) bg-background text-(color:--tone-text) hover:bg-(--tone-hover) aria-expanded:bg-(--tone-hover) [&>svg]:text-(color:--tone-icon)",
+  },
+  size: {
+    default: "h-10 px-3",
+    sm: "h-8 px-2.5 [&_[data-slot=glance-label]]:sr-only",
+    icon: "size-10 justify-center",
+    "icon-sm": "size-8 justify-center [&_svg:not([class*='size-'])]:size-4",
+  },
+} satisfies { variant: Record<GlanceVariant, string>; size: Record<string, string> };
+
+const glanceTriggerCva = cva(
+  "group/glance-trigger relative inline-flex shrink-0 items-center gap-2 rounded-lg border border-transparent text-left text-sm whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
   {
-    variants: {
-      tone: {
-        default:
-          "border-border bg-background hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent aria-expanded:text-accent-foreground dark:border-input dark:bg-input/30 [&>svg]:text-muted-foreground",
-        info: "border-info/30 bg-info/4 hover:bg-info/10 aria-expanded:bg-info/10 dark:bg-info/15 dark:hover:bg-info/25 dark:aria-expanded:bg-info/25 [&>svg]:text-info",
-        success:
-          "border-success/30 bg-success/4 hover:bg-success/10 aria-expanded:bg-success/10 dark:bg-success/15 dark:hover:bg-success/25 dark:aria-expanded:bg-success/25 [&>svg]:text-success",
-        warning:
-          "border-warning/30 bg-warning/4 hover:bg-warning/10 aria-expanded:bg-warning/10 dark:bg-warning/15 dark:hover:bg-warning/25 dark:aria-expanded:bg-warning/25 [&>svg]:text-warning",
-        destructive:
-          "border-destructive/30 bg-destructive/4 hover:bg-destructive/10 aria-expanded:bg-destructive/10 dark:bg-destructive/15 dark:hover:bg-destructive/25 dark:aria-expanded:bg-destructive/25 [&>svg]:text-destructive",
-      },
-      size: {
-        default: "h-10 px-3",
-        sm: "h-8 px-2.5 [&_[data-slot=glance-label]]:sr-only",
-        icon: "size-10 justify-center",
-        "icon-sm": "size-8 justify-center [&_svg:not([class*='size-'])]:size-4",
-      },
-    },
+    variants: glanceTriggerVariantsConfig,
     defaultVariants: {
-      tone: "default",
+      variant: "outline",
       size: "default",
     },
   },
 );
 
-const toneTextClass: Record<GlanceTone, string> = {
-  default: "text-muted-foreground",
-  info: "text-info",
-  success: "text-success",
-  warning: "text-warning",
-  destructive: "text-destructive",
+type GlanceTriggerVariantProps = Omit<VariantProps<typeof glanceTriggerCva>, "variant"> & {
+  variant?: GlanceVariant;
+  /** Defaults to `defaultTone(variant)`: primary for solid, neutral otherwise. */
+  tone?: Tone;
+  className?: string;
 };
 
+function glanceTriggerVariants({
+  variant = "outline",
+  tone,
+  size,
+  className,
+}: GlanceTriggerVariantProps = {}) {
+  return cn(
+    glanceTriggerCva({ variant, size }),
+    toneVariants[tone ?? defaultTone(variant)],
+    className,
+  );
+}
+
 /**
- * Root: wires the trigger to the panel and shares the `tone` with both.
+ * Root: wires the trigger to the panel and shares the `variant` and `tone` with both.
  * Wraps react-aria's `DialogTrigger`, so `isOpen`/`onOpenChange` control it.
  */
 function Glance({
-  tone = "default",
+  variant = "outline",
+  tone,
   ...props
 }: DialogTriggerProps & {
-  tone?: GlanceTone;
+  /** The trigger's surface: `solid`, `soft` or `outline`. */
+  variant?: GlanceVariant;
+  /** Defaults to `defaultTone(variant)`: primary for solid, neutral otherwise. */
+  tone?: Tone;
 }) {
-  const value = React.useMemo(() => ({ tone }), [tone]);
+  const resolvedTone = tone ?? defaultTone(variant);
+  const value = React.useMemo(() => ({ variant, tone: resolvedTone }), [variant, resolvedTone]);
   return (
     <GlanceContext.Provider value={value}>
       <PopoverTrigger {...props} />
@@ -76,16 +99,17 @@ function GlanceTrigger({
   size = "default",
   ...props
 }: Omit<ButtonPrimitiveProps, "className"> &
-  Pick<VariantProps<typeof glanceTriggerVariants>, "size"> & {
+  Pick<GlanceTriggerVariantProps, "size"> & {
     className?: string;
   }) {
-  const { tone } = React.useContext(GlanceContext);
+  const { variant, tone } = React.useContext(GlanceContext);
   return (
     <ButtonPrimitive
       data-slot="glance-trigger"
+      data-variant={variant}
       data-tone={tone}
       data-size={size}
-      className={cn(glanceTriggerVariants({ tone, size }), className)}
+      className={glanceTriggerVariants({ variant, tone, size, className })}
       {...props}
     />
   );
@@ -187,17 +211,11 @@ function GlanceHeader({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-/** An icon in a tile tinted with the root's `tone`. */
-function GlanceMedia({ className, ...props }: React.ComponentProps<typeof IconTile>) {
+/** An icon in a `soft` `IconTile` in the root's `tone`. */
+function GlanceMedia(props: React.ComponentProps<typeof IconTile>) {
   const { tone } = React.useContext(GlanceContext);
   return (
-    <IconTile
-      data-slot="glance-media"
-      variant="soft"
-      aria-hidden="true"
-      className={cn(toneTextClass[tone], className)}
-      {...props}
-    />
+    <IconTile data-slot="glance-media" variant="soft" tone={tone} aria-hidden="true" {...props} />
   );
 }
 
@@ -237,7 +255,7 @@ function GlanceFooter({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-export type { GlanceTone };
+export type { GlanceTone, GlanceVariant };
 export {
   Glance,
   GlanceContent,
@@ -252,4 +270,5 @@ export {
   GlanceTrigger,
   GlanceValue,
   glanceTriggerVariants,
+  glanceTriggerVariantsConfig,
 };
