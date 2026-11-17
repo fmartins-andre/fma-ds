@@ -27,7 +27,7 @@ const GlanceContext = React.createContext<{ variant: GlanceVariant; tone: Tone }
 const glanceTriggerVariantsConfig = {
   variant: {
     solid:
-      "bg-(--tone) text-(color:--tone-foreground) hover:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))] aria-expanded:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))] [&_[data-slot=glance-label]]:text-[color-mix(in_oklab,var(--tone-foreground)_78%,transparent)]",
+      "bg-(--tone) text-(color:--tone-foreground) hover:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))] aria-expanded:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))] [&_[data-slot=glance-label]]:text-(color:--tone-foreground)",
     soft: "bg-(--tone-soft) text-(color:--tone-text) hover:bg-(--tone-soft-hover) aria-expanded:bg-(--tone-soft-hover) [&>svg]:text-(color:--tone-icon)",
     outline:
       "border-(--tone-line) bg-background text-(color:--tone-text) hover:bg-(--tone-hover) aria-expanded:bg-(--tone-hover) [&>svg]:text-(color:--tone-icon)",

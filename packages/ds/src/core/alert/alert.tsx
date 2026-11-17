@@ -13,7 +13,7 @@ const alertVariantsConfig = {
   variant: {
     // The ring and link hover follow the text so they stay visible on the tone surface.
     solid:
-      "bg-(--tone) text-(color:--tone-foreground) [--ring:var(--tone-foreground)] [--alert-link-hover:var(--tone-foreground)] [&_[data-slot=alert-description]]:text-[color-mix(in_oklab,var(--tone-foreground)_78%,transparent)]",
+      "bg-(--tone) text-(color:--tone-foreground) [--ring:var(--tone-foreground)] [--alert-link-hover:var(--tone-foreground)] [&_[data-slot=alert-description]]:text-(color:--tone-foreground)",
     soft: "bg-(--tone-soft) text-foreground [&>svg]:text-(color:--tone-icon) [&_[data-slot=alert-description]]:text-foreground/80",
     outline:
       "border-(--tone-line) bg-background text-foreground [&_[data-slot=alert-title]]:text-(color:--tone-text) [&>svg]:text-(color:--tone-icon)",

@@ -134,8 +134,13 @@ describe("Glance", () => {
     }
   });
 
-  it("solid draws the label at 78% of the tone foreground", () => {
-    expect(glanceTriggerVariantsConfig.variant.solid).toContain("var(--tone-foreground)_78%");
+  it("solid draws the label in the full tone foreground, the pair the theme gate checks", () => {
+    expect(glanceTriggerVariantsConfig.variant.solid).toContain(
+      "[&_[data-slot=glance-label]]:text-(color:--tone-foreground)",
+    );
+    expect(glanceTriggerVariantsConfig.variant.solid).not.toContain(
+      "color-mix(in_oklab,var(--tone-foreground)",
+    );
   });
 
   it("defaults to outline and neutral", () => {
@@ -170,8 +175,13 @@ describe("Alert", () => {
     }
   });
 
-  it("solid draws the description at 78% of the tone foreground and rings in it", () => {
-    expect(alertVariantsConfig.variant.solid).toContain("var(--tone-foreground)_78%");
+  it("solid draws the description in the full tone foreground and rings in it", () => {
+    expect(alertVariantsConfig.variant.solid).toContain(
+      "[&_[data-slot=alert-description]]:text-(color:--tone-foreground)",
+    );
+    expect(alertVariantsConfig.variant.solid).not.toContain(
+      "color-mix(in_oklab,var(--tone-foreground)",
+    );
     expect(alertVariantsConfig.variant.solid).toContain("[--ring:var(--tone-foreground)]");
   });
 
@@ -310,7 +320,7 @@ describe("variant recipes", () => {
       config: glanceTriggerVariantsConfig.variant,
       box: (variant) => glanceTriggerVariants({ variant: variant as "solid" }),
       uses: {
-        solid: ["bg-(--tone)", "text-(color:--tone-foreground)", "var(--tone-foreground)_78%"],
+        solid: ["bg-(--tone)", "text-(color:--tone-foreground)"],
         soft: [
           "bg-(--tone-soft)",
           "hover:bg-(--tone-soft-hover)",
@@ -328,7 +338,7 @@ describe("variant recipes", () => {
       config: alertVariantsConfig.variant,
       box: (variant) => alertVariants({ variant: variant as "solid" }),
       uses: {
-        solid: ["bg-(--tone)", "text-(color:--tone-foreground)", "var(--tone-foreground)_78%"],
+        solid: ["bg-(--tone)", "text-(color:--tone-foreground)"],
         soft: ["bg-(--tone-soft)", "[&>svg]:text-(color:--tone-icon)"],
         outline: ["border-(--tone-line)", "[&>svg]:text-(color:--tone-icon)"],
       },
