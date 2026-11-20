@@ -22,7 +22,7 @@ describe("deriveToneText", () => {
   it("moves only L when the mix fails", () => {
     const kodama = THEMES.find((theme) => theme.name === "kodama-grove");
     if (!kodama) throw new Error("kodama-grove missing");
-    expect(deriveToneText(kodama.light, "primary", "light")).toBe("oklch(0.461 0.062 106.4)");
+    expect(deriveToneText(kodama.light, "primary", "light")).toBe("oklch(0.471 0.062 106.4)");
   });
 
   it("moves lighter on a dark page when the plain mix fails", () => {
@@ -33,6 +33,6 @@ describe("deriveToneText", () => {
     };
     const plain = mixColors(colors.info, colors.foreground, TONE_MIX.text);
     expect(plain).toBe("oklch(0.475 0.085 260)");
-    expect(deriveToneText(colors, "info", "dark")).toBe("oklch(0.59 0.085 260)");
+    expect(deriveToneText(colors, "info", "dark")).toBe("oklch(0.625 0.085 260)");
   });
 });

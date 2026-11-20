@@ -63,6 +63,7 @@
       "sidebar-accent-foreground": "oklch(0.301 0.057 282.418)",
       "sidebar-border": "oklch(0.911 0.022 285.962)",
       "sidebar-ring": "oklch(0.542 0.179 288.033)",
+      "tone-soft-base": "oklch(1 0 0)",
       "shadow-2xs": "0px 4px 3.33px 0px oklch(0.316 0.067 281.836 / 6%)",
       "shadow-xs": "0px 4px 6.67px 0px oklch(0.316 0.067 281.836 / 6%)",
       "shadow-sm": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 4px 6.67px -1px oklch(0.316 0.067 281.836 / 12%)",
@@ -120,6 +121,7 @@
       "sidebar-accent-foreground": "oklch(0.918 0.026 285.883)",
       "sidebar-border": "oklch(0.326 0.06 282.583)",
       "sidebar-ring": "oklch(0.716 0.16 290.396)",
+      "tone-soft-base": "oklch(0.228 0 0)",
       "shadow-2xs": "0px 4px 3.33px 0px oklch(0.316 0.067 281.836 / 6%)",
       "shadow-xs": "0px 4px 6.67px 0px oklch(0.316 0.067 281.836 / 6%)",
       "shadow-sm": "0px 4px 10px 0px oklch(0.316 0.067 281.836 / 12%), 0px 4px 6.67px -1px oklch(0.316 0.067 281.836 / 12%)",
@@ -166,7 +168,7 @@
         "offsetY": "4px"
       }
     },
-    "contentHash": "87bf75cde671"
+    "contentHash": "be595a7a01f7"
   },
   "categories": [
     "theme"

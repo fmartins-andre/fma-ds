@@ -60,6 +60,7 @@
       "sidebar-accent-foreground": "oklch(0.98 0.003 286.351)",
       "sidebar-border": "oklch(0.49 0.07 245.492)",
       "sidebar-ring": "oklch(0.72 0.1 245.492)",
+      "tone-soft-base": "oklch(1 0 0)",
       "input-mix": "10%",
       "radius": "0.5rem",
       "tone-icon-mix": "51%"
@@ -73,26 +74,26 @@
       "popover-foreground": "oklch(0.93 0.008 242.3)",
       "primary": "oklch(0.68 0.15 245.492)",
       "primary-foreground": "oklch(0.2 0.04 245.492)",
-      "primary-text": "oklch(0.805 0.079 245.33)",
+      "primary-text": "oklch(0.825 0.079 245.33)",
       "muted": "oklch(0.38 0.026 244.5)",
       "muted-foreground": "oklch(0.77 0.022 242.4)",
       "accent": "oklch(0.43 0.075 245.3)",
       "accent-foreground": "oklch(0.95 0.008 242.3)",
       "destructive": "oklch(0.64 0.185 23.586)",
       "destructive-foreground": "oklch(0.29 0.022 244.5)",
-      "destructive-text": "oklch(0.785 0.089 21.983)",
+      "destructive-text": "oklch(0.815 0.089 21.983)",
       "info": "oklch(0.66 0.14 249.24)",
       "info-foreground": "oklch(0.29 0.022 244.5)",
-      "info-text": "oklch(0.795 0.074 248.866)",
+      "info-text": "oklch(0.815 0.074 248.866)",
       "success": "oklch(0.68 0.12 170)",
       "success-foreground": "oklch(0.29 0.022 244.5)",
-      "success-text": "oklch(0.805 0.061 173.562)",
+      "success-text": "oklch(0.82 0.061 173.562)",
       "warning": "oklch(0.76 0.15 65.19)",
       "warning-foreground": "oklch(0.29 0.022 244.5)",
-      "warning-text": "oklch(0.845 0.071 65.353)",
+      "warning-text": "oklch(0.855 0.071 65.353)",
       "brand": "oklch(0.54 0.153 133.208)",
       "brand-foreground": "oklch(1 0 0)",
-      "brand-text": "oklch(0.735 0.075 136.086)",
+      "brand-text": "oklch(0.775 0.075 136.086)",
       "neutral": "oklch(0.77 0.022 242.4)",
       "neutral-foreground": "oklch(0.29 0.022 244.5)",
       "neutral-text": "oklch(0.93 0.008 242.3)",
@@ -112,6 +113,7 @@
       "sidebar-accent-foreground": "oklch(0.95 0.008 242.3)",
       "sidebar-border": "oklch(0.46 0.065 245.492)",
       "sidebar-ring": "oklch(0.68 0.12 245.492)",
+      "tone-soft-base": "oklch(0.345 0 0)",
       "input-mix": "30%"
     }
   },
@@ -129,7 +131,7 @@
       "green",
       "sans"
     ],
-    "contentHash": "8b789dd1879d"
+    "contentHash": "d2d6c1639b67"
   },
   "categories": [
     "theme"

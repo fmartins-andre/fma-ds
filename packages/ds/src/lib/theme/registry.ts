@@ -3,6 +3,7 @@
 // into its @theme block. Same shape tweakcn serves from /r/themes/<id>.json.
 
 import type { RegistryItem } from "@fma-ds/registry";
+import { softBase } from "./contrast";
 import { themeFontPackages } from "./fonts";
 import { COLOR_TOKENS, type Theme, type ThemeMode } from "./schema";
 import { SHADOW_SIZES, shadowScale } from "./shadows";
@@ -20,6 +21,7 @@ const TRACKING_SCALE = {
 function modeVars(theme: Theme, mode: ThemeMode): Record<string, string> {
   const vars: Record<string, string> = {};
   for (const token of COLOR_TOKENS) vars[token] = theme[mode][token];
+  vars["tone-soft-base"] = softBase(theme[mode]);
   if (theme.softMix) vars["tone-soft-mix"] = theme.softMix[mode];
   if (theme.inputMix) vars["input-mix"] = theme.inputMix[mode];
   const shadow = theme.shadow?.[mode];

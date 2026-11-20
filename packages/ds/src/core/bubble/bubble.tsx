@@ -21,7 +21,7 @@ type BubbleVariant = Exclude<Variant, "ghost">;
 const bubbleVariantsConfig = {
   variant: {
     solid:
-      "*:data-[slot=bubble-content]:bg-(--tone) *:data-[slot=bubble-content]:text-(color:--tone-foreground) [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))]",
+      "*:data-[slot=bubble-content]:bg-(--tone) *:data-[slot=bubble-content]:text-(color:--tone-foreground) [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklab,var(--tone)_85%,var(--tone-soft-base,var(--background)))]",
     soft: "*:data-[slot=bubble-content]:bg-(--tone-soft) *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-(--tone-soft-hover)",
     outline:
       "*:data-[slot=bubble-content]:border-(--tone-line) *:data-[slot=bubble-content]:bg-background *:data-[slot=bubble-content]:text-(color:--tone-text) [&>[data-slot=bubble-content]:is(button,a):hover]:bg-(--tone-hover)",

@@ -19,6 +19,7 @@ import { IconTile } from "@/core/icon-tile/icon-tile";
 import { Skeleton } from "@/core/skeleton/skeleton";
 import { Spinner } from "@/core/spinner/spinner";
 import { type DictionaryNamespace, useFmaMessages } from "@/lib/i18n/i18n";
+import { toneVariants } from "@/lib/tone";
 
 type PanelCardLabels = {
   /** The help button's accessible name; a text `title` is appended ("More information: Sales"). */
@@ -238,7 +239,10 @@ function PanelCardBody({
     content = errorState ?? (
       <Empty role="alert" className="p-4">
         <EmptyHeader>
-          <EmptyMedia variant="icon" className="bg-destructive/10 text-destructive">
+          <EmptyMedia
+            variant="icon"
+            className={cn(toneVariants.destructive, "bg-(--tone-soft) text-(color:--tone-icon)")}
+          >
             <CircleAlertIcon />
           </EmptyMedia>
           <EmptyTitle>{labels.error}</EmptyTitle>
