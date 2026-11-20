@@ -8,6 +8,7 @@ export * from "./css";
 export * from "./editor";
 export * from "./editor-controls";
 export * from "./fonts";
+export * from "./input";
 export * from "./parse";
 export * from "./registry";
 export * from "./schema";

@@ -87,6 +87,12 @@ function colorsFrom(
     colors.brand = colors.primary;
     colors["brand-foreground"] = colors["primary-foreground"];
   }
+  // No neutral tone (other tools' themes, or ours before it): the muted text, as before.
+  if (vars.neutral === undefined) {
+    colors.neutral = colors["muted-foreground"];
+    colors["neutral-foreground"] = colors.background;
+    colors["neutral-text"] = colors.foreground;
+  }
   for (const tone of TEXT_TONES) {
     if (vars[`${tone}-text`] === undefined)
       colors[`${tone}-text`] = deriveToneText(colors, tone, mode);
@@ -170,6 +176,13 @@ export function themeFromCssVars(
         : {
             light: light["tone-soft-mix"] ?? dark["tone-soft-mix"],
             dark: dark["tone-soft-mix"] ?? light["tone-soft-mix"],
+          },
+    inputMix:
+      light["input-mix"] === undefined && dark["input-mix"] === undefined
+        ? base.inputMix
+        : {
+            light: light["input-mix"] ?? dark["input-mix"],
+            dark: dark["input-mix"] ?? light["input-mix"],
           },
     shadow:
       lightShadow || darkShadow

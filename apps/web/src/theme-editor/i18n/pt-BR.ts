@@ -114,6 +114,7 @@ export const themeEditorPtBR = {
     customShadow: "Sombras personalizadas (senão, as do Tailwind)",
     iconMix: "Ícone e dot: % do texto no tom",
     softMix: "Tinta do soft",
+    inputMix: "Fundo dos campos: % da borda do input",
     softLight: "Claro",
     softDark: "Escuro",
     resetDefault: "Voltar ao padrão",

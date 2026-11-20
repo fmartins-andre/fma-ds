@@ -112,6 +112,7 @@ export const themeEditor = {
     customShadow: "Custom shadows (else Tailwind's)",
     iconMix: "Icon and dot: share of in-tone text",
     softMix: "Soft tint",
+    inputMix: "Field fill: share of the input border",
     softLight: "Light",
     softDark: "Dark",
     resetDefault: "Reset to default",

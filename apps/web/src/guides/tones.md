@@ -60,7 +60,7 @@ The old variant names are gone, with no aliases. Updating a component means upda
 | Bubble `tinted` | `variant="soft" tone="primary"` |
 | Bubble `destructive` | `variant="soft" tone="destructive"` |
 
-Update your theme together with the components (see [Updating items](/docs/updating)): the new variants read tokens that older themes don't have.
+Update your theme together with the components (see [Updating items](/docs/updating)): the new variants read tokens that older themes don't have. The neutral tone now has its own tokens (`--neutral`, `--neutral-foreground`, `--neutral-text`); its soft tint and hovers no longer use `--muted`.
 
 ## Your own components
 

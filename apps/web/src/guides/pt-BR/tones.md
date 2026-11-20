@@ -60,7 +60,7 @@ Os nomes antigos saíram, sem aliases. Atualizar um componente significa atualiz
 | Bubble `tinted` | `variant="soft" tone="primary"` |
 | Bubble `destructive` | `variant="soft" tone="destructive"` |
 
-Atualize o tema junto com os componentes (veja [Atualizando itens](/docs/updating)): as variantes novas leem tokens que os temas antigos não têm.
+Atualize o tema junto com os componentes (veja [Atualizando itens](/docs/updating)): as variantes novas leem tokens que os temas antigos não têm. O tom neutro agora tem tokens próprios (`--neutral`, `--neutral-foreground`, `--neutral-text`); a tinta do soft e os hovers dele não usam mais o `--muted`.
 
 ## Seus próprios componentes
 

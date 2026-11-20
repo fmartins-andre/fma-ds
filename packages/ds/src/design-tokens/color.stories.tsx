@@ -53,6 +53,8 @@ const BASE = [
   "--primary-foreground",
   "--muted",
   "--muted-foreground",
+  "--neutral",
+  "--neutral-foreground",
   "--accent",
   "--accent-foreground",
   "--destructive",
@@ -75,6 +77,7 @@ const STATUS = [
 const TONE_TEXT = [
   "--primary-text",
   "--brand-text",
+  "--neutral-text",
   "--destructive-text",
   "--info-text",
   "--success-text",

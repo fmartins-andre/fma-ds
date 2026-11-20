@@ -68,6 +68,31 @@ describe("themeFromCssVars", () => {
     expect(theme.light.info).toBe(DEFAULT_THEME.light.info);
   });
 
+  it("starts the neutral tone at the muted text for sources that lack it", () => {
+    const theme = themeFromCssVars(
+      {
+        light: { background: "#ffffff", foreground: "#111111", "muted-foreground": "#777777" },
+        dark: { background: "#000000", foreground: "#eeeeee", "muted-foreground": "#999999" },
+      },
+      DEFAULT_THEME,
+      identity,
+    );
+    for (const mode of ["light", "dark"] as const) {
+      expect(theme[mode].neutral).toBe(theme[mode]["muted-foreground"]);
+      expect(theme[mode]["neutral-foreground"]).toBe(theme[mode].background);
+      expect(theme[mode]["neutral-text"]).toBe(theme[mode].foreground);
+    }
+  });
+
+  it("keeps the source's own neutral tone", () => {
+    const theme = themeFromCssVars(
+      { light: { neutral: "oklch(0.5 0.02 250)" }, dark: {} },
+      DEFAULT_THEME,
+      identity,
+    );
+    expect(theme.light.neutral).toBe("oklch(0.5 0.02 250)");
+  });
+
   it("falls back destructive-foreground to the background when the source lacks it", () => {
     const theme = themeFromCssVars(
       {

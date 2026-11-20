@@ -192,8 +192,13 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    e linha em `src/themes/THIRD_PARTY_NOTICES.md`. `*-foreground` é texto sobre a cor cheia em
    todos os tons, como `primary-foreground`; `*-text` é texto no tom (sobre a página ou o soft),
    valor inicial de `deriveToneText`. Ícone no tom = mistura do tom com o `-text` (`iconMix`).
-   Componentes leem os tokens, nunca derivam de `--background` / `--foreground`. O
-   `tests/themes.test.ts` impõe essas regras dos tokens de tema e o gate de contraste.
+   O neutral tem `--neutral` / `-foreground` / `-text` (valor inicial: `muted-foreground`,
+   `background`, `foreground`). `--input` é a borda dos campos (por padrão, o valor do `--border`)
+   e o fundo deles é `bg-input-background` (`--input-mix`: 0% claro, 30% escuro). Componentes leem
+   os tokens, nunca derivam de `--background` / `--foreground`, nem usam os cinzas fixos do
+   Tailwind (`neutral-100`, `zinc-500`, `gray-*`, `slate-*`, `stone-*`;
+   `tests/fixed-palette.test.ts`). O `tests/themes.test.ts` impõe essas regras dos tokens de tema
+   e o gate de contraste.
    `--secondary` e `--invert` foram aposentados: ao vendorizar, troque por muted ou um tom
    (`tests/retired-tokens.test.ts`). O guia `theming.md` explica o sistema ao usuário: token ou
    configuração nova entra nele (en + pt-BR).
@@ -208,11 +213,11 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    falham se faltar algum elo.
 11. **Tokens de estado** (doc de theming do shadcn): `accent` / `accent-foreground` = destaque de
    **item numa coleção** (hover, foco, selecionado, hoje, intervalo; menu, listbox, combobox,
-   calendário, linha de tabela). A família `muted` = hover de **controles neutros** (botões e
-   triggers do tom neutral): o hover do tom neutral da lib de tons é `--tone-hover` = `--muted`
-   (`neutral` em `src/lib/tone.ts`), caso permitido. `muted` estático continua para zebra, footer,
-   skeleton e texto secundário. Fora isso, nunca `bg-muted` nem `bg-foreground/N` como destaque de
-   interação — os estilos `*-nova` do shadcn fazem isso; corrija ao vendorizar. Exigido em
+   calendário, linha de tabela). Controles neutros (botões e triggers fora de coleção) fazem
+   hover, foco e pressionado pelo tom neutral: `toneVariants.neutral` + `bg-(--tone-hover)`
+   (`src/lib/tone.ts`). A família `muted` é **só estática**: zebra, footer, skeleton e texto
+   secundário. Nunca `bg-muted` nem `bg-foreground/N` em estado de interação — os estilos
+   `*-nova` do shadcn fazem isso; corrija ao vendorizar. Exigido em
    componentes `customized`/`original` e blocos por `tests/interaction-tokens.test.ts`
    (exceções no `ALLOWED`, com motivo). Detalhes no `CONTRIBUTING.md`.
 

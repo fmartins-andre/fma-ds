@@ -45,6 +45,9 @@
       "brand": "oklch(0.585 0.204 277.117)",
       "brand-foreground": "oklch(1 0 0)",
       "brand-text": "oklch(0.432 0.12 274.517)",
+      "neutral": "oklch(0.551 0.023 264.364)",
+      "neutral-foreground": "oklch(0.984 0.003 247.858)",
+      "neutral-text": "oklch(0.279 0.037 260.031)",
       "border": "oklch(0.872 0.009 258.338)",
       "input": "oklch(0.872 0.009 258.338)",
       "ring": "oklch(0.585 0.204 277.117)",
@@ -99,6 +102,9 @@
       "brand": "oklch(0.68 0.158 276.935)",
       "brand-foreground": "oklch(0.208 0.04 265.755)",
       "brand-text": "oklch(0.804 0.085 275.336)",
+      "neutral": "oklch(0.714 0.019 261.325)",
+      "neutral-foreground": "oklch(0.208 0.04 265.755)",
+      "neutral-text": "oklch(0.929 0.013 255.508)",
       "border": "oklch(0.446 0.026 256.802)",
       "input": "oklch(0.446 0.026 256.802)",
       "ring": "oklch(0.68 0.158 276.935)",
@@ -165,7 +171,7 @@
         "offsetY": "4px"
       }
     },
-    "contentHash": "66bd4c13dd58"
+    "contentHash": "4f848a923724"
   },
   "categories": [
     "theme"

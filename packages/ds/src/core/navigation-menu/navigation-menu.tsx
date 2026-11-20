@@ -14,6 +14,7 @@ import {
   Popover,
   type PopoverProps,
 } from "react-aria-components";
+import { toneVariants } from "@/lib/tone";
 
 type MenuContextValue = {
   openId: string | null;
@@ -197,9 +198,10 @@ function NavigationMenuItem({ className, ...props }: React.ComponentProps<"li">)
   );
 }
 
-const navigationMenuTriggerStyle = cva(
-  "group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none data-disabled:pointer-events-none data-disabled:opacity-50 data-focus-visible:bg-muted data-focus-visible:ring-3 data-focus-visible:ring-ring/50 data-hovered:bg-muted aria-expanded:bg-muted/50 aria-expanded:data-hovered:bg-muted",
-);
+const navigationMenuTriggerStyle = cva([
+  toneVariants.neutral,
+  "group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none data-disabled:pointer-events-none data-disabled:opacity-50 data-focus-visible:bg-(--tone-hover) data-focus-visible:ring-3 data-focus-visible:ring-ring/50 data-hovered:bg-(--tone-hover) aria-expanded:bg-(--tone-hover) aria-expanded:data-hovered:bg-(--tone-soft-hover)",
+]);
 
 function NavigationMenuTrigger({ className, children, ...props }: ButtonProps) {
   const { isOpen, isPeek, setOpen, hover, triggerRef } = useItem("NavigationMenuTrigger");
@@ -339,7 +341,8 @@ function NavigationMenuLink({ className, onPress, ...props }: LinkProps) {
       }}
       className={composeRenderProps(className, (className) =>
         cn(
-          "flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none in-data-[slot=navigation-menu-content]:rounded-md data-current:bg-muted/50 data-focus-visible:bg-muted data-focus-visible:ring-3 data-focus-visible:ring-ring/50 data-hovered:bg-muted [&_svg:not([class*='size-'])]:size-4",
+          toneVariants.neutral,
+          "flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none in-data-[slot=navigation-menu-content]:rounded-md data-current:bg-(--tone-hover) data-focus-visible:bg-(--tone-hover) data-focus-visible:ring-3 data-focus-visible:ring-ring/50 data-hovered:bg-(--tone-hover) data-current:data-hovered:bg-(--tone-soft-hover) [&_svg:not([class*='size-'])]:size-4",
           className,
         ),
       )}

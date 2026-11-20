@@ -50,7 +50,7 @@ export const showcase = {
   },
   controls: {
     title: "Buttons & overlays",
-    default: "Default",
+    solid: "Solid",
     soft: "Soft",
     outline: "Outline",
     ghost: "Ghost",
@@ -80,9 +80,9 @@ export const showcase = {
     title: "Badges",
     description: "Every variant, then the sizes and the pill radius.",
     solid: "Solid",
-    light: "Light",
+    soft: "Soft",
     outline: "Outline",
-    dot: "Dot",
+    ghost: "Ghost",
     sizes: "Sizes & radius",
   },
   brand: {

@@ -52,7 +52,7 @@ export const showcasePtBR = {
   },
   controls: {
     title: "Botões e sobreposições",
-    default: "Padrão",
+    solid: "Sólido",
     soft: "Suave",
     outline: "Contorno",
     ghost: "Fantasma",
@@ -82,9 +82,9 @@ export const showcasePtBR = {
     title: "Badges",
     description: "Todas as variantes, depois os tamanhos e o raio de pílula.",
     solid: "Sólido",
-    light: "Claro",
+    soft: "Suave",
     outline: "Contorno",
-    dot: "Ponto",
+    ghost: "Fantasma",
     sizes: "Tamanhos e raio",
   },
   brand: {

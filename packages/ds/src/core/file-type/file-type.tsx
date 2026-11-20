@@ -41,7 +41,7 @@ type FileTypeExtension = {
  * its glyph turns dark gray, where white would fade on the pale page.
  */
 const NEUTRAL =
-  "text-zinc-500 [--file-type-fill:color-mix(in_oklab,currentColor_45%,white)] [--file-type-glyph:color-mix(in_oklab,currentColor_80%,black)]";
+  "text-neutral [--file-type-fill:color-mix(in_oklab,currentColor_45%,white)] [--file-type-glyph:color-mix(in_oklab,currentColor_80%,black)]";
 /** Yellow takes dark text, as the JavaScript logo does: white on it stays
  * under 3:1 until the 700 step. */
 const YELLOW = "text-yellow-500 [--file-type-foreground:var(--color-yellow-950)]";

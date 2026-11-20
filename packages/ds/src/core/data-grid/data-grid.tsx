@@ -106,6 +106,7 @@ import {
   resolveNamespace,
   useFmaMessages,
 } from "@/lib/i18n/i18n";
+import { toneVariants } from "@/lib/tone";
 
 /** Every built-in string of the grid. Labels that interpolate are functions. */
 type DataGridI18nLabels = {
@@ -1403,7 +1404,8 @@ function DataGridRowDragHandle({ className, ...props }: React.ComponentProps<typ
     <AriaButton
       slot="drag"
       className={cn(
-        "flex size-7 cursor-grab items-center justify-center rounded-md text-muted-foreground outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring/50 data-hovered:bg-muted",
+        toneVariants.neutral,
+        "flex size-7 cursor-grab items-center justify-center rounded-md text-muted-foreground outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring/50 data-hovered:bg-(--tone-hover)",
         className as string,
       )}
       {...props}
