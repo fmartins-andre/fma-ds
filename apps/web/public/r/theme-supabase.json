@@ -50,7 +50,7 @@
       "neutral-foreground": "oklch(0.991 0 0)",
       "neutral-text": "oklch(0.205 0 0)",
       "border": "oklch(0.904 0 0)",
-      "input": "oklch(0.658 0 0)",
+      "input": "oklch(0.904 0 0)",
       "ring": "oklch(0.835 0.13 160.908)",
       "chart-1": "oklch(0.835 0.13 160.908)",
       "chart-2": "oklch(0.623 0.188 259.815)",
@@ -109,7 +109,7 @@
       "neutral-foreground": "oklch(0.182 0 0)",
       "neutral-text": "oklch(0.929 0.013 255.508)",
       "border": "oklch(0.281 0 0)",
-      "input": "oklch(0.505 0 0)",
+      "input": "oklch(0.281 0 0)",
       "ring": "oklch(0.8 0.182 151.711)",
       "chart-1": "oklch(0.8 0.182 151.711)",
       "chart-2": "oklch(0.714 0.143 254.624)",
@@ -171,7 +171,7 @@
         "offsetY": "1px"
       }
     },
-    "contentHash": "61c4b9789249"
+    "contentHash": "84a2f483018b"
   },
   "categories": [
     "theme"

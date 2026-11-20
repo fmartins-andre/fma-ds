@@ -48,7 +48,7 @@
       "neutral-foreground": "oklch(0.979 0.008 121.627)",
       "neutral-text": "oklch(0 0 0)",
       "border": "oklch(0 0 0)",
-      "input": "oklch(0.652 0 0)",
+      "input": "oklch(0 0 0)",
       "ring": "oklch(0.785 0.104 274.713)",
       "chart-1": "oklch(0.511 0.23 276.966)",
       "chart-2": "oklch(0.644 0.123 182.503)",
@@ -105,7 +105,7 @@
       "neutral-foreground": "oklch(0 0 0)",
       "neutral-text": "oklch(1 0 0)",
       "border": "oklch(0.446 0 0)",
-      "input": "oklch(1 0 0)",
+      "input": "oklch(0.446 0 0)",
       "ring": "oklch(0.68 0.158 276.935)",
       "chart-1": "oklch(0.68 0.158 276.935)",
       "chart-2": "oklch(0.785 0.133 181.912)",
@@ -165,7 +165,7 @@
         "offsetY": "0px"
       }
     },
-    "contentHash": "a9cfdbe1ef18"
+    "contentHash": "7476151c1f7e"
   },
   "categories": [
     "theme"

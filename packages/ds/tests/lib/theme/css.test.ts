@@ -104,7 +104,7 @@ describe("default soft tint", () => {
 });
 
 describe("default field fill", () => {
-  it("styles.css declares 0% in :root and 10% in .dark, matching INPUT_MIX", () => {
+  it("styles.css declares the INPUT_MIX defaults in :root and .dark", () => {
     const { light, dark } = parseCssVars(STYLES);
     expect(light["input-mix"]).toBe(`${INPUT_MIX.light * 100}%`);
     expect(dark["input-mix"]).toBe(`${INPUT_MIX.dark * 100}%`);

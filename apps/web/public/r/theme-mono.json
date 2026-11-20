@@ -47,7 +47,7 @@
       "neutral-foreground": "oklch(1 0 0)",
       "neutral-text": "oklch(0.145 0 0)",
       "border": "oklch(0.922 0 0)",
-      "input": "oklch(0.667 0 0)",
+      "input": "oklch(0.922 0 0)",
       "ring": "oklch(0.709 0 0)",
       "chart-1": "oklch(0.556 0 0)",
       "chart-2": "oklch(0.556 0 0)",
@@ -104,7 +104,7 @@
       "neutral-foreground": "oklch(0.145 0 0)",
       "neutral-text": "oklch(0.985 0 0)",
       "border": "oklch(0.341 0 0)",
-      "input": "oklch(0.509 0 0)",
+      "input": "oklch(0.341 0 0)",
       "ring": "oklch(0.556 0 0)",
       "chart-1": "oklch(0.556 0 0)",
       "chart-2": "oklch(0.556 0 0)",
@@ -161,7 +161,7 @@
         "offsetY": "1px"
       }
     },
-    "contentHash": "1ba3a112b192"
+    "contentHash": "a1cf19e70634"
   },
   "categories": [
     "theme"

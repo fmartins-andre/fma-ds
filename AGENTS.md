@@ -193,8 +193,8 @@ variable `FMA_DS_SITE_URL`; no Cloudflare, das variáveis de build. Variável no
    todos os tons, como `primary-foreground`; `*-text` é texto no tom (sobre a página ou o soft),
    valor inicial de `deriveToneText`. Ícone no tom = mistura do tom com o `-text` (`iconMix`).
    O neutral tem `--neutral` / `-foreground` / `-text` (valor inicial: `muted-foreground`,
-   `background`, `foreground`). `--input` é a borda dos campos (≥ 3:1 contra página e card) e o
-   fundo deles é `bg-input-background` (`--input-mix`: 0% claro, 10% escuro). Componentes leem
+   `background`, `foreground`). `--input` é a borda dos campos (por padrão, o valor do `--border`)
+   e o fundo deles é `bg-input-background` (`--input-mix`: 0% claro, 30% escuro). Componentes leem
    os tokens, nunca derivam de `--background` / `--foreground`, nem usam os cinzas fixos do
    Tailwind (`neutral-100`, `zinc-500`, `gray-*`, `slate-*`, `stone-*`;
    `tests/fixed-palette.test.ts`). O `tests/themes.test.ts` impõe essas regras dos tokens de tema

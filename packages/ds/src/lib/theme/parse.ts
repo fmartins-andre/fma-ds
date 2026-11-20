@@ -5,7 +5,6 @@
 import { z } from "zod";
 import { toOklch } from "./color";
 import { checkContrast, TONE_MIX } from "./contrast";
-import { strengthenInput } from "./input";
 import {
   COLOR_TOKENS,
   type Theme,
@@ -88,8 +87,6 @@ function colorsFrom(
     colors.brand = colors.primary;
     colors["brand-foreground"] = colors["primary-foreground"];
   }
-  // Field borders reach 3:1 against the page and the card (shadcn's are usually far fainter).
-  colors.input = strengthenInput(colors);
   // No neutral tone (other tools' themes, or ours before it): the muted text, as before.
   if (vars.neutral === undefined) {
     colors.neutral = colors["muted-foreground"];
