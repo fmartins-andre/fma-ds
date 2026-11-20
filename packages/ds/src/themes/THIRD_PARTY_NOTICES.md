@@ -20,6 +20,8 @@ and half `foreground`, with lightness adjusted where that mix fell short of the 
 (`kodama-grove` light, all six).
 The neutral tone tokens (`neutral`, `neutral-foreground`, `neutral-text`) are new: copies of
 `muted-foreground`, `background` and `foreground` in each mode.
+Fields fill with 30% of `input` in both modes; light `input` lightened where that fill read as a
+gray block (ΔL −0.035 from the page): `claude`, `soft-pop`, `starry-night`.
 `kodama-grove`, `supabase` and `amber-minimal` declare an `iconMix` (the share of `-text` in icons
 and dots), because the default share left their icons under 3:1 in the light mode.
 

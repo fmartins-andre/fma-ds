@@ -262,7 +262,7 @@ function DateField<T extends DateValue>({
 // so the input sits flush and none of its own frame states apply.
 const DATE_INPUT_CLASSES = cn(
   "flex h-8 w-full min-w-0 items-center text-base outline-none md:text-sm",
-  "not-in-data-[slot=input-group]:rounded-lg not-in-data-[slot=input-group]:border not-in-data-[slot=input-group]:border-input not-in-data-[slot=input-group]:bg-transparent not-in-data-[slot=input-group]:px-2.5 not-in-data-[slot=input-group]:py-1 not-in-data-[slot=input-group]:transition-colors dark:not-in-data-[slot=input-group]:bg-input/30",
+  "not-in-data-[slot=input-group]:rounded-lg not-in-data-[slot=input-group]:border not-in-data-[slot=input-group]:border-input not-in-data-[slot=input-group]:bg-input/30 not-in-data-[slot=input-group]:px-2.5 not-in-data-[slot=input-group]:py-1 not-in-data-[slot=input-group]:transition-colors",
   "not-in-data-[slot=input-group]:data-focus-within:border-ring not-in-data-[slot=input-group]:data-focus-within:ring-3 not-in-data-[slot=input-group]:data-focus-within:ring-ring/50",
   "not-in-data-[slot=input-group]:data-invalid:border-destructive not-in-data-[slot=input-group]:data-invalid:ring-3 not-in-data-[slot=input-group]:data-invalid:ring-destructive/20 dark:not-in-data-[slot=input-group]:data-invalid:border-destructive/50 dark:not-in-data-[slot=input-group]:data-invalid:ring-destructive/40",
   "data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-disabled:opacity-50 not-in-data-[slot=input-group]:data-disabled:bg-input/50",

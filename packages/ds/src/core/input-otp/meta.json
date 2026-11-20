@@ -2,7 +2,7 @@
   "name": "input-otp",
   "category": "forms",
   "status": "stable",
-  "source": "shadcn",
+  "source": "customized",
   "origin": "shadcn/ui, style: aria-nova. Built on the input-otp library, not react-aria-components.",
   "description": "A one-time-password / verification-code input rendered as individual boxed slots, backed by a single hidden text input for real typing, paste, and autofill behavior.",
   "tags": ["forms", "input", "otp"]

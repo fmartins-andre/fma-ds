@@ -24,7 +24,7 @@ Colors come in pairs: a surface and the text that goes on it.
 | `success`, `warning`, `info`, `destructive` | Status |
 | `muted`, `muted-foreground` | Quiet static surfaces (zebra rows, footers, skeletons) and secondary text. Never hover, focus or selection |
 | `accent`, `accent-foreground` | The highlighted item in a collection: menu, listbox, calendar, table row |
-| `border`, `input`, `ring` | Lines, field borders and the focus ring |
+| `border`, `input`, `ring` | Lines; field borders and, at 30%, the field fill in both modes; the focus ring |
 | `sidebar-*` | The sidebar's own palette |
 
 Each tone (`primary`, `brand`, `neutral` and the four statuses) has three tokens:

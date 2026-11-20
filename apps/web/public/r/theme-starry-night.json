@@ -45,7 +45,7 @@
       "neutral-foreground": "oklch(0.975 0.005 258.325)",
       "neutral-text": "oklch(0.256 0.043 268.066)",
       "border": "oklch(0.779 0.016 251.193)",
-      "input": "oklch(0.69 0.071 234.039)",
+      "input": "oklch(0.858 0.071 234.039)",
       "ring": "oklch(0.857 0.116 81.009)",
       "chart-1": "oklch(0.481 0.118 263.376)",
       "chart-2": "oklch(0.857 0.116 81.009)",
@@ -125,7 +125,7 @@
       "gold",
       "serif"
     ],
-    "contentHash": "a865753946be"
+    "contentHash": "3c4dc0d1d415"
   },
   "categories": [
     "theme"

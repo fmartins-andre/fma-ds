@@ -746,7 +746,7 @@
           "selection",
           "nova"
         ],
-        "contentHash": "a62172995df6"
+        "contentHash": "2fba39b218db"
       }
     },
     {
@@ -1018,7 +1018,7 @@
           "selection",
           "autocomplete"
         ],
-        "contentHash": "1be09f2e4bea"
+        "contentHash": "291c304ae122"
       }
     },
     {
@@ -1057,7 +1057,7 @@
           "command-palette",
           "overlay"
         ],
-        "contentHash": "f802f5837126"
+        "contentHash": "baea45bba9de"
       }
     },
     {
@@ -1360,7 +1360,7 @@
           "date",
           "react-aria"
         ],
-        "contentHash": "ef72f8c33b81"
+        "contentHash": "16ec89e517ad"
       }
     },
     {
@@ -2115,7 +2115,7 @@
           "toolbar",
           "list"
         ],
-        "contentHash": "e0acd9c855e3"
+        "contentHash": "7eee1b8bcc80"
       }
     },
     {
@@ -2660,7 +2660,7 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
@@ -2668,7 +2668,7 @@
           "input",
           "react-aria"
         ],
-        "contentHash": "617dcbe2db7d"
+        "contentHash": "a4aee0276878"
       }
     },
     {
@@ -2699,7 +2699,7 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
@@ -2707,7 +2707,7 @@
           "input",
           "react-aria"
         ],
-        "contentHash": "e387b2fb09b3"
+        "contentHash": "55323e543ad3"
       }
     },
     {
@@ -2846,7 +2846,7 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova. Built on the input-otp library, not react-aria-components.",
         "tags": [
@@ -2854,7 +2854,7 @@
           "input",
           "otp"
         ],
-        "contentHash": "872cd0243092"
+        "contentHash": "562e958f1a1f"
       }
     },
     {
@@ -3257,14 +3257,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "form",
           "select",
           "native"
         ],
-        "contentHash": "b79652053c23"
+        "contentHash": "397693545020"
       }
     },
     {
@@ -3768,7 +3768,7 @@
           "form",
           "@shadcn/react"
         ],
-        "contentHash": "87b8b0714a13"
+        "contentHash": "fef802d02d6f"
       }
     },
     {
@@ -3804,7 +3804,7 @@
           "selection",
           "react-aria"
         ],
-        "contentHash": "9a6e0dbcbeb6"
+        "contentHash": "dbfc9d651c04"
       }
     },
     {
@@ -3902,7 +3902,7 @@
           "select",
           "react-aria"
         ],
-        "contentHash": "805467049070"
+        "contentHash": "f976fe8e17c7"
       }
     },
     {
@@ -4465,14 +4465,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "forms",
           "input",
           "react-aria"
         ],
-        "contentHash": "def7395a10b5"
+        "contentHash": "4d62bdb41d6d"
       }
     },
     {
@@ -4997,7 +4997,7 @@
           "neutral-foreground": "oklch(0.982 0.005 95.099)",
           "neutral-text": "oklch(0.344 0.027 95.723)",
           "border": "oklch(0.885 0.007 97.363)",
-          "input": "oklch(0.762 0.016 98.353)",
+          "input": "oklch(0.865 0.016 98.353)",
           "ring": "oklch(0.617 0.138 39.043)",
           "chart-1": "oklch(0.558 0.128 42.996)",
           "chart-2": "oklch(0.69 0.158 290.411)",
@@ -5073,7 +5073,7 @@
           "warm",
           "sans"
         ],
-        "contentHash": "fd86aec84ab9"
+        "contentHash": "01b49dc1798c"
       }
     },
     {
@@ -7328,7 +7328,7 @@
           "neutral-foreground": "oklch(0.979 0.008 121.627)",
           "neutral-text": "oklch(0 0 0)",
           "border": "oklch(0 0 0)",
-          "input": "oklch(0.556 0 0)",
+          "input": "oklch(0.862 0 0)",
           "ring": "oklch(0.785 0.104 274.713)",
           "chart-1": "oklch(0.511 0.23 276.966)",
           "chart-2": "oklch(0.644 0.123 182.503)",
@@ -7445,7 +7445,7 @@
             "offsetY": "0px"
           }
         },
-        "contentHash": "02d5e46aaa01"
+        "contentHash": "52d2a7ab5a82"
       }
     },
     {
@@ -7498,7 +7498,7 @@
           "neutral-foreground": "oklch(0.975 0.005 258.325)",
           "neutral-text": "oklch(0.256 0.043 268.066)",
           "border": "oklch(0.779 0.016 251.193)",
-          "input": "oklch(0.69 0.071 234.039)",
+          "input": "oklch(0.858 0.071 234.039)",
           "ring": "oklch(0.857 0.116 81.009)",
           "chart-1": "oklch(0.481 0.118 263.376)",
           "chart-2": "oklch(0.857 0.116 81.009)",
@@ -7578,7 +7578,7 @@
           "gold",
           "serif"
         ],
-        "contentHash": "a865753946be"
+        "contentHash": "3c4dc0d1d415"
       }
     },
     {

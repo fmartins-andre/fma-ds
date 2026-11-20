@@ -24,7 +24,7 @@ As cores vêm em pares: uma superfície e o texto que vai sobre ela.
 | `success`, `warning`, `info`, `destructive` | Status |
 | `muted`, `muted-foreground` | Superfícies estáticas discretas (zebra, rodapé, skeleton) e texto secundário. Nunca hover, foco ou seleção |
 | `accent`, `accent-foreground` | O item em destaque numa coleção: menu, listbox, calendário, linha de tabela |
-| `border`, `input`, `ring` | Linhas, borda dos campos e o anel de foco |
+| `border`, `input`, `ring` | Linhas; borda dos campos e, a 30%, o fundo dos campos nos dois modos; o anel de foco |
 | `sidebar-*` | A paleta própria da sidebar |
 
 Cada tom (`primary`, `brand`, `neutral` e os quatro status) tem três tokens:
