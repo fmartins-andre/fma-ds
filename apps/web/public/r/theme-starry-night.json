@@ -60,7 +60,7 @@
       "sidebar-accent-foreground": "oklch(0.256 0.043 268.066)",
       "sidebar-border": "oklch(0.779 0.016 251.193)",
       "sidebar-ring": "oklch(0.857 0.116 81.009)",
-      "tone-soft-base": "oklch(0.934 0 0)",
+      "tone-base": "oklch(0.934 0 0)",
       "radius": "0.5rem",
       "tone-icon-mix": "49%"
     },
@@ -112,7 +112,7 @@
       "sidebar-accent-foreground": "oklch(0.27 0.041 281.304)",
       "sidebar-border": "oklch(0.307 0.029 281.768)",
       "sidebar-ring": "oklch(0.91 0.144 95.112)",
-      "tone-soft-base": "oklch(0.27 0 0)"
+      "tone-base": "oklch(0.27 0 0)"
     }
   },
   "css": {
@@ -128,7 +128,7 @@
       "gold",
       "serif"
     ],
-    "contentHash": "c168d893f55e"
+    "contentHash": "f9bc9c8c6090"
   },
   "categories": [
     "theme"

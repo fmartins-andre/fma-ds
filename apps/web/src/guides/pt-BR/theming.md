@@ -48,7 +48,7 @@ O `--neutral` começa com a cor do texto muted, com `--background` como `-foregr
 | Sombras | `--shadow-*` | do tema |
 | Mistura do ícone | `--tone-icon-mix` | `42%`: quanto ícones e pontos saem do tom em direção ao `-text` |
 | Mistura do soft | `--tone-soft-mix` | `10%` no claro, `28%` no escuro: a força das tintas soft |
-| Base do soft | `--tone-soft-base` | derivada: um cinza com a luz do card e sem matiz, com o qual as tintas soft são misturadas |
+| Base dos tons | `--tone-base` | derivada: um cinza com a luz do card e sem matiz, com o qual as tintas soft, as bordas do outline e o hover dos sólidos são misturados |
 | Mistura do input | `--input-mix` | `0%` no claro, `30%` no escuro: a parte do `--input` no fundo dos campos (`bg-input-background`) |
 
 ## Customize

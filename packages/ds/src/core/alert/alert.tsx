@@ -7,8 +7,8 @@ type AlertVariant = Exclude<Variant, "ghost">;
 
 // Variant recipes (fma-ds docs, "Tones and variants"): every variant reads the --tone-*
 // variables that `toneVariants` sets, and keeps the transparent border from the base so
-// switching variants never changes the box. All three surfaces are opaque (the soft tint is
-// mixed with --background), so a colored container behind the alert doesn't bleed through.
+// switching variants never changes the box. Solid and soft are opaque; outline is only the border,
+// over whatever surface the alert sits on.
 const alertVariantsConfig = {
   variant: {
     // The ring and link hover follow the text so they stay visible on the tone surface.
@@ -16,7 +16,7 @@ const alertVariantsConfig = {
       "bg-(--tone) text-(color:--tone-foreground) [--ring:var(--tone-foreground)] [--alert-link-hover:var(--tone-foreground)] [&_[data-slot=alert-description]]:text-(color:--tone-foreground)",
     soft: "bg-(--tone-soft) text-foreground [&>svg]:text-(color:--tone-icon) [&_[data-slot=alert-description]]:text-foreground/80",
     outline:
-      "border-(--tone-line) bg-background text-foreground [&_[data-slot=alert-title]]:text-(color:--tone-text) [&>svg]:text-(color:--tone-icon)",
+      "border-(--tone-line) bg-transparent text-foreground [&_[data-slot=alert-title]]:text-(color:--tone-text) [&>svg]:text-(color:--tone-icon)",
   },
 } satisfies { variant: Record<AlertVariant, string> };
 

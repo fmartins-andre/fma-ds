@@ -20,7 +20,7 @@ export const THEME_VARS = [
   "--tracking-normal",
   "--tone-icon-mix",
   "--tone-soft-mix",
-  "--tone-soft-base",
+  "--tone-base",
   "--input-mix",
   ...SHADOW_SIZES.map((size) => `--shadow-${size}`),
   "--shadow-color",
@@ -63,7 +63,7 @@ export function modeThemeVars(
   const vars: Record<string, string> = {};
   for (const token of COLOR_TOKENS) vars[`--${token}`] = theme[mode][token];
   // Derived, like the shadow scale: the gray the soft tints mix with (see softBase).
-  vars["--tone-soft-base"] = softBase(theme[mode]);
+  vars["--tone-base"] = softBase(theme[mode]);
   if (theme.softMix) vars["--tone-soft-mix"] = theme.softMix[mode];
   if (theme.inputMix) vars["--input-mix"] = theme.inputMix[mode];
   const shadow = theme.shadow?.[mode];

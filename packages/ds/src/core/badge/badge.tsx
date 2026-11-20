@@ -11,7 +11,7 @@ const badgeVariantsConfig = {
   variant: {
     solid: "bg-(--tone) text-(color:--tone-foreground)",
     soft: "bg-(--tone-soft) text-(color:--tone-text)",
-    outline: "border-(--tone-line) bg-background text-(color:--tone-text)",
+    outline: "border-(--tone-line) bg-transparent text-(color:--tone-text)",
     ghost:
       "text-foreground before:size-1.5 before:shrink-0 before:rounded-full before:bg-(--tone-icon)",
   },
