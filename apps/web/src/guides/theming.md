@@ -47,7 +47,8 @@ Each tone (`primary`, `brand`, `neutral` and the four statuses) has three tokens
 | Letter spacing | `--tracking-normal` | `0` |
 | Shadows | `--shadow-*` | per theme |
 | Icon mix | `--tone-icon-mix` | `42%`: how far icons and dots move from the tone toward its `-text` |
-| Soft mix | `--tone-soft-mix` | `10%` light, `18%` dark: the strength of soft tints |
+| Soft mix | `--tone-soft-mix` | `10%` light, `28%` dark: the strength of soft tints |
+| Soft base | `--tone-soft-base` | derived: a gray with the card's lightness and no hue, what soft tints mix with |
 | Input mix | `--input-mix` | `0%` light, `30%` dark: the share of `--input` in the field fill (`bg-input-background`) |
 
 ## Customize it

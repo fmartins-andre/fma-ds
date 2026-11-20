@@ -245,7 +245,7 @@ describe("Bubble", () => {
   it("hover on interactive content follows the tone lib", () => {
     const hover = "[&>[data-slot=bubble-content]:is(button,a):hover]:";
     expect(bubbleVariantsConfig.variant.solid).toContain(
-      `${hover}bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))]`,
+      `${hover}bg-[color-mix(in_oklab,var(--tone)_85%,var(--tone-soft-base,var(--background)))]`,
     );
     expect(bubbleVariantsConfig.variant.soft).toContain(`${hover}bg-(--tone-soft-hover)`);
     expect(bubbleVariantsConfig.variant.outline).toContain(`${hover}bg-(--tone-hover)`);
