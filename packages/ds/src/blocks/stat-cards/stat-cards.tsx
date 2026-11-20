@@ -159,8 +159,8 @@ function StatDescription({ className, ...props }: React.ComponentProps<"div">) {
 // (the soft surface mixes it like the tone lib does).
 const statIconToneClassName = [
   "[--tone-icon:var(--stat-icon)]",
-  "[--tone-soft:color-mix(in_oklab,var(--stat-icon)_var(--tone-soft-mix,10%),var(--tone-soft-base,var(--background)))]",
-  "dark:[--tone-soft:color-mix(in_oklab,var(--stat-icon)_var(--tone-soft-mix,28%),var(--tone-soft-base,var(--background)))]",
+  "[--tone-soft:color-mix(in_oklab,var(--stat-icon)_var(--tone-soft-mix,10%),var(--tone-base,var(--background)))]",
+  "dark:[--tone-soft:color-mix(in_oklab,var(--stat-icon)_var(--tone-soft-mix,28%),var(--tone-base,var(--background)))]",
 ].join(" ");
 
 /** The icon, in a `soft` `IconTile` tinted by the stat's tone. */

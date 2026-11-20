@@ -6,10 +6,10 @@ Colored components share two props: `variant` picks the surface and `tone` picks
 | --- | --- | --- |
 | `solid` | Filled with the tone, text in the tone's `-foreground` | 85% of the tone |
 | `soft` | A light tint of the tone, no border, text in the tone | A stronger tint |
-| `outline` | A border in the tone over the page background, text in the tone | The soft tint |
+| `outline` | A border in the tone with no fill (the surface behind shows through), text in the tone | The soft tint |
 | `ghost` | No surface, text in the tone | The soft tint |
 
-The soft tint is opaque and keeps the tone's hue: it mixes the tone with a hue-less gray at the card's lightness (`--tone-soft-base`, computed by the theme), not with the page background, so a bluish or warm page doesn't turn an orange warning beige.
+The soft tint and the outline border keep the tone's hue: they mix the tone with a hue-less gray at the card's lightness (`--tone-base`, computed by the theme), not with the page background, so a bluish or warm page doesn't turn an orange warning beige. The soft tint is opaque; the outline paints no fill.
 
 `tone` is one of `brand`, `primary`, `neutral`, `success`, `warning`, `info` or `destructive`. When you leave it out, it is `primary` for `solid` and `neutral` for the other variants, so `<Button variant="outline">` stays neutral.
 

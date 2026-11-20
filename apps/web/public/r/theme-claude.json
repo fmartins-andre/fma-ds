@@ -55,7 +55,7 @@
       "sidebar-accent-foreground": "oklch(0.325 0 0)",
       "sidebar-border": "oklch(0.94 0 0)",
       "sidebar-ring": "oklch(0.773 0 0)",
-      "tone-soft-base": "oklch(0.982 0 0)",
+      "tone-base": "oklch(0.982 0 0)",
       "radius": "0.5rem"
     },
     "dark": {
@@ -106,7 +106,7 @@
       "sidebar-accent-foreground": "oklch(0.807 0.014 93.014)",
       "sidebar-border": "oklch(0.94 0 0)",
       "sidebar-ring": "oklch(0.773 0 0)",
-      "tone-soft-base": "oklch(0.268 0 0)"
+      "tone-base": "oklch(0.268 0 0)"
     }
   },
   "meta": {
@@ -118,7 +118,7 @@
       "warm",
       "sans"
     ],
-    "contentHash": "84c1dbb771db"
+    "contentHash": "713dbabcad7d"
   },
   "categories": [
     "theme"

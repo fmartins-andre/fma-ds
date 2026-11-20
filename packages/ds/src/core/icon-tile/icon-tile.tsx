@@ -11,7 +11,7 @@ const iconTileVariantsConfig = {
   variant: {
     solid: "bg-(--tone) text-(color:--tone-foreground)",
     soft: "bg-(--tone-soft) text-(color:--tone-icon)",
-    outline: "border-(--tone-line) bg-background text-(color:--tone-icon)",
+    outline: "border-(--tone-line) bg-transparent text-(color:--tone-icon)",
     ghost: "text-(color:--tone-icon)",
   },
   size: {

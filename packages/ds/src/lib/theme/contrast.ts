@@ -40,7 +40,7 @@ export const GATED_TONES = [...TEXT_TONES, "neutral"] as const;
 export type GatedTone = (typeof GATED_TONES)[number];
 
 /**
- * What the soft tints mix with (`--tone-soft-base`): a gray with the card's lightness and no
+ * What the soft tints mix with (`--tone-base`): a gray with the card's lightness and no
  * chroma, so a tint keeps its tone's hue whatever the hue of the page or the card.
  */
 export function softBase(colors: ThemeColors): string {

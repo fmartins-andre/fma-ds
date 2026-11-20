@@ -98,7 +98,7 @@ describe("default soft tint", () => {
     );
     expect(names.filter((name) => !(COLOR_TOKENS as readonly string[]).includes(name))).toEqual([
       "tone-soft-mix",
-      "tone-soft-base",
+      "tone-base",
       "input-mix",
     ]);
   });

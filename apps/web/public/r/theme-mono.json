@@ -62,7 +62,7 @@
       "sidebar-accent-foreground": "oklch(0.205 0 0)",
       "sidebar-border": "oklch(0.922 0 0)",
       "sidebar-ring": "oklch(0.709 0 0)",
-      "tone-soft-base": "oklch(1 0 0)",
+      "tone-base": "oklch(1 0 0)",
       "shadow-2xs": "0px 1px 0px 0px oklch(0 0 0 / 0%)",
       "shadow-xs": "0px 1px 0px 0px oklch(0 0 0 / 0%)",
       "shadow-sm": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 1px 0px 0px oklch(0 0 0 / 0%)",
@@ -120,7 +120,7 @@
       "sidebar-accent-foreground": "oklch(0.985 0 0)",
       "sidebar-border": "oklch(1 0 0)",
       "sidebar-ring": "oklch(0.439 0 0)",
-      "tone-soft-base": "oklch(0.213 0 0)",
+      "tone-base": "oklch(0.213 0 0)",
       "shadow-2xs": "0px 1px 0px 0px oklch(0 0 0 / 0%)",
       "shadow-xs": "0px 1px 0px 0px oklch(0 0 0 / 0%)",
       "shadow-sm": "0px 1px 0px 0px oklch(0 0 0 / 0%), 0px 1px 0px 0px oklch(0 0 0 / 0%)",
@@ -163,7 +163,7 @@
         "offsetY": "1px"
       }
     },
-    "contentHash": "532dd56b1517"
+    "contentHash": "7f43f25748b8"
   },
   "categories": [
     "theme"

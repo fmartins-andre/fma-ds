@@ -52,7 +52,13 @@ describe("toneVariants", () => {
   it.each(TONES)("%s mixes the soft tints with the hue-less base, not the page", (t) => {
     const soft = toneVariants[t].split(" ").filter((c) => /--tone-soft(-hover)?:/.test(c));
     expect(soft).toHaveLength(4);
-    for (const c of soft) expect(c).toContain(",var(--tone-soft-base,var(--background)))]");
+    for (const c of soft) expect(c).toContain(",var(--tone-base,var(--background)))]");
+  });
+
+  it.each(COLORED)("%s mixes its outline line with the hue-less base", (t) => {
+    const line = toneVariants[t].split(" ").filter((c) => /--tone-line:/.test(c));
+    expect(line).toHaveLength(2);
+    for (const c of line) expect(c).toContain(",var(--tone-base,var(--background)))]");
   });
 
   it.each(COLORED)("%s mixes its outline line from the tone", (t) => {
@@ -89,6 +95,6 @@ describe("softBase", () => {
     const colors = { ...DEFAULT_THEME.light, card: "#0a1330" };
     expect(softBase(colors)).toMatch(/^oklch\([\d.]+ 0 0\)$/);
     const vars = modeThemeVars({ ...DEFAULT_THEME, light: colors }, "light");
-    expect(vars["--tone-soft-base"]).toBe(softBase(colors));
+    expect(vars["--tone-base"]).toBe(softBase(colors));
   });
 });
