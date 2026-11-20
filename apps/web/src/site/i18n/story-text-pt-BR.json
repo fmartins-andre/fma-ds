@@ -1519,5 +1519,8 @@
   "July": "Julho",
   "August": "Agosto",
   "Every charge of the plan.": "Todas as cobranças do plano.",
-  "Long content": "Conteúdo longo"
+  "Long content": "Conteúdo longo",
+  "Scheduling failed": "Falha no agendamento",
+  "Reason for the failure": "Motivo da falha",
+  "The contact e-mail is invalid.": "O e-mail de contato é inválido."
 }

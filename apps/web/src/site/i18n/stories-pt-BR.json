@@ -257,7 +257,6 @@
   "`DataGridRowPin position=\"bottom\"` pins rows under the page's rows.": "`DataGridRowPin position=\"bottom\"` fixa linhas abaixo das linhas da página.",
   "`EmojiPickerPanel` renders in place; compose the parts in any order.": "`EmojiPickerPanel` renderiza no lugar; componha as partes em qualquer ordem.",
   "`ErrorPage` alone, for other cases: here, scheduled maintenance.": "`ErrorPage` sozinho, para outros casos: aqui, uma manutenção programada.",
-  "`FieldHelp` sits beside the label, never inside it, and opens a popover: it works with touch and keyboard, unlike a tooltip. Its label names the subject.": "`FieldHelp` fica ao lado do rótulo, nunca dentro dele, e abre um popover: funciona com toque e teclado, ao contrário de um tooltip. Seu rótulo nomeia o assunto.",
   "`NavigationMenuIndicator` sits under the open item's trigger and follows it.": "`NavigationMenuIndicator` fica sob o gatilho do item aberto e o acompanha.",
   "`RangeCalendar` with `granularity=\"month\"`: the committed range runs from the first day of the start month to the last day of the end month.": "`RangeCalendar` com `granularity=\"month\"`: o intervalo confirmado vai do primeiro dia do mês inicial ao último dia do mês final.",
   "`TimePickerInput` replaces the trigger with a typable field and a clock button.": "`TimePickerInput` substitui o gatilho por um campo digitável e um botão de relógio.",
@@ -381,5 +380,7 @@
   "`tone` picks the color of any variant: the seven tones in each.": "`tone` escolhe a cor de qualquer variante: os sete tons em cada uma.",
   "Status alerts: a `soft` surface in the status tone, with a matching icon.": "Avisos de status: uma superfície `soft` no tom do status, com um ícone correspondente.",
   "Inside a `Card`: both alerts are drawn over the page background, not the card's: outline keeps the page background and the soft tint is mixed with it, so on a card of a different color each reads as its own surface.": "Dentro de um `Card`: os dois alertas são desenhados sobre o fundo da página, não o do cartão: o outline mantém o fundo da página e a tinta do soft é misturada com ele, então num cartão de outra cor cada um aparece como uma superfície própria.",
-  "A badge is not interactive. When you render it as a link, add your own hover and focus styling.": "Um badge não é interativo. Ao renderizá-lo como link, adicione seu próprio estilo de hover e foco."
+  "A badge is not interactive. When you render it as a link, add your own hover and focus styling.": "Um badge não é interativo. Ao renderizá-lo como link, adicione seu próprio estilo de hover e foco.",
+  "`FieldHelp` sits beside the label, never inside it, and opens a popover: hovering previews it, pressing pins it (touch and keyboard included, unlike a tooltip). Its label names the subject.": "`FieldHelp` fica ao lado do rótulo, nunca dentro dele, e abre um popover: passar o mouse mostra uma prévia, pressionar fixa (funciona com toque e teclado, ao contrário de um tooltip). Seu rótulo nomeia o assunto.",
+  "`icon` and `tone` turn it into the reason behind a flagged value, e.g. a failed row.": "`icon` e `tone` o transformam no motivo de um valor sinalizado, como uma linha com falha."
 }

@@ -1,11 +1,11 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
 import { InfoIcon } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Dialog, type PopoverProps } from "react-aria-components";
 import { Button } from "@/core/button/button";
 import { Label } from "@/core/label/label";
-import { Popover, PopoverTrigger } from "@/core/popover/popover";
+import { Popover } from "@/core/popover/popover";
 import { Separator } from "@/core/separator/separator";
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
@@ -107,15 +107,23 @@ function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>)
   );
 }
 
+const HELP_OPEN_DELAY = 200;
+const HELP_CLOSE_DELAY = 150;
+
 /**
  * An ⓘ button that opens help about a field or a column in a popover: unlike
  * a tooltip, it opens with touch and keyboard and fits a couple of sentences.
- * Place it BESIDE the `FieldLabel` or column header, never inside, where it
- * would nest one interactive element in another.
+ * Hovering opens it as a preview (it stays while the pointer is over the
+ * button or the popover); pressing pins it open until Escape or a press
+ * outside. `icon` swaps the ⓘ, e.g. an alert icon with `tone="destructive"`
+ * for the reason behind a failed row. Place it BESIDE the `FieldLabel` or
+ * column header, never inside, where it would nest one interactive element in
+ * another.
  */
 function FieldHelp({
   label,
   placement = "bottom start",
+  icon,
   className,
   children,
   ...props
@@ -123,26 +131,62 @@ function FieldHelp({
   /** Names the subject, e.g. "More information: CIB". Also names the popover. */
   label: string;
   placement?: PopoverProps["placement"];
+  /** The trigger's icon; ⓘ by default. */
+  icon?: React.ReactNode;
   children: React.ReactNode;
 }) {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState<"hover" | "pinned" | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const schedule = (next: "hover" | null, delay: number) => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(
+      () => setOpen((current) => (current === "pinned" ? current : next)),
+      delay,
+    );
+  };
+  const keepHoverOpen = () => clearTimeout(timer.current);
+  const closeHover = () => schedule(null, HELP_CLOSE_DELAY);
   return (
-    <PopoverTrigger>
+    <>
       <Button
+        ref={triggerRef}
         data-slot="field-help"
         variant="ghost"
         size="icon-xs"
         aria-label={label}
-        className={cn("text-muted-foreground", className)}
+        aria-expanded={open !== null}
+        className={cn(props.tone === undefined && "text-muted-foreground", className)}
+        onHoverStart={() => (open ? keepHoverOpen() : schedule("hover", HELP_OPEN_DELAY))}
+        onHoverEnd={closeHover}
+        onPress={() => {
+          clearTimeout(timer.current);
+          // a press pins a hover preview; a second press closes it
+          setOpen((current) => (current === "pinned" ? null : "pinned"));
+        }}
         {...props}
       >
-        <InfoIcon />
+        {icon ?? <InfoIcon />}
       </Button>
-      <Popover placement={placement}>
-        <Dialog aria-label={label} className="outline-none">
+      <Popover
+        triggerRef={triggerRef}
+        isOpen={open !== null}
+        onOpenChange={(isOpen) => !isOpen && setOpen(null)}
+        // the hover preview doesn't trap focus nor block the page; pinned, it's a regular popover
+        isNonModal={open === "hover"}
+        placement={placement}
+      >
+        <Dialog
+          aria-label={label}
+          className="outline-none"
+          onMouseEnter={open === "hover" ? keepHoverOpen : undefined}
+          onMouseLeave={open === "hover" ? closeHover : undefined}
+        >
           {children}
         </Dialog>
       </Popover>
-    </PopoverTrigger>
+    </>
   );
 }
 
