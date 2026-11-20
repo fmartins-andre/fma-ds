@@ -1,6 +1,6 @@
 import { type CalendarDate, getLocalTimeZone, parseDate, today } from "@internationalized/date";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Building2Icon, UserIcon } from "lucide-react";
+import { Building2Icon, TriangleAlertIcon, UserIcon } from "lucide-react";
 import * as React from "react";
 import { Text } from "react-aria-components";
 import { expect, userEvent, waitFor, within } from "storybook/test";
@@ -96,7 +96,8 @@ export const WithError: Story = {
 
 /**
  * `FieldHelp` sits beside the label, never inside it, and opens a popover:
- * it works with touch and keyboard, unlike a tooltip. Its label names the subject.
+ * hovering previews it, pressing pins it (touch and keyboard included, unlike a
+ * tooltip). Its label names the subject.
  */
 export const WithHelp: Story = {
   render: () => (
@@ -122,6 +123,56 @@ export const WithHelp: Story = {
     // The label still focuses the input: the button isn't inside it.
     await userEvent.click(canvas.getByText("CIB"));
     await expect(canvas.getByRole("textbox", { name: "CIB" })).toHaveFocus();
+  },
+};
+
+/**
+ * Pressing pins the popover: it stays after the pointer leaves, until Escape or a press
+ * outside. (Hover itself is checked with a real pointer: the synthetic `userEvent.hover`
+ * fires a `pointerover` that react-aria reads as leaving.)
+ */
+export const ShouldStayOpenWhenPinned: Story = {
+  tags: ["!autodocs"],
+  render: () => (
+    <div className="flex items-center gap-1">
+      <span>CIB</span>
+      <FieldHelp label="More information: CIB">
+        The property's code in the Brazilian Real Estate Registry, printed on the property tax bill.
+      </FieldHelp>
+    </div>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    const body = within(canvasElement.ownerDocument.body);
+    const help = canvas.getByRole("button", { name: "More information: CIB" });
+    await userEvent.click(help);
+    await body.findByRole("dialog", { name: "More information: CIB" });
+    await userEvent.unhover(help);
+    await new Promise((r) => setTimeout(r, 300));
+    await expect(body.getByRole("dialog", { name: "More information: CIB" })).toBeVisible();
+    await expect(help).toHaveAttribute("aria-expanded", "true");
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(body.queryByRole("dialog")).not.toBeInTheDocument());
+    await expect(help).toHaveAttribute("aria-expanded", "false");
+  },
+};
+
+/** `icon` and `tone` turn it into the reason behind a flagged value, e.g. a failed row. */
+export const HelpWithAlertIcon: Story = {
+  render: () => (
+    <div className="flex items-center gap-1 text-sm">
+      <span>Scheduling failed</span>
+      <FieldHelp label="Reason for the failure" icon={<TriangleAlertIcon />} tone="destructive">
+        The contact e-mail is invalid.
+      </FieldHelp>
+    </div>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    const body = within(canvasElement.ownerDocument.body);
+    await userEvent.click(canvas.getByRole("button", { name: "Reason for the failure" }));
+    await expect(
+      await body.findByRole("dialog", { name: "Reason for the failure" }),
+    ).toHaveTextContent(/e-mail is invalid/);
+    await userEvent.keyboard("{Escape}");
   },
 };
 

@@ -100,8 +100,8 @@ function PanelCard({
  * The standard header: icon, title (a heading, `headingLevel` 2 by default)
  * with an optional help button and `status` (a `Badge`), description, the
  * "last updated" line and a toolbar slot that wraps below the title on narrow
- * cards. `help` opens in a
- * popover, so it works with touch and keyboard. `isRefreshing` spins next to
+ * cards. `help` previews in a popover on hover and pins on press, so it
+ * also works with touch and keyboard. `isRefreshing` spins next to
  * the date while the content stays on screen.
  */
 function PanelCardHeader({
