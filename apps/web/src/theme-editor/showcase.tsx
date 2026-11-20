@@ -139,18 +139,8 @@ const STATUS_BADGE = {
 const CHART = [62, 88, 45, 74, 96, 58, 80];
 
 // Every variant (a row) in every tone, read from the component and the tone lib so a new
-// one shows up here on its own. The row labels are the existing "solid/light/outline/dot".
-const BADGE_ROW_LABELS = {
-  solid: "solid",
-  soft: "light",
-  outline: "outline",
-  ghost: "dot",
-} as const satisfies Record<Variant, string>;
-
-const BADGE_ROWS = (Object.keys(badgeVariantsConfig.variant) as Variant[]).map((variant) => ({
-  variant,
-  label: BADGE_ROW_LABELS[variant],
-}));
+// one shows up here on its own.
+const BADGE_VARIANTS = Object.keys(badgeVariantsConfig.variant) as Variant[];
 
 function AccountCard() {
   const { t } = useTranslation("showcase");
@@ -323,10 +313,8 @@ function ControlsCard() {
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-wrap gap-2">
-          <Button>{t(($) => $.controls.default)}</Button>
-          <Button variant="soft" tone="primary">
-            {t(($) => $.controls.soft)}
-          </Button>
+          <Button>{t(($) => $.controls.solid)}</Button>
+          <Button variant="soft">{t(($) => $.controls.soft)}</Button>
           <Button variant="outline">{t(($) => $.controls.outline)}</Button>
           <Button variant="ghost">{t(($) => $.controls.ghost)}</Button>
           <Button tone="destructive">{t(($) => $.controls.destructive)}</Button>
@@ -338,7 +326,7 @@ function ControlsCard() {
           <ProgressLabel>{t(($) => $.controls.uploading)}</ProgressLabel>
           <ProgressValue />
         </Progress>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <AvatarGroup>
             {["AS", "BL", "CD"].map((initials) => (
               <Avatar key={initials}>
@@ -346,7 +334,7 @@ function ControlsCard() {
               </Avatar>
             ))}
           </AvatarGroup>
-          <div className="flex gap-1.5">
+          <div className="flex flex-wrap gap-1.5">
             <TooltipTrigger>
               <Button variant="outline" size="sm">
                 {t(($) => $.controls.hover)}
@@ -473,9 +461,9 @@ function BadgesCard() {
         <CardDescription>{t(($) => $.badges.description)}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
-        {BADGE_ROWS.map(({ variant, label }) => (
-          <div key={label} className="flex flex-col gap-1.5">
-            <span className="text-xs text-muted-foreground">{t(($) => $.badges[label])}</span>
+        {BADGE_VARIANTS.map((variant) => (
+          <div key={variant} className="flex flex-col gap-1.5">
+            <span className="text-xs text-muted-foreground">{t(($) => $.badges[variant])}</span>
             <div className="flex flex-wrap gap-1.5">
               {TONES.map((tone) => (
                 <Badge key={tone} variant={variant} tone={tone}>
@@ -523,7 +511,7 @@ function BrandCard() {
             <span className="font-medium">{t(($) => $.brand.firstOrder)}</span>
             <span className="text-sm opacity-80">{t(($) => $.brand.surface)}</span>
           </div>
-          <Button variant="outline" size="sm" className="text-foreground">
+          <Button variant="outline" size="sm">
             {t(($) => $.brand.start)}
           </Button>
         </div>
