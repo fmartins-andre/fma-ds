@@ -42,6 +42,7 @@
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
+  --color-input-background: color-mix(in oklab, var(--input) var(--input-mix), transparent);
   --color-input: var(--input);
   --color-border: var(--border);
   --color-brand-text: var(--brand-text);
@@ -117,7 +118,7 @@
   --neutral-foreground: oklch(1 0 0);
   --neutral-text: oklch(0.145 0 0);
   --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --input: oklch(0.667 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
@@ -149,6 +150,7 @@
   --tracking-normal: 0em;
   --tone-icon-mix: 42%;
   --tone-soft-mix: 10%;
+  --input-mix: 0%;
 }
 
 .dark {
@@ -184,7 +186,7 @@
   --neutral-foreground: oklch(0.145 0 0);
   --neutral-text: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --input: oklch(0.503 0 0);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
@@ -200,6 +202,7 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
   --tone-soft-mix: 18%;
+  --input-mix: 10%;
 }
 
 @layer base {

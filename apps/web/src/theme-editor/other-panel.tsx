@@ -5,6 +5,7 @@ import { Switch } from "@/core/switch/switch";
 import {
   type EditableSetting,
   type HslAdjustment,
+  INPUT_MIX,
   NO_HSL_ADJUSTMENT,
   type Theme,
   type ThemeEditorAction,
@@ -21,6 +22,7 @@ export const OTHER_SETTINGS = [
   "shadow",
   "iconMix",
   "softMix",
+  "inputMix",
 ] as const satisfies EditableSetting[];
 type OtherSetting = (typeof OTHER_SETTINGS)[number];
 
@@ -242,6 +244,35 @@ export function OtherPanel({
         <ResetButton
           isDisabled={theme.softMix === undefined}
           onPress={() => edit((current) => ({ ...current, softMix: undefined }))}
+        />
+      </Section>
+    ),
+    inputMix: (
+      <Section title={t(($) => $.other.inputMix)}>
+        {(["light", "dark"] as const).map((side) => (
+          <SliderField
+            key={side}
+            label={side === "light" ? t(($) => $.other.softLight) : t(($) => $.other.softDark)}
+            value={percent(theme.inputMix?.[side], INPUT_MIX[side] * 100)}
+            min={0}
+            max={40}
+            step={0.5}
+            unit="%"
+            onChange={(value) =>
+              edit((current) => ({
+                ...current,
+                inputMix: {
+                  light: current.inputMix?.light ?? asPercent(INPUT_MIX.light * 100),
+                  dark: current.inputMix?.dark ?? asPercent(INPUT_MIX.dark * 100),
+                  [side]: asPercent(value),
+                },
+              }))
+            }
+          />
+        ))}
+        <ResetButton
+          isDisabled={theme.inputMix === undefined}
+          onPress={() => edit((current) => ({ ...current, inputMix: undefined }))}
         />
       </Section>
     ),

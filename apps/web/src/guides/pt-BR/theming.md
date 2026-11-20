@@ -24,7 +24,7 @@ As cores vêm em pares: uma superfície e o texto que vai sobre ela.
 | `success`, `warning`, `info`, `destructive` | Status |
 | `muted`, `muted-foreground` | Superfícies estáticas discretas (zebra, rodapé, skeleton) e texto secundário. Nunca hover, foco ou seleção |
 | `accent`, `accent-foreground` | O item em destaque numa coleção: menu, listbox, calendário, linha de tabela |
-| `border`, `input`, `ring` | Linhas; borda dos campos e, a 30%, o fundo dos campos nos dois modos; o anel de foco |
+| `border`, `input`, `ring` | Linhas; borda dos campos (e, pelo `--input-mix`, o fundo deles); o anel de foco |
 | `sidebar-*` | A paleta própria da sidebar |
 
 Cada tom (`primary`, `brand`, `neutral` e os quatro status) tem três tokens:
@@ -48,6 +48,7 @@ O `--neutral` começa com a cor do texto muted, com `--background` como `-foregr
 | Sombras | `--shadow-*` | do tema |
 | Mistura do ícone | `--tone-icon-mix` | `42%`: quanto ícones e pontos saem do tom em direção ao `-text` |
 | Mistura do soft | `--tone-soft-mix` | `10%` no claro, `18%` no escuro: a força das tintas soft |
+| Mistura do input | `--input-mix` | `0%` no claro, `10%` no escuro: a parte do `--input` no fundo dos campos (`bg-input-background`) |
 
 ## Customize
 
@@ -74,6 +75,7 @@ Respeite estes mínimos de contraste, que os temas curados cumprem:
 
 - 4.5:1 para texto corrido, inclusive o `-text` sobre a página e sobre a tinta do soft.
 - 3:1 para toda cor cheia com o seu `-foreground`, e para ícones e bordas contra a página.
+- 3:1 para a borda dos campos (`--input`) contra a página e os cards, como a WCAG pede do limite de um controle. O importador do editor escurece (no escuro, clareia) um `--input` mais fraco até chegar lá.
 
 ## Vindo do shadcn
 

@@ -112,6 +112,9 @@ export const CONTRAST_PAIRS: ContrastPair[] = [
   fill("brand", "brand-foreground"),
   fill("neutral", "neutral-foreground"),
   fill("background", "neutral"),
+  // Field borders (WCAG 1.4.11): on the page and on cards.
+  fill("background", "input"),
+  fill("card", "input"),
   fill("sidebar-primary", "sidebar-primary-foreground"),
   fill("sidebar-accent", "sidebar-accent-foreground"),
 ];

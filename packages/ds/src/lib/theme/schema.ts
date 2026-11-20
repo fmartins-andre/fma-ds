@@ -115,6 +115,8 @@ export const ThemeSchema = z.object({
   // Tone recipe: share of the tone's `-text` in icons and dots, and the soft tint per mode.
   iconMix: Percent.optional(),
   softMix: z.object({ light: Percent, dark: Percent }).optional(),
+  // Form fields: share of `--input` (the field border) in the field fill, per mode.
+  inputMix: z.object({ light: Percent, dark: Percent }).optional(),
   light: ThemeColorsSchema,
   dark: ThemeColorsSchema,
 });

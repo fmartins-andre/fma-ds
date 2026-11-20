@@ -52,7 +52,7 @@ const tabsIndicatorVariants = cva(
     variants: {
       variant: {
         default:
-          "h-(--h) w-(--w) rounded-md bg-background shadow-sm [translate:var(--x)_var(--y)] dark:border dark:border-input dark:bg-input",
+          "h-(--h) w-(--w) rounded-md bg-background shadow-sm [translate:var(--x)_var(--y)] dark:border dark:border-border dark:bg-input-background",
         primary: "h-(--h) w-(--w) rounded-md bg-background shadow-sm [translate:var(--x)_var(--y)]",
         // just below the tab (horizontal) or past its end (vertical)
         line: "bg-foreground group-data-horizontal/tabs:h-0.5 group-data-horizontal/tabs:w-(--w) group-data-horizontal/tabs:[translate:var(--x)_calc(var(--y)+var(--h)+2px)] group-data-vertical/tabs:h-[calc(var(--h)-2px)] group-data-vertical/tabs:w-0.5 group-data-vertical/tabs:[translate:calc(var(--x)+var(--w)+1px)_calc(var(--y)+1px)]",

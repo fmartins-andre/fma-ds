@@ -24,7 +24,7 @@ Colors come in pairs: a surface and the text that goes on it.
 | `success`, `warning`, `info`, `destructive` | Status |
 | `muted`, `muted-foreground` | Quiet static surfaces (zebra rows, footers, skeletons) and secondary text. Never hover, focus or selection |
 | `accent`, `accent-foreground` | The highlighted item in a collection: menu, listbox, calendar, table row |
-| `border`, `input`, `ring` | Lines; field borders and, at 30%, the field fill in both modes; the focus ring |
+| `border`, `input`, `ring` | Lines; field borders (and, by `--input-mix`, the field fill); the focus ring |
 | `sidebar-*` | The sidebar's own palette |
 
 Each tone (`primary`, `brand`, `neutral` and the four statuses) has three tokens:
@@ -48,6 +48,7 @@ Each tone (`primary`, `brand`, `neutral` and the four statuses) has three tokens
 | Shadows | `--shadow-*` | per theme |
 | Icon mix | `--tone-icon-mix` | `42%`: how far icons and dots move from the tone toward its `-text` |
 | Soft mix | `--tone-soft-mix` | `10%` light, `18%` dark: the strength of soft tints |
+| Input mix | `--input-mix` | `0%` light, `10%` dark: the share of `--input` in the field fill (`bg-input-background`) |
 
 ## Customize it
 
@@ -74,6 +75,7 @@ Keep these contrast minimums, which the curated themes meet:
 
 - 4.5:1 for body text, including `-text` on the page and on the soft tint.
 - 3:1 for every solid color with its `-foreground`, and for icons and borders against the page.
+- 3:1 for field borders (`--input`) against the page and cards, as WCAG asks of a control's boundary. The editor's importer darkens (or, in dark mode, lightens) a fainter `--input` until it gets there.
 
 ## Coming from shadcn
 

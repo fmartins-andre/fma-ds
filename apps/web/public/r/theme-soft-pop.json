@@ -48,7 +48,7 @@
       "neutral-foreground": "oklch(0.979 0.008 121.627)",
       "neutral-text": "oklch(0 0 0)",
       "border": "oklch(0 0 0)",
-      "input": "oklch(0.862 0 0)",
+      "input": "oklch(0.652 0 0)",
       "ring": "oklch(0.785 0.104 274.713)",
       "chart-1": "oklch(0.511 0.23 276.966)",
       "chart-2": "oklch(0.644 0.123 182.503)",
@@ -165,7 +165,7 @@
         "offsetY": "0px"
       }
     },
-    "contentHash": "52d2a7ab5a82"
+    "contentHash": "a9cfdbe1ef18"
   },
   "categories": [
     "theme"
