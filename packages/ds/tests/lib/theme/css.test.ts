@@ -79,25 +79,26 @@ describe("tone mix settings", () => {
 });
 
 describe("default soft tint", () => {
-  it("styles.css declares 10% in :root and 18% in .dark", () => {
+  it("styles.css declares 10% in :root and 28% in .dark", () => {
     const { light, dark } = parseCssVars(STYLES);
     expect(light["tone-soft-mix"]).toBe("10%");
-    expect(dark["tone-soft-mix"]).toBe("18%");
+    expect(dark["tone-soft-mix"]).toBe("28%");
   });
 
   it("a theme without softMix keeps the dark default in the generated stylesheet", () => {
     const { light, dark } = parseCssVars(generateIndexCss(DEFAULT_THEME, STYLES));
     expect(light["tone-soft-mix"]).toBe("10%");
-    expect(dark["tone-soft-mix"]).toBe("18%");
+    expect(dark["tone-soft-mix"]).toBe("28%");
   });
 
-  it("only the tone and input mixes are non-color declarations of .dark, so the block swap adds nothing else", () => {
+  it("only the tone and input settings are non-color declarations of .dark, so the block swap adds nothing else", () => {
     const body = STYLES.slice(STYLES.indexOf("\n.dark {"));
     const names = [...body.slice(0, body.indexOf("\n}\n")).matchAll(/(--[\w-]+)\s*:/g)].map((m) =>
       (m[1] as string).slice(2),
     );
     expect(names.filter((name) => !(COLOR_TOKENS as readonly string[]).includes(name))).toEqual([
       "tone-soft-mix",
+      "tone-base",
       "input-mix",
     ]);
   });

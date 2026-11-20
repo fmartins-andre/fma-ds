@@ -3,18 +3,18 @@
 // own text color (buttons, badges, muted text, tinted status text) reach 3:1 —
 // the bar shadcn's own default theme meets (muted-foreground on muted is 4.34:1).
 
-import { contrastRatio, mixColors } from "./color";
+import { achromatic, contrastRatio, mixColors } from "./color";
 import type { ColorToken, Theme, ThemeColors, ThemeMode } from "./schema";
 
 /**
  * The recipe percentages every tone-based style shares (share of the tone in the mix). `text` is
- * the share of `--foreground` in the initial `-text` value; `softHover` multiplies the soft share.
+ * the share of `--foreground` in the initial `-text` value; `softHover` multiplies the soft share (less in dark, where the soft is already 28%).
  */
 export const TONE_MIX = {
   text: 0.5,
   icon: 0.42,
-  soft: { light: 0.1, dark: 0.18 },
-  softHover: 1.8,
+  soft: { light: 0.1, dark: 0.28 },
+  softHover: { light: 1.8, dark: 1.4 },
   line: { light: 0.38, dark: 0.45 },
 } as const;
 
@@ -39,6 +39,14 @@ export const GATED_TONES = [...TEXT_TONES, "neutral"] as const;
 
 export type GatedTone = (typeof GATED_TONES)[number];
 
+/**
+ * What the soft tints mix with (`--tone-base`): a gray with the card's lightness and no
+ * chroma, so a tint keeps its tone's hue whatever the hue of the page or the card.
+ */
+export function softBase(colors: ThemeColors): string {
+  return achromatic(colors.card);
+}
+
 /** The surfaces the in-tone text of `tone` sits on, and the minimum contrast on each. */
 export function toneTextSurfaces(
   colors: ThemeColors,
@@ -50,12 +58,12 @@ export function toneTextSurfaces(
     { label: "--background", value: colors.background, minimum: 4.5 },
     {
       label: `soft(--${tone})`,
-      value: mixColors(colors.background, colors[tone], soft, 6),
+      value: mixColors(softBase(colors), colors[tone], soft, 6),
       minimum: 4.5,
     },
     {
       label: `soft-hover(--${tone})`,
-      value: mixColors(colors.background, colors[tone], soft * TONE_MIX.softHover, 6),
+      value: mixColors(softBase(colors), colors[tone], soft * TONE_MIX.softHover[mode], 6),
       minimum: 3,
     },
   ];

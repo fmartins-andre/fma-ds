@@ -15,6 +15,7 @@ import {
   Separator as SeparatorPrimitive,
   SubmenuTrigger as SubmenuTriggerPrimitive,
 } from "react-aria-components";
+import { toneVariants } from "@/lib/tone";
 
 function ContextMenu({
   "data-slot": dataSlot = "context-menu-content",
@@ -90,7 +91,7 @@ const contextMenuItemVariants = cva(
   {
     variants: {
       selectionMode: {
-        none: "gap-1.5 rounded-md px-1.5 py-1 text-sm focus:bg-accent focus:text-accent-foreground data-inset:pl-7 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg:not([class*='size-'])]:size-4 focus:*:[svg]:text-accent-foreground data-[variant=destructive]:*:[svg]:text-destructive",
+        none: "gap-1.5 rounded-md px-1.5 py-1 text-sm focus:bg-accent focus:text-accent-foreground data-inset:pl-7 data-[variant=destructive]:text-(color:--tone-text) data-[variant=destructive]:focus:bg-(--tone-soft) data-[variant=destructive]:focus:text-(color:--tone-text) [&_svg:not([class*='size-'])]:size-4 focus:*:[svg]:text-accent-foreground data-[variant=destructive]:*:[svg]:text-(color:--tone-icon)",
         single:
           "gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm focus:bg-accent focus:text-accent-foreground data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4",
         multiple:
@@ -117,7 +118,11 @@ function ContextMenuItem({
       data-variant={variant}
       textValue={typeof children === "string" ? children : props.textValue}
       className={composeRenderProps(className, (className, { selectionMode }) =>
-        cn(contextMenuItemVariants({ selectionMode }), className),
+        cn(
+          contextMenuItemVariants({ selectionMode }),
+          variant === "destructive" && toneVariants.destructive,
+          className,
+        ),
       )}
       {...props}
     >

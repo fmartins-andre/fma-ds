@@ -29,6 +29,7 @@
       "offsetY": "1px"
     }
   },
+  "iconMix": "44%",
   "light": {
     "background": "oklch(0.978 0.004 56.375)",
     "foreground": "oklch(0.218 0 0)",

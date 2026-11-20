@@ -3,6 +3,7 @@
 // Storybook). Variable names match src/styles.css, which maps them into
 // Tailwind through `@theme inline`.
 
+import { softBase } from "./contrast";
 import { themeFontPackages } from "./fonts";
 import { COLOR_TOKENS, type Theme, type ThemeMode } from "./schema";
 import { SHADOW_SIZES, shadowScale } from "./shadows";
@@ -19,6 +20,7 @@ export const THEME_VARS = [
   "--tracking-normal",
   "--tone-icon-mix",
   "--tone-soft-mix",
+  "--tone-base",
   "--input-mix",
   ...SHADOW_SIZES.map((size) => `--shadow-${size}`),
   "--shadow-color",
@@ -60,6 +62,8 @@ export function modeThemeVars(
 ): Record<string, string> {
   const vars: Record<string, string> = {};
   for (const token of COLOR_TOKENS) vars[`--${token}`] = theme[mode][token];
+  // Derived, like the shadow scale: the gray the soft tints mix with (see softBase).
+  vars["--tone-base"] = softBase(theme[mode]);
   if (theme.softMix) vars["--tone-soft-mix"] = theme.softMix[mode];
   if (theme.inputMix) vars["--input-mix"] = theme.inputMix[mode];
   const shadow = theme.shadow?.[mode];

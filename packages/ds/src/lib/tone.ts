@@ -19,10 +19,14 @@ export function defaultTone(variant: Variant): Tone {
 
 // Every class is written out in full, per tone: Tailwind only generates the classes it finds
 // literally in the source, so building them in a loop or a template literal would produce no
-// CSS. Colored tones: soft = the tone over --background (--tone-soft-mix, 10% light / 18%
-// dark), soft hover = 1.8 × that, line = 38% / 45%, icon = the tone toward its -text by
+// CSS. Colored tones: soft = the tone over --tone-base (--tone-soft-mix, 10% light / 28%
+// dark), soft hover = 1.8 × / 1.4 × that, line = 38% / 45%, icon = the tone toward its -text by
 // --tone-icon-mix. Tailwind arbitrary values write spaces as underscores.
-// The literal percentages (10%, 18%, 38, 45, 42%, 1.8) are pinned against `TONE_MIX` by
+// Soft, soft hover and line mix with --tone-base, a gray with the card's lightness and no chroma,
+// computed by the theme (lib/theme/css.ts): mixing with --background itself would pull every tint
+// toward the page's hue (an orange soft on a blue-gray page reads beige). --background is only
+// the fallback. Outline recipes paint no fill (bg-transparent), only the line.
+// The literal percentages (10%, 28%, 38, 45, 42%, 1.8) are pinned against `TONE_MIX` by
 // tests/lib/tone.test.ts (lib/theme is unpublished, so this file can't import it); classes must
 // stay literal for Tailwind (the tone-literal gate is a proxy for generation).
 // Neutral follows the same recipe on its own tokens, with one exception: the outline border is
@@ -30,10 +34,10 @@ export function defaultTone(variant: Variant): Tone {
 const neutral = [
   "[--tone:var(--neutral)]",
   "[--tone-foreground:var(--neutral-foreground)]",
-  "[--tone-soft:color-mix(in_oklab,var(--neutral)_var(--tone-soft-mix,10%),var(--background))]",
-  "dark:[--tone-soft:color-mix(in_oklab,var(--neutral)_var(--tone-soft-mix,18%),var(--background))]",
-  "[--tone-soft-hover:color-mix(in_oklab,var(--neutral)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--background))]",
-  "dark:[--tone-soft-hover:color-mix(in_oklab,var(--neutral)_calc(var(--tone-soft-mix,18%)_*_1.8),var(--background))]",
+  "[--tone-soft:color-mix(in_oklab,var(--neutral)_var(--tone-soft-mix,10%),var(--tone-base,var(--background)))]",
+  "dark:[--tone-soft:color-mix(in_oklab,var(--neutral)_var(--tone-soft-mix,28%),var(--tone-base,var(--background)))]",
+  "[--tone-soft-hover:color-mix(in_oklab,var(--neutral)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--tone-base,var(--background)))]",
+  "dark:[--tone-soft-hover:color-mix(in_oklab,var(--neutral)_calc(var(--tone-soft-mix,28%)_*_1.4),var(--tone-base,var(--background)))]",
   "[--tone-line:var(--border)]",
   "[--tone-hover:var(--tone-soft)]",
   "[--tone-text:var(--neutral-text)]",
@@ -48,12 +52,12 @@ export const toneVariants: Record<Tone, string> = {
   brand: [
     "[--tone:var(--brand)]",
     "[--tone-foreground:var(--brand-foreground)]",
-    "[--tone-soft:color-mix(in_oklab,var(--brand)_var(--tone-soft-mix,10%),var(--background))]",
-    "dark:[--tone-soft:color-mix(in_oklab,var(--brand)_var(--tone-soft-mix,18%),var(--background))]",
-    "[--tone-soft-hover:color-mix(in_oklab,var(--brand)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--background))]",
-    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--brand)_calc(var(--tone-soft-mix,18%)_*_1.8),var(--background))]",
-    "[--tone-line:color-mix(in_oklab,var(--brand)_38%,var(--background))]",
-    "dark:[--tone-line:color-mix(in_oklab,var(--brand)_45%,var(--background))]",
+    "[--tone-soft:color-mix(in_oklab,var(--brand)_var(--tone-soft-mix,10%),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft:color-mix(in_oklab,var(--brand)_var(--tone-soft-mix,28%),var(--tone-base,var(--background)))]",
+    "[--tone-soft-hover:color-mix(in_oklab,var(--brand)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--brand)_calc(var(--tone-soft-mix,28%)_*_1.4),var(--tone-base,var(--background)))]",
+    "[--tone-line:color-mix(in_oklab,var(--brand)_38%,var(--tone-base,var(--background)))]",
+    "dark:[--tone-line:color-mix(in_oklab,var(--brand)_45%,var(--tone-base,var(--background)))]",
     "[--tone-hover:var(--tone-soft)]",
     "[--tone-text:var(--brand-text)]",
     "[--tone-icon:color-mix(in_oklab,var(--brand),var(--brand-text)_var(--tone-icon-mix,42%))]",
@@ -61,12 +65,12 @@ export const toneVariants: Record<Tone, string> = {
   primary: [
     "[--tone:var(--primary)]",
     "[--tone-foreground:var(--primary-foreground)]",
-    "[--tone-soft:color-mix(in_oklab,var(--primary)_var(--tone-soft-mix,10%),var(--background))]",
-    "dark:[--tone-soft:color-mix(in_oklab,var(--primary)_var(--tone-soft-mix,18%),var(--background))]",
-    "[--tone-soft-hover:color-mix(in_oklab,var(--primary)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--background))]",
-    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--primary)_calc(var(--tone-soft-mix,18%)_*_1.8),var(--background))]",
-    "[--tone-line:color-mix(in_oklab,var(--primary)_38%,var(--background))]",
-    "dark:[--tone-line:color-mix(in_oklab,var(--primary)_45%,var(--background))]",
+    "[--tone-soft:color-mix(in_oklab,var(--primary)_var(--tone-soft-mix,10%),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft:color-mix(in_oklab,var(--primary)_var(--tone-soft-mix,28%),var(--tone-base,var(--background)))]",
+    "[--tone-soft-hover:color-mix(in_oklab,var(--primary)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--primary)_calc(var(--tone-soft-mix,28%)_*_1.4),var(--tone-base,var(--background)))]",
+    "[--tone-line:color-mix(in_oklab,var(--primary)_38%,var(--tone-base,var(--background)))]",
+    "dark:[--tone-line:color-mix(in_oklab,var(--primary)_45%,var(--tone-base,var(--background)))]",
     "[--tone-hover:var(--tone-soft)]",
     "[--tone-text:var(--primary-text)]",
     "[--tone-icon:color-mix(in_oklab,var(--primary),var(--primary-text)_var(--tone-icon-mix,42%))]",
@@ -75,12 +79,12 @@ export const toneVariants: Record<Tone, string> = {
   success: [
     "[--tone:var(--success)]",
     "[--tone-foreground:var(--success-foreground)]",
-    "[--tone-soft:color-mix(in_oklab,var(--success)_var(--tone-soft-mix,10%),var(--background))]",
-    "dark:[--tone-soft:color-mix(in_oklab,var(--success)_var(--tone-soft-mix,18%),var(--background))]",
-    "[--tone-soft-hover:color-mix(in_oklab,var(--success)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--background))]",
-    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--success)_calc(var(--tone-soft-mix,18%)_*_1.8),var(--background))]",
-    "[--tone-line:color-mix(in_oklab,var(--success)_38%,var(--background))]",
-    "dark:[--tone-line:color-mix(in_oklab,var(--success)_45%,var(--background))]",
+    "[--tone-soft:color-mix(in_oklab,var(--success)_var(--tone-soft-mix,10%),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft:color-mix(in_oklab,var(--success)_var(--tone-soft-mix,28%),var(--tone-base,var(--background)))]",
+    "[--tone-soft-hover:color-mix(in_oklab,var(--success)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--success)_calc(var(--tone-soft-mix,28%)_*_1.4),var(--tone-base,var(--background)))]",
+    "[--tone-line:color-mix(in_oklab,var(--success)_38%,var(--tone-base,var(--background)))]",
+    "dark:[--tone-line:color-mix(in_oklab,var(--success)_45%,var(--tone-base,var(--background)))]",
     "[--tone-hover:var(--tone-soft)]",
     "[--tone-text:var(--success-text)]",
     "[--tone-icon:color-mix(in_oklab,var(--success),var(--success-text)_var(--tone-icon-mix,42%))]",
@@ -88,12 +92,12 @@ export const toneVariants: Record<Tone, string> = {
   warning: [
     "[--tone:var(--warning)]",
     "[--tone-foreground:var(--warning-foreground)]",
-    "[--tone-soft:color-mix(in_oklab,var(--warning)_var(--tone-soft-mix,10%),var(--background))]",
-    "dark:[--tone-soft:color-mix(in_oklab,var(--warning)_var(--tone-soft-mix,18%),var(--background))]",
-    "[--tone-soft-hover:color-mix(in_oklab,var(--warning)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--background))]",
-    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--warning)_calc(var(--tone-soft-mix,18%)_*_1.8),var(--background))]",
-    "[--tone-line:color-mix(in_oklab,var(--warning)_38%,var(--background))]",
-    "dark:[--tone-line:color-mix(in_oklab,var(--warning)_45%,var(--background))]",
+    "[--tone-soft:color-mix(in_oklab,var(--warning)_var(--tone-soft-mix,10%),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft:color-mix(in_oklab,var(--warning)_var(--tone-soft-mix,28%),var(--tone-base,var(--background)))]",
+    "[--tone-soft-hover:color-mix(in_oklab,var(--warning)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--warning)_calc(var(--tone-soft-mix,28%)_*_1.4),var(--tone-base,var(--background)))]",
+    "[--tone-line:color-mix(in_oklab,var(--warning)_38%,var(--tone-base,var(--background)))]",
+    "dark:[--tone-line:color-mix(in_oklab,var(--warning)_45%,var(--tone-base,var(--background)))]",
     "[--tone-hover:var(--tone-soft)]",
     "[--tone-text:var(--warning-text)]",
     "[--tone-icon:color-mix(in_oklab,var(--warning),var(--warning-text)_var(--tone-icon-mix,42%))]",
@@ -101,12 +105,12 @@ export const toneVariants: Record<Tone, string> = {
   info: [
     "[--tone:var(--info)]",
     "[--tone-foreground:var(--info-foreground)]",
-    "[--tone-soft:color-mix(in_oklab,var(--info)_var(--tone-soft-mix,10%),var(--background))]",
-    "dark:[--tone-soft:color-mix(in_oklab,var(--info)_var(--tone-soft-mix,18%),var(--background))]",
-    "[--tone-soft-hover:color-mix(in_oklab,var(--info)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--background))]",
-    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--info)_calc(var(--tone-soft-mix,18%)_*_1.8),var(--background))]",
-    "[--tone-line:color-mix(in_oklab,var(--info)_38%,var(--background))]",
-    "dark:[--tone-line:color-mix(in_oklab,var(--info)_45%,var(--background))]",
+    "[--tone-soft:color-mix(in_oklab,var(--info)_var(--tone-soft-mix,10%),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft:color-mix(in_oklab,var(--info)_var(--tone-soft-mix,28%),var(--tone-base,var(--background)))]",
+    "[--tone-soft-hover:color-mix(in_oklab,var(--info)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--info)_calc(var(--tone-soft-mix,28%)_*_1.4),var(--tone-base,var(--background)))]",
+    "[--tone-line:color-mix(in_oklab,var(--info)_38%,var(--tone-base,var(--background)))]",
+    "dark:[--tone-line:color-mix(in_oklab,var(--info)_45%,var(--tone-base,var(--background)))]",
     "[--tone-hover:var(--tone-soft)]",
     "[--tone-text:var(--info-text)]",
     "[--tone-icon:color-mix(in_oklab,var(--info),var(--info-text)_var(--tone-icon-mix,42%))]",
@@ -114,12 +118,12 @@ export const toneVariants: Record<Tone, string> = {
   destructive: [
     "[--tone:var(--destructive)]",
     "[--tone-foreground:var(--destructive-foreground)]",
-    "[--tone-soft:color-mix(in_oklab,var(--destructive)_var(--tone-soft-mix,10%),var(--background))]",
-    "dark:[--tone-soft:color-mix(in_oklab,var(--destructive)_var(--tone-soft-mix,18%),var(--background))]",
-    "[--tone-soft-hover:color-mix(in_oklab,var(--destructive)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--background))]",
-    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--destructive)_calc(var(--tone-soft-mix,18%)_*_1.8),var(--background))]",
-    "[--tone-line:color-mix(in_oklab,var(--destructive)_38%,var(--background))]",
-    "dark:[--tone-line:color-mix(in_oklab,var(--destructive)_45%,var(--background))]",
+    "[--tone-soft:color-mix(in_oklab,var(--destructive)_var(--tone-soft-mix,10%),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft:color-mix(in_oklab,var(--destructive)_var(--tone-soft-mix,28%),var(--tone-base,var(--background)))]",
+    "[--tone-soft-hover:color-mix(in_oklab,var(--destructive)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--tone-base,var(--background)))]",
+    "dark:[--tone-soft-hover:color-mix(in_oklab,var(--destructive)_calc(var(--tone-soft-mix,28%)_*_1.4),var(--tone-base,var(--background)))]",
+    "[--tone-line:color-mix(in_oklab,var(--destructive)_38%,var(--tone-base,var(--background)))]",
+    "dark:[--tone-line:color-mix(in_oklab,var(--destructive)_45%,var(--tone-base,var(--background)))]",
     "[--tone-hover:var(--tone-soft)]",
     "[--tone-text:var(--destructive-text)]",
     "[--tone-icon:color-mix(in_oklab,var(--destructive),var(--destructive-text)_var(--tone-icon-mix,42%))]",

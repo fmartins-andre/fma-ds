@@ -6,8 +6,10 @@ Os componentes coloridos compartilham duas props: `variant` escolhe a superfíci
 | --- | --- | --- |
 | `solid` | Preenchida com o tom, texto no `-foreground` do tom | 85% do tom |
 | `soft` | Uma tinta clara do tom, sem borda, texto no tom | Uma tinta mais forte |
-| `outline` | Borda no tom sobre o fundo da página, texto no tom | A tinta do soft |
+| `outline` | Borda no tom, sem preenchimento (aparece a superfície de trás), texto no tom | A tinta do soft |
 | `ghost` | Sem superfície, texto no tom | A tinta do soft |
+
+A tinta do soft e a borda do outline mantêm o matiz do tom: elas misturam o tom com um cinza sem matiz na luz do card (`--tone-base`, calculado pelo tema), e não com o fundo da página, então uma página azulada ou quente não deixa um aviso laranja bege. A tinta do soft é opaca; o outline não tem preenchimento.
 
 `tone` é um de `brand`, `primary`, `neutral`, `success`, `warning`, `info` ou `destructive`. Sem ele, o tom é `primary` para `solid` e `neutral` para as outras variantes, então `<Button variant="outline">` continua neutro.
 
