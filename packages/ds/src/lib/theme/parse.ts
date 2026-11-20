@@ -87,6 +87,12 @@ function colorsFrom(
     colors.brand = colors.primary;
     colors["brand-foreground"] = colors["primary-foreground"];
   }
+  // No neutral tone (other tools' themes, or ours before it): the muted text, as before.
+  if (vars.neutral === undefined) {
+    colors.neutral = colors["muted-foreground"];
+    colors["neutral-foreground"] = colors.background;
+    colors["neutral-text"] = colors.foreground;
+  }
   for (const tone of TEXT_TONES) {
     if (vars[`${tone}-text`] === undefined)
       colors[`${tone}-text`] = deriveToneText(colors, tone, mode);

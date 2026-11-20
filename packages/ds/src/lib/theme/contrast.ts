@@ -18,7 +18,11 @@ export const TONE_MIX = {
   line: { light: 0.38, dark: 0.45 },
 } as const;
 
-/** The colored tones that have an in-tone text token (`--X-text`). Neutral uses `--foreground`. */
+/**
+ * The colored tones whose in-tone text (`--X-text`) starts as a mix of the tone and
+ * `--foreground` (`deriveToneText`). Neutral also has `--neutral-text`, but it starts as
+ * `--foreground` itself, so it is not here; see `GATED_TONES`.
+ */
 export const TEXT_TONES = [
   "primary",
   "brand",
@@ -30,10 +34,15 @@ export const TEXT_TONES = [
 
 export type TextTone = (typeof TEXT_TONES)[number];
 
+/** Every tone with a `-text` token: its text and icons go through the contrast gate. */
+export const GATED_TONES = [...TEXT_TONES, "neutral"] as const;
+
+export type GatedTone = (typeof GATED_TONES)[number];
+
 /** The surfaces the in-tone text of `tone` sits on, and the minimum contrast on each. */
 export function toneTextSurfaces(
   colors: ThemeColors,
-  tone: TextTone,
+  tone: GatedTone,
   mode: ThemeMode,
   soft: number = TONE_MIX.soft[mode],
 ) {
@@ -101,6 +110,8 @@ export const CONTRAST_PAIRS: ContrastPair[] = [
   fill("background", "info"),
   fill("background", "destructive"),
   fill("brand", "brand-foreground"),
+  fill("neutral", "neutral-foreground"),
+  fill("background", "neutral"),
   fill("sidebar-primary", "sidebar-primary-foreground"),
   fill("sidebar-accent", "sidebar-accent-foreground"),
 ];
@@ -148,7 +159,7 @@ export function checkContrast(theme: Theme, mode: ThemeMode): ContrastResult[] {
     ),
   );
   const soft = softMixOf(theme, mode);
-  const toneText = TEXT_TONES.flatMap((tone) =>
+  const toneText = GATED_TONES.flatMap((tone) =>
     toneTextSurfaces(colors, tone, mode, soft).map((surface) =>
       result(
         surface.label,
@@ -160,7 +171,7 @@ export function checkContrast(theme: Theme, mode: ThemeMode): ContrastResult[] {
     ),
   );
   // Icons and dots: the tone nudged toward its text, on the page and on its soft tint.
-  const icons = TEXT_TONES.flatMap((tone) => {
+  const icons = GATED_TONES.flatMap((tone) => {
     const icon = mixColors(colors[tone], colors[`${tone}-text`], iconMixOf(theme));
     return toneTextSurfaces(colors, tone, mode, soft)
       .filter((surface) => !surface.label.startsWith("soft-hover("))

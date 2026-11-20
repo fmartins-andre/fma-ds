@@ -115,7 +115,7 @@ describe("generated items", () => {
     expect(item?.files).toEqual([
       expect.objectContaining({ target: "components/fma-ds/menubar.tsx" }),
     ]);
-    expect(item?.registryDependencies).toEqual([`${NAMESPACE}/dropdown-menu`]);
+    expect(item?.registryDependencies).toEqual([`${NAMESPACE}/dropdown-menu`, `${NAMESPACE}/tone`]);
   });
 
   it("installs hooks and libs into hooks/fma-ds and lib/fma-ds", () => {

@@ -25,15 +25,19 @@ export function defaultTone(variant: Variant): Tone {
 // The literal percentages (10%, 18%, 38, 45, 42%, 1.8) are pinned against `TONE_MIX` by
 // tests/lib/tone.test.ts (lib/theme is unpublished, so this file can't import it); classes must
 // stay literal for Tailwind (the tone-literal gate is a proxy for generation).
+// Neutral follows the same recipe on its own tokens, with one exception: the outline border is
+// --border, so a neutral outline matches the inputs (the 38% / 45% mix would be much darker).
 const neutral = [
-  "[--tone:var(--muted-foreground)]",
-  "[--tone-foreground:var(--background)]",
-  "[--tone-soft:var(--muted)]",
-  "[--tone-soft-hover:color-mix(in_oklab,var(--muted),var(--foreground)_5%)]",
+  "[--tone:var(--neutral)]",
+  "[--tone-foreground:var(--neutral-foreground)]",
+  "[--tone-soft:color-mix(in_oklab,var(--neutral)_var(--tone-soft-mix,10%),var(--background))]",
+  "dark:[--tone-soft:color-mix(in_oklab,var(--neutral)_var(--tone-soft-mix,18%),var(--background))]",
+  "[--tone-soft-hover:color-mix(in_oklab,var(--neutral)_calc(var(--tone-soft-mix,10%)_*_1.8),var(--background))]",
+  "dark:[--tone-soft-hover:color-mix(in_oklab,var(--neutral)_calc(var(--tone-soft-mix,18%)_*_1.8),var(--background))]",
   "[--tone-line:var(--border)]",
-  "[--tone-hover:var(--muted)]",
-  "[--tone-text:var(--foreground)]",
-  "[--tone-icon:var(--muted-foreground)]",
+  "[--tone-hover:var(--tone-soft)]",
+  "[--tone-text:var(--neutral-text)]",
+  "[--tone-icon:color-mix(in_oklab,var(--neutral),var(--neutral-text)_var(--tone-icon-mix,42%))]",
 ].join(" ");
 
 /**

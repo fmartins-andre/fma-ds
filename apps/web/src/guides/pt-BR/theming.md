@@ -20,19 +20,22 @@ As cores vêm em pares: uma superfície e o texto que vai sobre ela.
 | `card`, `popover` (+ `-foreground`) | Superfícies elevadas |
 | `primary` | A cor principal: ações principais, seleção, foco |
 | `brand` | Uma segunda cor de identidade, para anúncios e rótulos, nunca para status |
+| `neutral` | O tom neutro: ações discretas, badges neutros e o hover dos controles neutros |
 | `success`, `warning`, `info`, `destructive` | Status |
-| `muted`, `muted-foreground` | Superfícies discretas (zebra, skeleton), texto secundário e o hover dos controles neutros |
+| `muted`, `muted-foreground` | Superfícies estáticas discretas (zebra, rodapé, skeleton) e texto secundário. Nunca hover, foco ou seleção |
 | `accent`, `accent-foreground` | O item em destaque numa coleção: menu, listbox, calendário, linha de tabela |
 | `border`, `input`, `ring` | Linhas, borda dos campos e o anel de foco |
 | `sidebar-*` | A paleta própria da sidebar |
 
-Cada tom colorido (`primary`, `brand` e os quatro status) tem três tokens:
+Cada tom (`primary`, `brand`, `neutral` e os quatro status) tem três tokens:
 
 - `--<tom>`: a cor em si, para preenchimentos, bordas e ícones.
 - `--<tom>-foreground`: texto sobre a cor cheia. Numa cor saturada costuma ser o fundo da página, mas um `warning` amarelo-claro pode usar texto escuro.
 - `--<tom>-text`: texto no tom, sobre a página ou sobre a tinta do soft. É o tom puxado para o `--foreground` até ficar legível.
 
-O tom neutro não tem tokens próprios: usa a família muted e o `--border`. Veja [Tons e variantes](/docs/tones) para como os componentes os usam.
+O `--neutral` começa com a cor do texto muted, com `--background` como `-foreground` e `--foreground` como `-text`. A tinta do soft e o hover saem da mistura dele, como em qualquer tom, então acompanham o fundo em todos os temas. Uma diferença: o outline neutro usa o `--border`, para casar com os campos. Veja [Tons e variantes](/docs/tones) para como os componentes os usam.
+
+`bg-neutral` e `text-neutral` são o token do tema. O `neutral-50` a `neutral-950` do Tailwind é outra paleta, fixa, que ignora o tema: os componentes do fma-ds nunca a usam, nem outro cinza fixo (`gray`, `zinc`, `slate`, `stone`). A DaisyUI também define `--color-neutral`; se você usar as duas, vale a folha de estilo que carregar por último.
 
 ### Configurações
 
@@ -50,7 +53,7 @@ O tom neutro não tem tokens próprios: usa a família muted e o `--border`. Vej
 
 O editor de temas em [/themes](/themes) é o caminho mais fácil. Carregue um tema curado ou importe o seu (um `styles.css` do shadcn, um tema do tweakcn ou a URL de um item de tema), e edite as cores de cada modo, fontes, radius, espaçamento, sombras e as misturas dos tons, com os componentes no preview ao vivo. Cada par de cores mostra o contraste e reprova abaixo do mínimo. Ao lado de cada token `-text`, **Derivar do tom** recalcula o valor depois que você muda o tom. Exporte o resultado como item de registro, para instalar com `shadcn add`, ou como CSS para colar.
 
-Ao importar um tema sem os tokens do fma-ds, como um do tweakcn, os status que faltam vêm do tema padrão, e o editor deriva os tokens `-text` e a mistura do ícone para passarem no contraste.
+Ao importar um tema sem os tokens do fma-ds, como um do tweakcn, os status que faltam vêm do tema padrão, o tom neutro começa no texto muted, e o editor deriva os tokens `-text` e a mistura do ícone para passarem no contraste.
 
 Você também pode editar as variáveis à mão. Mude o tom e o `-text` juntos, nos dois modos:
 
@@ -74,4 +77,4 @@ Respeite estes mínimos de contraste, que os temas curados cumprem:
 
 ## Vindo do shadcn
 
-Os temas do fma-ds usam os nomes de token do shadcn e acrescentam `brand`, os status e os tokens `-text`. Eles não definem `--secondary` nem `--invert`. Um tema padrão do shadcn não tem os tokens do fma-ds, então os componentes do fma-ds precisam de um tema do fma-ds, ou de um tema importado no editor e exportado de novo. Um componente oficial do shadcn que usa `bg-secondary` precisa desse token no seu tema, ou de uma troca para a família muted ou para um tom.
+Os temas do fma-ds usam os nomes de token do shadcn e acrescentam `brand`, `neutral`, os status e os tokens `-text`. Eles não definem `--secondary` nem `--invert`. Um tema padrão do shadcn não tem os tokens do fma-ds, então os componentes do fma-ds precisam de um tema do fma-ds, ou de um tema importado no editor e exportado de novo. Um componente oficial do shadcn que usa `bg-secondary` precisa desse token no seu tema, ou de uma troca para a família muted ou para um tom. Os componentes oficiais também fazem o hover dos controles neutros com `bg-muted`; no fma-ds o `muted` é estático, então use o tom neutro (`toneVariants.neutral` com `hover:bg-(--tone-hover)`).

@@ -48,7 +48,18 @@ export const COLOR_GROUPS: ColorGroup[] = [
   { id: "base", title: "Base", colors: pair("background", "foreground") },
   { id: "card", title: "Card", colors: pair("card", "card-foreground") },
   { id: "popover", title: "Popover", colors: pair("popover", "popover-foreground") },
-  { id: "muted", title: "Muted", colors: pair("muted", "muted-foreground") },
+  {
+    id: "neutral",
+    title: "Neutral",
+    hint: "The neutral tone of buttons, badges and other controls: solid fill, icons and the base of its soft surface and hover. Starts as muted-foreground.",
+    colors: tonePair("neutral", "neutral-foreground", "neutral-text"),
+  },
+  {
+    id: "muted",
+    title: "Muted",
+    hint: "Static surfaces (zebra rows, footers, skeletons) and secondary text. Never hover, focus or selection.",
+    colors: pair("muted", "muted-foreground"),
+  },
   {
     id: "status",
     title: "Status",

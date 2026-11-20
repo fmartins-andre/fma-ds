@@ -36,6 +36,9 @@
       "brand": "oklch(0.205 0 0)",
       "brand-foreground": "oklch(0.985 0 0)",
       "brand-text": "oklch(0.175 0 0)",
+      "neutral": "oklch(0.556 0 0)",
+      "neutral-foreground": "oklch(1 0 0)",
+      "neutral-text": "oklch(0.145 0 0)",
       "border": "oklch(0.922 0 0)",
       "input": "oklch(0.922 0 0)",
       "ring": "oklch(0.708 0 0)",
@@ -83,6 +86,9 @@
       "brand": "oklch(0.922 0 0)",
       "brand-foreground": "oklch(0.205 0 0)",
       "brand-text": "oklch(0.954 0 0)",
+      "neutral": "oklch(0.708 0 0)",
+      "neutral-foreground": "oklch(0.145 0 0)",
+      "neutral-text": "oklch(0.985 0 0)",
       "border": "oklch(1 0 0 / 10%)",
       "input": "oklch(1 0 0 / 15%)",
       "ring": "oklch(0.556 0 0)",
@@ -108,7 +114,7 @@
       "neutral",
       "sans"
     ],
-    "contentHash": "98c77b83ad06"
+    "contentHash": "bd2904a0770a"
   },
   "categories": [
     "theme"

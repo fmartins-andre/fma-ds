@@ -306,7 +306,7 @@ function DateSegment({ className, ...props }: AriaDateSegmentProps) {
         cn(
           "rounded-sm px-0.5 tabular-nums caret-transparent outline-none select-none",
           "data-placeholder:text-muted-foreground data-[type=literal]:px-0 data-[type=literal]:text-muted-foreground",
-          "data-focused:bg-muted data-focused:text-foreground data-invalid:text-destructive data-focused:data-invalid:text-destructive",
+          "data-focused:bg-accent data-focused:text-accent-foreground data-invalid:text-destructive data-focused:data-invalid:text-destructive",
           className,
         ),
       )}
