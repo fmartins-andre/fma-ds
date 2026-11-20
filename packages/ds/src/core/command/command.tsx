@@ -125,7 +125,7 @@ function CommandInput({ className, ...props }: InputProps) {
       data-slot="command-input-wrapper"
       className="p-1 pb-0"
     >
-      <InputGroup className="border-transparent *:data-[slot=input-group-addon]:pl-2">
+      <InputGroup className="*:data-[slot=input-group-addon]:pl-2">
         <Input
           {...props}
           data-slot="command-input"
