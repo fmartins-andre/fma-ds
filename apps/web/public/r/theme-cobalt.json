@@ -41,7 +41,7 @@
       "brand": "oklch(0.769 0.218 133.208)",
       "brand-foreground": "oklch(0.318 0 0)",
       "brand-text": "oklch(0.494 0.106 138.314)",
-      "neutral": "oklch(0.495 0.033 244.27)",
+      "neutral": "oklch(0.548 0.039 244.27)",
       "neutral-foreground": "oklch(0.985 0.002 247.839)",
       "neutral-text": "oklch(0.22 0.02 242.347)",
       "border": "oklch(0.9 0.011 245.788)",
@@ -60,11 +60,12 @@
       "sidebar-accent-foreground": "oklch(0.98 0.003 286.351)",
       "sidebar-border": "oklch(0.49 0.07 245.492)",
       "sidebar-ring": "oklch(0.72 0.1 245.492)",
+      "input-mix": "10%",
       "radius": "0.5rem",
       "tone-icon-mix": "51%"
     },
     "dark": {
-      "background": "oklch(0.29 0.022 244.5)",
+      "background": "oklch(0.327 0.033 244.5)",
       "foreground": "oklch(0.93 0.008 242.3)",
       "card": "oklch(0.345 0.028 244.5)",
       "card-foreground": "oklch(0.93 0.008 242.3)",
@@ -110,7 +111,8 @@
       "sidebar-accent": "oklch(0.4 0.085 245.492)",
       "sidebar-accent-foreground": "oklch(0.95 0.008 242.3)",
       "sidebar-border": "oklch(0.46 0.065 245.492)",
-      "sidebar-ring": "oklch(0.68 0.12 245.492)"
+      "sidebar-ring": "oklch(0.68 0.12 245.492)",
+      "input-mix": "30%"
     }
   },
   "css": {
@@ -127,7 +129,7 @@
       "green",
       "sans"
     ],
-    "contentHash": "3dcfc0d078ae"
+    "contentHash": "8b789dd1879d"
   },
   "categories": [
     "theme"
