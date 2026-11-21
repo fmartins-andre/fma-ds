@@ -21,7 +21,7 @@
     "react": "catalog:",
     "react-aria-components": "^1.22.1",
     "react-dom": "catalog:",
-    "react-i18next": "^17.1.13"
+    "react-i18next": "^18.0.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.65.0",
