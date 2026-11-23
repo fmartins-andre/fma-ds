@@ -7,7 +7,7 @@
   "dependencies": [
     "class-variance-authority@^0.7.1",
     "cn@^0.5.2",
-    "lucide-react@^1.70.0",
+    "lucide-react@^1.72.0",
     "react-aria-components@^1.22.1"
   ],
   "registryDependencies": [
