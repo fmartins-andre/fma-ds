@@ -223,7 +223,10 @@ fixados: https://claude.ai/artifact/M7CAYei9mACAdTB78vJKAa (privado; gerado a pa
 
 ## Fora do escopo
 
-- Seed de `--brand` a partir do secondary colorido (decisão em aberto).
+- Seed de `--brand` a partir do secondary colorido: **decidido em 2026-11-23, não fazer.** O
+  importador mantém `brand = primary`. No shadcn, o `secondary` é o fundo do botão secundário (mesmo
+  nos temas coloridos, um pastel do primary), papel que o `soft` já cobre; como brand, falharia no
+  solid. A segunda cor de marca é definida no editor (`/themes`).
 - Indicadores fixos em primary (GlanceIndicator, Avatar, Progress, Stepper, Timeline).
 - Estados de domínio (Meter `level`, Trace `status`, order-summary `tone="discount"`).
 - `variant="destructive"` dos itens de menu (API do shadcn).
