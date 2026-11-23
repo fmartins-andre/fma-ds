@@ -326,13 +326,20 @@ type RecurrenceFieldsProps = {
   calculatesOnServer?: boolean;
   /** An existing subscription: how it repeats can't change any more. */
   isLocked?: boolean;
+  /** The first day it can start, and where the start begins. Defaults to today in the browser. */
+  earliestStart?: CalendarDate;
 };
 
 /** The recurrence of a subscription or a recurring order, from the registry's primitives. */
-function RecurrenceFields({ chooseDueDay, calculatesOnServer, isLocked }: RecurrenceFieldsProps) {
+function RecurrenceFields({
+  chooseDueDay,
+  calculatesOnServer,
+  isLocked,
+  earliestStart = today(getLocalTimeZone()),
+}: RecurrenceFieldsProps) {
   const id = React.useId();
   const [frequency, setFrequency] = React.useState<Frequency>("monthly");
-  const [start, setStart] = React.useState<CalendarDate>(parseDate("2026-11-15"));
+  const [start, setStart] = React.useState<CalendarDate>(earliestStart);
   const [chosen, setChosen] = React.useState<DueDay>({ weekday: 1, day: 20, month: 1 });
   const [duration, setDuration] = React.useState<Duration>("count");
   const [count, setCount] = React.useState("12");
@@ -399,7 +406,7 @@ function RecurrenceFields({ chooseDueDay, calculatesOnServer, isLocked }: Recurr
           <DatePicker
             value={start}
             onChange={(value) => value && setStart(value)}
-            minValue={today(getLocalTimeZone())}
+            minValue={earliestStart}
           >
             <Label>Início</Label>
             <InputGroup>
@@ -538,7 +545,7 @@ const ptBR = pinLocale("pt-BR");
  */
 export const Recurrence: Story = {
   decorators: [ptBR],
-  render: () => <RecurrenceFields />,
+  render: () => <RecurrenceFields earliestStart={parseDate("2026-11-15")} />,
   play: async ({ canvas }) => {
     const status = canvas.getByRole("status");
     await expect(status).toHaveTextContent(
@@ -565,7 +572,9 @@ export const Recurrence: Story = {
  */
 export const RecurrenceWithDueDay: Story = {
   decorators: [ptBR],
-  render: () => <RecurrenceFields chooseDueDay calculatesOnServer />,
+  render: () => (
+    <RecurrenceFields chooseDueDay calculatesOnServer earliestStart={parseDate("2026-11-15")} />
+  ),
   play: async ({ canvas }) => {
     const status = canvas.getByRole("status");
     await expect(status).toHaveTextContent("calculando a última data…");
