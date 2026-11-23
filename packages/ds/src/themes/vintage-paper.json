@@ -29,6 +29,7 @@
       "offsetY": "3px"
     }
   },
+  "iconMix": "48%",
   "light": {
     "background": "oklch(0.958 0.015 90.236)",
     "foreground": "oklch(0.376 0.022 64.343)",
@@ -94,7 +95,7 @@
     "accent-foreground": "oklch(0.924 0.019 83.064)",
     "destructive": "oklch(0.562 0.144 32.915)",
     "destructive-foreground": "oklch(0.275 0.014 57.652)",
-    "destructive-text": "oklch(0.743 0.078 38.251)",
+    "destructive-text": "oklch(0.768 0.078 38.251)",
     "info": "oklch(0.707 0.165 254.624)",
     "info-foreground": "oklch(0.275 0.014 57.652)",
     "info-text": "oklch(0.816 0.073 253.531)",

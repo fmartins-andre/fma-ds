@@ -15,10 +15,10 @@ import { defaultTone, type Tone, toneVariants, type Variant } from "@/lib/tone";
 const buttonVariantsConfig = {
   variant: {
     solid:
-      "bg-(--tone) text-(color:--tone-foreground) hover:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))] aria-expanded:bg-[color-mix(in_oklab,var(--tone)_85%,var(--background))]",
+      "bg-(--tone) text-(color:--tone-foreground) hover:bg-[color-mix(in_oklab,var(--tone)_85%,var(--tone-base,var(--background)))] aria-expanded:bg-[color-mix(in_oklab,var(--tone)_85%,var(--tone-base,var(--background)))]",
     soft: "bg-(--tone-soft) text-(color:--tone-text) hover:bg-(--tone-soft-hover) aria-expanded:bg-(--tone-soft-hover)",
     outline:
-      "border-(--tone-line) bg-background text-(color:--tone-text) hover:bg-(--tone-hover) aria-expanded:bg-(--tone-hover)",
+      "border-(--tone-line) bg-transparent text-(color:--tone-text) hover:bg-(--tone-hover) aria-expanded:bg-(--tone-hover)",
     ghost: "text-(color:--tone-text) hover:bg-(--tone-hover) aria-expanded:bg-(--tone-hover)",
   },
   size: {

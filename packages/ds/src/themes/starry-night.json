@@ -9,6 +9,7 @@
     "sans": "Libre Baskerville, serif"
   },
   "radius": "0.5rem",
+  "iconMix": "49%",
   "light": {
     "background": "oklch(0.975 0.005 258.325)",
     "foreground": "oklch(0.256 0.043 268.066)",

@@ -64,7 +64,9 @@
       "sidebar-accent-foreground": "oklch(0.425 0.116 144.308)",
       "sidebar-border": "oklch(0.881 0.021 74.643)",
       "sidebar-ring": "oklch(0.523 0.135 144.167)",
-      "radius": "0.5rem"
+      "tone-base": "oklch(0.971 0 0)",
+      "radius": "0.5rem",
+      "tone-icon-mix": "50%"
     },
     "dark": {
       "background": "oklch(0.268 0.028 150.768)",
@@ -82,7 +84,7 @@
       "accent-foreground": "oklch(0.942 0.01 72.659)",
       "destructive": "oklch(0.569 0.194 26.725)",
       "destructive-foreground": "oklch(0.268 0.028 150.768)",
-      "destructive-text": "oklch(0.755 0.101 28.773)",
+      "destructive-text": "oklch(0.78 0.101 28.773)",
       "info": "oklch(0.707 0.165 254.624)",
       "info-foreground": "oklch(0.268 0.028 150.768)",
       "info-text": "oklch(0.825 0.078 254.751)",
@@ -113,7 +115,8 @@
       "sidebar-accent": "oklch(0.575 0.145 144.181)",
       "sidebar-accent-foreground": "oklch(0.942 0.01 72.659)",
       "sidebar-border": "oklch(0.394 0.027 142.993)",
-      "sidebar-ring": "oklch(0.673 0.162 144.208)"
+      "sidebar-ring": "oklch(0.673 0.162 144.208)",
+      "tone-base": "oklch(0.333 0 0)"
     }
   },
   "css": {
@@ -139,7 +142,7 @@
       "warm",
       "sans"
     ],
-    "contentHash": "143a98c15285"
+    "contentHash": "1763debe04df"
   },
   "categories": [
     "theme"

@@ -95,6 +95,11 @@ export function mixColors(a: string, b: string, shareOfB: number, digits = 3): s
   );
 }
 
+/** The color's oklch lightness as a gray with no chroma: the base the soft tints mix with. */
+export function achromatic(value: string): string {
+  return mapOklch(value, (color) => ({ ...color, c: 0, h: undefined }));
+}
+
 /** Moves a color's oklch lightness by `delta` (clamped to 0–1), keeping chroma, hue and alpha. */
 export function shiftLightness(value: string, delta: number): string {
   return mapOklch(value, (color) => ({ ...color, l: Math.min(1, Math.max(0, color.l + delta)) }));

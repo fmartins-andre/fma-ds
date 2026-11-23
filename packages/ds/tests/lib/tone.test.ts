@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { TONE_MIX } from "@/lib/theme/contrast";
+import { softBase, TONE_MIX } from "@/lib/theme/contrast";
+import { modeThemeVars } from "@/lib/theme/css";
 import { defaultTone, TONES, toneVariants } from "@/lib/tone";
+import { DEFAULT_THEME } from "@/themes/index";
 
 const VARS = [
   "--tone",
@@ -38,12 +40,25 @@ describe("toneVariants", () => {
     const css = toneVariants[t];
     expect(css).toContain(`var(--tone-soft-mix,${pct(TONE_MIX.soft.light)}%)`);
     expect(css).toContain(`var(--tone-soft-mix,${pct(TONE_MIX.soft.dark)}%)`);
-    expect(css).toContain(`_*_${TONE_MIX.softHover})`);
+    expect(css).toContain(`_*_${TONE_MIX.softHover.light})`);
+    expect(css).toContain(`_*_${TONE_MIX.softHover.dark})`);
     expect(css).toContain(`[--tone-text:var(--${t}-text)]`);
     expect(css).toContain(`var(--tone-icon-mix,${pct(TONE_MIX.icon)}%)`);
     expect(css).toContain(`[--tone:var(--${t})]`);
     expect(css).toContain(`[--tone-foreground:var(--${t}-foreground)]`);
     expect(css).toContain("[--tone-hover:var(--tone-soft)]");
+  });
+
+  it.each(TONES)("%s mixes the soft tints with the hue-less base, not the page", (t) => {
+    const soft = toneVariants[t].split(" ").filter((c) => /--tone-soft(-hover)?:/.test(c));
+    expect(soft).toHaveLength(4);
+    for (const c of soft) expect(c).toContain(",var(--tone-base,var(--background)))]");
+  });
+
+  it.each(COLORED)("%s mixes its outline line with the hue-less base", (t) => {
+    const line = toneVariants[t].split(" ").filter((c) => /--tone-line:/.test(c));
+    expect(line).toHaveLength(2);
+    for (const c of line) expect(c).toContain(",var(--tone-base,var(--background)))]");
   });
 
   it.each(COLORED)("%s mixes its outline line from the tone", (t) => {
@@ -72,5 +87,14 @@ describe("defaultTone", () => {
   it("defaults solid to primary and the rest to neutral", () => {
     expect(defaultTone("solid")).toBe("primary");
     for (const v of ["soft", "outline", "ghost"] as const) expect(defaultTone(v)).toBe("neutral");
+  });
+});
+
+describe("softBase", () => {
+  it("is the card's lightness with no chroma, in every theme var block", () => {
+    const colors = { ...DEFAULT_THEME.light, card: "#0a1330" };
+    expect(softBase(colors)).toMatch(/^oklch\([\d.]+ 0 0\)$/);
+    const vars = modeThemeVars({ ...DEFAULT_THEME, light: colors }, "light");
+    expect(vars["--tone-base"]).toBe(softBase(colors));
   });
 });

@@ -60,7 +60,9 @@
       "sidebar-accent-foreground": "oklch(0.98 0.003 335.169)",
       "sidebar-border": "oklch(0.49 0.07 330.31)",
       "sidebar-ring": "oklch(0.72 0.1 330.31)",
-      "radius": "0.5rem"
+      "tone-base": "oklch(1 0 0)",
+      "radius": "0.5rem",
+      "tone-icon-mix": "49%"
     },
     "dark": {
       "background": "oklch(0.29 0.022 329.318)",
@@ -71,26 +73,26 @@
       "popover-foreground": "oklch(0.93 0.008 327.118)",
       "primary": "oklch(0.68 0.15 330.31)",
       "primary-foreground": "oklch(0.179 0.019 330.31)",
-      "primary-text": "oklch(0.805 0.079 330.148)",
+      "primary-text": "oklch(0.825 0.079 330.148)",
       "muted": "oklch(0.38 0.026 329.318)",
       "muted-foreground": "oklch(0.77 0.022 327.218)",
       "accent": "oklch(0.43 0.075 330.118)",
       "accent-foreground": "oklch(0.95 0.008 327.118)",
       "destructive": "oklch(0.62 0.19 29)",
       "destructive-foreground": "oklch(0.29 0.022 329.318)",
-      "destructive-text": "oklch(0.775 0.097 26.915)",
+      "destructive-text": "oklch(0.805 0.097 26.915)",
       "info": "oklch(0.66 0.14 249.24)",
       "info-foreground": "oklch(0.29 0.022 329.318)",
-      "info-text": "oklch(0.795 0.071 252.4)",
+      "info-text": "oklch(0.815 0.071 252.4)",
       "success": "oklch(0.69 0.16 146.88)",
       "success-foreground": "oklch(0.29 0.022 329.318)",
-      "success-text": "oklch(0.81 0.076 146.867)",
+      "success-text": "oklch(0.825 0.076 146.867)",
       "warning": "oklch(0.76 0.15 65.19)",
       "warning-foreground": "oklch(0.29 0.022 329.318)",
-      "warning-text": "oklch(0.845 0.075 62.145)",
+      "warning-text": "oklch(0.855 0.075 62.145)",
       "brand": "oklch(0.582 0.143 36.044)",
       "brand-foreground": "oklch(1 0 0)",
-      "brand-text": "oklch(0.756 0.073 33.115)",
+      "brand-text": "oklch(0.791 0.073 33.115)",
       "neutral": "oklch(0.77 0.022 327.218)",
       "neutral-foreground": "oklch(0.29 0.022 329.318)",
       "neutral-text": "oklch(0.93 0.008 327.118)",
@@ -109,7 +111,8 @@
       "sidebar-accent": "oklch(0.4 0.085 330.31)",
       "sidebar-accent-foreground": "oklch(0.95 0.008 327.118)",
       "sidebar-border": "oklch(0.46 0.065 330.31)",
-      "sidebar-ring": "oklch(0.68 0.12 330.31)"
+      "sidebar-ring": "oklch(0.68 0.12 330.31)",
+      "tone-base": "oklch(0.345 0 0)"
     }
   },
   "css": {
@@ -126,7 +129,7 @@
       "pink",
       "sans"
     ],
-    "contentHash": "41c9f70cf156"
+    "contentHash": "26c376ddc96f"
   },
   "categories": [
     "theme"
