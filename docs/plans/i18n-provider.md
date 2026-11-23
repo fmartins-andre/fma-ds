@@ -1,8 +1,10 @@
 # Plano: provider de i18n e dicionário central
 
 > **Concluído** (PRs #19–#23, #25 e #26). Mantido como registro das decisões. O conteúdo do
-> site, que este plano deixou para depois, foi traduzido em seguida (#29). `useFormat()` não foi
-> implementado.
+> site, que este plano deixou para depois, foi traduzido em seguida (#29). `useFormat()`:
+> **decidido em 2026-11-23, não criar.** Seria API redundante: `useLocale()` do react-aria já
+> devolve o idioma do provider, e as funções `number`/`currency`/`date`/`plural` da lib (ou
+> `useNumberFormatter`/`useDateFormatter`) formatam nele. A receita está no guia de i18n.
 
 > **Desenho revisado em 2026-10-31** (decisão do usuário). Onde este texto divergir, vale isto:
 >
@@ -429,4 +431,4 @@ Em PRs empilhados (`gh stack`), mais ou menos:
   o pacote de idioma não importe componentes).
 - Divisão exata dos lotes de migração.
 - Se `useFormat()` (number/currency/date/relativeTime com `Intl` do idioma ativo) entra agora ou
-  depois.
+  depois. (Decidido em 2026-11-23: não entra; ver o topo.)

@@ -2,7 +2,10 @@
 
 > **Concluído** no PR #36, com o desenho revisado abaixo. Mantido como registro das decisões. Do
 > "Fora do escopo": os textos fixos de `nav-user.tsx` e `team-switcher.tsx` já saíram (namespace
-> `appSidebar`); a lib de permissões e o indicador agregado no pai não foram feitos.
+> `appSidebar`). **Decidido em 2026-11-23, não fazer:** a lib de permissões (o modelo de permissão é
+> do app, que encapsula a dele; o bloco só recebe `access` e `badge`) e o indicador agregado no pai
+> (o pai `granted` já aceita `badge`; o app, que tem os dados, agrega e passa, como na story
+> `AccessCombinations`).
 
 > **Desenho revisado em 2026-11-02** (decisão do usuário). Onde este texto divergir, vale isto:
 >

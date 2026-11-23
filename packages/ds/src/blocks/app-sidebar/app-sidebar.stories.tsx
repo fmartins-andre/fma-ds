@@ -463,7 +463,11 @@ export const CollapsedAccess: Story = {
   ),
 };
 
-/** Only a `granted` parent opens its sub-items, and each of them has its own state. */
+/**
+ * Only a `granted` parent opens its sub-items, and each of them has its own state.
+ * The parent doesn't sum up its sub-items: to flag one, the app passes a `badge` to the parent,
+ * as on Models.
+ */
 export const AccessCombinations: Story = {
   render: () => (
     <SidebarInShell>
