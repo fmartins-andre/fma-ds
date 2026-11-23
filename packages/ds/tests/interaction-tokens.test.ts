@@ -2,12 +2,12 @@
 // and never the identity color `brand`.
 //
 // `accent` / `accent-foreground` mark an item in a collection (hover, focus, selected,
-// today, range: menus, listboxes, comboboxes, calendar, table rows). The `muted` family is
-// the hover of neutral controls (buttons and triggers of the neutral tone): the tone lib's
-// neutral recipe sets `--tone-hover: var(--muted)` (src/lib/tone.ts), so that is allowed,
-// and the ALLOWED entries below are that case. Static `muted` (zebra, footer, skeleton,
-// secondary text) is not an interactive state and is never flagged. The upstream `*-nova`
-// styles drift from this (aria-nova paints focused items with `bg-foreground/10`).
+// today, range: menus, listboxes, comboboxes, calendar, table rows). Neutral controls
+// (buttons and triggers of the neutral tone) hover with the neutral tone's variables
+// (`toneVariants.neutral` + `bg-(--tone-hover)`, src/lib/tone.ts). The `muted` family is
+// static only (zebra, footer, skeleton, secondary text): it is never an interactive state,
+// with no exception for any tone. The upstream `*-nova` styles drift from this (they hover
+// with `bg-muted` and aria-nova paints focused items with `bg-foreground/10`).
 // See CONTRIBUTING.md, "Tokens de estado".
 //
 // Checked: our own code — components whose meta.json `source` is "customized"
@@ -22,34 +22,8 @@ const CORE_DIR = join(UI_ROOT, "src", "core");
 const BLOCKS_DIR = join(UI_ROOT, "src", "blocks");
 
 // Deliberate exceptions, keyed by file (relative to packages/ds). Keep the
-// reason honest: the default answer is to switch to `bg-accent`.
-const NEUTRAL_CONTROL_REASON =
-  "hover of a neutral control (button-like trigger): muted, as the neutral tone's --tone-hover (rule 11)";
-const ALLOWED: Record<string, { classes: string[]; reason: string }> = {
-  "src/core/menubar/menubar.tsx": {
-    classes: ["data-hovered:bg-muted", "data-pressed:bg-muted", "aria-expanded:bg-muted"],
-    reason: NEUTRAL_CONTROL_REASON,
-  },
-  "src/core/navigation-menu/navigation-menu.tsx": {
-    classes: [
-      "data-focus-visible:bg-muted",
-      "data-hovered:bg-muted",
-      "aria-expanded:bg-muted/50",
-      "aria-expanded:data-hovered:bg-muted",
-      "data-current:bg-muted/50",
-    ],
-    reason: NEUTRAL_CONTROL_REASON,
-  },
-  "src/core/toggle/toggle.tsx": {
-    classes: ["hover:bg-muted"],
-    reason:
-      "hover stays muted (as in shadcn's toggle) so it differs from the pressed state, which uses accent",
-  },
-  "src/core/date-field/date-field.tsx": {
-    classes: ["data-focused:bg-muted"],
-    reason: "the focused segment is a text-editing caret highlight, not a picked item",
-  },
-};
+// reason honest: the default answer is `bg-accent` (an item) or the neutral tone (a control).
+const ALLOWED: Record<string, { classes: string[]; reason: string }> = {};
 
 const CHECKED_SOURCES = new Set(["customized", "original"]);
 
@@ -137,10 +111,15 @@ describe("interactive states use accent", () => {
     ).toEqual([]);
   });
 
-  it.each(Object.entries(ALLOWED))("allowlist entry %s is still needed", (file, { classes }) => {
-    expect(checkedFiles).toContain(file);
-    const present = findViolations(readFileSync(join(UI_ROOT, file), "utf8"));
-    expect(classes.filter((token) => !present.includes(token))).toEqual([]);
+  it("every allowlist entry is still needed", () => {
+    for (const [file, { classes }] of Object.entries(ALLOWED)) {
+      expect(checkedFiles).toContain(file);
+      const present = findViolations(readFileSync(join(UI_ROOT, file), "utf8"));
+      expect(
+        classes.filter((token) => !present.includes(token)),
+        file,
+      ).toEqual([]);
+    }
   });
 });
 

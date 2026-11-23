@@ -18,6 +18,9 @@ against the page: `cosmic-night` light `destructive`, `kodama-grove` light `dest
 The in-tone text tokens (`primary-text`, `brand-text` and the status `*-text`) are new: half the tone
 and half `foreground`, with lightness adjusted where that mix fell short of the contrast gate
 (`kodama-grove` light, all six).
+The neutral tone tokens (`neutral`, `neutral-foreground`, `neutral-text`) are new: copies of
+`muted-foreground`, `background` and `foreground` in each mode.
+`input` (the field border) set to the theme's `border` value in both modes.
 `kodama-grove`, `supabase` and `amber-minimal` declare an `iconMix` (the share of `-text` in icons
 and dots), because the default share left their icons under 3:1 in the light mode.
 

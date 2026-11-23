@@ -45,6 +45,7 @@ const everything: Theme = {
   letterSpacing: "0.01em",
   iconMix: "42%",
   softMix: { light: "10%", dark: "18%" },
+  inputMix: { light: "0%", dark: "30%" },
   shadow: {
     light: {
       color: "#000",

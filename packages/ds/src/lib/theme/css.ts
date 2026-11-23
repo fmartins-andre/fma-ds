@@ -19,6 +19,7 @@ export const THEME_VARS = [
   "--tracking-normal",
   "--tone-icon-mix",
   "--tone-soft-mix",
+  "--input-mix",
   ...SHADOW_SIZES.map((size) => `--shadow-${size}`),
   "--shadow-color",
   "--shadow-opacity",
@@ -60,6 +61,7 @@ export function modeThemeVars(
   const vars: Record<string, string> = {};
   for (const token of COLOR_TOKENS) vars[`--${token}`] = theme[mode][token];
   if (theme.softMix) vars["--tone-soft-mix"] = theme.softMix[mode];
+  if (theme.inputMix) vars["--input-mix"] = theme.inputMix[mode];
   const shadow = theme.shadow?.[mode];
   if (shadow) {
     const scale = shadowScale(shadow);

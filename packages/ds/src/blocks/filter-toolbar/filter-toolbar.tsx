@@ -365,7 +365,7 @@ function FilterChips({
                   : undefined)
               }
               data-slot="filter-chip"
-              className="flex h-7 items-center gap-1 rounded-md border bg-background pr-0.5 pl-2 text-xs outline-none data-focus-visible:border-ring data-focus-visible:ring-3 data-focus-visible:ring-ring/50 dark:bg-input/30"
+              className="flex h-7 items-center gap-1 rounded-md border bg-input-background pr-0.5 pl-2 text-xs outline-none data-focus-visible:border-ring data-focus-visible:ring-3 data-focus-visible:ring-ring/50"
             >
               <span className="text-muted-foreground">{item.label}:</span>
               <span className="font-medium">{item.value}</span>

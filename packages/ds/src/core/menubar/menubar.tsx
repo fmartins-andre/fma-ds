@@ -23,6 +23,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from "@/core/dropdown-menu/dropdown-menu";
+import { toneVariants } from "@/lib/tone";
 
 type MenubarState = {
   openId: string | null;
@@ -189,7 +190,8 @@ function MenubarTrigger({ className, ...props }: ButtonProps) {
       data-menu-id={menuId}
       className={composeRenderProps(className, (className) =>
         cn(
-          "flex items-center rounded-sm px-1.5 py-[2px] text-sm font-medium outline-hidden select-none data-focus-visible:ring-3 data-focus-visible:ring-ring/50 data-hovered:bg-muted data-pressed:bg-muted aria-expanded:bg-muted",
+          toneVariants.neutral,
+          "flex items-center rounded-sm px-1.5 py-[2px] text-sm font-medium outline-hidden select-none data-focus-visible:ring-3 data-focus-visible:ring-ring/50 data-hovered:bg-(--tone-hover) data-pressed:bg-(--tone-hover) aria-expanded:bg-(--tone-hover)",
           className,
         ),
       )}

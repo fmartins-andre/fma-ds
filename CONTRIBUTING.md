@@ -212,7 +212,7 @@ Convenções:
   de variantes customizadas de `shadcn/tailwind.css`; veja o comentário em
   `packages/ds/src/styles.css`.
 
-### Tokens de estado: accent × muted
+### Tokens de estado: accent × neutral × muted
 
 Seguimos a definição da [doc de theming do shadcn](https://ui.shadcn.com/docs/theming), para
 que cada tema controle a cor de interação de forma coerente em todos os componentes:
@@ -220,21 +220,26 @@ que cada tema controle a cor de interação de forma coerente em todos os compon
 | Token | Uso | Exemplos |
 | --- | --- | --- |
 | `accent` / `accent-foreground` | Destaque de **item numa coleção**: hover, focus, ativo/selecionado, hoje, intervalo | item de menu/select/combobox/command em foco, linha de tabela em hover ou selecionada, dia de hoje e meio de intervalo no calendário |
-| `muted` / `muted-foreground` | Hover de **controles neutros** (botões e triggers do tom neutral, `--tone-hover` = `--muted` em `src/lib/tone.ts`); superfície **estática** sutil e texto secundário | zebra e coluna fixada da tabela, footer, skeleton, descrições, placeholders |
+| tom neutral (`--neutral`, via `toneVariants.neutral`) | Hover, foco e pressionado de **controles neutros** (botões e triggers fora de coleção): `bg-(--tone-hover)`, a tinta soft do `--neutral` | botões outline/ghost, triggers do menubar e navigation-menu, toggle, handle de arrastar |
+| `muted` / `muted-foreground` | Superfície **estática** sutil e texto secundário; nunca estado de interação | zebra e coluna fixada da tabela, footer, skeleton, descrições, placeholders |
 | `primary` | Seleção de alta ênfase | dia selecionado, pontas de um intervalo |
 
 Regras:
 
 - Destaque de item usa `bg-accent` com `text-accent-foreground` (ou `bg-accent/50` sem trocar o
-  texto, para hover leve de linha). Nunca `bg-muted` nem `bg-foreground/N` num item de coleção;
-  o hover `muted` só vale para controles neutros, como o tom neutral da lib de tons.
+  texto, para hover leve de linha). Controle neutro usa o tom neutral. Nunca `bg-muted` nem
+  `bg-foreground/N` em estado de interação. O `--muted` varia muito entre temas (no Claude escuro
+  é mais escuro que o fundo, no Soft Pop escuro quase um bloco cheio); o tom neutral é mistura
+  do `--neutral` com o fundo e fica uniforme em todos.
 - Os estilos `*-nova` do shadcn divergem da própria doc (calendar e command com `muted`, e o
   `aria-nova` pinta itens em foco com `bg-foreground/10` no popover, sobrescrevendo o
   `bg-accent` do item). Ao vendorizar/atualizar um componente, confira e corrija isso.
 - O gate `packages/ds/tests/interaction-tokens.test.ts` verifica componentes `customized` e
-  `original` e todos os blocos. Exceções vão no `ALLOWED` desse teste, com o motivo; hoje são
-  os controles neutros com cara de botão (triggers do menubar e navigation-menu), que seguem o
-  hover `muted` do tom neutral, o toggle e o segmento em foco do date-field.
+  `original` e todos os blocos. Exceções vão no `ALLOWED` desse teste, com o motivo; hoje não há
+  nenhuma.
+- Cinzas fixos do Tailwind (`neutral-100`, `zinc-500`, `gray-*`, `slate-*`, `stone-*`) não
+  acompanham o tema e são proibidos no código publicado (`tests/fixed-palette.test.ts`). Paletas
+  coloridas continuam permitidas para cores de identidade (as cores de formato do file-type).
 
 ### Variantes e tons
 

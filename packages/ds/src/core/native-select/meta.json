@@ -2,7 +2,7 @@
   "name": "native-select",
   "category": "forms",
   "status": "stable",
-  "source": "shadcn",
+  "source": "customized",
   "description": "A styled wrapper around the real, native <select> — use it when you need actual native select behavior (mobile OS pickers, form autofill, no JS dependency) instead of react-aria-components' custom Select.",
   "tags": ["form", "select", "native"]
 }

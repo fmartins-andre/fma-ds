@@ -8,6 +8,7 @@ import {
   modeThemeVars,
   sharedThemeVars,
 } from "@/lib/theme/css";
+import { INPUT_MIX } from "@/lib/theme/input";
 import { parseCssVars } from "@/lib/theme/parse";
 import { COLOR_TOKENS, type Theme } from "@/lib/theme/schema";
 import { shadowScale } from "@/lib/theme/shadows";
@@ -90,14 +91,23 @@ describe("default soft tint", () => {
     expect(dark["tone-soft-mix"]).toBe("18%");
   });
 
-  it("only --tone-soft-mix is a non-color declaration of .dark, so the block swap adds nothing else", () => {
+  it("only the tone and input mixes are non-color declarations of .dark, so the block swap adds nothing else", () => {
     const body = STYLES.slice(STYLES.indexOf("\n.dark {"));
     const names = [...body.slice(0, body.indexOf("\n}\n")).matchAll(/(--[\w-]+)\s*:/g)].map((m) =>
       (m[1] as string).slice(2),
     );
     expect(names.filter((name) => !(COLOR_TOKENS as readonly string[]).includes(name))).toEqual([
       "tone-soft-mix",
+      "input-mix",
     ]);
+  });
+});
+
+describe("default field fill", () => {
+  it("styles.css declares the INPUT_MIX defaults in :root and .dark", () => {
+    const { light, dark } = parseCssVars(STYLES);
+    expect(light["input-mix"]).toBe(`${INPUT_MIX.light * 100}%`);
+    expect(dark["input-mix"]).toBe(`${INPUT_MIX.dark * 100}%`);
   });
 });
 

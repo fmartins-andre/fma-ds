@@ -39,7 +39,7 @@ const tabNavIndicatorVariants = cva(
     variants: {
       variant: {
         default:
-          "h-(--h) w-(--w) rounded-md bg-background shadow-sm [translate:var(--x)_var(--y)] dark:border dark:border-input dark:bg-input",
+          "h-(--h) w-(--w) rounded-md bg-background shadow-sm [translate:var(--x)_var(--y)] dark:border dark:border-border dark:bg-input-background",
         primary: "h-(--h) w-(--w) rounded-md bg-background shadow-sm [translate:var(--x)_var(--y)]",
         // at the item's bottom, inset as the label
         line: "h-0.5 w-[calc(var(--w)-0.5rem)] rounded-full bg-foreground [translate:calc(var(--x)+0.25rem)_calc(var(--y)+var(--h)-2px)]",

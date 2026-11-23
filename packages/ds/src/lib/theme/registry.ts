@@ -21,6 +21,7 @@ function modeVars(theme: Theme, mode: ThemeMode): Record<string, string> {
   const vars: Record<string, string> = {};
   for (const token of COLOR_TOKENS) vars[token] = theme[mode][token];
   if (theme.softMix) vars["tone-soft-mix"] = theme.softMix[mode];
+  if (theme.inputMix) vars["input-mix"] = theme.inputMix[mode];
   const shadow = theme.shadow?.[mode];
   if (shadow) {
     const scale = shadowScale(shadow);

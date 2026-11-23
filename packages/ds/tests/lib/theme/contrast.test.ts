@@ -51,9 +51,17 @@ describe("checkContrast", () => {
     expect(icon({ ...pale, iconMix: "100%" })?.passes).toBe(true);
   });
 
-  it("checks icons on the page and on the soft tint of all six tones", () => {
+  it("checks icons on the page and on the soft tint of every tone, neutral included", () => {
     const results = checkContrast(DEFAULT_THEME, "light");
-    for (const tone of ["primary", "brand", "success", "warning", "info", "destructive"]) {
+    for (const tone of [
+      "primary",
+      "brand",
+      "success",
+      "warning",
+      "info",
+      "destructive",
+      "neutral",
+    ]) {
       const backgrounds = results
         .filter((r) => r.foreground === `icon(--${tone})`)
         .map((r) => r.background);
@@ -61,6 +69,22 @@ describe("checkContrast", () => {
     }
     expect(
       results.filter((r) => r.foreground.startsWith("icon(")).every((r) => r.minimum === 3),
+    ).toBe(true);
+  });
+
+  it("gates the neutral tone: its fill, its text and the fill on the page", () => {
+    const results = checkContrast(DEFAULT_THEME, "light");
+    const has = (background: string, foreground: string) =>
+      results.some((r) => r.background === background && r.foreground === foreground);
+    expect(has("--neutral", "--neutral-foreground")).toBe(true);
+    expect(has("--background", "--neutral")).toBe(true);
+    expect(has("soft(--neutral)", "--neutral-text")).toBe(true);
+    const faint = structuredClone(DEFAULT_THEME);
+    faint.light.neutral = "oklch(0.9 0 0)";
+    expect(
+      checkContrast(faint, "light").some(
+        (r) => r.background === "--background" && r.foreground === "--neutral" && !r.passes,
+      ),
     ).toBe(true);
   });
 

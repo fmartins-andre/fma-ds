@@ -41,8 +41,11 @@
       "brand": "oklch(0.481 0.118 263.376)",
       "brand-foreground": "oklch(0.986 0.028 98.054)",
       "brand-text": "oklch(0.368 0.08 264.628)",
+      "neutral": "oklch(0.481 0.118 263.376)",
+      "neutral-foreground": "oklch(0.975 0.005 258.325)",
+      "neutral-text": "oklch(0.256 0.043 268.066)",
       "border": "oklch(0.779 0.016 251.193)",
-      "input": "oklch(0.69 0.071 234.039)",
+      "input": "oklch(0.779 0.016 251.193)",
       "ring": "oklch(0.857 0.116 81.009)",
       "chart-1": "oklch(0.481 0.118 263.376)",
       "chart-2": "oklch(0.857 0.116 81.009)",
@@ -88,8 +91,11 @@
       "brand": "oklch(0.481 0.118 263.376)",
       "brand-foreground": "oklch(0.91 0.144 95.112)",
       "brand-text": "oklch(0.709 0.065 263.705)",
+      "neutral": "oklch(0.624 0.041 262.037)",
+      "neutral-foreground": "oklch(0.22 0.02 275.844)",
+      "neutral-text": "oklch(0.937 0.013 266.697)",
       "border": "oklch(0.307 0.029 281.768)",
-      "input": "oklch(0.481 0.118 263.376)",
+      "input": "oklch(0.307 0.029 281.768)",
       "ring": "oklch(0.91 0.144 95.112)",
       "chart-1": "oklch(0.481 0.118 263.376)",
       "chart-2": "oklch(0.91 0.144 95.112)",
@@ -119,7 +125,7 @@
       "gold",
       "serif"
     ],
-    "contentHash": "03417fd0620e"
+    "contentHash": "5c1a8ff30c61"
   },
   "categories": [
     "theme"

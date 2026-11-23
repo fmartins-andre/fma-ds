@@ -24,13 +24,16 @@ describe("toneVariants", () => {
     for (const v of VARS) expect(toneVariants[t]).toContain(`[${v}:`);
   });
 
-  it.each(COLORED)("%s switches the soft and line mix in dark mode", (t) => {
+  it.each(TONES)("%s switches the soft mix in dark mode", (t) => {
     expect(toneVariants[t]).toMatch(/dark:\[--tone-soft:/);
     expect(toneVariants[t]).toMatch(/dark:\[--tone-soft-hover:/);
+  });
+
+  it.each(COLORED)("%s switches the line mix in dark mode", (t) => {
     expect(toneVariants[t]).toMatch(/dark:\[--tone-line:/);
   });
 
-  it.each(COLORED)("%s uses the gated recipe percentages", (t) => {
+  it.each(TONES)("%s uses the gated recipe percentages", (t) => {
     // Tailwind arbitrary values: spaces are written as underscores.
     const css = toneVariants[t];
     expect(css).toContain(`var(--tone-soft-mix,${pct(TONE_MIX.soft.light)}%)`);
@@ -38,24 +41,22 @@ describe("toneVariants", () => {
     expect(css).toContain(`_*_${TONE_MIX.softHover})`);
     expect(css).toContain(`[--tone-text:var(--${t}-text)]`);
     expect(css).toContain(`var(--tone-icon-mix,${pct(TONE_MIX.icon)}%)`);
-    expect(css).toContain(`var(--${t})_${pct(TONE_MIX.line.light)}%`);
-    expect(css).toContain(`var(--${t})_${pct(TONE_MIX.line.dark)}%`);
     expect(css).toContain(`[--tone:var(--${t})]`);
     expect(css).toContain(`[--tone-foreground:var(--${t}-foreground)]`);
+    expect(css).toContain("[--tone-hover:var(--tone-soft)]");
   });
 
-  it("neutral is built from the muted family", () => {
-    expect(toneVariants.neutral).not.toMatch(/--(accent|secondary|invert)\b/);
-    expect(toneVariants.neutral).toContain("[--tone:var(--muted-foreground)]");
-    expect(toneVariants.neutral).toContain("[--tone-soft:var(--muted)]");
-    expect(toneVariants.neutral).toContain("[--tone-foreground:var(--background)]");
-    expect(toneVariants.neutral).toContain(
-      "[--tone-soft-hover:color-mix(in_oklab,var(--muted),var(--foreground)_5%)]",
+  it.each(COLORED)("%s mixes its outline line from the tone", (t) => {
+    expect(toneVariants[t]).toContain(`var(--${t})_${pct(TONE_MIX.line.light)}%`);
+    expect(toneVariants[t]).toContain(`var(--${t})_${pct(TONE_MIX.line.dark)}%`);
+  });
+
+  it("neutral has its own tokens and keeps --border as the outline line", () => {
+    expect(toneVariants.neutral).not.toMatch(
+      /--(muted|muted-foreground|accent|secondary|invert)\b/,
     );
     expect(toneVariants.neutral).toContain("[--tone-line:var(--border)]");
-    expect(toneVariants.neutral).toContain("[--tone-hover:var(--muted)]");
-    expect(toneVariants.neutral).toContain("[--tone-text:var(--foreground)]");
-    expect(toneVariants.neutral).toContain("[--tone-icon:var(--muted-foreground)]");
+    expect(toneVariants.neutral).not.toMatch(/dark:\[--tone-line:/);
   });
 
   it("emits no raw spaces inside class names", () => {

@@ -269,7 +269,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/button"
+        "@fma-ds/button",
+        "@fma-ds/tone"
       ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
@@ -277,13 +278,13 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "chat",
           "file-upload"
         ],
-        "contentHash": "93dc9b3db412"
+        "contentHash": "d17a2cb4f715"
       }
     },
     {
@@ -554,13 +555,13 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "buttons",
           "layout"
         ],
-        "contentHash": "f3df80aa3e96"
+        "contentHash": "44765579b3fd"
       }
     },
     {
@@ -745,7 +746,7 @@
           "selection",
           "nova"
         ],
-        "contentHash": "a62172995df6"
+        "contentHash": "71bf27011c86"
       }
     },
     {
@@ -1017,7 +1018,7 @@
           "selection",
           "autocomplete"
         ],
-        "contentHash": "1be09f2e4bea"
+        "contentHash": "4863ac09400c"
       }
     },
     {
@@ -1056,7 +1057,7 @@
           "command-palette",
           "overlay"
         ],
-        "contentHash": "f802f5837126"
+        "contentHash": "f08011567fd5"
       }
     },
     {
@@ -1266,7 +1267,8 @@
         "@fma-ds/select",
         "@fma-ds/skeleton",
         "@fma-ds/spinner",
-        "@fma-ds/i18n"
+        "@fma-ds/i18n",
+        "@fma-ds/tone"
       ],
       "dependencies": [
         "@tanstack/react-table@^9.3.1",
@@ -1286,7 +1288,7 @@
           "tanstack",
           "react-aria"
         ],
-        "contentHash": "20d1022b0110"
+        "contentHash": "9a054a66934b"
       }
     },
     {
@@ -1358,7 +1360,7 @@
           "date",
           "react-aria"
         ],
-        "contentHash": "e80a3917a28a"
+        "contentHash": "347910f77738"
       }
     },
     {
@@ -2024,7 +2026,7 @@
           "icon",
           "upload"
         ],
-        "contentHash": "5144cf26921c"
+        "contentHash": "569a6735e706"
       }
     },
     {
@@ -2113,7 +2115,7 @@
           "toolbar",
           "list"
         ],
-        "contentHash": "e0acd9c855e3"
+        "contentHash": "92f18164256d"
       }
     },
     {
@@ -2658,7 +2660,7 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
@@ -2666,7 +2668,7 @@
           "input",
           "react-aria"
         ],
-        "contentHash": "617dcbe2db7d"
+        "contentHash": "d08599555413"
       }
     },
     {
@@ -2697,7 +2699,7 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova (base: react-aria-components)",
         "tags": [
@@ -2705,7 +2707,7 @@
           "input",
           "react-aria"
         ],
-        "contentHash": "e387b2fb09b3"
+        "contentHash": "f1cd8bf2ddbb"
       }
     },
     {
@@ -2844,7 +2846,7 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "origin": "shadcn/ui, style: aria-nova. Built on the input-otp library, not react-aria-components.",
         "tags": [
@@ -2852,7 +2854,7 @@
           "input",
           "otp"
         ],
-        "contentHash": "872cd0243092"
+        "contentHash": "0f08107ef28f"
       }
     },
     {
@@ -3109,7 +3111,8 @@
         }
       ],
       "registryDependencies": [
-        "@fma-ds/dropdown-menu"
+        "@fma-ds/dropdown-menu",
+        "@fma-ds/tone"
       ],
       "dependencies": [
         "cn@^0.5.2",
@@ -3127,7 +3130,7 @@
           "toolbar",
           "react-aria"
         ],
-        "contentHash": "780c88ab035c"
+        "contentHash": "8129642d8bf1"
       }
     },
     {
@@ -3254,14 +3257,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "form",
           "select",
           "native"
         ],
-        "contentHash": "b79652053c23"
+        "contentHash": "fdcc24d9bee7"
       }
     },
     {
@@ -3280,6 +3283,9 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/tone"
+      ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
         "cn@^0.5.2",
@@ -3297,7 +3303,7 @@
           "header",
           "react-aria"
         ],
-        "contentHash": "151881ea0fc1"
+        "contentHash": "35539721da25"
       }
     },
     {
@@ -3762,7 +3768,7 @@
           "form",
           "@shadcn/react"
         ],
-        "contentHash": "87b8b0714a13"
+        "contentHash": "b636b4a18552"
       }
     },
     {
@@ -3798,7 +3804,7 @@
           "selection",
           "react-aria"
         ],
-        "contentHash": "9a6e0dbcbeb6"
+        "contentHash": "0cd3c3da4234"
       }
     },
     {
@@ -3896,7 +3902,7 @@
           "select",
           "react-aria"
         ],
-        "contentHash": "805467049070"
+        "contentHash": "0028e03dd227"
       }
     },
     {
@@ -4364,7 +4370,7 @@
           "routing",
           "react-aria"
         ],
-        "contentHash": "67cf3c2602b5"
+        "contentHash": "ead1213f5bfe"
       }
     },
     {
@@ -4434,7 +4440,7 @@
           "disclosure",
           "react-aria"
         ],
-        "contentHash": "d96ea0614a82"
+        "contentHash": "28d8dccae2d6"
       }
     },
     {
@@ -4459,14 +4465,14 @@
       ],
       "meta": {
         "status": "stable",
-        "source": "shadcn",
+        "source": "customized",
         "license": "MIT",
         "tags": [
           "forms",
           "input",
           "react-aria"
         ],
-        "contentHash": "def7395a10b5"
+        "contentHash": "965d64ec544d"
       }
     },
     {
@@ -4519,6 +4525,9 @@
           "brand": "oklch(0.769 0.165 70.08)",
           "brand-foreground": "oklch(0 0 0)",
           "brand-text": "oklch(0.519 0.083 70.08)",
+          "neutral": "oklch(0.551 0.023 264.364)",
+          "neutral-foreground": "oklch(1 0 0)",
+          "neutral-text": "oklch(0.269 0 0)",
           "border": "oklch(0.928 0.006 264.531)",
           "input": "oklch(0.928 0.006 264.531)",
           "ring": "oklch(0.669 0.165 70.08)",
@@ -4574,6 +4583,9 @@
           "brand": "oklch(0.769 0.165 70.08)",
           "brand-foreground": "oklch(0 0 0)",
           "brand-text": "oklch(0.846 0.083 70.08)",
+          "neutral": "oklch(0.715 0 0)",
+          "neutral-foreground": "oklch(0.205 0 0)",
+          "neutral-text": "oklch(0.922 0 0)",
           "border": "oklch(0.371 0 0)",
           "input": "oklch(0.371 0 0)",
           "ring": "oklch(0.669 0.165 70.08)",
@@ -4640,7 +4652,7 @@
             "offsetY": "4px"
           }
         },
-        "contentHash": "921ae8af3dbb"
+        "contentHash": "b8f597d778ac"
       }
     },
     {
@@ -4684,6 +4696,9 @@
           "brand": "oklch(0.434 0.039 41.994)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.339 0.019 41.994)",
+          "neutral": "oklch(0.503 0 0)",
+          "neutral-foreground": "oklch(0.982 0 0)",
+          "neutral-text": "oklch(0.244 0 0)",
           "border": "oklch(0.882 0 0)",
           "input": "oklch(0.882 0 0)",
           "ring": "oklch(0.434 0.039 41.994)",
@@ -4731,8 +4746,11 @@
           "brand": "oklch(0.925 0.052 66.173)",
           "brand-foreground": "oklch(0.203 0.024 200.196)",
           "brand-text": "oklch(0.937 0.026 66.173)",
+          "neutral": "oklch(0.77 0 0)",
+          "neutral-foreground": "oklch(0.178 0 0)",
+          "neutral-text": "oklch(0.949 0 0)",
           "border": "oklch(0.235 0.012 91.747)",
-          "input": "oklch(0.402 0 0)",
+          "input": "oklch(0.235 0.012 91.747)",
           "ring": "oklch(0.925 0.052 66.173)",
           "chart-1": "oklch(0.925 0.052 66.173)",
           "chart-2": "oklch(0.316 0.019 63.699)",
@@ -4757,7 +4775,7 @@
           "brown",
           "warm"
         ],
-        "contentHash": "b6eb842e1a8d"
+        "contentHash": "b18131da323a"
       }
     },
     {
@@ -4809,8 +4827,11 @@
           "brand": "oklch(0.555 0.25 297.016)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.495 0.146 294.445)",
+          "neutral": "oklch(0.547 0.034 279.084)",
+          "neutral-foreground": "oklch(0.958 0.006 264.532)",
+          "neutral-text": "oklch(0.435 0.043 279.325)",
           "border": "oklch(0.808 0.017 271.198)",
-          "input": "oklch(0.857 0.014 268.476)",
+          "input": "oklch(0.808 0.017 271.198)",
           "ring": "oklch(0.555 0.25 297.016)",
           "chart-1": "oklch(0.555 0.25 297.016)",
           "chart-2": "oklch(0.652 0.145 235.382)",
@@ -4863,6 +4884,9 @@
           "brand": "oklch(0.787 0.119 304.769)",
           "brand-foreground": "oklch(0.243 0.03 283.911)",
           "brand-text": "oklch(0.833 0.078 296.307)",
+          "neutral": "oklch(0.751 0.04 273.932)",
+          "neutral-foreground": "oklch(0.216 0.025 284.065)",
+          "neutral-text": "oklch(0.879 0.043 272.277)",
           "border": "oklch(0.324 0.032 281.978)",
           "input": "oklch(0.324 0.032 281.978)",
           "ring": "oklch(0.787 0.119 304.769)",
@@ -4925,7 +4949,7 @@
             "offsetY": "4px"
           }
         },
-        "contentHash": "a7ea3e8ebf6e"
+        "contentHash": "906919738863"
       }
     },
     {
@@ -4969,8 +4993,11 @@
           "brand": "oklch(0.617 0.138 39.043)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.48 0.077 47.441)",
+          "neutral": "oklch(0.606 0.007 97.423)",
+          "neutral-foreground": "oklch(0.982 0.005 95.099)",
+          "neutral-text": "oklch(0.344 0.027 95.723)",
           "border": "oklch(0.885 0.007 97.363)",
-          "input": "oklch(0.762 0.016 98.353)",
+          "input": "oklch(0.885 0.007 97.363)",
           "ring": "oklch(0.617 0.138 39.043)",
           "chart-1": "oklch(0.558 0.128 42.996)",
           "chart-2": "oklch(0.69 0.158 290.411)",
@@ -5016,8 +5043,11 @@
           "brand": "oklch(0.672 0.131 38.756)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.74 0.07 43.424)",
+          "neutral": "oklch(0.771 0.017 99.066)",
+          "neutral-foreground": "oklch(0.268 0.004 106.643)",
+          "neutral-text": "oklch(0.807 0.014 93.014)",
           "border": "oklch(0.362 0.01 106.893)",
-          "input": "oklch(0.434 0.011 100.219)",
+          "input": "oklch(0.362 0.01 106.893)",
           "ring": "oklch(0.672 0.131 38.756)",
           "chart-1": "oklch(0.558 0.128 42.996)",
           "chart-2": "oklch(0.69 0.158 290.411)",
@@ -5043,7 +5073,7 @@
           "warm",
           "sans"
         ],
-        "contentHash": "a6f23d8bafd5"
+        "contentHash": "0245005e1b74"
       }
     },
     {
@@ -5096,6 +5126,9 @@
           "brand": "oklch(0.585 0.204 277.117)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.432 0.12 274.517)",
+          "neutral": "oklch(0.551 0.023 264.364)",
+          "neutral-foreground": "oklch(0.984 0.003 247.858)",
+          "neutral-text": "oklch(0.279 0.037 260.031)",
           "border": "oklch(0.872 0.009 258.338)",
           "input": "oklch(0.872 0.009 258.338)",
           "ring": "oklch(0.585 0.204 277.117)",
@@ -5150,6 +5183,9 @@
           "brand": "oklch(0.68 0.158 276.935)",
           "brand-foreground": "oklch(0.208 0.04 265.755)",
           "brand-text": "oklch(0.804 0.085 275.336)",
+          "neutral": "oklch(0.714 0.019 261.325)",
+          "neutral-foreground": "oklch(0.208 0.04 265.755)",
+          "neutral-text": "oklch(0.929 0.013 255.508)",
           "border": "oklch(0.446 0.026 256.802)",
           "input": "oklch(0.446 0.026 256.802)",
           "ring": "oklch(0.68 0.158 276.935)",
@@ -5216,7 +5252,7 @@
             "offsetY": "4px"
           }
         },
-        "contentHash": "66bd4c13dd58"
+        "contentHash": "4f848a923724"
       }
     },
     {
@@ -5265,8 +5301,11 @@
           "brand": "oklch(0.769 0.218 133.208)",
           "brand-foreground": "oklch(0.318 0 0)",
           "brand-text": "oklch(0.494 0.106 138.314)",
+          "neutral": "oklch(0.548 0.039 244.27)",
+          "neutral-foreground": "oklch(0.985 0.002 247.839)",
+          "neutral-text": "oklch(0.22 0.02 242.347)",
           "border": "oklch(0.9 0.011 245.788)",
-          "input": "oklch(0.921 0.009 242.337)",
+          "input": "oklch(0.9 0.011 245.788)",
           "ring": "oklch(0.401 0.179 245.492)",
           "chart-1": "oklch(0.327 0.139 244.722)",
           "chart-2": "oklch(0.401 0.179 245.492)",
@@ -5281,11 +5320,12 @@
           "sidebar-accent-foreground": "oklch(0.98 0.003 286.351)",
           "sidebar-border": "oklch(0.49 0.07 245.492)",
           "sidebar-ring": "oklch(0.72 0.1 245.492)",
+          "input-mix": "10%",
           "radius": "0.5rem",
           "tone-icon-mix": "51%"
         },
         "dark": {
-          "background": "oklch(0.29 0.022 244.5)",
+          "background": "oklch(0.327 0.033 244.5)",
           "foreground": "oklch(0.93 0.008 242.3)",
           "card": "oklch(0.345 0.028 244.5)",
           "card-foreground": "oklch(0.93 0.008 242.3)",
@@ -5313,8 +5353,11 @@
           "brand": "oklch(0.54 0.153 133.208)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.735 0.075 136.086)",
+          "neutral": "oklch(0.77 0.022 242.4)",
+          "neutral-foreground": "oklch(0.29 0.022 244.5)",
+          "neutral-text": "oklch(0.93 0.008 242.3)",
           "border": "oklch(0.45 0.028 244.5)",
-          "input": "oklch(0.47 0.028 244.5)",
+          "input": "oklch(0.45 0.028 244.5)",
           "ring": "oklch(0.72 0.13 245.492)",
           "chart-1": "oklch(0.48 0.16 244.722)",
           "chart-2": "oklch(0.6 0.17 245.492)",
@@ -5328,7 +5371,8 @@
           "sidebar-accent": "oklch(0.4 0.085 245.492)",
           "sidebar-accent-foreground": "oklch(0.95 0.008 242.3)",
           "sidebar-border": "oklch(0.46 0.065 245.492)",
-          "sidebar-ring": "oklch(0.68 0.12 245.492)"
+          "sidebar-ring": "oklch(0.68 0.12 245.492)",
+          "input-mix": "30%"
         }
       },
       "css": {
@@ -5345,7 +5389,7 @@
           "green",
           "sans"
         ],
-        "contentHash": "2dcc446ec2ce"
+        "contentHash": "8b789dd1879d"
       }
     },
     {
@@ -5397,6 +5441,9 @@
           "brand": "oklch(0.542 0.179 288.033)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.421 0.118 286.678)",
+          "neutral": "oklch(0.543 0.047 284.743)",
+          "neutral-foreground": "oklch(0.973 0.013 286.15)",
+          "neutral-text": "oklch(0.301 0.057 282.418)",
           "border": "oklch(0.911 0.022 285.962)",
           "input": "oklch(0.911 0.022 285.962)",
           "ring": "oklch(0.542 0.179 288.033)",
@@ -5451,6 +5498,9 @@
           "brand": "oklch(0.716 0.16 290.396)",
           "brand-foreground": "oklch(0.174 0.023 283.8)",
           "brand-text": "oklch(0.817 0.093 289.766)",
+          "neutral": "oklch(0.717 0.046 285.174)",
+          "neutral-foreground": "oklch(0.174 0.023 283.8)",
+          "neutral-text": "oklch(0.918 0.026 285.883)",
           "border": "oklch(0.326 0.06 282.583)",
           "input": "oklch(0.326 0.06 282.583)",
           "ring": "oklch(0.716 0.16 290.396)",
@@ -5513,7 +5563,7 @@
             "offsetY": "4px"
           }
         },
-        "contentHash": "45faa228f3ba"
+        "contentHash": "87bf75cde671"
       }
     },
     {
@@ -5557,6 +5607,9 @@
           "brand": "oklch(0.205 0 0)",
           "brand-foreground": "oklch(0.985 0 0)",
           "brand-text": "oklch(0.175 0 0)",
+          "neutral": "oklch(0.556 0 0)",
+          "neutral-foreground": "oklch(1 0 0)",
+          "neutral-text": "oklch(0.145 0 0)",
           "border": "oklch(0.922 0 0)",
           "input": "oklch(0.922 0 0)",
           "ring": "oklch(0.708 0 0)",
@@ -5604,8 +5657,11 @@
           "brand": "oklch(0.922 0 0)",
           "brand-foreground": "oklch(0.205 0 0)",
           "brand-text": "oklch(0.954 0 0)",
+          "neutral": "oklch(0.708 0 0)",
+          "neutral-foreground": "oklch(0.145 0 0)",
+          "neutral-text": "oklch(0.985 0 0)",
           "border": "oklch(1 0 0 / 10%)",
-          "input": "oklch(1 0 0 / 15%)",
+          "input": "oklch(1 0 0 / 10%)",
           "ring": "oklch(0.556 0 0)",
           "chart-1": "oklch(0.87 0 0)",
           "chart-2": "oklch(0.556 0 0)",
@@ -5629,7 +5685,7 @@
           "neutral",
           "sans"
         ],
-        "contentHash": "98c77b83ad06"
+        "contentHash": "68a723aec2e7"
       }
     },
     {
@@ -5682,6 +5738,9 @@
           "brand": "oklch(0.465 0.147 24.938)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.342 0.073 24.938)",
+          "neutral": "oklch(0.444 0.01 73.639)",
+          "neutral-foreground": "oklch(0.978 0.004 56.375)",
+          "neutral-text": "oklch(0.218 0 0)",
           "border": "oklch(0.936 0.032 80.994)",
           "input": "oklch(0.936 0.032 80.994)",
           "ring": "oklch(0.465 0.147 24.938)",
@@ -5736,6 +5795,9 @@
           "brand": "oklch(0.505 0.19 27.518)",
           "brand-foreground": "oklch(0.978 0.004 56.375)",
           "brand-text": "oklch(0.738 0.095 27.814)",
+          "neutral": "oklch(0.869 0.004 56.366)",
+          "neutral-foreground": "oklch(0.216 0.006 56.043)",
+          "neutral-text": "oklch(0.97 0.001 106.424)",
           "border": "oklch(0.374 0.009 67.558)",
           "input": "oklch(0.374 0.009 67.558)",
           "ring": "oklch(0.505 0.19 27.518)",
@@ -5801,7 +5863,7 @@
             "offsetY": "1px"
           }
         },
-        "contentHash": "469d2edc80a8"
+        "contentHash": "454bfa5ee38b"
       }
     },
     {
@@ -5853,8 +5915,11 @@
           "brand": "oklch(0.489 0 0)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.405 0 0)",
+          "neutral": "oklch(0.51 0 0)",
+          "neutral-foreground": "oklch(0.955 0 0)",
+          "neutral-text": "oklch(0.321 0 0)",
           "border": "oklch(0.858 0 0)",
-          "input": "oklch(0.907 0 0)",
+          "input": "oklch(0.858 0 0)",
           "ring": "oklch(0.489 0 0)",
           "chart-1": "oklch(0.489 0 0)",
           "chart-2": "oklch(0.486 0.036 196.028)",
@@ -5907,8 +5972,11 @@
           "brand": "oklch(0.706 0 0)",
           "brand-foreground": "oklch(0.218 0 0)",
           "brand-text": "oklch(0.795 0 0)",
+          "neutral": "oklch(0.6 0 0)",
+          "neutral-foreground": "oklch(0.218 0 0)",
+          "neutral-text": "oklch(0.885 0 0)",
           "border": "oklch(0.329 0 0)",
-          "input": "oklch(0.309 0 0)",
+          "input": "oklch(0.329 0 0)",
           "ring": "oklch(0.706 0 0)",
           "chart-1": "oklch(0.706 0 0)",
           "chart-2": "oklch(0.671 0.034 206.348)",
@@ -5969,7 +6037,7 @@
             "offsetY": "2px"
           }
         },
-        "contentHash": "b686f205ee0a"
+        "contentHash": "03da584d1946"
       }
     },
     {
@@ -6018,8 +6086,11 @@
           "brand": "oklch(0.543 0.281 306.592)",
           "brand-foreground": "oklch(0.98 0.003 306.592)",
           "brand-text": "oklch(0.382 0.15 304.97)",
+          "neutral": "oklch(0.543 0.031 283.459)",
+          "neutral-foreground": "oklch(0.985 0.002 259.028)",
+          "neutral-text": "oklch(0.22 0.02 281.536)",
           "border": "oklch(0.9 0.011 284.977)",
-          "input": "oklch(0.921 0.009 281.526)",
+          "input": "oklch(0.9 0.011 284.977)",
           "ring": "oklch(0.478 0.141 284.681)",
           "chart-1": "oklch(0.327 0.139 283.911)",
           "chart-2": "oklch(0.401 0.179 284.681)",
@@ -6065,8 +6136,11 @@
           "brand": "oklch(0.7 0.155 306.592)",
           "brand-foreground": "oklch(0.179 0.019 306.592)",
           "brand-text": "oklch(0.815 0.081 305.394)",
+          "neutral": "oklch(0.77 0.022 281.589)",
+          "neutral-foreground": "oklch(0.29 0.022 283.689)",
+          "neutral-text": "oklch(0.93 0.008 281.489)",
           "border": "oklch(0.45 0.028 283.689)",
-          "input": "oklch(0.47 0.028 283.689)",
+          "input": "oklch(0.45 0.028 283.689)",
           "ring": "oklch(0.72 0.13 284.681)",
           "chart-1": "oklch(0.48 0.16 283.911)",
           "chart-2": "oklch(0.6 0.17 284.681)",
@@ -6097,7 +6171,7 @@
           "violet",
           "sans"
         ],
-        "contentHash": "4bb0857e43c3"
+        "contentHash": "d4219ca43bb4"
       }
     },
     {
@@ -6150,8 +6224,11 @@
           "brand": "oklch(0.656 0.105 118.908)",
           "brand-foreground": "oklch(1 0.007 88.641)",
           "brand-text": "oklch(0.461 0.062 106.4)",
+          "neutral": "oklch(0.546 0.026 60.932)",
+          "neutral-foreground": "oklch(0.88 0.053 91.789)",
+          "neutral-text": "oklch(0.426 0.031 59.215)",
           "border": "oklch(0.692 0.044 59.845)",
-          "input": "oklch(0.836 0.071 90.327)",
+          "input": "oklch(0.692 0.044 59.845)",
           "ring": "oklch(0.655 0.056 130.849)",
           "chart-1": "oklch(0.655 0.056 130.849)",
           "chart-2": "oklch(0.676 0.057 132.448)",
@@ -6205,6 +6282,9 @@
           "brand": "oklch(0.676 0.057 132.448)",
           "brand-foreground": "oklch(0.269 0.01 61.021)",
           "brand-text": "oklch(0.799 0.037 118.575)",
+          "neutral": "oklch(0.71 0.017 73.618)",
+          "neutral-foreground": "oklch(0.33 0.021 88.074)",
+          "neutral-text": "oklch(0.922 0.023 82.119)",
           "border": "oklch(0.445 0.024 84.55)",
           "input": "oklch(0.445 0.024 84.55)",
           "ring": "oklch(0.676 0.057 132.448)",
@@ -6271,7 +6351,7 @@
             "offsetY": "3px"
           }
         },
-        "contentHash": "9656a33d265c"
+        "contentHash": "fbe637173715"
       }
     },
     {
@@ -6324,6 +6404,9 @@
           "brand": "oklch(0.623 0.188 259.815)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.472 0.094 259.815)",
+          "neutral": "oklch(0.551 0.023 264.364)",
+          "neutral-foreground": "oklch(1 0 0)",
+          "neutral-text": "oklch(0.321 0 0)",
           "border": "oklch(0.928 0.006 264.531)",
           "input": "oklch(0.928 0.006 264.531)",
           "ring": "oklch(0.623 0.188 259.815)",
@@ -6371,6 +6454,9 @@
           "brand": "oklch(0.623 0.188 259.815)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.772 0.094 259.815)",
+          "neutral": "oklch(0.715 0 0)",
+          "neutral-foreground": "oklch(0.205 0 0)",
+          "neutral-text": "oklch(0.922 0 0)",
           "border": "oklch(0.371 0 0)",
           "input": "oklch(0.371 0 0)",
           "ring": "oklch(0.623 0.188 259.815)",
@@ -6412,7 +6498,7 @@
           "minimal",
           "sans"
         ],
-        "contentHash": "2a84ecfa931e"
+        "contentHash": "650d89cb34d6"
       }
     },
     {
@@ -6463,6 +6549,9 @@
           "brand": "oklch(0.556 0 0)",
           "brand-foreground": "oklch(0.985 0 0)",
           "brand-text": "oklch(0.351 0 0)",
+          "neutral": "oklch(0.549 0 0)",
+          "neutral-foreground": "oklch(1 0 0)",
+          "neutral-text": "oklch(0.145 0 0)",
           "border": "oklch(0.922 0 0)",
           "input": "oklch(0.922 0 0)",
           "ring": "oklch(0.709 0 0)",
@@ -6517,8 +6606,11 @@
           "brand": "oklch(0.556 0 0)",
           "brand-foreground": "oklch(0.985 0 0)",
           "brand-text": "oklch(0.77 0 0)",
+          "neutral": "oklch(0.709 0 0)",
+          "neutral-foreground": "oklch(0.145 0 0)",
+          "neutral-text": "oklch(0.985 0 0)",
           "border": "oklch(0.341 0 0)",
-          "input": "oklch(0.439 0 0)",
+          "input": "oklch(0.341 0 0)",
           "ring": "oklch(0.556 0 0)",
           "chart-1": "oklch(0.556 0 0)",
           "chart-2": "oklch(0.556 0 0)",
@@ -6575,7 +6667,7 @@
             "offsetY": "1px"
           }
         },
-        "contentHash": "f6f595c6fdda"
+        "contentHash": "a1cf19e70634"
       }
     },
     {
@@ -6628,6 +6720,9 @@
           "brand": "oklch(0.523 0.135 144.167)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.411 0.062 128.882)",
+          "neutral": "oklch(0.45 0.049 39.211)",
+          "neutral-foreground": "oklch(0.971 0.007 80.721)",
+          "neutral-text": "oklch(0.3 0.036 30.204)",
           "border": "oklch(0.881 0.021 74.643)",
           "input": "oklch(0.881 0.021 74.643)",
           "ring": "oklch(0.523 0.135 144.167)",
@@ -6675,6 +6770,9 @@
           "brand": "oklch(0.673 0.162 144.208)",
           "brand-foreground": "oklch(0.216 0.045 145.726)",
           "brand-text": "oklch(0.807 0.083 140.921)",
+          "neutral": "oklch(0.858 0.017 76.096)",
+          "neutral-foreground": "oklch(0.268 0.028 150.768)",
+          "neutral-text": "oklch(0.942 0.01 72.659)",
           "border": "oklch(0.394 0.027 142.993)",
           "input": "oklch(0.394 0.027 142.993)",
           "ring": "oklch(0.673 0.162 144.208)",
@@ -6716,7 +6814,7 @@
           "warm",
           "sans"
         ],
-        "contentHash": "3d1caf25708e"
+        "contentHash": "143a98c15285"
       }
     },
     {
@@ -6769,6 +6867,9 @@
           "brand": "oklch(0.649 0.154 150.307)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.485 0.077 150.307)",
+          "neutral": "oklch(0.538 0 0)",
+          "neutral-foreground": "oklch(0.982 0.001 286.375)",
+          "neutral-text": "oklch(0.321 0 0)",
           "border": "oklch(0.87 0 0)",
           "input": "oklch(0.87 0 0)",
           "ring": "oklch(0.649 0.154 150.307)",
@@ -6816,6 +6917,9 @@
           "brand": "oklch(0.649 0.154 150.307)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.786 0.077 150.307)",
+          "neutral": "oklch(0.715 0 0)",
+          "neutral-foreground": "oklch(0.23 0.012 264.293)",
+          "neutral-text": "oklch(0.922 0 0)",
           "border": "oklch(0.387 0 0)",
           "input": "oklch(0.387 0 0)",
           "ring": "oklch(0.649 0.154 150.307)",
@@ -6857,7 +6961,7 @@
           "blue",
           "sans"
         ],
-        "contentHash": "eba8f96fe35b"
+        "contentHash": "55de25ac44fd"
       }
     },
     {
@@ -6910,6 +7014,9 @@
           "brand": "oklch(0.643 0.192 149.579)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.508 0.092 158.697)",
+          "neutral": "oklch(0.551 0.023 264.364)",
+          "neutral-foreground": "oklch(0.975 0.013 244.251)",
+          "neutral-text": "oklch(0.373 0.031 259.733)",
           "border": "oklch(0.928 0.006 264.531)",
           "input": "oklch(0.928 0.006 264.531)",
           "ring": "oklch(0.643 0.192 149.579)",
@@ -6964,6 +7071,9 @@
           "brand": "oklch(0.773 0.153 163.223)",
           "brand-foreground": "oklch(0.208 0.04 265.755)",
           "brand-text": "oklch(0.823 0.076 166.594)",
+          "neutral": "oklch(0.551 0.023 264.364)",
+          "neutral-foreground": "oklch(0.208 0.04 265.755)",
+          "neutral-text": "oklch(0.872 0.009 258.338)",
           "border": "oklch(0.446 0.026 256.802)",
           "input": "oklch(0.446 0.026 256.802)",
           "ring": "oklch(0.773 0.153 163.223)",
@@ -7030,7 +7140,7 @@
             "offsetY": "4px"
           }
         },
-        "contentHash": "6cd495d786fd"
+        "contentHash": "91064b29ee7d"
       }
     },
     {
@@ -7079,8 +7189,11 @@
           "brand": "oklch(0.582 0.143 36.044)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.401 0.076 28.964)",
+          "neutral": "oklch(0.543 0.031 329.088)",
+          "neutral-foreground": "oklch(0.985 0.002 296.657)",
+          "neutral-text": "oklch(0.22 0.02 327.165)",
           "border": "oklch(0.9 0.011 330.606)",
-          "input": "oklch(0.921 0.009 327.155)",
+          "input": "oklch(0.9 0.011 330.606)",
           "ring": "oklch(0.329 0.166 330.31)",
           "chart-1": "oklch(0.327 0.139 329.54)",
           "chart-2": "oklch(0.401 0.179 330.31)",
@@ -7126,8 +7239,11 @@
           "brand": "oklch(0.582 0.143 36.044)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.756 0.073 33.115)",
+          "neutral": "oklch(0.77 0.022 327.218)",
+          "neutral-foreground": "oklch(0.29 0.022 329.318)",
+          "neutral-text": "oklch(0.93 0.008 327.118)",
           "border": "oklch(0.45 0.028 329.318)",
-          "input": "oklch(0.47 0.028 329.318)",
+          "input": "oklch(0.45 0.028 329.318)",
           "ring": "oklch(0.72 0.13 330.31)",
           "chart-1": "oklch(0.48 0.16 329.54)",
           "chart-2": "oklch(0.6 0.17 330.31)",
@@ -7158,7 +7274,7 @@
           "pink",
           "sans"
         ],
-        "contentHash": "ac643aed215f"
+        "contentHash": "41c9f70cf156"
       }
     },
     {
@@ -7210,8 +7326,11 @@
           "brand": "oklch(0.511 0.23 276.966)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.256 0.115 276.966)",
+          "neutral": "oklch(0.321 0 0)",
+          "neutral-foreground": "oklch(0.979 0.008 121.627)",
+          "neutral-text": "oklch(0 0 0)",
           "border": "oklch(0 0 0)",
-          "input": "oklch(0.556 0 0)",
+          "input": "oklch(0 0 0)",
           "ring": "oklch(0.785 0.104 274.713)",
           "chart-1": "oklch(0.511 0.23 276.966)",
           "chart-2": "oklch(0.644 0.123 182.503)",
@@ -7264,8 +7383,11 @@
           "brand": "oklch(0.68 0.158 276.935)",
           "brand-foreground": "oklch(0 0 0)",
           "brand-text": "oklch(0.84 0.079 276.935)",
+          "neutral": "oklch(0.845 0 0)",
+          "neutral-foreground": "oklch(0 0 0)",
+          "neutral-text": "oklch(1 0 0)",
           "border": "oklch(0.446 0 0)",
-          "input": "oklch(1 0 0)",
+          "input": "oklch(0.446 0 0)",
           "ring": "oklch(0.68 0.158 276.935)",
           "chart-1": "oklch(0.68 0.158 276.935)",
           "chart-2": "oklch(0.785 0.133 181.912)",
@@ -7325,7 +7447,7 @@
             "offsetY": "0px"
           }
         },
-        "contentHash": "3404520ca4d7"
+        "contentHash": "7476151c1f7e"
       }
     },
     {
@@ -7374,8 +7496,11 @@
           "brand": "oklch(0.481 0.118 263.376)",
           "brand-foreground": "oklch(0.986 0.028 98.054)",
           "brand-text": "oklch(0.368 0.08 264.628)",
+          "neutral": "oklch(0.481 0.118 263.376)",
+          "neutral-foreground": "oklch(0.975 0.005 258.325)",
+          "neutral-text": "oklch(0.256 0.043 268.066)",
           "border": "oklch(0.779 0.016 251.193)",
-          "input": "oklch(0.69 0.071 234.039)",
+          "input": "oklch(0.779 0.016 251.193)",
           "ring": "oklch(0.857 0.116 81.009)",
           "chart-1": "oklch(0.481 0.118 263.376)",
           "chart-2": "oklch(0.857 0.116 81.009)",
@@ -7421,8 +7546,11 @@
           "brand": "oklch(0.481 0.118 263.376)",
           "brand-foreground": "oklch(0.91 0.144 95.112)",
           "brand-text": "oklch(0.709 0.065 263.705)",
+          "neutral": "oklch(0.624 0.041 262.037)",
+          "neutral-foreground": "oklch(0.22 0.02 275.844)",
+          "neutral-text": "oklch(0.937 0.013 266.697)",
           "border": "oklch(0.307 0.029 281.768)",
-          "input": "oklch(0.481 0.118 263.376)",
+          "input": "oklch(0.307 0.029 281.768)",
           "ring": "oklch(0.91 0.144 95.112)",
           "chart-1": "oklch(0.481 0.118 263.376)",
           "chart-2": "oklch(0.91 0.144 95.112)",
@@ -7452,7 +7580,7 @@
           "gold",
           "serif"
         ],
-        "contentHash": "03417fd0620e"
+        "contentHash": "5c1a8ff30c61"
       }
     },
     {
@@ -7506,8 +7634,11 @@
           "brand": "oklch(0.835 0.13 160.908)",
           "brand-foreground": "oklch(0.263 0.015 166.459)",
           "brand-text": "oklch(0.52 0.065 160.908)",
+          "neutral": "oklch(0.243 0 0)",
+          "neutral-foreground": "oklch(0.991 0 0)",
+          "neutral-text": "oklch(0.205 0 0)",
           "border": "oklch(0.904 0 0)",
-          "input": "oklch(0.973 0 0)",
+          "input": "oklch(0.904 0 0)",
           "ring": "oklch(0.835 0.13 160.908)",
           "chart-1": "oklch(0.835 0.13 160.908)",
           "chart-2": "oklch(0.623 0.188 259.815)",
@@ -7562,8 +7693,11 @@
           "brand": "oklch(0.436 0.104 156.756)",
           "brand-foreground": "oklch(0.921 0.013 167.156)",
           "brand-text": "oklch(0.682 0.051 163.934)",
+          "neutral": "oklch(0.712 0 0)",
+          "neutral-foreground": "oklch(0.182 0 0)",
+          "neutral-text": "oklch(0.929 0.013 255.508)",
           "border": "oklch(0.281 0 0)",
-          "input": "oklch(0.26 0 0)",
+          "input": "oklch(0.281 0 0)",
           "ring": "oklch(0.8 0.182 151.711)",
           "chart-1": "oklch(0.8 0.182 151.711)",
           "chart-2": "oklch(0.714 0.143 254.624)",
@@ -7625,7 +7759,7 @@
             "offsetY": "1px"
           }
         },
-        "contentHash": "95ea63674d40"
+        "contentHash": "84a2f483018b"
       }
     },
     {
@@ -7678,6 +7812,9 @@
           "brand": "oklch(0.618 0.078 65.544)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.497 0.05 65.28)",
+          "neutral": "oklch(0.539 0.039 71.165)",
+          "neutral-foreground": "oklch(0.958 0.015 90.236)",
+          "neutral-text": "oklch(0.376 0.022 64.343)",
           "border": "oklch(0.861 0.032 84.588)",
           "input": "oklch(0.861 0.032 84.588)",
           "ring": "oklch(0.618 0.078 65.544)",
@@ -7732,6 +7869,9 @@
           "brand": "oklch(0.726 0.058 66.697)",
           "brand-foreground": "oklch(0.275 0.014 57.652)",
           "brand-text": "oklch(0.825 0.038 70.715)",
+          "neutral": "oklch(0.798 0.024 82.108)",
+          "neutral-foreground": "oklch(0.275 0.014 57.652)",
+          "neutral-text": "oklch(0.924 0.019 83.064)",
           "border": "oklch(0.38 0.018 57.128)",
           "input": "oklch(0.38 0.018 57.128)",
           "ring": "oklch(0.726 0.058 66.697)",
@@ -7796,7 +7936,7 @@
             "offsetY": "3px"
           }
         },
-        "contentHash": "0ac7daa3aba2"
+        "contentHash": "cd208da35dbe"
       }
     },
     {
@@ -7849,8 +7989,11 @@
           "brand": "oklch(0.539 0.271 286.746)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.27 0.136 286.746)",
+          "neutral": "oklch(0.439 0 0)",
+          "neutral-foreground": "oklch(0.994 0 0)",
+          "neutral-text": "oklch(0 0 0)",
           "border": "oklch(0.93 0.009 286.216)",
-          "input": "oklch(0.94 0 0)",
+          "input": "oklch(0.93 0.009 286.216)",
           "ring": "oklch(0 0 0)",
           "chart-1": "oklch(0.746 0.148 156.45)",
           "chart-2": "oklch(0.539 0.271 286.746)",
@@ -7904,6 +8047,9 @@
           "brand": "oklch(0.613 0.229 291.744)",
           "brand-foreground": "oklch(1 0 0)",
           "brand-text": "oklch(0.784 0.115 291.744)",
+          "neutral": "oklch(0.706 0 0)",
+          "neutral-foreground": "oklch(0.222 0.006 271.139)",
+          "neutral-text": "oklch(0.955 0 0)",
           "border": "oklch(0.329 0.009 268.384)",
           "input": "oklch(0.329 0.009 268.384)",
           "ring": "oklch(0.613 0.229 291.744)",
@@ -7970,7 +8116,7 @@
             "offsetY": "2px"
           }
         },
-        "contentHash": "32106ea476a4"
+        "contentHash": "fc61d752c4b2"
       }
     },
     {
@@ -8065,6 +8211,9 @@
           "type": "registry:component"
         }
       ],
+      "registryDependencies": [
+        "@fma-ds/tone"
+      ],
       "dependencies": [
         "class-variance-authority@^0.7.1",
         "cn@^0.5.2",
@@ -8079,7 +8228,7 @@
           "toggle",
           "react-aria"
         ],
-        "contentHash": "faf5ba6b500f"
+        "contentHash": "4a2746f25adb"
       }
     },
     {
@@ -8145,7 +8294,7 @@
           "variant",
           "theme"
         ],
-        "contentHash": "c738f7be97a9"
+        "contentHash": "e58748f138dc"
       }
     },
     {
